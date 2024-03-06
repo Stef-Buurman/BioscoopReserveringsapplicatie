@@ -13,5 +13,10 @@ namespace BioscoopReserveringsapplicatieTests
         {
             Assert.AreEqual(2, 2);
         }
+        [TestMethod]
+        public void TestMethod3()
+        {
+            Assert.AreEqual(3, 3);
+        }
     }
 }
