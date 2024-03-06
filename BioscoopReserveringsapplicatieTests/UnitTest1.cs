@@ -8,5 +8,10 @@ namespace BioscoopReserveringsapplicatieTests
         {
             Assert.AreEqual(1, 1);
         }
+        [TestMethod]
+        public void TestMethod2()
+        {
+            Assert.AreEqual(2, 2);
+        }
     }
 }
