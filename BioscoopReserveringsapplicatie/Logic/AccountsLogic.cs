@@ -39,12 +39,18 @@ class AccountsLogic
 
     }
 
-    public AccountModel GetById(int id)
+    public AccountModel? GetById(int id)
     {
         return _accounts.Find(i => i.Id == id);
     }
 
-    public AccountModel CheckLogin(string email, string password)
+    public void RegisterNewUser(string name, string email, string password)
+    {
+        AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name);
+        UpdateList(newAccount);
+    }
+
+    public AccountModel? CheckLogin(string email, string password)
     {
         if (email == null || password == null)
         {
