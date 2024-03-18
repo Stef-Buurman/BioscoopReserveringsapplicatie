@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+
+class MoviesLogic
+{
+    private List<MovieModel> _Movies;
+
+    public MoviesLogic()
+    {
+        _Movies = MoviesAccess.LoadAll();
+    }
+
+    public void AddMovie(string title, string description, string genre, string rating)
+    {
+        if (title == "" || description == "" || genre == "" || rating == "")
+        {
+            Console.WriteLine("Please fill in all fields");
+            return;
+        }
+
+        try
+        {
+            MovieModel latestMovie = _Movies.Last();
+
+            MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genre, rating);
+
+            UpdateList(movie);
+        }
+        catch (InvalidOperationException)
+        {
+            MovieModel movie = new MovieModel(1, title, description, genre, rating);
+
+            UpdateList(movie);
+        }
+    }
+
+    public void UpdateList(MovieModel movie)
+    {
+        //Find if there is already an model with the same id
+        int index = _Movies.FindIndex(s => s.Id == movie.Id);
+
+        if (index != -1)
+        {
+            //update existing model
+            _Movies[index] = movie;
+        }
+        else
+        {
+            //add new model
+            _Movies.Add(movie);
+        }
+        MoviesAccess.WriteAll(_Movies);
+    }
+
+    public MovieModel GetMovieById(int id)
+    {
+        return _Movies.Find(i => i.Id == id);
+    }
+}
