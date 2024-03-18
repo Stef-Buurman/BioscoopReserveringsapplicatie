@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 static class Menu
 {
 
@@ -6,17 +8,22 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to do something else in the future");
+        Console.Clear();
+        string choice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("")
+            .AddChoices(new[] {
+                "Login", "Registeren", 
+            })
+        );
 
-        string input = Console.ReadLine();
-        if (input == "1")
+        if (choice == "Login")
         {
-            UserLogin.Start();
+            Console.WriteLine(choice);
         }
-        else if (input == "2")
+        else if (choice == "Registeren")
         {
-            Console.WriteLine("This feature is not yet implemented");
+            UserRegister.Start();
         }
         else
         {
