@@ -10,11 +10,11 @@ static class UserLogin
         string email = Console.ReadLine();
         Console.WriteLine("Please enter your password");
         string password = Console.ReadLine();
-        AccountModel acc = accountsLogic.CheckLogin(email, password);
-        if (acc != null)
+        accountsLogic.Login(email, password);
+        if (AccountsLogic.CurrentAccount != null)
         {
-            Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email number is " + acc.EmailAddress);
+            Console.WriteLine("Welcome back " + AccountsLogic.CurrentAccount.FullName);
+            Console.WriteLine("Your email number is " + AccountsLogic.CurrentAccount.EmailAddress);
 
             //Write some code to go back to the menu
             //Menu.Start();
