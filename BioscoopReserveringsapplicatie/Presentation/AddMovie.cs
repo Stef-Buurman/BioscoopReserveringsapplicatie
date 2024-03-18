@@ -1,26 +1,18 @@
+using Spectre.Console;
+
 static class AddMovie
 {
     static private MoviesLogic MoviesLogic = new MoviesLogic();
 
     public static void Start()
     {
-        Console.WriteLine("Let's add a movie");
+        var title = AnsiConsole.Ask<string>("Enter movie [blue]title[/]:");
 
-        Console.WriteLine("Enter title");
+        var description = AnsiConsole.Ask<string>("Enter movie [blue]description[/]:");
 
-        string title = Console.ReadLine() ?? "";
+        var genre = AnsiConsole.Ask<string>("Enter movie [blue]genre[/]:");
 
-        Console.WriteLine("Enter description");
-
-        string description = Console.ReadLine() ?? "";
-
-        Console.WriteLine("Enter genre(s)");
-
-        string genre = Console.ReadLine() ?? "";
-
-        Console.WriteLine("Enter rating(s)");
-
-        string rating = Console.ReadLine() ?? "";
+        var rating = AnsiConsole.Ask<string>("Enter movie [blue]rating[/]:");
 
         MoviesLogic.AddMovie(title, description, genre, rating);
     }
