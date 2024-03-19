@@ -17,6 +17,20 @@ static class AddMovie
         if (MoviesLogic.AddMovie(title, description, genre, rating))
         {
             Console.WriteLine("The movie has been added succesfully.");
+
+            var table = new Table();
+            table.Border(TableBorder.Rounded);
+            table.Width(50);
+
+            table.AddColumn("Field");
+            table.AddColumn("Value");
+
+            table.AddRow("Title", title);
+            table.AddRow("Description", description);
+            table.AddRow("Genre", genre);
+            table.AddRow("Rating", rating);
+
+            AnsiConsole.Write(table);
         }
         else
         {
