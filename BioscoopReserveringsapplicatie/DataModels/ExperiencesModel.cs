@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 
-
 public class ExperiencesModel
 {
     [JsonPropertyName("id")]
@@ -27,5 +26,8 @@ public class ExperiencesModel
         this.TimeLength = timeLength;
     }
     public ExperiencesModel(string name, int FilmId, int intensity, int timeLength) : this(0, name, FilmId, intensity, timeLength)
+    { }
+
+    public ExperiencesModel() : this(0, "", 0, 0, 0)
     { }
 }

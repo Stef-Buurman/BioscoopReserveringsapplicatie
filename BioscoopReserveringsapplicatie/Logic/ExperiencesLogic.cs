@@ -26,7 +26,7 @@ class ExperiencesLogic
         return true;
     }
 
-    public bool addExperience(ExperiencesModel experience)
+    public bool AddExperience(ExperiencesModel experience)
     {
         if (experience == null || !this.ValidateExperience(experience))
         {
