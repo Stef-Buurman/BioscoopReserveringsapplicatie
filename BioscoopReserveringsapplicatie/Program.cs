@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using System.Text.Json;
+using Spectre.Console;
 
 public class Program
 {
@@ -23,7 +24,11 @@ public class Program
         //        task2.Increment(0.5);
         //    }
         //});
-        Console.WriteLine("Welcome to this amazing program");
-        Menu.Start();
+        //Console.WriteLine("Welcome to this amazing program");
+        //Menu.Start();
+        //Console.WriteLine(JsonSerializer.Serialize(ExperiencesAccess.LoadAll(), new JsonSerializerOptions { WriteIndented = true }));
+        //ExperiencesLogic experiencesLogic = new ExperiencesLogic();
+        //experiencesLogic.addExperience(new ExperiencesModel(0, "Test", 2, "Test", DateTime.Now, 5, 5));
+        AddExperience.Start();
     }
 }
