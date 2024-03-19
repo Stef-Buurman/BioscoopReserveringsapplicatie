@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "idk",
+    "filmId": 1,
+    "intensity": 8,
+    "timeLength": 20
+  },
+  {
+    "id": 2,
+    "name": "iets anders",
+    "filmId": 2,
+    "intensity": 4,
+    "timeLength": 20
+  },
+  {
+    "id": 3,
+    "name": "nog wat",
+    "filmId": 1,
+    "intensity": 7,
+    "timeLength": 20
+  }
+]
