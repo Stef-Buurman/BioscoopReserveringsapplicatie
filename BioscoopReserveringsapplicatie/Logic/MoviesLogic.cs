@@ -14,9 +14,9 @@ class MoviesLogic
 
     public bool AddMovie(string title, string description, string genre, string rating)
     {
-        if (title == "" || description == "" || genre == "" || rating == "")
+        if (title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
         {
-            Console.WriteLine("Please fill in all fields");
+            Console.WriteLine("Please fill in all fields.");
             return false;
         }
 

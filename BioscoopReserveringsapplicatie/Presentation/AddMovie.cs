@@ -1,36 +1,30 @@
-using Spectre.Console;
-
 static class AddMovie
 {
     static private MoviesLogic MoviesLogic = new MoviesLogic();
 
     public static void Start()
     {
-        var title = AnsiConsole.Ask<string>("Enter movie [blue]title[/]:");
+        Console.WriteLine("Enter movie title:");
+        string title = Console.ReadLine() ?? "";
 
-        var description = AnsiConsole.Ask<string>("Enter movie [blue]description[/]:");
+        Console.WriteLine("Enter movie description:");
+        string description = Console.ReadLine() ?? "";
 
-        var genre = AnsiConsole.Ask<string>("Enter movie [blue]genre[/]:");
+        Console.WriteLine("Enter movie genre:");
+        string genre = Console.ReadLine() ?? "";
 
-        var rating = AnsiConsole.Ask<string>("Enter movie [blue]rating[/]:");
+        Console.WriteLine("Enter movie rating:");
+        string rating = Console.ReadLine() ?? "";
 
         if (MoviesLogic.AddMovie(title, description, genre, rating))
         {
             Console.WriteLine("The movie has been added succesfully.");
+            Console.WriteLine("The movie details are:");
+            Console.WriteLine($"Movie title: {title}");
+            Console.WriteLine($"Movie description: {description}");
+            Console.WriteLine($"Movie genre: {genre}");
+            Console.WriteLine($"Movie rating: {rating}");
 
-            var table = new Table();
-            table.Border(TableBorder.Rounded);
-            table.Width(50);
-
-            table.AddColumn("Field");
-            table.AddColumn("Value");
-
-            table.AddRow("Title", title);
-            table.AddRow("Description", description);
-            table.AddRow("Genre", genre);
-            table.AddRow("Rating", rating);
-
-            AnsiConsole.Write(table);
         }
         else
         {
