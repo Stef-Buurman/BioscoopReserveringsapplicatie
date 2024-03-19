@@ -12,12 +12,12 @@ class MoviesLogic
         _Movies = MoviesAccess.LoadAll();
     }
 
-    public void AddMovie(string title, string description, string genre, string rating)
+    public bool AddMovie(string title, string description, string genre, string rating)
     {
         if (title == "" || description == "" || genre == "" || rating == "")
         {
             Console.WriteLine("Please fill in all fields");
-            return;
+            return false;
         }
 
         try
@@ -34,6 +34,7 @@ class MoviesLogic
 
             UpdateList(movie);
         }
+        return true;
     }
 
     public void UpdateList(MovieModel movie)
