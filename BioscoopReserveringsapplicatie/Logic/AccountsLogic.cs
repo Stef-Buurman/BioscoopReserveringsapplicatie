@@ -46,8 +46,8 @@ class AccountsLogic
 
     public void RegisterNewUser(string name, string email, string password)
     {
-        string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 12);
-        AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, hashedPassword, name);
+        
+        AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name);
         UpdateList(newAccount);
     }
 

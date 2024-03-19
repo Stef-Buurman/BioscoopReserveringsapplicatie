@@ -1,14 +1,26 @@
-﻿[
-	{
-		"id": 1,
-		"emailAddress": "n@b.c",
-		"password": "xyz",
-		"fullName": "Nikola Tesla"
-	},
-	{
-		"id": 2,
-		"emailAddress": "t@b.c",
-		"password": "xyz",
-		"fullName": "Thomas Edison"
-	}
+[
+  {
+    "id": 1,
+    "emailAddress": "n@b.c",
+    "password": "xyz",
+    "fullName": "Nikola Tesla"
+  },
+  {
+    "id": 2,
+    "emailAddress": "t@b.c",
+    "password": "xyz",
+    "fullName": "Thomas Edison"
+  },
+  {
+    "id": 3,
+    "emailAddress": "213",
+    "password": "$2a$12$DkxEEaIEmBakU6cmHkrfCuOrdvkwkYXRq4v2RaN6zPKu3x/Wk9XB.",
+    "fullName": "1"
+  },
+  {
+    "id": 4,
+    "emailAddress": "t",
+    "password": "$2a$12$fZRx9pjQx3Vl0fIgOl10K.xSyxMR.zvBDW5cfh.mP/c8lsWDXu4Yy",
+    "fullName": "e"
+  }
 ]
