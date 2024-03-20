@@ -64,4 +64,10 @@ class MoviesLogic
     {
         return _Movies.Find(i => i.Id == id);
     }
+
+    public void RemoveMovie(int id)
+    {
+        _Movies.RemoveAll(i => i.Id == id);
+        MoviesAccess.WriteAll(_Movies);
+    }
 }
