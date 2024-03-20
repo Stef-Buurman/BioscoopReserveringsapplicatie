@@ -13,15 +13,15 @@ public static class ColorConsole
 
         for (int i = 0; i < piecesOfMessage.Length; i++)
         {
-            string messagePeace = piecesOfMessage[i];
+            string messagePiece = piecesOfMessage[i];
 
-            if (messagePeace.StartsWith("[") && messagePeace.EndsWith("]"))
+            if (messagePiece.StartsWith("[") && messagePiece.EndsWith("]"))
             {
                 Console.ForegroundColor = color;
-                messagePeace = messagePeace.Substring(1, messagePeace.Length - 2);
+                messagePiece = messagePiece.Substring(1, messagePiece.Length - 2);
             }
 
-            Console.Write(messagePeace);
+            Console.Write(messagePiece);
             Console.ResetColor();
         }
     }
