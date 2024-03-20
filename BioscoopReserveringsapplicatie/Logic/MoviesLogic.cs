@@ -59,4 +59,9 @@ class MoviesLogic
     {
         return _Movies.Find(i => i.Id == id);
     }
+
+    public List<MovieModel> GetAllMovies()
+    {
+        return _Movies;
+    }
 }

@@ -15,16 +15,9 @@
   },
   {
     "id": 3,
-    "name": "nog wat",
+    "name": "test",
     "filmId": 1,
-    "intensity": 7,
-    "timeLength": 20
-  },
-  {
-    "id": 4,
-    "name": "Name",
-    "filmId": 2,
-    "intensity": 5,
-    "timeLength": 20
+    "intensity": 10,
+    "timeLength": 10
   }
 ]

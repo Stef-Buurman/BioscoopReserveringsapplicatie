@@ -3,5 +3,8 @@
     static string CurrentDirectoryDevelop = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
     static string CurrentDirectoryProduction = Environment.CurrentDirectory;
     public static string currentDirectory = CurrentDirectoryDevelop;
+
+    public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
+    public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
 }
 
