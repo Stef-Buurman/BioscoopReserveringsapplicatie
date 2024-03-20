@@ -53,39 +53,6 @@ class AccountsLogic
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
         return CurrentAccount;
     }
-
-    public bool ValidateLogin(string email, string password)
-    {
-        if (email == null || password == null)
-        {
-            return false;
-        }
-
-        AccountModel account = _accounts.Find(i => i.EmailAddress == email);
-
-        if (account != null)
-        {
-            
-        }
-        return false;
-    }
-
-    public AccountModel Login(string email, string password)
-    {
-        if (ValidateLogin(email, password))
-        {
-            Console.WriteLine("Inloggen gelukt.");
-            CurrentAccount = _accounts.Find(i => i.EmailAddress == email);
-        // Redirect user to the homepage or perform other actions
-            return CurrentAccount; // Return the logged-in account
-        }
-        else
-        {
-            Console.WriteLine("Inloggen mislukt.");
-            // Handle failed login (e.g., reload login page)
-            return null; // Return null since login failed
-        }
-    }
 }
 
 
