@@ -2,9 +2,8 @@ using System.Text.Json;
 
 static class MoviesAccess
 {
-    static string CurrentDirectoryDevelop = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    static string CurrentDirectoryProduction = Environment.CurrentDirectory;
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(CurrentDirectoryDevelop, @"DataSources/Movies.json"));
+    static readonly string Filename = "Movies.json";
+    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
 
     public static List<MovieModel> LoadAll()
     {
