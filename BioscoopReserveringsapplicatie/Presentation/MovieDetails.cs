@@ -6,17 +6,12 @@ static class MovieDetails
     {
         MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-        if (movie != null)
-        {
-            Console.WriteLine("Movie details:");
-            Console.WriteLine($"Title: {movie.Title}");
-            Console.WriteLine($"Description: {movie.Description}");
-            Console.WriteLine($"Genre: {movie.Genre}");
-            Console.WriteLine($"Rating: {movie.Rating}");
-        }
-        else
-        {
-            Console.WriteLine("Movie not found.");
-        }
+        var options = new List<Option<string>>
+            {
+                new Option<string>("Edit movie", () => MovieEdit.Start(movieId)),
+                new Option<string>("Delete movie", () => MovieDelete.Start(movieId)),
+                new Option<string>("Back", () => Menu.Start()),
+            };
+        SelectionMenu.Create(options, $"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {movie.Genre} \nRating: {movie.Rating} \n\nWhat would you like to do?");
     }
 }
