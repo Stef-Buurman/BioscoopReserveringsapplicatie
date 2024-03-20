@@ -10,11 +10,11 @@ static class UserLogin
         string email = Console.ReadLine();
         Console.WriteLine("Please enter your password");
         string password = Console.ReadLine();
-        accountsLogic.Login(email, password);
-        if (AccountsLogic.CurrentAccount != null)
+        AccountModel acc = accountsLogic.CheckLogin(email, password);
+        if (acc != null)
         {
-            Console.WriteLine("Welcome back " + AccountsLogic.CurrentAccount.FullName);
-            Console.WriteLine("Your email number is " + AccountsLogic.CurrentAccount.EmailAddress);
+            Console.WriteLine("Welcome back " + acc.FullName);
+            Console.WriteLine("Your email number is " + acc.EmailAddress);
 
             //Write some code to go back to the menu
             //Menu.Start();
@@ -22,6 +22,7 @@ static class UserLogin
         else
         {
             Console.WriteLine("No account found with that email and password");
+            Start();
         }
     }
 }
