@@ -1,0 +1,33 @@
+name: Link Pull Request to Issue
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  link_pull_request_to_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract issue number from pull request title
+        id: extract_issue_number
+        run: |
+          issue_number=$(echo "${{ github.event.pull_request.title }}" | grep -oP '#\K\d+')
+          echo "::set-output name=issue_number::$issue_number"
+
+      - name: Link pull request to issue
+        run: |
+          issue_number="${{ steps.extract_issue_number.outputs.issue_number }}"
+          if [[ -n "$issue_number" ]]; then
+            echo "Linking pull request to issue #$issue_number"
+            curl \
+              -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${issue_number}/links" \
+              -d "{\"pull_request\":\"${{ github.event.pull_request.url }}\"}"
+          else
+            echo "No issue number found in the pull request title."
+          fi
+        if: steps.extract_issue_number.outputs.issue_number != ''
+
