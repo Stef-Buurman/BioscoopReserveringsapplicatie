@@ -20,13 +20,22 @@ static class MovieEdit
         Console.Write("Rating: ");
         string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
 
-        if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenre, newRating))
-        {
-            Console.WriteLine("Movie details updated successfully!");
-        }
-        else
-        {
-            Console.WriteLine("Movie details could not be updated.");
-        }
+        var options = new List<Option<string>>
+            {
+                new Option<string>("Edit movie", () => {
+                    if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenre, newRating))
+                        {
+                            Console.WriteLine("Movie details updated successfully!");
+                            MovieDetails.Start(movie.Id);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Movie details could not be updated.");
+                            MovieDetails.Start(movie.Id);
+                        }
+                }),
+                new Option<string>("Cancel", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
+            };
+        SelectionMenu.Create(options, $"Are you sure you want to edit movie details of {movie.Title}?");
     }
 }
