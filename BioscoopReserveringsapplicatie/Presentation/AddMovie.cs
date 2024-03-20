@@ -18,8 +18,8 @@ static class AddMovie
 
         if (MoviesLogic.AddMovie(title, description, genre, rating))
         {
-            Console.WriteLine("The movie has been added succesfully.");
-            Console.WriteLine("The movie details are:");
+            Console.WriteLine("\nThe movie has been added succesfully.");
+            Console.WriteLine("\nThe movie details are:");
             Console.WriteLine($"Movie title: {title}");
             Console.WriteLine($"Movie description: {description}");
             Console.WriteLine($"Movie genre: {genre}");
