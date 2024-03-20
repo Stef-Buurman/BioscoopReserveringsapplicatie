@@ -2,9 +2,8 @@ using System.Text.Json;
 
 static class AccountsAccess
 {
-    static string CurrentDirectoryDevelop = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    static string CurrentDirectoryProduction =  Environment.CurrentDirectory;
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(CurrentDirectoryDevelop, @"C:\Users\realm\.vscode\c#\BioscoopReserveringsapplicatie\BioscoopReserveringsapplicatie\DataSources\accounts.json"));
+    static readonly string Filename = "Accounts.json";
+    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
 
 
     public static List<AccountModel> LoadAll()

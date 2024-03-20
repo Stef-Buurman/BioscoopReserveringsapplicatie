@@ -1,5 +1,4 @@
 ﻿using System;
-using Spectre.Console;
 
 static class AddExperience
 {
