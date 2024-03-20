@@ -50,11 +50,36 @@ class AccountsLogic
         {
             return null;
         }
-        CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
+
+        if (!ValidateEmail(email))
+        {
+            return null;
+        }
+
+        if (!ValidatePassword(email, password))
+        {
+            return null;
+        }
+
+        CurrentAccount = _accounts.Find(i => i.EmailAddress == email);
         return CurrentAccount;
     }
+
+    private bool ValidatePassword(string email, string password)
+    {
+        AccountModel account = _accounts.Find(i => i.EmailAddress == email);
+        if (account != null && account.Password == password)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool ValidateEmail(string email)
+    {
+        return email.Contains("@");
+    }
 }
-
-
-
-
