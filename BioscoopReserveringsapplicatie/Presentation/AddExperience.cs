@@ -1,4 +1,5 @@
 ﻿using System;
+using Spectre.Console;
 
 static class AddExperience
 {
@@ -32,7 +33,7 @@ static class AddExperience
         ExperiencesModel newExperience = new ExperiencesModel(0, name, filmId, intensityInt, timeLength);
         if (experiencesLogic.AddExperience(newExperience))
         {
-            Console.Clear();
+        Console.Clear();
             ColorConsole.WriteColorLine("[The movie has been added succesfully.]", ConsoleColor.Green);
             Console.WriteLine("\nThe movie details are:");
             Console.WriteLine($"Experience name: {name}");
@@ -52,7 +53,7 @@ static class AddExperience
         List<MovieModel> movies = moviesLogic.GetAllMovies();
         List<Option<int>> movieOptions = new List<Option<int>>();
         foreach (MovieModel movie in movies)
-        {
+    {
             movieOptions.Add(new Option<int>(movie.Id, movie.Title));
         }
         int movieId = SelectionMenu.Create(movieOptions);
