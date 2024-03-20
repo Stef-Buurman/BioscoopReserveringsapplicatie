@@ -12,6 +12,11 @@ class MoviesLogic
         _Movies = MoviesAccess.LoadAll();
     }
 
+    public List<MovieModel> GetAllMovies()
+    {
+        return _Movies;
+    }
+
     public bool AddMovie(string title, string description, string genre, string rating)
     {
         if (title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
@@ -58,10 +63,5 @@ class MoviesLogic
     public MovieModel GetMovieById(int id)
     {
         return _Movies.Find(i => i.Id == id);
-    }
-
-    public List<MovieModel> GetAllMovies()
-    {
-        return _Movies;
     }
 }
