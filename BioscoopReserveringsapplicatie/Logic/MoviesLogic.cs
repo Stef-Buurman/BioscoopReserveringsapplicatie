@@ -12,7 +12,7 @@ class MoviesLogic
         _Movies = MoviesAccess.LoadAll();
     }
 
-    public List<MovieModel> getAllMovies()
+    public List<MovieModel> GetAllMovies()
     {
         return _Movies;
     }
@@ -63,17 +63,5 @@ class MoviesLogic
     public MovieModel GetMovieById(int id)
     {
         return _Movies.Find(i => i.Id == id);
-    }
-
-    public List<Option<string>> getAllMoviesAsOptions()
-    {
-        List<Option<string>> options = new List<Option<string>>();
-
-        foreach (MovieModel movie in _Movies)
-        {
-            options.Add(new Option<string>(movie.Title, () => MovieDetails.Start(movie.Id)));
-        }
-
-        return options;
     }
 }

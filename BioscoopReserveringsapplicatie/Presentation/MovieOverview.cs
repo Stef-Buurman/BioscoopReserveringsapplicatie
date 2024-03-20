@@ -4,15 +4,28 @@ static class MovieOverview
 
     public static void Start()
     {
-        List<Option<string>> MoviesAsOptions = MoviesLogic.getAllMoviesAsOptions();
+        int movieId = ShowAllMovies();
 
-        if (MoviesAsOptions.Count > 0)
+        if (movieId != 0)
         {
-            SelectionMenu.Create(MoviesAsOptions, "This are all movies currently available:");
+            MovieDetails.Start(movieId);
         }
-        else
+    }
+
+    private static int ShowAllMovies()
+    {
+        List<Option<int>> options = new List<Option<int>>();
+        List<MovieModel> movies = MoviesLogic.GetAllMovies();
+
+        foreach (MovieModel movie in movies)
         {
-            Console.WriteLine("No movies found.");
+            options.Add(new Option<int>(movie.Id, movie.Title));
         }
+
+        options.Add(new Option<int>(0, "Back", () => { Console.Clear(); Menu.Start(); }));
+
+        int movieId = SelectionMenu.Create(options, "This are all movies currently available:");
+        Console.Clear();
+        return movieId;
     }
 }
