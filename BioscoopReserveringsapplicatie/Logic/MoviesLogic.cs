@@ -14,6 +14,7 @@ class MoviesLogic
 
     public List<MovieModel> GetAllMovies()
     {
+        _Movies = MoviesAccess.LoadAll();
         return _Movies;
     }
 
@@ -90,6 +91,7 @@ class MoviesLogic
 
     public MovieModel GetMovieById(int id)
     {
+        _Movies = MoviesAccess.LoadAll();
         return _Movies.Find(i => i.Id == id);
     }
 }
