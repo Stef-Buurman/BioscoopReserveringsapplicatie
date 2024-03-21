@@ -19,7 +19,7 @@ static class MovieDelete
         else
         {
             Console.WriteLine($"Movie {movie.Title} has not been deleted.");
-            Console.WriteLine("Press any key to try again.");
+            Console.WriteLine("Press any key to return.");
             Console.ReadKey();
             Console.Clear();
             MovieDetails.Start(movieId);
