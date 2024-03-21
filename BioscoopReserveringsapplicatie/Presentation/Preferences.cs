@@ -1,9 +1,9 @@
 static class Preferences
 {
-    public static PrefencesLogic prefencesLogic = new PrefencesLogic();
+    public static  AccountsLogic prefencesLogic = new AccountsLogic();
     public static void Start()
     {
-        PrefencesLogic prefencesLogic = new PrefencesLogic();
+        AccountsLogic prefencesLogic = new AccountsLogic();
         Console.Clear();
         Console.WriteLine("Welcome to the preferences page.\n");
         Console.WriteLine("Please enter your preferences.\n");
@@ -21,7 +21,7 @@ static class Preferences
         Console.WriteLine($"Intensity: {intensity}");
         Console.WriteLine($"Language: {language}");
 
-        prefencesLogic.addPreferences(selectedGenres, ageCategory, intensity, language);
+        // Add function to save preferences to user account 
 
 
 
