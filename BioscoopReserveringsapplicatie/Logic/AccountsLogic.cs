@@ -118,21 +118,8 @@ class AccountsLogic
         return CurrentAccount;
     }
 
-    private bool ValidatePassword(string email, string password)
-    {
-        AccountModel account = _accounts.Find(i => i.EmailAddress == email);
-        if (account != null && account.Password == password)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private bool ValidateEmail(string email)
-    {
-        return email.Contains("@");
-    }
 }
+
+
+
+
