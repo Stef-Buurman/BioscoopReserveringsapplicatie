@@ -36,6 +36,6 @@ static class MovieEdit
                 }),
                 new Option<string>("Cancel", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
             };
-        SelectionMenu.Create(options, $"Are you sure you want to edit movie details of {movie.Title}?");
+        SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to edit movie details of {movie.Title}?"));
     }
 }
