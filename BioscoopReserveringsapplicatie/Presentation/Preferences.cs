@@ -1,6 +1,6 @@
 static class Preferences
 {
-    public static  AccountsLogic prefencesLogic = new AccountsLogic();
+    public static AccountsLogic prefencesLogic = new AccountsLogic();
     public static void Start()
     {
         AccountsLogic prefencesLogic = new AccountsLogic();

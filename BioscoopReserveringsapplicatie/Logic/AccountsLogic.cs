@@ -88,7 +88,7 @@ class AccountsLogic
 
         if (validated)
         {
-            AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name);
+            AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name, new List<string>(), 0, "", "");
             UpdateList(newAccount);
         }
         else
@@ -117,6 +117,24 @@ class AccountsLogic
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email);
         return CurrentAccount;
     }
+        private bool ValidatePassword(string email, string password)
+    {
+        AccountModel account = _accounts.Find(i => i.EmailAddress == email);
+        if (account != null && account.Password == password)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool ValidateEmail(string email)
+    {
+        return email.Contains("@");
+    }
+
     public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
     {   
         if (CurrentAccount != null)
