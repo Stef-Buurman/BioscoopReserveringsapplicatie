@@ -2,20 +2,10 @@ using System.Text.Json;
 
 static class MoviesAccess
 {
-    static string CurrentDirectoryDevelop = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    static string CurrentDirectoryProduction = Environment.CurrentDirectory;
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(CurrentDirectoryDevelop, @"DataSources/Movies.json"));
+    private static readonly string Filename = "Movies.json";
+    private static readonly DataAccess<MovieModel> _dataAccess = new DataAccess<MovieModel>(Filename);
 
-    public static List<MovieModel> LoadAll()
-    {
-        string json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<MovieModel>>(json);
-    }
-
-    public static void WriteAll(List<MovieModel> accounts)
-    {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(accounts, options);
-        File.WriteAllText(path, json);
-    }
+    public static List<MovieModel> LoadAll() => _dataAccess.LoadAll();
+    
+    public static void WriteAll(List<MovieModel> accounts) => _dataAccess.WriteAll(accounts);
 }
