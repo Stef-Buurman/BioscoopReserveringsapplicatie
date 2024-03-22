@@ -117,9 +117,16 @@ class AccountsLogic
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email);
         return CurrentAccount;
     }
-    public void addPreferences(List<string> genres, int ageCategory, string intensity, string language)
-    {
-        
+    public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
+    {   
+        if (CurrentAccount != null)
+        {
+            CurrentAccount.Genres = genres;
+            CurrentAccount.AgeCategory = ageCategory;
+            CurrentAccount.Intensity = intensity;
+            CurrentAccount.Language = language;
+            UpdateList(CurrentAccount);
+        }
     }
 
     public bool ValidateGenres(List<string> genres)

@@ -21,9 +21,7 @@ static class Preferences
         Console.WriteLine($"Intensity: {intensity}");
         Console.WriteLine($"Language: {language}");
 
-        // Add function to save preferences to user account 
-
-
+        prefencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
 
     }
 
