@@ -1,11 +1,11 @@
 [
-  {
-    "id": 1,
-    "title": "Test1",
-    "description": "Test1",
-    "genre": "Test1",
-    "rating": "Test1"
-  },
+    {
+        "id": 1,
+        "title": "Test1",
+        "description": "Test1",
+        "genre": "Test1",
+        "rating": "Test1"
+    },
     {
         "id": 2,
         "title": "Test2",
@@ -34,7 +34,7 @@
         "genre": "Test5",
         "rating": "Test5"
     },
-{
+    {
         "id": 6,
         "title": "Test6",
         "description": "Test6",
@@ -69,7 +69,7 @@
         "genre": "Test10",
         "rating": "Test10"
     },
-{
+    {
         "id": 11,
         "title": "Test11",
         "description": "Test11",

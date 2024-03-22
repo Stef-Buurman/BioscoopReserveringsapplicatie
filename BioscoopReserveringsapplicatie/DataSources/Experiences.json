@@ -19,5 +19,26 @@
     "filmId": 1,
     "intensity": 7,
     "timeLength": 20
+  },
+  {
+    "id": 4,
+    "name": "Name",
+    "filmId": 9,
+    "intensity": 10,
+    "timeLength": 20
+  },
+  {
+    "id": 5,
+    "name": "Name 2",
+    "filmId": 8,
+    "intensity": 8,
+    "timeLength": 12
+  },
+  {
+    "id": 6,
+    "name": "NameOfExperience",
+    "filmId": 11,
+    "intensity": 10,
+    "timeLength": 25
   }
 ]
