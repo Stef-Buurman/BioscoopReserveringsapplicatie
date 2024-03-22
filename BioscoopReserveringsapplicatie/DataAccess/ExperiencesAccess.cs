@@ -2,19 +2,10 @@ using System.Text.Json;
 
 static class ExperiencesAccess
 {
-    static readonly string Filename = "Experiences.json";
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
+    private static readonly string Filename = "Experiences.json";
+    private static readonly DataAccess<ExperiencesModel> _dataAccess = new DataAccess<ExperiencesModel>(Filename);
 
-    public static List<ExperiencesModel> LoadAll()
-    {
-        string json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<ExperiencesModel>>(json);
-    }
+    public static List<ExperiencesModel> LoadAll() => _dataAccess.LoadAll();
 
-    public static void WriteAll(List<ExperiencesModel> accounts)
-    {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(accounts, options);
-        File.WriteAllText(path, json);
-    }
+    public static void WriteAll(List<ExperiencesModel> accounts) => _dataAccess.WriteAll(accounts);
 }
