@@ -14,6 +14,7 @@ class MoviesLogic
 
     public List<MovieModel> GetAllMovies()
     {
+        _Movies = MoviesAccess.LoadAll();
         return _Movies;
     }
 
@@ -25,21 +26,49 @@ class MoviesLogic
             return false;
         }
 
-        try
+        if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && !string.IsNullOrWhiteSpace(genre) && !string.IsNullOrWhiteSpace(rating))
         {
-            MovieModel latestMovie = _Movies.Last();
+            try
+            {
+                MovieModel latestMovie = _Movies.Last();
 
-            MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genre, rating);
+                MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genre, rating);
+
+                UpdateList(movie);
+            }
+            catch (InvalidOperationException)
+            {
+                MovieModel movie = new MovieModel(1, title, description, genre, rating);
+
+                UpdateList(movie);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool EditMovie(int id, string title, string description, string genre, string rating)
+    {
+        if (id == 0 || title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
+        {
+            Console.WriteLine("Please fill in all fields.");
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && !string.IsNullOrWhiteSpace(genre) && !string.IsNullOrWhiteSpace(rating))
+        {
+            MovieModel movie = GetMovieById(id);
+            movie.Title = title;
+            movie.Description = description;
+            movie.Genre = genre;
+            movie.Rating = rating;
 
             UpdateList(movie);
+            return true;
         }
-        catch (InvalidOperationException)
-        {
-            MovieModel movie = new MovieModel(1, title, description, genre, rating);
 
-            UpdateList(movie);
-        }
-        return true;
+        return false;
     }
 
     public void UpdateList(MovieModel movie)
@@ -62,6 +91,7 @@ class MoviesLogic
 
     public MovieModel GetMovieById(int id)
     {
+        _Movies = MoviesAccess.LoadAll();
         return _Movies.Find(i => i.Id == id);
     }
 }

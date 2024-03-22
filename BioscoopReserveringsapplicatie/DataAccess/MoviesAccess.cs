@@ -12,10 +12,10 @@ static class MoviesAccess
         return JsonSerializer.Deserialize<List<MovieModel>>(json);
     }
 
-    public static void WriteAll(List<MovieModel> accounts)
+    public static void WriteAll(List<MovieModel> movies)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(accounts, options);
+        string json = JsonSerializer.Serialize(movies, options);
         File.WriteAllText(path, json);
     }
 }
