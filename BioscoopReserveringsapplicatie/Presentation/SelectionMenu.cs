@@ -1,32 +1,110 @@
 ﻿static class SelectionMenu
 {
-    public static T Create<T>(List<Option<T>> options, string message = "")
+    public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu = null)
     {
         Console.CursorVisible = false;
         int index = 0;
+        int visibleIndex = 0;
 
-        WriteMenu(options, options[index], message);
+        int amountOptionsAbove = 0;
+        List<Option<T>> optionsToShow = GetOptionsToShow(options, maxVisibility);
+
+        int halfOfMaxVisibility = Convert.ToInt32(Math.Round((double)maxVisibility / 2, MidpointRounding.AwayFromZero));
+
+        WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu);
 
         ConsoleKeyInfo keyinfo;
         do
         {
             keyinfo = Console.ReadKey();
+            // When the user presses the down arrow, the selected option will move down
             if (keyinfo.Key == ConsoleKey.DownArrow)
             {
+                // When the option where the user wants to go to is lower than the amount of options, so the highest index possible, this will be executed.
                 if (index + 1 < options.Count)
                 {
+                    //Set the index and visible index one higher
                     index++;
-                    WriteMenu(options, options[index], message);
+                    visibleIndex++;
+                    // This will be approved when the amount of options is higher than the max visibility.
+                    if (options.Count > maxVisibility)
+                    {
+                        //When the visible index is higher than the max visibility, this will be executed.
+                        if (visibleIndex > maxVisibility)
+                        {
+                            visibleIndex = maxVisibility;
+                        }
+                        // When the selected option is in the second half of or equal to the visible options, this will be executed.
+                        if (index >= options.Count - halfOfMaxVisibility)
+                        {
+                            amountOptionsAbove = options.Count - maxVisibility;
+                            optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
+                            WriteMenu(optionsToShow, optionsToShow[visibleIndex - 1], ActionBeforeMenu);
+                        }
+                        // When the selected option is higher than the half of the max visibility, this will be executed.
+                        else if (visibleIndex > Math.Floor((double)maxVisibility / 2))
+                        {
+                            amountOptionsAbove++;
+                            optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
+                            visibleIndex--;
+                            WriteMenu(optionsToShow, optionsToShow[visibleIndex], ActionBeforeMenu);
+                        }
+                        // When the selected option is neither of the above, this will be executed.
+                        else
+                        {
+                            optionsToShow = GetOptionsToShow(options, maxVisibility);
+                            WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu);
+                        }
+                    }
+                    else
+                    {
+                        WriteMenu(options, options[index], ActionBeforeMenu);
+                    }
                 }
             }
+            // When the user presses the up arrow, this will be executed.
             if (keyinfo.Key == ConsoleKey.UpArrow)
             {
+                //When the option where the user wants to go to is higher than 0, so inside the possible options, this will be executed.
                 if (index - 1 >= 0)
                 {
+                    //Set the index and visible one lower
                     index--;
-                    WriteMenu(options, options[index], message);
+                    visibleIndex--;
+                    // This will be approved when the amount of options is higher than the max visibility.
+                    if (options.Count > maxVisibility)
+                    {
+                        // When the selected option is in the first half of or equal to the visible options, this will be executed.
+                        if (index + 1 <= halfOfMaxVisibility)
+                        {
+                            visibleIndex = index;
+                            amountOptionsAbove = 0;
+                            optionsToShow = GetOptionsToShow(options, maxVisibility);
+                            WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu);
+                        }
+                        // When the selected option is higher than (the option count minus the half of the max visibility), this will be executed.
+                        else if (index >= options.Count - halfOfMaxVisibility)
+                        {
+                            amountOptionsAbove = options.Count - maxVisibility;
+                            optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
+                            WriteMenu(optionsToShow, optionsToShow[visibleIndex - 1], ActionBeforeMenu);
+                        }
+                        // When the selected option is neither of the above, this will be executed.
+                        else
+                        {
+                            if (amountOptionsAbove > 0) amountOptionsAbove--;
+                            optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
+                            if (index + 1 < options.Count - halfOfMaxVisibility) visibleIndex++;
+                            WriteMenu(optionsToShow, optionsToShow[visibleIndex], ActionBeforeMenu);
+                        }
+                    }
+                    else
+                    {
+                        WriteMenu(options, options[index], ActionBeforeMenu);
+                    }
                 }
             }
+            // When the user presses the enter key, the selected option will be executed
             if (keyinfo.Key == ConsoleKey.Enter)
             {
                 options[index].Select();
@@ -42,37 +120,68 @@
         return default;
     }
 
-    public static T Create<T>(List<T> options, string message = "")
+    public static T Create<T>(List<T> options, int maxVisibility, Action ActionBeforeMenu = null)
     {
+        // When you give a list of T, it will be converted to a list of Options.
         List<Option<T>> optionList = new List<Option<T>>();
         foreach (T option in options)
         {
             optionList.Add(new Option<T>(option));
         }
-        return Create(optionList, message);
+        return Create(optionList, maxVisibility, ActionBeforeMenu);
     }
 
-    static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, string message = "")
+    public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu = null)
+    {
+        return Create(options, 10, ActionBeforeMenu);
+    }
+
+    public static T Create<T>(List<T> options, Action ActionBeforeMenu = null)
+    {
+        return Create(options, 10, ActionBeforeMenu);
+    }
+
+    static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null)
     {
         Console.Clear();
+        // When you give a function to the menu, it will execute it before the menu is printed
+        if (ActionBeforeMenu != null) ActionBeforeMenu();
 
-        if (message != "")
-        {
-            Console.WriteLine(message);
-        }
 
         foreach (Option<T> option in options)
         {
             if (option == selectedOption)
             {
-                Console.Write("> ");
+                // This will print the selected option in blue
+                ColorConsole.WriteColorLine($"[>> {option.Name} <<]", ConsoleColor.Blue);
             }
             else
             {
-                Console.Write(" ");
+                Console.WriteLine($"  {option.Name}");
             }
-
-            Console.WriteLine(option.Name);
         }
+    }
+
+    private static List<Option<T>> GetOptionsToShow<T>(List<Option<T>> options, int maxVisibility, int skipOptions = 0, bool hasSkipOptions = false)
+    {
+        List<Option<T>> optionsToShow = new List<Option<T>>();
+        //Loops trough all options.
+        for (int i = 1; i <= options.Count; i++)
+        {
+            // Checks if there are options which must be skipped.
+            if (hasSkipOptions)
+            {
+                // Checks wheter the index of the current option is higher of the index which must be skipped. If so, the option will be added to the list.
+                if (i > skipOptions) optionsToShow.Add(options[i - 1]);
+            }
+            else
+            {
+                // Adds the option to the list.
+                optionsToShow.Add(options[i - 1]);
+            }
+            // WHen the amount of options to show is equal to the max visibility, the loop will be broken.
+            if (optionsToShow.Count == maxVisibility) break;
+        }
+        return optionsToShow;
     }
 }

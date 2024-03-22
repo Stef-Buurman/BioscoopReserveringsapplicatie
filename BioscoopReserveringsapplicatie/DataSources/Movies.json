@@ -1,16 +1,16 @@
 [
-  {
-    "id": 1,
-    "title": "Test1",
-    "description": "Test1",
-    "genre": "Test1",
-    "rating": "Test1"
-  },
-  {
-    "id": 2,
-    "title": "Test2",
-    "description": "Test2",
-    "genre": "Test2",
-    "rating": "Test2"
-  }
+    {
+        "id": 1,
+        "title": "Test1",
+        "description": "Test1",
+        "genre": "Test1",
+        "rating": "Test1"
+    },
+    {
+        "id": 2,
+        "title": "Test2",
+        "description": "Test2",
+        "genre": "Test2",
+        "rating": "Test2"
+    }
 ]

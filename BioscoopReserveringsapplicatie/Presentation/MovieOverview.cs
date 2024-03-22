@@ -24,8 +24,13 @@ static class MovieOverview
 
         options.Add(new Option<int>(0, "Back", () => { Console.Clear(); Menu.Start(); }));
 
-        int movieId = SelectionMenu.Create(options, "This are all movies currently available:");
+        int movieId = SelectionMenu.Create(options, Print);
         Console.Clear();
         return movieId;
+    }
+
+    private static void Print()
+    {
+        Console.WriteLine("This are all movies currently available:");
     }
 }

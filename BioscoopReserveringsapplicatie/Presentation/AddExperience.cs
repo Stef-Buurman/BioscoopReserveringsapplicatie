@@ -34,7 +34,7 @@ static class AddExperience
         {
             Console.Clear();
             ColorConsole.WriteColorLine("[The movie has been added succesfully.]", ConsoleColor.Green);
-            Console.WriteLine("\nThe movie details are:");
+            ColorConsole.WriteColorLine("\n[The movie details are:]", Globals.TitleColor);
             Console.WriteLine($"Experience name: {name}");
             Console.WriteLine($"Movie: {moviesLogic.GetMovieById(filmId).Title}");
             Console.WriteLine($"Experience intensity: {intensityInt}");
@@ -55,9 +55,11 @@ static class AddExperience
         {
             movieOptions.Add(new Option<int>(movie.Id, movie.Title));
         }
-        int movieId = SelectionMenu.Create(movieOptions);
+        int movieId = SelectionMenu.Create(movieOptions, 10, PrintTitle);
         Console.Clear();
         return movieId;
     }
+
+    private static void PrintTitle() => Console.WriteLine("Which movie do you want to add?");
 }
 
