@@ -8,18 +8,18 @@ static class MovieDelete
 
         var options = new List<Option<string>>
             {
-                new Option<string>("Delete movie", () => {
+                new Option<string>("Verwijder film", () => {
                     MoviesLogic.RemoveMovie(movieId);
-                    Console.WriteLine($"Movie {movie.Title} has been deleted.");
+                    Console.WriteLine($"Film {movie.Title} is verwijderd.");
                     Console.Clear();
                     MovieOverview.Start();
                 }),
-                new Option<string>("Cancel", () => {
-                    Console.WriteLine($"Movie {movie.Title} has not been deleted.");
+                new Option<string>("Annuleer", () => {
+                    Console.WriteLine($"Bent u zeker dat u de film {movie.Title} wilt verwijderen?");
                     Console.Clear();
                     MovieDetails.Start(movieId);
                 }),
             };
-        SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to delete the movie {movie.Title}?"));
+        SelectionMenu.Create(options, () => Console.WriteLine($"Weet u zeker dat u de film {movie.Title} wilt verwijderen?"));
     }
 }
