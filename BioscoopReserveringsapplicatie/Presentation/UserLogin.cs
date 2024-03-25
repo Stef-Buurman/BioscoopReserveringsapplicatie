@@ -11,7 +11,7 @@ static class UserLogin
             ColorConsole.WriteColorLine("Welkom bij de [login pagina]", ConsoleColor.Blue);
             isFirstTime = false; 
         }
-        Console.Write("Please enter your email address: ");
+        Console.Write("Voer alstublieft uw e-mailadres in: ");
         string ?email = Console.ReadLine();
         Console.Write("Please enter your password: ");
         string ?password = Console.ReadLine();
