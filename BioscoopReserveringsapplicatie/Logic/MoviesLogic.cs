@@ -22,7 +22,7 @@ class MoviesLogic
     {
         if (title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
         {
-            Console.WriteLine("Please fill in all fields.");
+            Console.WriteLine("Vul alstublieft alle velden in.");
             return false;
         }
 
@@ -52,7 +52,7 @@ class MoviesLogic
     {
         if (id == 0 || title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
         {
-            Console.WriteLine("Please fill in all fields.");
+            Console.WriteLine("Vul alstublieft alle velden in.");
             return false;
         }
 
