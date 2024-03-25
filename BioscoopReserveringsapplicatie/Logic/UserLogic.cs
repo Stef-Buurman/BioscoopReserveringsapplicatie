@@ -99,22 +99,23 @@ class UserLogic
 
     public UserModel? CheckLogin(string ?email, string ?password)
     {
+        
         if (email == null || password == null)
         {
             return null;
         }
 
-        if (!ValidateEmail(email))
+        if (!ValidateEmail(email.ToLower()))
         {
             return null;
         }
 
-        if (!ValidatePassword(email, password))
+        if (!ValidatePassword(email.ToLower(), password))
         {
             return null;
         }
 
-        CurrentUser = _accounts.Find(i => i.EmailAddress == email);
+        CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
         return CurrentUser;
     }
     

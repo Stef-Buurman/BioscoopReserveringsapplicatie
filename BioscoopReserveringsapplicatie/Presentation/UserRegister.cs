@@ -17,6 +17,6 @@ static class UserRegister
         Console.WriteLine("Wachtwoord: ");
         string userPassword = Console.ReadLine() ?? "";
 
-        userLogic.RegisterNewUser(userName, userEmail, userPassword);
+        userLogic.RegisterNewUser(userName, userEmail.ToLower(), userPassword);
     }
 }
