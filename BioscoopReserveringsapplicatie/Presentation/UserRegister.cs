@@ -5,16 +5,16 @@ static class UserRegister
     public static void Start(string? errorMessage = null)
     {
         Console.Clear();
-        Console.WriteLine("registratiepagina\n\n");
+        Console.WriteLine("registratiepagina\n");
         if (errorMessage != null)
         {
             Console.WriteLine(errorMessage);
         }
-        Console.WriteLine("Naam: ");
+        Console.Write("Naam: ");
         string userName = Console.ReadLine() ?? "";
-        Console.WriteLine("Email: ");
+        Console.Write("Email: ");
         string userEmail = Console.ReadLine() ?? "";
-        Console.WriteLine("Wachtwoord: ");
+        Console.Write("Wachtwoord: ");
         string userPassword = Console.ReadLine() ?? "";
 
         userLogic.RegisterNewUser(userName, userEmail.ToLower(), userPassword);

@@ -9,25 +9,13 @@ static class LandingPage
     public static void Start()
     {
         Console.Clear();
-        Console.WriteLine("Welkom bij de FX reserveringsapplicatie\n\n");
-        Console.WriteLine("[1]Login");
-        Console.WriteLine("[2]Registeren\n");
-        string choice = Console.ReadLine() ?? "";
-
-        if (choice == "1")
-        {
-            UserLogin.Start();
-        }
-        else if (choice == "2")
-        {
-            UserRegister.Start();
-        }
-        else
-        {
-            Console.WriteLine("Invalid input");
-            Thread.Sleep(1000);
-            Start();
-        }
+        var options = new List<Option<string>>
+            {
+                new Option<string>("Inloggen", () => UserLogin.Start()),
+                new Option<string>("Registreren", () => UserRegister.Start()),
+                new Option<string>("Sluit Aplicatie", () => Environment.Exit(0)),
+            };
+            SelectionMenu.Create(options, () => Console.WriteLine("Welkom bij de FX reserveringsapplicatie\n"));
 
     }
 }
