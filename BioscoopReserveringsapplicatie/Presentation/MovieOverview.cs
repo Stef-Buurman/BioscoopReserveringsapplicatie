@@ -22,7 +22,7 @@ static class MovieOverview
             options.Add(new Option<int>(movie.Id, movie.Title));
         }
 
-        options.Add(new Option<int>(0, "Back", () => { Console.Clear(); Menu.Start(); }));
+        options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); Menu.Start(); }));
 
         int movieId = SelectionMenu.Create(options, Print);
         Console.Clear();
@@ -31,6 +31,6 @@ static class MovieOverview
 
     private static void Print()
     {
-        Console.WriteLine("This are all movies currently available:");
+        Console.WriteLine("Dit zijn alle films die momenteel beschikbaar zijn:");
     }
 }

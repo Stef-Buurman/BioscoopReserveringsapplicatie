@@ -8,23 +8,23 @@ static class UserLogin
         Console.Clear();
         if (isFirstTime) 
         {
-            ColorConsole.WriteColorLine("Welcome to the [login page]", ConsoleColor.Blue);
+            ColorConsole.WriteColorLine("Welkom bij de [login pagina]", ConsoleColor.Blue);
             isFirstTime = false; 
         }
-        Console.Write("Please enter your email address: ");
+        Console.Write("Voer alstublieft uw e-mailadres in: ");
         string email = Console.ReadLine();
-        Console.Write("Please enter your password: ");
+        Console.Write("Voer alstublieft uw wachtwoord in: ");
         string password = Console.ReadLine();
         AccountModel acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
-            ColorConsole.WriteColorLine($"[Welcome back {acc.FullName}]", ConsoleColor.Green);
-            Console.WriteLine($"Your email is {acc.EmailAddress}");
+            ColorConsole.WriteColorLine($"[Welkom terug, {acc.FullName}]", ConsoleColor.Green);
+            Console.WriteLine($"Uw e-mailadres is: {acc.EmailAddress}");
         }
         else
         {
-            Console.WriteLine("No account found with that email and password.");
-            Console.WriteLine("Press any key to try again.");
+            Console.WriteLine("Er is geen account gevonden met dat e-mailadres en wachtwoord.");
+            Console.WriteLine("Druk op een willekeurige toets om opnieuw te proberen.");
             Console.ReadKey();
             Start(); 
         }

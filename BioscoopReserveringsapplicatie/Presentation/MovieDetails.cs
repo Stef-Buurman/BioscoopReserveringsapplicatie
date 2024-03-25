@@ -9,15 +9,15 @@ static class MovieDetails
 
         var options = new List<Option<string>>
             {
-                new Option<string>("Edit movie", () => MovieEdit.Start(movie.Id)),
-                new Option<string>("Delete movie", () => MovieDelete.Start(movie.Id)),
-                new Option<string>("Back", () => {Console.Clear(); MovieOverview.Start();}),
+                new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
+                new Option<string>("Verwijder film", () => MovieDelete.Start(movie.Id)),
+                new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
             };
         SelectionMenu.Create(options, Print);
     }
 
     private static void Print()
     {
-        if (movie != null) Console.WriteLine($"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {movie.Genre} \nRating: {movie.Rating} \n\nWhat would you like to do?");
+        if (movie != null) Console.WriteLine($"Film details:\nTitel: {movie.Title} \nBeschrijving: {movie.Description} \nGenre: {movie.Genre} \nBeoordeling: {movie.Rating} \n\nWat zou je willen doen?");
     }
 }

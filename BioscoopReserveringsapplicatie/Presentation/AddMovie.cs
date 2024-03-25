@@ -4,31 +4,31 @@ static class AddMovie
 
     public static void Start()
     {
-        Console.WriteLine("Enter movie title:");
+        Console.WriteLine("Voer de filmtitel in:");
         string title = Console.ReadLine() ?? "";
 
-        Console.WriteLine("Enter movie description:");
+        Console.WriteLine("Voer de film beschrijving in:");
         string description = Console.ReadLine() ?? "";
 
-        Console.WriteLine("Enter movie genre:");
+        Console.WriteLine("Voer de film genre in:");
         string genre = Console.ReadLine() ?? "";
 
-        Console.WriteLine("Enter movie rating:");
+        Console.WriteLine("Voer de film beoordeling in:");
         string rating = Console.ReadLine() ?? "";
 
         if (MoviesLogic.AddMovie(title, description, genre, rating))
         {
-            Console.WriteLine("\nThe movie has been added succesfully.");
-            Console.WriteLine("\nThe movie details are:");
-            Console.WriteLine($"Movie title: {title}");
-            Console.WriteLine($"Movie description: {description}");
-            Console.WriteLine($"Movie genre: {genre}");
-            Console.WriteLine($"Movie rating: {rating}");
+            Console.WriteLine("\nDe film is succesvol toegevoegd.");
+            Console.WriteLine("\nDe details van de film zijn:");
+            Console.WriteLine($"Film titel: {title}");
+            Console.WriteLine($"Film beschrijving: {description}");
+            Console.WriteLine($"Film genre: {genre}");
+            Console.WriteLine($"Film beoordeling: {rating}");
 
         }
         else
         {
-            Console.WriteLine("An error occurred while adding the movie.");
+            Console.WriteLine("Er is een error opgetreden tijdens het toevoegen van de film.");
         }
     }
 }

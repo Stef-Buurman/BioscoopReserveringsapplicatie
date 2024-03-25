@@ -151,21 +151,21 @@ class AccountsLogic
     {
         if (genres.Count > 3)
         {
-            Console.WriteLine("You can only select up to 3 genres.");
+            Console.WriteLine("U kunt maximaal 3 genres selecteren.");
             return false;
         }
 
         if (genres.Distinct().Count() != genres.Count)
         {
-            Console.WriteLine("Duplicate genres are not allowed.");
+            Console.WriteLine("Dubbele genres zijn niet toegestaan.");
             return false;
         }
 
         foreach (string genre in genres)
         {
-            if (genre != "Action" && genre != "Adventure" && genre != "Animation" && genre != "Comedy" && genre != "Crime" && genre != "Drama" && genre != "Fantasy" && genre != "Historical" && genre != "Horror" && genre != "Mystery" && genre != "Romance" && genre != "Science Fiction" && genre != "Thriller" && genre != "Western")
+            if (genre != "Actie" && genre != "Avontuur" && genre != "Animatie" && genre != "Komedie" && genre != "Misdaad" && genre != "Drama" && genre != "Fantasie" && genre != "Geschiedenis" && genre != "Horror" && genre != "Mysterie" && genre != "Romantiek" && genre != "Science Fiction" && genre != "Thriller" && genre != "Western")
             {
-                Console.WriteLine("Invalid genre, please select from the list.");
+                Console.WriteLine("Ongeldig genre, kies alstublieft uit de lijst.");
                 return false;
             }
         }
@@ -182,7 +182,7 @@ class AccountsLogic
 
     public bool ValidateIntensity(string intensity)
     {
-        if (intensity != "Low" && intensity != "Medium" && intensity != "High")
+        if (intensity != "Laag" && intensity != "Medium" && intensity != "Hoog")
         {
             return false;
         }
@@ -192,7 +192,7 @@ class AccountsLogic
 
     public bool ValidateLanguage(string language)
     {
-        if (language.ToLower() != "english" && language.ToLower() != "dutch")
+        if (language.ToLower() != "engels" && language.ToLower() != "nederlands")
         {
             return false;
         }
