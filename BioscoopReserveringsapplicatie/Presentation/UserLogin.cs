@@ -12,14 +12,20 @@ static class UserLogin
             isFirstTime = false; 
         }
         Console.Write("Please enter your email address: ");
-        string email = Console.ReadLine();
+        string ?email = Console.ReadLine();
         Console.Write("Please enter your password: ");
-        string password = Console.ReadLine();
-        UserModel acc = userLogic.CheckLogin(email, password);
+        string ?password = Console.ReadLine();
+        UserModel ?acc = userLogic.CheckLogin(email, password);
         if (acc != null)
         {
-            ColorConsole.WriteColorLine($"[Welcome back {acc.FullName}]", ConsoleColor.Green);
-            Console.WriteLine($"Your email is {acc.EmailAddress}");
+            if (acc.IsAdmin)
+            {
+                AdminMenu.Start();
+            }
+            else
+            {
+                //UserMenu.Start();
+            }
         }
         else
         {

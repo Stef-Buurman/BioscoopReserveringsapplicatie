@@ -97,7 +97,7 @@ class UserLogic
         }
     }
 
-    public UserModel? CheckLogin(string email, string password)
+    public UserModel? CheckLogin(string ?email, string ?password)
     {
         if (email == null || password == null)
         {
@@ -117,9 +117,10 @@ class UserLogic
         CurrentUser = _accounts.Find(i => i.EmailAddress == email);
         return CurrentUser;
     }
-        private bool ValidatePassword(string email, string password)
+    
+    private bool ValidatePassword(string email, string password)
     {
-        UserModel account = _accounts.Find(i => i.EmailAddress == email);
+        UserModel ?account = _accounts.Find(i => i.EmailAddress == email);
         if (account != null && account.Password == password)
         {
             return true;

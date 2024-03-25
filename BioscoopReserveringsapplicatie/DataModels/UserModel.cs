@@ -7,7 +7,7 @@ class UserModel
     public int Id { get; set; }
 
     [JsonPropertyName("isAdmin")]
-    public bool IsAdmin { get; set; }
+    public bool IsAdmin { get; }
 
     [JsonPropertyName("emailAddress")]
     public string EmailAddress { get; set; }
