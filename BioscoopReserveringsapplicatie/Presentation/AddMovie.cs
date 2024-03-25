@@ -6,33 +6,16 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
-            Console.WriteLine("Enter movie title:");
+            Console.WriteLine("Voer de filmtitel in:");
             string title = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Enter movie description:");
+            Console.WriteLine("Voer de film beschrijving in:");
             string description = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Enter movie genre:");
-            List<string> genres = new List<string>();
-            List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
-            Console.WriteLine("Choose up to 3 genres from the following list:");
-            Console.WriteLine(string.Join(", ", availableGenres) + "\n");
+        Console.WriteLine("Enter movie genre:");
+        string genre = Console.ReadLine() ?? "";
 
-            for (int i = 0; i < 3; i++)
-            {
-                string genre = Console.ReadLine() ?? "";
-                if (availableGenres.Contains(genre))
-                {
-                    genres.Add(genre);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid genre, please select from the list.");
-                    i--;
-                }
-            }
-
-            Console.WriteLine("Enter movie rating:");
+            Console.WriteLine("Voer de film beoordeling in:");
             string rating = Console.ReadLine() ?? "";
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
@@ -47,7 +30,7 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                Console.WriteLine("An error occurred while adding the movie.");
+                Console.WriteLine("Er is een error opgetreden tijdens het toevoegen van de film.");
             }
         }
     }

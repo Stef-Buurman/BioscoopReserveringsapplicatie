@@ -13,9 +13,9 @@ namespace BioscoopReserveringsapplicatie
             string language = SelectLanguage();
 
             Console.Clear();
-            Console.WriteLine("Dit zijn uw voorkeuren:\n");
+            Console.WriteLine("Uw geselecteerde voorkeuren zijn:\n");
             Console.WriteLine($"Genres: {string.Join(", ", selectedGenres)}");
-            Console.WriteLine($"Kijkwijzer: {ageCategory}");
+            Console.WriteLine($"Leeftijdscategorie: {ageCategory}");
             Console.WriteLine($"Intensiteit: {intensity}");
             Console.WriteLine($"Taal: {language}");
 

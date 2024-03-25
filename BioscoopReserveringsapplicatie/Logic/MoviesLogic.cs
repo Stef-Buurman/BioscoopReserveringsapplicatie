@@ -19,7 +19,7 @@ namespace BioscoopReserveringsapplicatie
         {
             if (title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
             {
-                Console.WriteLine("Please fill in all fields.");
+                Console.WriteLine("Vul alstublieft alle velden in.");
                 return false;
             }
 
@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
         {
             if (id == 0 || title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
             {
-                Console.WriteLine("Please fill in all fields.");
+                Console.WriteLine("Vul alstublieft alle velden in.");
                 return false;
             }
 
