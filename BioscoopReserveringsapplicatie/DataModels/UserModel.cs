@@ -2,7 +2,7 @@
 
 namespace BioscoopReserveringsapplicatie
 {
-    class UserModel
+    public class UserModel
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

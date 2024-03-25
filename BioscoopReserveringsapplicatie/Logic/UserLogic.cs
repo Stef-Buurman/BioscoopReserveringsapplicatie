@@ -6,44 +6,44 @@ using System.Text.Json;
 namespace BioscoopReserveringsapplicatie
 {
     //This class is not static so later on we can use inheritance and interfaces
-    class UserLogic
-{
-    private List<UserModel> _accounts;
-
-    //Static properties are shared across all instances of the class
-    //This can be used to get the current logged in account from anywhere in the program
-    //private set, so this can only be set by the class itself
-    static public UserModel? CurrentUser { get; private set; }
-
-    public UserLogic()
+    public class UserLogic
     {
-        _accounts = UserAccess.LoadAll();
-    }
+        private List<UserModel> _accounts;
 
+        //Static properties are shared across all instances of the class
+        //This can be used to get the current logged in account from anywhere in the program
+        //private set, so this can only be set by the class itself
+        static public UserModel? CurrentUser { get; private set; }
 
-    public void UpdateList(UserModel acc)
-    {
-        //Find if there is already an model with the same id
-        int index = _accounts.FindIndex(s => s.Id == acc.Id);
-
-        if (index != -1)
+        public UserLogic()
         {
-            //update existing model
-            _accounts[index] = acc;
+            _accounts = UserAccess.LoadAll();
         }
-        else
+
+
+        public void UpdateList(UserModel acc)
         {
-            //add new model
-            _accounts.Add(acc);
-        }
-        UserAccess.WriteAll(_accounts);
+            //Find if there is already an model with the same id
+            int index = _accounts.FindIndex(s => s.Id == acc.Id);
+
+            if (index != -1)
+            {
+                //update existing model
+                _accounts[index] = acc;
+            }
+            else
+            {
+                //add new model
+                _accounts.Add(acc);
+            }
+            UserAccess.WriteAll(_accounts);
 
         }
 
-    public UserModel? GetById(int id)
-    {
-        return _accounts.Find(i => i.Id == id);
-    }
+        public UserModel? GetById(int id)
+        {
+            return _accounts.Find(i => i.Id == id);
+        }
 
         public void RegisterNewUser(string name, string email, string password)
         {
@@ -87,68 +87,68 @@ namespace BioscoopReserveringsapplicatie
                 validated = true;
             }
 
-        if (validated)
-        {
-            UserModel newAccount = new UserModel(_accounts.Count + 1,false , email, password, name, new List<string>(), 0, "", "");
-            UpdateList(newAccount);
-        }
-        else
-        {
-            UserRegister.Start(errorMessage);
-        }
-    }
-
-    public UserModel? CheckLogin(string ?email, string ?password)
-    {
-        
-        if (email == null || password == null)
-        {
-            return null;
+            if (validated)
+            {
+                UserModel newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<string>(), 0, "", "");
+                UpdateList(newAccount);
+            }
+            else
+            {
+                UserRegister.Start(errorMessage);
+            }
         }
 
-        if (!ValidateEmail(email.ToLower()))
+        public UserModel? CheckLogin(string? email, string? password)
         {
-            return null;
+
+            if (email == null || password == null)
+            {
+                return null;
+            }
+
+            if (!ValidateEmail(email.ToLower()))
+            {
+                return null;
+            }
+
+            if (!ValidatePassword(email.ToLower(), password))
+            {
+                return null;
+            }
+
+            CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
+            return CurrentUser;
         }
 
-        if (!ValidatePassword(email.ToLower(), password))
+        private bool ValidatePassword(string email, string password)
         {
-            return null;
+            UserModel? account = _accounts.Find(i => i.EmailAddress == email);
+            if (account != null && account.Password == password)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
-        return CurrentUser;
-    }
-    
-    private bool ValidatePassword(string email, string password)
-    {
-        UserModel ?account = _accounts.Find(i => i.EmailAddress == email);
-        if (account != null && account.Password == password)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
         public bool ValidateEmail(string email)
         {
             return email.Contains("@");
         }
 
-    public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
-    {   
-        if (CurrentUser != null)
+        public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
         {
-            CurrentUser.Genres = genres;
-            CurrentUser.AgeCategory = ageCategory;
-            CurrentUser.Intensity = intensity;
-            CurrentUser.Language = language;
-            UpdateList(CurrentUser);
+            if (CurrentUser != null)
+            {
+                CurrentUser.Genres = genres;
+                CurrentUser.AgeCategory = ageCategory;
+                CurrentUser.Intensity = intensity;
+                CurrentUser.Language = language;
+                UpdateList(CurrentUser);
+            }
         }
-    }
 
         public bool ValidateGenres(List<string> genres)
         {
@@ -201,7 +201,5 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
-
-
     }
 }

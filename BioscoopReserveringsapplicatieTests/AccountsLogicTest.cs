@@ -1,11 +1,9 @@
-using BioscoopReserveringsapplicatie;
-
 namespace BioscoopReserveringsapplicatieTests
 {
     [TestClass]
     public class AccountsLogicTest
     {
-        private AccountsLogic _accountsLogic = new();
+        private UserLogic _accountsLogic = new();
 
         [DataRow("test@gmail.nl")]
         [DataRow("ditIsNogEenEmailAdress@hotmail.nl")]

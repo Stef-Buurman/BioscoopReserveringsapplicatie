@@ -1,6 +1,4 @@
-﻿using BioscoopReserveringsapplicatie;
-
-namespace BioscoopReserveringsapplicatieTests
+﻿namespace BioscoopReserveringsapplicatieTests
 {
     [TestClass]
     public class ExperienceTest

@@ -1,12 +1,14 @@
-static class AdminMenu
+namespace BioscoopReserveringsapplicatie
 {
-    private static UserModel ?CurrentUser = UserLogic.CurrentUser;
-    public static void Start()
+    static class AdminMenu
     {
-        if (CurrentUser != null && CurrentUser.IsAdmin)
+        private static UserModel? CurrentUser = UserLogic.CurrentUser;
+        public static void Start()
         {
-            Console.Clear();
-            var options = new List<Option<string>>
+            if (CurrentUser != null && CurrentUser.IsAdmin)
+            {
+                Console.Clear();
+                var options = new List<Option<string>>
             {
                 new Option<string>("Film toevoegen", () => AddMovie.Start()),
                 new Option<string>("Filmoverzicht", () => MovieOverview.Start()),
@@ -14,12 +16,13 @@ static class AdminMenu
                 new Option<string>("Experienceoverzicht", () => Console.WriteLine("Nog niet geimplementeerd")),
                 new Option<string>("Uitloggen", () => LandingPage.Start()),
             };
-            SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {CurrentUser.FullName}!\n"));
-        }
-        else
-        {
-            Console.Clear();
-            Console.WriteLine("Uw account heeft geen toestemming om deze pagina te bekijken.");
+                SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {CurrentUser.FullName}!\n"));
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Uw account heeft geen toestemming om deze pagina te bekijken.");
+            }
         }
     }
 }
