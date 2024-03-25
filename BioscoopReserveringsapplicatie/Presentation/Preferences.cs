@@ -1,72 +1,66 @@
-static class Preferences
+public static class Preferences
 {
-    public static AccountsLogic prefencesLogic = new AccountsLogic();
+    static AccountsLogic PreferencesLogic = new AccountsLogic();
+
     public static void Start()
     {
-        AccountsLogic prefencesLogic = new AccountsLogic();
         Console.Clear();
-        Console.WriteLine("Welcome to the preferences page.\n");
-        Console.WriteLine("Please enter your preferences.\n");
+        Console.WriteLine("Welkom op de voorkeur pagina\n");
+        Console.WriteLine("Hier kunt u uw voorkeuren selecteren.\n");
 
-        List<string> selectedGenres = SelectGenres();
-        int ageCategory = SelectAgeCategory();
-        string intensity = SelectIntensity();
-        string language = SelectLanguage();
+        var selectedGenres = SelectGenres();
+        var ageCategory = SelectAgeCategory();
+        var intensity = SelectIntensity();
+        var language = SelectLanguage();
 
-       
         Console.Clear();
-        Console.WriteLine("Your selected preferences are:");
+        Console.WriteLine("Dit zijn uw voorkeuren:\n");
         Console.WriteLine($"Genres: {string.Join(", ", selectedGenres)}");
-        Console.WriteLine($"Age Category: {ageCategory}");
-        Console.WriteLine($"Intensity: {intensity}");
-        Console.WriteLine($"Language: {language}");
+        Console.WriteLine($"Kijkwijzer: {ageCategory}");
+        Console.WriteLine($"Intensiteit: {intensity}");
+        Console.WriteLine($"Taal: {language}");
 
-        prefencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
-
+        PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
     }
 
-    static List<string> SelectGenres()
+    public static List<string> SelectGenres()
     {
-        List<string> genres = new List<string>();
-        List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
-        Console.WriteLine("Choose up to 3 genres from the following list:");
-        Console.WriteLine(string.Join(", ", availableGenres) + "\n");
-
-        for (int i = 0; i < 3; i++)
+        var selectedGenres = new List<string>();
+        var availableGenres = new List<string>
         {
-            string genre = Console.ReadLine() ?? "";
-            if (availableGenres.Contains(genre))
+            "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+            "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+            "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+        };
+
+        while (selectedGenres.Count < 3)
+        {
+            Console.WriteLine("Selecteer een genre:");
+            var genre = SelectionMenu.Create(availableGenres);
+
+            if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
             {
-                genres.Add(genre);
+                availableGenres.Remove(genre);
+                selectedGenres.Add(genre);
             }
             else
             {
-                Console.WriteLine("Invalid genre, please select from the list.");
-                i--;
-            }
-
-            if (genres.Count == 3)
-            {
-                if (!prefencesLogic.ValidateGenres(genres))
-                {
-                    Console.WriteLine("Invalid genres selected. Please choose again.");
-                    genres.Clear();
-                    i = -1;
-                }
+                Console.WriteLine("Error. Probeer het opnieuw.");
             }
         }
 
-        return genres;
+        return selectedGenres;
     }
 
-    static int SelectAgeCategory()
+    public static int SelectAgeCategory()
     {
-        Console.WriteLine("Choose an age category (6, 9, 12, 14, 16, 18):");
-        int ageCategory = Convert.ToInt32(Console.ReadLine());
+        var options = new List<int> { 6, 9, 12, 14, 16, 18 };
 
-        while (!prefencesLogic.ValidateAgeCategory(ageCategory))
+        int ageCategory = SelectionMenu.Create(options);
+        while (!PreferencesLogic.ValidateAgeCategory(ageCategory))
         {
-            Console.WriteLine("Invalid age category, please choose from the list.");
+            Console.WriteLine("Error. Probeer het opnieuw.");
+            ageCategory = SelectionMenu.Create(options);
         }
 
         return ageCategory;
@@ -74,33 +68,29 @@ static class Preferences
 
     public static string SelectIntensity()
     {
-        Console.WriteLine("Choose intensity (Low/Medium/High):");
-        string intensity;
-        do
-        {
-            intensity = Console.ReadLine();
-            if (prefencesLogic.ValidateIntensity(intensity))
-                break;
+        var options = new List<string> { "Laag", "Medium", "Hoog" };
+        string intensity = SelectionMenu.Create(options);
 
-            Console.WriteLine("Invalid choice. Please select from (Low/Medium/High)");
-        } while (true);
+        while (!PreferencesLogic.ValidateIntensity(intensity))
+        {
+            Console.WriteLine("Error. Probeer het opnieuw.");
+            intensity = SelectionMenu.Create(options);
+        }
 
         return intensity;
     }
 
-    static string SelectLanguage()
+    public static string SelectLanguage()
     {
-        Console.WriteLine("Choose language (English/Dutch):");
-        string language;
-        do
+        var options = new List<string> { "Engels", "Nederlands" };
+        string language = SelectionMenu.Create(options);
+
+        while (!PreferencesLogic.ValidateLanguage(language))
         {
-            language = Console.ReadLine();
-            if (prefencesLogic.ValidateLanguage(language))
-                break;
+            Console.WriteLine("Error. Probeer het opnieuw.");
+            language = SelectionMenu.Create(options);
+        }
 
-            Console.WriteLine("Invalid choice. Please select English or Dutch.");
-        } while (true);
-
-        return language.ToLower();
+        return language;
     }
 }
