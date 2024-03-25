@@ -172,16 +172,11 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
-            if (genres.Distinct().Count() != genres.Count)
-            {
-                Console.WriteLine("Duplicate genres are not allowed.");
-                return false;
-            }
         if (genres.Distinct().Count() != genres.Count)
         {
-            Console.WriteLine("U mag niet een genre meerderekeeren selecteren.");
+            Console.WriteLine("U mag niet een genre meerdere keren selecteren.");
             return false;
-        }
+        } 
 
             foreach (string genre in genres)
             {
@@ -206,7 +201,7 @@ namespace BioscoopReserveringsapplicatie
         {
             if (!CorrectGenre.Contains(genre))
             {
-                Console.WriteLine("Ongeldige input, Selecteer genres van de lijst.");
+                Console.WriteLine("Ongeldige input, Selecteer genres uit de lijst.");
                 return false;
             }
         }
@@ -221,15 +216,9 @@ namespace BioscoopReserveringsapplicatie
         return true;
     }
 
-        public bool ValidateIntensity(string intensity)
-        {
-            if (intensity != "Low" && intensity != "Medium" && intensity != "High")
-            {
-                return false;
-            }
     public bool ValidateIntensity(string intensity)
     {
-        if (intensity.ToLower() != "low" && intensity.ToLower() != "medium" && intensity.ToLower() != "high")
+        if (intensity.ToLower() != "laag" && intensity.ToLower() != "medium" && intensity.ToLower() != "hoog")
         {
             return false;
         }
@@ -237,13 +226,17 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-        public bool ValidateLanguage(string language)
+    public bool ValidateLanguage(string language)
+    {
+        if (language.ToLower() != "engels" && language.ToLower() != "nederlands")
         {
-            if (language.ToLower() != "english" && language.ToLower() != "dutch")
-            {
-                return false;
-            }
-            return true;
+            return false;
         }
+        return true;
     }
+
+
 }
+
+
+
