@@ -1,6 +1,6 @@
 static class UserRegister
 {
-    static private UserLogic accountsLogic = new UserLogic();
+    static private UserLogic userLogic = new UserLogic();
 
     public static void Start(string? errorMessage = null)
     {
@@ -17,6 +17,6 @@ static class UserRegister
         Console.WriteLine("Wachtwoord: ");
         string userPassword = Console.ReadLine() ?? "";
 
-        accountsLogic.RegisterNewUser(userName, userEmail, userPassword);
+        userLogic.RegisterNewUser(userName, userEmail, userPassword);
     }
 }

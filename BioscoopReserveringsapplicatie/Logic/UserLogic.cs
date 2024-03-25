@@ -88,7 +88,7 @@ class UserLogic
 
         if (validated)
         {
-            UserModel newAccount = new UserModel(_accounts.Count + 1, email, password, name, new List<string>(), 0, "", "");
+            UserModel newAccount = new UserModel(_accounts.Count + 1,false , email, password, name, new List<string>(), 0, "", "");
             UpdateList(newAccount);
         }
         else

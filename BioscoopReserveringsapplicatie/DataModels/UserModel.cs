@@ -6,6 +6,9 @@ class UserModel
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
+    [JsonPropertyName("isAdmin")]
+    public bool IsAdmin { get; set; }
+
     [JsonPropertyName("emailAddress")]
     public string EmailAddress { get; set; }
 
@@ -27,9 +30,10 @@ class UserModel
     [JsonPropertyName("language")]
     public string Language { get; set; }
 
-    public UserModel(int id, string emailAddress, string password, string fullName, List<string> genres, int ageCategory, string intensity, string language)
+    public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<string> genres, int ageCategory, string intensity, string language)
     {
         Id = id;
+        IsAdmin = isAdmin;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;
