@@ -22,7 +22,7 @@ static class MovieOverview
             options.Add(new Option<int>(movie.Id, movie.Title));
         }
 
-        options.Add(new Option<int>(0, "Back", () => { Console.Clear(); AdminMenu.Start(); }));
+        options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); AdminMenu.Start(); }));
 
         int movieId = SelectionMenu.Create(options, Print);
         Console.Clear();
