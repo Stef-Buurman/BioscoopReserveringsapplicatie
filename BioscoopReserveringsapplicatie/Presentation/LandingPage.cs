@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-static class Menu
+static class LandingPage
 {
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
