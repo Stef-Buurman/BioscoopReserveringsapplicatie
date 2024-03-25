@@ -1,8 +1,9 @@
 public static class Preferences
 {
-    public static UserLogic PreferencesLogic = new UserLogic();
+    static UserLogic PreferencesLogic = new UserLogic();
     public static void Start()
     {
+
         Console.Clear();
         Console.WriteLine("Welkom op de voorkeur pagina\n");
         Console.WriteLine("Hier kunt u uw voorkeuren selecteren.\n");
