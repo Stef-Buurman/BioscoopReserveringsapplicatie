@@ -1,6 +1,6 @@
 ﻿namespace BioscoopReserveringsapplicatie
 {
-    class ExperiencesLogic
+    public class ExperiencesLogic
     {
         private List<ExperiencesModel> _experiences;
 
@@ -17,7 +17,7 @@
         public bool ValidateExperience(ExperiencesModel experience)
         {
             if (experience == null) return false;
-            else if (experience.Name == null) return false;
+            else if (experience.Name == null || experience.Name == "") return false;
             else if (experience.Intensity < 0 || experience.Intensity > 10) return false;
             else if (experience.TimeLength < 0) return false;
             return true;
