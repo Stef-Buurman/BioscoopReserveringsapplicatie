@@ -15,27 +15,28 @@ namespace BioscoopReserveringsapplicatie
             return _Movies;
         }
 
-        public bool AddMovie(string title, string description, string genre, string rating)
+    public bool AddMovie(string title, string description, List<string> genres, string rating)
+    {
+        if (title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
         {
-            if (title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
+            Console.WriteLine("Please fill in all fields.");
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any() && !string.IsNullOrWhiteSpace(rating))
+        {
+            try
             {
-                Console.WriteLine("Please fill in all fields.");
-                return false;
+                MovieModel latestMovie = _Movies.Last();
+
+                MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genres, rating);
+
+                UpdateList(movie);
             }
-
-            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && !string.IsNullOrWhiteSpace(genre) && !string.IsNullOrWhiteSpace(rating))
+            catch (InvalidOperationException)
             {
-                try
-                {
-                    MovieModel latestMovie = _Movies.Last();
 
-                    MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genre, rating);
-
-                    UpdateList(movie);
-                }
-                catch (InvalidOperationException)
-                {
-                    MovieModel movie = new MovieModel(1, title, description, genre, rating);
+                MovieModel movie = new MovieModel(1, title, description, genres, rating);
 
                     UpdateList(movie);
                 }
@@ -45,21 +46,21 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
-        public bool EditMovie(int id, string title, string description, string genre, string rating)
+    public bool EditMovie(int id, string title, string description, List<string> genres, string rating)
+    {
+        if (id == 0 || title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
         {
-            if (id == 0 || title.Trim() == "" || description.Trim() == "" || genre.Trim() == "" || rating.Trim() == "")
-            {
-                Console.WriteLine("Please fill in all fields.");
-                return false;
-            }
+            Console.WriteLine("Please fill in all fields.");
+            return false;
+        }
 
-            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && !string.IsNullOrWhiteSpace(genre) && !string.IsNullOrWhiteSpace(rating))
-            {
-                MovieModel movie = GetMovieById(id);
-                movie.Title = title;
-                movie.Description = description;
-                movie.Genre = genre;
-                movie.Rating = rating;
+        if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any() && !string.IsNullOrWhiteSpace(rating))
+        {
+            MovieModel movie = GetMovieById(id);
+            movie.Title = title;
+            movie.Description = description;
+            movie.Genres = genres;
+            movie.Rating = rating;
 
                 UpdateList(movie);
                 return true;
