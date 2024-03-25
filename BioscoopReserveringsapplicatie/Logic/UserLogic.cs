@@ -151,23 +151,31 @@ class UserLogic
 
     public bool ValidateGenres(List<string> genres)
     {
+    List <string> CorrectGenre = new List<string>
+        {
+            "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+            "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+            "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+        };
+    
         if (genres.Count > 3)
         {
-            Console.WriteLine("You can only select up to 3 genres.");
+            Console.WriteLine("U kunt maximaal 3 genres selecteren.");
             return false;
         }
 
         if (genres.Distinct().Count() != genres.Count)
         {
-            Console.WriteLine("Duplicate genres are not allowed.");
+            Console.WriteLine("U mag niet een genre meerderekeeren selecteren.");
             return false;
         }
 
         foreach (string genre in genres)
+        
         {
-            if (genre != "Action" && genre != "Adventure" && genre != "Animation" && genre != "Comedy" && genre != "Crime" && genre != "Drama" && genre != "Fantasy" && genre != "Historical" && genre != "Horror" && genre != "Mystery" && genre != "Romance" && genre != "Science Fiction" && genre != "Thriller" && genre != "Western")
+            if (!CorrectGenre.Contains(genre))
             {
-                Console.WriteLine("Invalid genre, please select from the list.");
+                Console.WriteLine("Ongeldige input, Selecteer genres van de lijst.");
                 return false;
             }
         }
@@ -184,7 +192,7 @@ class UserLogic
 
     public bool ValidateIntensity(string intensity)
     {
-        if (intensity != "Low" && intensity != "Medium" && intensity != "High")
+        if (intensity.ToLower() != "low" && intensity.ToLower() != "medium" && intensity.ToLower() != "high")
         {
             return false;
         }
