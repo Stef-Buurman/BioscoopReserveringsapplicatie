@@ -1,12 +1,15 @@
-﻿public static class GetNextId
+﻿namespace BioscoopReserveringsapplicatie
 {
-    public static int GetNextIdForExperience(List<ExperiencesModel> experiences)
+    public static class GetNextId
     {
-        int maxId = 0;
-        foreach (ExperiencesModel experience in experiences)
+        public static int GetNextIdForExperience(List<ExperiencesModel> experiences)
         {
-            if (experience.Id > maxId) maxId = experience.Id;
+            int maxId = 0;
+            foreach (ExperiencesModel experience in experiences)
+            {
+                if (experience.Id > maxId) maxId = experience.Id;
+            }
+            return maxId + 1;
         }
-        return maxId + 1;
     }
 }

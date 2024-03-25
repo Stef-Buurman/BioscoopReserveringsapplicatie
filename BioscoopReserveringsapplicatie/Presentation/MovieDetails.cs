@@ -1,23 +1,26 @@
-static class MovieDetails
+namespace BioscoopReserveringsapplicatie
 {
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-    private static MovieModel movie;
-
-    public static void Start(int movieId)
+    static class MovieDetails
     {
-        movie = MoviesLogic.GetMovieById(movieId);
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MovieModel movie;
 
-        var options = new List<Option<string>>
+        public static void Start(int movieId)
+        {
+            movie = MoviesLogic.GetMovieById(movieId);
+
+            var options = new List<Option<string>>
             {
                 new Option<string>("Edit movie", () => MovieEdit.Start(movie.Id)),
                 new Option<string>("Delete movie", () => MovieDelete.Start(movie.Id)),
                 new Option<string>("Back", () => {Console.Clear(); MovieOverview.Start();}),
             };
-        SelectionMenu.Create(options, Print);
-    }
+            SelectionMenu.Create(options, Print);
+        }
 
-    private static void Print()
-    {
-        if (movie != null) Console.WriteLine($"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {movie.Genre} \nRating: {movie.Rating} \n\nWhat would you like to do?");
+        private static void Print()
+        {
+            if (movie != null) Console.WriteLine($"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {movie.Genre} \nRating: {movie.Rating} \n\nWhat would you like to do?");
+        }
     }
 }

@@ -1,35 +1,38 @@
-public static class EditDefaultValueUtil
+namespace BioscoopReserveringsapplicatie
 {
-    public static string EditDefaultValue(string defaultValue)
+    public static class EditDefaultValueUtil
     {
-        string input = defaultValue;
-        int originalPosX = Console.CursorLeft;
-        Console.Write(defaultValue);
-
-        while (true)
+        public static string EditDefaultValue(string defaultValue)
         {
-            ConsoleKeyInfo key = Console.ReadKey(true);
-            if (key.Key == ConsoleKey.Enter)
+            string input = defaultValue;
+            int originalPosX = Console.CursorLeft;
+            Console.Write(defaultValue);
+
+            while (true)
             {
-                Console.WriteLine();
-                break;
-            }
-            else if (key.Key == ConsoleKey.Backspace)
-            {
-                if (input.Length > 0 && Console.CursorLeft > originalPosX)
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
                 {
-                    input = input.Substring(0, input.Length - 1);
-                    Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                    Console.Write(" ");
-                    Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    Console.WriteLine();
+                    break;
+                }
+                else if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (input.Length > 0 && Console.CursorLeft > originalPosX)
+                    {
+                        input = input.Substring(0, input.Length - 1);
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
+                }
+                else if (!char.IsControl(key.KeyChar))
+                {
+                    input += key.KeyChar;
+                    Console.Write(key.KeyChar);
                 }
             }
-            else if (!char.IsControl(key.KeyChar))
-            {
-                input += key.KeyChar;
-                Console.Write(key.KeyChar);
-            }
+            return input;
         }
-        return input;
     }
 }

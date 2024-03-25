@@ -1,28 +1,31 @@
 ﻿using System.Text.RegularExpressions;
 
-public static class ColorConsole 
+namespace BioscoopReserveringsapplicatie
 {
-    public static void WriteColorLine(string message, ConsoleColor color)
+    public static class ColorConsole
     {
-        WriteColor(message, color);
-        Console.WriteLine();
-    }
-    public static void WriteColor(string message, ConsoleColor color)
-    {
-        var piecesOfMessage = Regex.Split(message, @"(\[[^\]]*\])");
-
-        for (int i = 0; i < piecesOfMessage.Length; i++)
+        public static void WriteColorLine(string message, ConsoleColor color)
         {
-            string messagePiece = piecesOfMessage[i];
+            WriteColor(message, color);
+            Console.WriteLine();
+        }
+        public static void WriteColor(string message, ConsoleColor color)
+        {
+            var piecesOfMessage = Regex.Split(message, @"(\[[^\]]*\])");
 
-            if (messagePiece.StartsWith("[") && messagePiece.EndsWith("]"))
+            for (int i = 0; i < piecesOfMessage.Length; i++)
             {
-                Console.ForegroundColor = color;
-                messagePiece = messagePiece.Substring(1, messagePiece.Length - 2);
-            }
+                string messagePiece = piecesOfMessage[i];
 
-            Console.Write(messagePiece);
-            Console.ResetColor();
+                if (messagePiece.StartsWith("[") && messagePiece.EndsWith("]"))
+                {
+                    Console.ForegroundColor = color;
+                    messagePiece = messagePiece.Substring(1, messagePiece.Length - 2);
+                }
+
+                Console.Write(messagePiece);
+                Console.ResetColor();
+            }
         }
     }
 }
