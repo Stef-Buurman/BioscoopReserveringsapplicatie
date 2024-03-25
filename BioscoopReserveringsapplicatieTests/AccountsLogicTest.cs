@@ -10,7 +10,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("test@gmail.nl")]
         [DataRow("ditIsNogEenEmailAdress@hotmail.nl")]
         [DataTestMethod]
-        public void ValidateCorrectEmail(string email)
+        public void CorrectEmail(string email)
         {
             Assert.IsTrue(this._accountsLogic.ValidateEmail(email));
         }
@@ -19,7 +19,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("WaaromEenApestaartje?", false)]
         [DataRow("", false)]
         [DataTestMethod]
-        public void ValidateIncorrectEmail(string email, bool answer)
+        public void IncorrectEmail(string email, bool answer)
         {
             Assert.IsFalse(this._accountsLogic.ValidateEmail(email));
         }
@@ -32,7 +32,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow(16)]
         [DataRow(18)]
         [DataTestMethod]
-        public void ValidateCorrectAgeCategory(int age)
+        public void CorrectAgeCategory(int age)
         {
             Assert.IsTrue(this._accountsLogic.ValidateAgeCategory(age));
         }
@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow(19)]
         [DataRow(20)]
         [DataTestMethod]
-        public void ValidateIncorrectAgeCategory(int age)
+        public void IncorrectAgeCategory(int age)
         {
             Assert.IsFalse(this._accountsLogic.ValidateAgeCategory(age));
         }
@@ -77,7 +77,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("mediuM")]
         [DataRow("higH")]
         [DataTestMethod]
-        public void ValidateCorrectIntensity(string value)
+        public void CorrectIntensity(string value)
         {
             Assert.IsTrue(this._accountsLogic.ValidateIntensity(value));
         }
@@ -93,7 +93,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("eXtRa higH")]
         [DataRow("")]
         [DataTestMethod]
-        public void ValidateIncorrectIntensity(string value)
+        public void IncorrectIntensity(string value)
         {
             Assert.IsFalse(this._accountsLogic.ValidateIntensity(value));
         }
@@ -105,7 +105,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("eNgLiSh")]
         [DataRow("DuTcH")]
         [DataTestMethod]
-        public void ValidateCorrectLanguage(string value)
+        public void CorrectLanguage(string value)
         {
             Assert.IsTrue(this._accountsLogic.ValidateLanguage(value));
         }
@@ -116,7 +116,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("test")]
         [DataRow("")]
         [DataTestMethod]
-        public void ValidateIncorrectLanguage(string value)
+        public void IncorrectLanguage(string value)
         {
             Assert.IsFalse(this._accountsLogic.ValidateLanguage(value));
         }
