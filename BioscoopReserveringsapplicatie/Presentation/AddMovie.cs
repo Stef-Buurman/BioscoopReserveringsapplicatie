@@ -12,7 +12,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Voer de film beschrijving in:");
             string description = Console.ReadLine() ?? "";
 
-        Console.WriteLine("Enter movie genre:");
+        Console.WriteLine("Voer de film genre in:");
         string genre = Console.ReadLine() ?? "";
 
             Console.WriteLine("Voer de film beoordeling in:");

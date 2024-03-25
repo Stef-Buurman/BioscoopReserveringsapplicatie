@@ -7,7 +7,7 @@ namespace BioscoopReserveringsapplicatie
     public static void Start(string? errorMessage = null)
     {
         Console.Clear();
-        Console.WriteLine("registratiepagina\n");
+        Console.WriteLine("Registratiepagina\n");
         if (errorMessage != null)
         {
             Console.WriteLine(errorMessage);
