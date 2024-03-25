@@ -13,12 +13,12 @@ public class ExperiencesModel
     public int FilmId { get; set; }
 
     [JsonPropertyName("intensity")]
-    public int Intensity { get; set; }
+    public string Intensity { get; set; }
 
     [JsonPropertyName("timeLength")]
     public int TimeLength { get; set; }
 
-    public ExperiencesModel(int id, string name, int FilmId, int intensity, int timeLength)
+    public ExperiencesModel(int id, string name, int FilmId, string intensity, int timeLength)
     {
         this.Id = id;
         this.Name = name;
@@ -26,9 +26,9 @@ public class ExperiencesModel
         this.Intensity = intensity;
         this.TimeLength = timeLength;
     }
-    public ExperiencesModel(string name, int FilmId, int intensity, int timeLength) : this(0, name, FilmId, intensity, timeLength)
+    public ExperiencesModel(string name, int FilmId, string intensity, int timeLength) : this(0, name, FilmId, intensity, timeLength)
     { }
 
-    public ExperiencesModel() : this(0, "", 0, 0, 0)
+    public ExperiencesModel() : this(0, "", 0, "", 0)
     { }
 }

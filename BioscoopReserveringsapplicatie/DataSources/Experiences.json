@@ -1,44 +1,30 @@
 [
   {
     "id": 1,
-    "name": "idk",
+    "name": "Experience 1",
     "filmId": 1,
-    "intensity": 8,
+    "intensity": "Medium",
     "timeLength": 20
   },
   {
     "id": 2,
-    "name": "iets anders",
+    "name": "Experience 2",
     "filmId": 2,
-    "intensity": 4,
+    "intensity": "Medium",
     "timeLength": 20
   },
   {
     "id": 3,
-    "name": "nog wat",
-    "filmId": 1,
-    "intensity": 7,
+    "name": "Experience 3",
+    "filmId": 3,
+    "intensity": "Medium",
     "timeLength": 20
   },
   {
     "id": 4,
-    "name": "Name",
-    "filmId": 9,
-    "intensity": 10,
+    "name": "Experience 4",
+    "filmId": 4,
+    "intensity": "Medium",
     "timeLength": 20
-  },
-  {
-    "id": 5,
-    "name": "Name 2",
-    "filmId": 8,
-    "intensity": 8,
-    "timeLength": 12
-  },
-  {
-    "id": 6,
-    "name": "NameOfExperience",
-    "filmId": 11,
-    "intensity": 10,
-    "timeLength": 25
   }
 ]

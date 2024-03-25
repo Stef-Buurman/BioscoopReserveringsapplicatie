@@ -14,8 +14,24 @@ static class MovieEdit
         Console.Write("Description: ");
         string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
-        Console.Write("Genre: ");
-        string newGenre = EditDefaultValueUtil.EditDefaultValue(movie.Genre);
+        List<string> newGenres = new List<string>();
+        List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
+        Console.WriteLine("Choose up to 3 genres from the following list:");
+        Console.WriteLine(string.Join(", ", availableGenres) + "\n");
+
+        for (int i = 0; i < 3; i++)
+        {
+            string genre = Console.ReadLine() ?? "";
+            if (availableGenres.Contains(genre))
+            {
+                newGenres.Add(genre);
+            }
+            else
+            {
+                Console.WriteLine("Invalid genre, please select from the list.");
+                i--;
+            }
+        }
 
         Console.Write("Rating: ");
         string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
@@ -23,7 +39,7 @@ static class MovieEdit
         var options = new List<Option<string>>
             {
                 new Option<string>("Edit movie", () => {
-                    if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenre, newRating))
+                    if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenres, newRating))
                         {
                             Console.WriteLine("Movie details updated successfully!");
                             MovieDetails.Start(movie.Id);

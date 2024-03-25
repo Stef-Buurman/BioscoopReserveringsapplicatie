@@ -1,7 +1,7 @@
 static class MovieDetails
 {
     static private MoviesLogic MoviesLogic = new MoviesLogic();
-    private static MovieModel movie;
+    private static MovieModel? movie;
 
     public static void Start(int movieId)
     {
@@ -18,6 +18,6 @@ static class MovieDetails
 
     private static void Print()
     {
-        if (movie != null) Console.WriteLine($"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {movie.Genre} \nRating: {movie.Rating} \n\nWhat would you like to do?");
+        if (movie != null) Console.WriteLine($"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {string.Join(", ", movie.Genres)} \nRating: {movie.Rating} \n\nWhat would you like to do?");
     }
 }

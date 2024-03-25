@@ -3,12 +3,24 @@
     "id": 1,
     "emailAddress": "n@b.c",
     "password": "xyz",
-    "fullName": "Nikola Tesla"
+    "fullName": "Nikola Tesla",
+    "genres": null,
+    "ageCategory": 0,
+    "intensity": null,
+    "language": null
   },
   {
     "id": 2,
-    "emailAddress": "t@b.c",
-    "password": "xyz",
-    "fullName": "Thomas Edison"
+    "emailAddress": "test@test.nl",
+    "password": "test123",
+    "fullName": "Thomas Edison",
+    "genres": [
+      "Horror",
+      "Comedy",
+      "Action"
+    ],
+    "ageCategory": 18,
+    "intensity": "Medium",
+    "language": "dutch"
   }
 ]
