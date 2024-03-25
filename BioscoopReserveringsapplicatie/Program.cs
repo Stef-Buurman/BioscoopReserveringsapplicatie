@@ -1,9 +1,11 @@
-﻿
-public class Program
+﻿namespace BioscoopReserveringsapplicatie
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        Console.WriteLine("Welcome to this amazing program");
-        LandingPage.Start();
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to this amazing program");
+            LandingPage.Start();
+        }
     }
 }
