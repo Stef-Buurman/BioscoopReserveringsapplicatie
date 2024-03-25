@@ -1,9 +1,9 @@
 static class Preferences
 {
-    public static AccountsLogic prefencesLogic = new AccountsLogic();
+    public static UserLogic prefencesLogic = new UserLogic();
     public static void Start()
     {
-        AccountsLogic prefencesLogic = new AccountsLogic();
+        UserLogic prefencesLogic = new UserLogic();
         Console.Clear();
         Console.WriteLine("Welcome to the preferences page.\n");
         Console.WriteLine("Please enter your preferences.\n");

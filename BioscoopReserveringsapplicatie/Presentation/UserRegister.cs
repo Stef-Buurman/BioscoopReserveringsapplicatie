@@ -1,6 +1,6 @@
 static class UserRegister
 {
-    static private AccountsLogic accountsLogic = new AccountsLogic();
+    static private UserLogic accountsLogic = new UserLogic();
 
     public static void Start(string? errorMessage = null)
     {

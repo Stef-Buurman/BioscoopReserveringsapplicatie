@@ -5,22 +5,22 @@ using System.Text.Json;
 
 
 //This class is not static so later on we can use inheritance and interfaces
-class AccountsLogic
+class UserLogic
 {
-    private List<AccountModel> _accounts;
+    private List<UserModel> _accounts;
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
     //private set, so this can only be set by the class itself
-    static public AccountModel? CurrentAccount { get; private set; }
+    static public UserModel? CurrentUser { get; private set; }
 
-    public AccountsLogic()
+    public UserLogic()
     {
-        _accounts = AccountsAccess.LoadAll();
+        _accounts = UserAccess.LoadAll();
     }
 
 
-    public void UpdateList(AccountModel acc)
+    public void UpdateList(UserModel acc)
     {
         //Find if there is already an model with the same id
         int index = _accounts.FindIndex(s => s.Id == acc.Id);
@@ -35,11 +35,11 @@ class AccountsLogic
             //add new model
             _accounts.Add(acc);
         }
-        AccountsAccess.WriteAll(_accounts);
+        UserAccess.WriteAll(_accounts);
 
     }
 
-    public AccountModel? GetById(int id)
+    public UserModel? GetById(int id)
     {
         return _accounts.Find(i => i.Id == id);
     }
@@ -88,7 +88,7 @@ class AccountsLogic
 
         if (validated)
         {
-            AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name, new List<string>(), 0, "", "");
+            UserModel newAccount = new UserModel(_accounts.Count + 1, email, password, name, new List<string>(), 0, "", "");
             UpdateList(newAccount);
         }
         else
@@ -97,7 +97,7 @@ class AccountsLogic
         }
     }
 
-    public AccountModel? CheckLogin(string email, string password)
+    public UserModel? CheckLogin(string email, string password)
     {
         if (email == null || password == null)
         {
@@ -114,12 +114,12 @@ class AccountsLogic
             return null;
         }
 
-        CurrentAccount = _accounts.Find(i => i.EmailAddress == email);
-        return CurrentAccount;
+        CurrentUser = _accounts.Find(i => i.EmailAddress == email);
+        return CurrentUser;
     }
         private bool ValidatePassword(string email, string password)
     {
-        AccountModel account = _accounts.Find(i => i.EmailAddress == email);
+        UserModel account = _accounts.Find(i => i.EmailAddress == email);
         if (account != null && account.Password == password)
         {
             return true;
@@ -137,13 +137,13 @@ class AccountsLogic
 
     public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
     {   
-        if (CurrentAccount != null)
+        if (CurrentUser != null)
         {
-            CurrentAccount.Genres = genres;
-            CurrentAccount.AgeCategory = ageCategory;
-            CurrentAccount.Intensity = intensity;
-            CurrentAccount.Language = language;
-            UpdateList(CurrentAccount);
+            CurrentUser.Genres = genres;
+            CurrentUser.AgeCategory = ageCategory;
+            CurrentUser.Intensity = intensity;
+            CurrentUser.Language = language;
+            UpdateList(CurrentUser);
         }
     }
 

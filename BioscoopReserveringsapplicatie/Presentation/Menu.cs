@@ -16,7 +16,7 @@ static class Menu
 
         if (choice == "1")
         {
-            Console.WriteLine(choice);
+            UserLogin.Start();
         }
         else if (choice == "2")
         {
