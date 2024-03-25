@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 
-static class Menu
+static class LandingPage
 {
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-    static public void Start()
+    public static void Start()
     {
         Console.Clear();
         Console.WriteLine("Welkom bij de FX reserveringsapplicatie\n\n");
@@ -16,7 +16,7 @@ static class Menu
 
         if (choice == "1")
         {
-            Console.WriteLine(choice);
+            UserLogin.Start();
         }
         else if (choice == "2")
         {

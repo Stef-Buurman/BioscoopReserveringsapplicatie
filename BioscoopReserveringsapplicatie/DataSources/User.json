@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "isAdmin": true,
+    "emailAddress": "admin@mail.com",
+    "password": "Admin123",
+    "fullName": "Admin",
+    "genres": null,
+    "ageCategory": 0,
+    "intensity": null,
+    "language": null
+  },
+  {
+    "id": 2,
+    "isAdmin": false,
+    "emailAddress": "tim@gmail.com",
+    "password": "test123",
+    "fullName": "Tim",
+    "genres": [],
+    "ageCategory": 0,
+    "intensity": "",
+    "language": ""
+  }
+]
