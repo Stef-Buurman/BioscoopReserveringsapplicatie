@@ -157,12 +157,31 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine("You can only select up to 3 genres.");
                 return false;
             }
+    public bool ValidateGenres(List<string> genres)
+    {
+    List <string> CorrectGenre = new List<string>
+        {
+            "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+            "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+            "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+        };
+    
+        if (genres.Count > 3)
+        {
+            Console.WriteLine("U kunt maximaal 3 genres selecteren.");
+            return false;
+        }
 
             if (genres.Distinct().Count() != genres.Count)
             {
                 Console.WriteLine("Duplicate genres are not allowed.");
                 return false;
             }
+        if (genres.Distinct().Count() != genres.Count)
+        {
+            Console.WriteLine("U mag niet een genre meerderekeeren selecteren.");
+            return false;
+        }
 
             foreach (string genre in genres)
             {
@@ -182,6 +201,25 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
+        foreach (string genre in genres)
+        
+        {
+            if (!CorrectGenre.Contains(genre))
+            {
+                Console.WriteLine("Ongeldige input, Selecteer genres van de lijst.");
+                return false;
+            }
+        }
+        return true;
+    }
+    public bool ValidateAgeCategory(int ageCategory)
+    {
+        if (ageCategory != 6 && ageCategory != 9 && ageCategory != 12 && ageCategory != 14 && ageCategory != 16 && ageCategory != 18)
+        {
+            return false;
+        }
+        return true;
+    }
 
         public bool ValidateIntensity(string intensity)
         {
@@ -189,6 +227,12 @@ namespace BioscoopReserveringsapplicatie
             {
                 return false;
             }
+    public bool ValidateIntensity(string intensity)
+    {
+        if (intensity.ToLower() != "low" && intensity.ToLower() != "medium" && intensity.ToLower() != "high")
+        {
+            return false;
+        }
 
             return true;
         }
