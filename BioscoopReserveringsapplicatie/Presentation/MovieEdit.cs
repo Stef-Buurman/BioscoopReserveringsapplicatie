@@ -1,26 +1,28 @@
-static class MovieEdit
+namespace BioscoopReserveringsapplicatie
 {
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-
-    public static void Start(int movieId)
+    static class MovieEdit
     {
-        MovieModel movie = MoviesLogic.GetMovieById(movieId);
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
 
-        Console.WriteLine("Enter new movie details (press Enter to keep current):");
+        public static void Start(int movieId)
+        {
+            MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-        Console.Write("Title: ");
-        string newTitle = EditDefaultValueUtil.EditDefaultValue(movie.Title);
+            Console.WriteLine("Enter new movie details (press Enter to keep current):");
 
-        Console.Write("Description: ");
-        string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
+            Console.Write("Title: ");
+            string newTitle = EditDefaultValueUtil.EditDefaultValue(movie.Title);
 
-        Console.Write("Genre: ");
-        string newGenre = EditDefaultValueUtil.EditDefaultValue(movie.Genre);
+            Console.Write("Description: ");
+            string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
-        Console.Write("Rating: ");
-        string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
+            Console.Write("Genre: ");
+            string newGenre = EditDefaultValueUtil.EditDefaultValue(movie.Genre);
 
-        var options = new List<Option<string>>
+            Console.Write("Rating: ");
+            string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
+
+            var options = new List<Option<string>>
             {
                 new Option<string>("Edit movie", () => {
                     if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenre, newRating))
@@ -36,6 +38,7 @@ static class MovieEdit
                 }),
                 new Option<string>("Cancel", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
             };
-        SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to edit movie details of {movie.Title}?"));
+            SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to edit movie details of {movie.Title}?"));
+        }
     }
 }

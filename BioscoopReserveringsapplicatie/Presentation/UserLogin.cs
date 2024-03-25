@@ -1,38 +1,41 @@
-static class UserLogin
+namespace BioscoopReserveringsapplicatie
 {
-    static private UserLogic userLogic = new UserLogic();
-    static private bool isFirstTime = true;
-
-    public static void Start()
+    static class UserLogin
     {
-        Console.Clear();
-        if (isFirstTime) 
+        static private UserLogic userLogic = new UserLogic();
+        static private bool isFirstTime = true;
+
+        public static void Start()
         {
-            ColorConsole.WriteColorLine("Welcome to the [login page]", ConsoleColor.Blue);
-            isFirstTime = false; 
-        }
-        Console.Write("Please enter your email address: ");
-        string ?email = Console.ReadLine();
-        Console.Write("Please enter your password: ");
-        string ?password = Console.ReadLine();
-        UserModel ?acc = userLogic.CheckLogin(email, password);
-        if (acc != null)
-        {
-            if (acc.IsAdmin)
+            Console.Clear();
+            if (isFirstTime)
             {
-                AdminMenu.Start();
+                ColorConsole.WriteColorLine("Welcome to the [login page]", ConsoleColor.Blue);
+                isFirstTime = false;
+            }
+            Console.Write("Please enter your email address: ");
+            string? email = Console.ReadLine();
+            Console.Write("Please enter your password: ");
+            string? password = Console.ReadLine();
+            UserModel? acc = userLogic.CheckLogin(email, password);
+            if (acc != null)
+            {
+                if (acc.IsAdmin)
+                {
+                    AdminMenu.Start();
+                }
+                else
+                {
+                    //UserMenu.Start();
+                }
             }
             else
             {
-                //UserMenu.Start();
+                Console.WriteLine("No account found with that email and password.");
+                Console.WriteLine("Press any key to try again.");
+                Console.ReadKey();
+                Start();
             }
         }
-        else
-        {
-            Console.WriteLine("No account found with that email and password.");
-            Console.WriteLine("Press any key to try again.");
-            Console.ReadKey();
-            Start(); 
-        }
-    }   
+    }
 }

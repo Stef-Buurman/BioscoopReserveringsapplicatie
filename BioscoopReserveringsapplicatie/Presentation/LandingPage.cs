@@ -1,7 +1,8 @@
 using System;
 using System.Threading;
-
-static class LandingPage
+namespace BioscoopReserveringsapplicatie
+{
+    static class LandingPage
 {
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
@@ -17,5 +18,6 @@ static class LandingPage
             };
             SelectionMenu.Create(options, () => Console.WriteLine("Welkom bij de FX reserveringsapplicatie\n"));
 
+        }
     }
 }
