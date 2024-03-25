@@ -4,11 +4,11 @@ namespace BioscoopReserveringsapplicatie
     {
         static private MoviesLogic MoviesLogic = new MoviesLogic();
 
-    public static void Start(int movieId)
-    {
-        MovieModel movie = MoviesLogic.GetMovieById(movieId);
+        public static void Start(int movieId)
+        {
+            MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-        var options = new List<Option<string>>
+            var options = new List<Option<string>>
             {
                 new Option<string>("Delete movie", () => {
                     MoviesLogic.RemoveMovie(movieId);
@@ -22,6 +22,7 @@ namespace BioscoopReserveringsapplicatie
                     MovieDetails.Start(movieId);
                 }),
             };
-        SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to delete the movie {movie.Title}?"));
+            SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to delete the movie {movie.Title}?"));
+        }
     }
 }

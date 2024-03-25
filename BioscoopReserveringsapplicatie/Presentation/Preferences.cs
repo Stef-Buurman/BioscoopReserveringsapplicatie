@@ -107,4 +107,3 @@ namespace BioscoopReserveringsapplicatie
         }
     }
 }
-}
