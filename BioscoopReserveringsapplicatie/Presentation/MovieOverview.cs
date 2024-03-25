@@ -31,6 +31,6 @@ static class MovieOverview
 
     private static void Print()
     {
-        Console.WriteLine("This are all movies currently available:");
+        Console.WriteLine("Dit zijn alle films die momenteel beschikbaar zijn:");
     }
 }

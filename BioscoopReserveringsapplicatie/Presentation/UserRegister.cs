@@ -5,7 +5,7 @@ static class UserRegister
     public static void Start(string? errorMessage = null)
     {
         Console.Clear();
-        Console.WriteLine("registratiepagina\n\n");
+        Console.WriteLine("Registratiepagina\n\n");
         if (errorMessage != null)
         {
             Console.WriteLine(errorMessage);

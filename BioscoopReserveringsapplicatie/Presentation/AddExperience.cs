@@ -7,25 +7,25 @@ static class AddExperience
     public static void Start()
     {
         Console.Clear();
-        ColorConsole.WriteColorLine("[Add Experience]\n", Globals.TitleColor);
-        ColorConsole.WriteColor($"What is the [name] of the experience?: ", Globals.ColorInputcClarification);
+        ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
+        ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
         string name = Console.ReadLine() ?? "";
         int filmId = AskForMovie();
-        ColorConsole.WriteColor($"What is the [intensity]?: ", Globals.ColorInputcClarification);
+        ColorConsole.WriteColor($"Wat is de [intensiteit]?: ", Globals.ColorInputcClarification);
         string intensityStr = Console.ReadLine() ?? "";
         while (!int.TryParse(intensityStr, out int _) || (int.TryParse(intensityStr, out int intensitInt) && (intensitInt < 0 || intensitInt > 10)))
         {
-            Console.WriteLine("Please enter a valid intensity!");
-            ColorConsole.WriteColor($"What is the [intensity]?: ", Globals.ColorInputcClarification);
+            Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
+            ColorConsole.WriteColor($"Wat is de [intensiteit]?: ", Globals.ColorInputcClarification);
             intensityStr = Console.ReadLine() ?? "";
         }
         int intensityInt = Convert.ToInt32(intensityStr);
-        ColorConsole.WriteColor($"What is the [time length]? (in minutes): ", Globals.ColorInputcClarification);
+        ColorConsole.WriteColor($"Wat is de [lengte]? (in minuten): ", Globals.ColorInputcClarification);
         string timeLengthStr = Console.ReadLine() ?? "";
         while (!int.TryParse(timeLengthStr, out int _))
         {
-            Console.WriteLine("Please enter a valid time!");
-            ColorConsole.WriteColor($"What is the [time length]? (minutes): ", Globals.ColorInputcClarification);
+            Console.WriteLine("Voer alstublieft een geldige tijd in!");
+            ColorConsole.WriteColor($"Wat is de [lengte]? (minuten): ", Globals.ColorInputcClarification);
             timeLengthStr = Console.ReadLine() ?? "";
         }
         int timeLength = Convert.ToInt32(timeLengthStr);
@@ -33,17 +33,17 @@ static class AddExperience
         if (experiencesLogic.AddExperience(newExperience))
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[The movie has been added succesfully.]", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("\n[The movie details are:]", Globals.TitleColor);
-            Console.WriteLine($"Experience name: {name}");
-            Console.WriteLine($"Movie: {moviesLogic.GetMovieById(filmId).Title}");
-            Console.WriteLine($"Experience intensity: {intensityInt}");
-            Console.WriteLine($"Experience length (minutes): {timeLength}");
+            ColorConsole.WriteColorLine("[De film is succesvol toegevoegd.]", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("\n[De details van de film zijn:]", Globals.TitleColor);
+            Console.WriteLine($"Experience naam: {name}");
+            Console.WriteLine($"Film: {moviesLogic.GetMovieById(filmId).Title}");
+            Console.WriteLine($"Experience intensiteit: {intensityInt}");
+            Console.WriteLine($"Experience lengte (minuten): {timeLength}");
         }
         else
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[An error occurred while adding the experience.]", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red);
         }
     }
 
@@ -60,6 +60,6 @@ static class AddExperience
         return movieId;
     }
 
-    private static void PrintTitle() => Console.WriteLine("Which movie do you want to add?");
+    private static void PrintTitle() => Console.WriteLine("Welke film wilt u toevoegen?");
 }
 

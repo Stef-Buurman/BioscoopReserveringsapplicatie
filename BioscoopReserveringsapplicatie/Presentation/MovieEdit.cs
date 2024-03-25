@@ -6,36 +6,36 @@ static class MovieEdit
     {
         MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-        Console.WriteLine("Enter new movie details (press Enter to keep current):");
+        Console.WriteLine("Voer nieuwe filmdetails in (druk op Enter om de huidige te behouden):");
 
-        Console.Write("Title: ");
+        Console.Write("Titel: ");
         string newTitle = EditDefaultValueUtil.EditDefaultValue(movie.Title);
 
-        Console.Write("Description: ");
+        Console.Write("Beschrijving: ");
         string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
         Console.Write("Genre: ");
         string newGenre = EditDefaultValueUtil.EditDefaultValue(movie.Genre);
 
-        Console.Write("Rating: ");
+        Console.Write("Beoordeling: ");
         string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
 
         var options = new List<Option<string>>
             {
-                new Option<string>("Edit movie", () => {
+                new Option<string>("Bewerk film", () => {
                     if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenre, newRating))
                         {
-                            Console.WriteLine("Movie details updated successfully!");
+                            Console.WriteLine("Filmdetails zijn succesvol bijgewerkt!");
                             MovieDetails.Start(movie.Id);
                         }
                         else
                         {
-                            Console.WriteLine("Movie details could not be updated.");
+                            Console.WriteLine("Filmdetails konden niet worden bijgewerkt.");
                             MovieDetails.Start(movie.Id);
                         }
                 }),
-                new Option<string>("Cancel", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
+                new Option<string>("Annuleren", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
             };
-        SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to edit movie details of {movie.Title}?"));
+        SelectionMenu.Create(options, () => Console.WriteLine($"Weet u zeker dat u de filmdetails van {movie.Title} wilt bewerken?"));
     }
 }

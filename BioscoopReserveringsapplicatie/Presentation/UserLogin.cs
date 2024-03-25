@@ -8,7 +8,7 @@ static class UserLogin
         Console.Clear();
         if (isFirstTime) 
         {
-            ColorConsole.WriteColorLine("Welcome to the [login page]", ConsoleColor.Blue);
+            ColorConsole.WriteColorLine("Welkom bij de [login pagina]", ConsoleColor.Blue);
             isFirstTime = false; 
         }
         Console.Write("Please enter your email address: ");
@@ -29,8 +29,8 @@ static class UserLogin
         }
         else
         {
-            Console.WriteLine("No account found with that email and password.");
-            Console.WriteLine("Press any key to try again.");
+            Console.WriteLine("Er is geen account gevonden met dat e-mailadres en wachtwoord.");
+            Console.WriteLine("Druk op een willekeurige toets om opnieuw te proberen.");
             Console.ReadKey();
             Start(); 
         }
