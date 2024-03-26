@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
         {
             MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-            var options = new List<Option<string>>
+            List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Delete movie", () => {
                     MoviesLogic.RemoveMovie(movieId);

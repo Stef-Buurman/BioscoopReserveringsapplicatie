@@ -10,7 +10,7 @@ namespace BioscoopReserveringsapplicatie
     public static void Start()
     {
         Console.Clear();
-        var options = new List<Option<string>>
+        List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Inloggen", () => UserLogin.Start()),
                 new Option<string>("Registreren", () => UserRegister.Start()),

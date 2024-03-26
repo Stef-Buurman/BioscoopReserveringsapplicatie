@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
         }
         public static void WriteColor(string message, ConsoleColor color)
         {
-            var piecesOfMessage = Regex.Split(message, @"(\[[^\]]*\])");
+            string[] piecesOfMessage = Regex.Split(message, @"(\[[^\]]*\])");
 
             for (int i = 0; i < piecesOfMessage.Length; i++)
             {
