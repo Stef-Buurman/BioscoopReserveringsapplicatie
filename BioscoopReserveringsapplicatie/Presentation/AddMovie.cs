@@ -6,16 +6,19 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
-            Console.WriteLine("Enter movie title:");
+            Console.WriteLine("Voer de film titel in:");
             string title = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Enter movie description:");
+            Console.WriteLine("Voer de film beschrijving in:");
             string description = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Enter movie genre:");
+            Console.WriteLine("Voer de film genre in:");
             List<string> genres = new List<string>();
-            List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
-            Console.WriteLine("Choose up to 3 genres from the following list:");
+            List<string> availableGenres = new List<string> {
+                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+            };
             Console.WriteLine(string.Join(", ", availableGenres) + "\n");
 
             for (int i = 0; i < 3; i++)
@@ -27,27 +30,27 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Invalid genre, please select from the list.");
+                    Console.WriteLine("Ongeldige genre, selecteer een genre uit de lijst.");
                     i--;
                 }
             }
 
-            Console.WriteLine("Enter movie rating:");
+            Console.WriteLine("Voer de film beoordeling in:");
             string rating = Console.ReadLine() ?? "";
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
-                Console.WriteLine("\nThe movie has been added succesfully.");
-                Console.WriteLine("\nThe movie details are:");
-                Console.WriteLine($"Movie title: {title}");
-                Console.WriteLine($"Movie description: {description}");
-                Console.WriteLine($"Movie genre: {string.Join(", ", genres)}");
-                Console.WriteLine($"Movie rating: {rating}");
+                Console.WriteLine("\nDe film is toegevoegd.");
+                Console.WriteLine("\nDe film deetails zijn:");
+                Console.WriteLine($"Film titel: {title}");
+                Console.WriteLine($"Film beschrijving: {description}");
+                Console.WriteLine($"Film genre: {string.Join(", ", genres)}");
+                Console.WriteLine($"Film beoordeling: {rating}");
 
             }
             else
             {
-                Console.WriteLine("An error occurred while adding the movie.");
+                Console.WriteLine("Er is een error opgetreden bij het toevoegen van de film.");
             }
         }
     }

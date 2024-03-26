@@ -10,17 +10,17 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             if (_isFirstTime)
             {
-                ColorConsole.WriteColorLine("Welcome to the [login page]", ConsoleColor.Blue);
+                ColorConsole.WriteColorLine("Welkom bij de [login pagina]", ConsoleColor.Blue);
                 _isFirstTime = false;
             }
-            Console.Write("Please enter your email address: ");
+            Console.Write("Vul uw e-mailadres in: ");
             string email = Console.ReadLine() ?? "";
-            Console.Write("Please enter your password: ");
+            Console.Write("Vul uw wachtwoord in: ");
             string password = Console.ReadLine() ?? "";
             if (_userLogic.CheckLogin(email, password) == null)
             {
-                Console.WriteLine("No account found with that email and password.");
-                Console.WriteLine("Press any key to try again.");
+                Console.WriteLine("Er is geen account gevonden met dat e-mailadres en wachtwoord.");
+                Console.WriteLine("Druk op een willekeurige toets om het opnieuw te proberen.");
                 Console.ReadKey();
                 Start();
             }

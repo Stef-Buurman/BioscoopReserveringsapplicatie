@@ -8,17 +8,20 @@ namespace BioscoopReserveringsapplicatie
         {
             MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-            Console.WriteLine("Enter new movie details (press Enter to keep current):");
+            Console.WriteLine("Voer nieuwe filmdetails in (druk op Enter om de huidige te behouden):");
 
-            Console.Write("Title: ");
+            Console.Write("Titel: ");
             string newTitle = EditDefaultValueUtil.EditDefaultValue(movie.Title);
 
-            Console.Write("Description: ");
+            Console.Write("Beschrijving: ");
             string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
         List<string> newGenres = new List<string>();
-        List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
-        Console.WriteLine("Choose up to 3 genres from the following list:");
+        List<string> availableGenres = new List<string> {
+                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+            };
         Console.WriteLine(string.Join(", ", availableGenres) + "\n");
 
         for (int i = 0; i < 3; i++)
@@ -30,31 +33,31 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                Console.WriteLine("Invalid genre, please select from the list.");
+                Console.WriteLine("Ongeldige genre, selecteer een genre uit de lijst.");
                 i--;
             }
         }
 
-            Console.Write("Rating: ");
+            Console.Write("Beoordeling: ");
             string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
 
             List<Option<string>> options = new List<Option<string>>
             {
-                new Option<string>("Edit movie", () => {
+                new Option<string>("Bewerk film", () => {
                     if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenres, newRating))
                         {
-                            Console.WriteLine("Movie details updated successfully!");
+                            Console.WriteLine("Filmdetails zijn bijgewerkt!");
                             MovieDetails.Start(movie.Id);
                         }
                         else
                         {
-                            Console.WriteLine("Movie details could not be updated.");
+                            Console.WriteLine("Filmdetails konden niet worden bijgewerkt.");
                             MovieDetails.Start(movie.Id);
                         }
                 }),
-                new Option<string>("Cancel", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
+                new Option<string>("Annuleren", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
             };
-            SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to edit movie details of {movie.Title}?"));
+            SelectionMenu.Create(options, () => Console.WriteLine($"Weet u zeker dat u de filmdetails van {movie.Title} wilt bewerken?"));
         }
     }
 }
