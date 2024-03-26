@@ -6,14 +6,31 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
-            Console.WriteLine("Voer de filmtitel in:");
+            Console.WriteLine("Voer de film titel in:");
             string title = Console.ReadLine() ?? "";
 
             Console.WriteLine("Voer de film beschrijving in:");
             string description = Console.ReadLine() ?? "";
 
-        Console.WriteLine("Voer de film genre in:");
-        string genre = Console.ReadLine() ?? "";
+            Console.WriteLine("Voer de film genre in:");
+            List<string> genres = new List<string>();
+            List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
+            Console.WriteLine("Kies maximaal 3 genres uit de volgende lijst:");
+            Console.WriteLine(string.Join(", ", availableGenres) + "\n");
+
+            for (int i = 0; i < 3; i++)
+            {
+                string genre = Console.ReadLine() ?? "";
+                if (availableGenres.Contains(genre))
+                {
+                    genres.Add(genre);
+                }
+                else
+                {
+                    Console.WriteLine("Ongeldige genre, selecteer een genre uit de lijst.");
+                    i--;
+                }
+            }
 
             Console.WriteLine("Voer de film beoordeling in:");
             string rating = Console.ReadLine() ?? "";
@@ -30,7 +47,7 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                Console.WriteLine("Er is een error opgetreden tijdens het toevoegen van de film.");
+                Console.WriteLine("An error occurred while adding the movie.");
             }
         }
     }
