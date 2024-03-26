@@ -29,7 +29,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(experience.Id, experience.Name));
             }
 
-            options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); LandingPage.Start(); }));
+            options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); UserMenu.Start(); }));
 
             int experienceId = SelectionMenu.Create(options, Print);
 
