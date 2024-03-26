@@ -65,30 +65,30 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsFalse(this._accountsLogic.ValidateAgeCategory(age));
         }
 
-        [DataRow("Low")]
+        [DataRow("Laag")]
         [DataRow("Medium")]
-        [DataRow("High")]
-        [DataRow("low")]
+        [DataRow("Hoog")]
+        [DataRow("laag")]
         [DataRow("medium")]
-        [DataRow("high")]
-        [DataRow("loW")]
+        [DataRow("hoog")]
+        [DataRow("laaG")]
         [DataRow("mediuM")]
-        [DataRow("higH")]
+        [DataRow("hooG")]
         [DataTestMethod]
         public void CorrectIntensity(string value)
         {
             Assert.IsTrue(this._accountsLogic.ValidateIntensity(value));
         }
 
-        [DataRow("Extra Low")]
+        [DataRow("Extra Laag")]
         [DataRow("Extra Medium")]
-        [DataRow("Extra High")]
-        [DataRow("extra low")]
+        [DataRow("Extra Hoog")]
+        [DataRow("extra laag")]
         [DataRow("extra medium")]
-        [DataRow("extra high")]
-        [DataRow("eXtRa loW")]
+        [DataRow("extra hoog")]
+        [DataRow("eXtRa laaG")]
         [DataRow("eXtRa mediuM")]
-        [DataRow("eXtRa higH")]
+        [DataRow("eXtRa hooG")]
         [DataRow("")]
         [DataTestMethod]
         public void IncorrectIntensity(string value)
@@ -97,11 +97,11 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [DataRow("English")]
-        [DataRow("Dutch")]
+        [DataRow("Nederlands")]
         [DataRow("english")]
-        [DataRow("dutch")]
+        [DataRow("nederlands")]
         [DataRow("eNgLiSh")]
-        [DataRow("DuTcH")]
+        [DataRow("NeDeRlAnDs")]
         [DataTestMethod]
         public void CorrectLanguage(string value)
         {
