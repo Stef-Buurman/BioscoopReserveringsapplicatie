@@ -14,7 +14,7 @@ namespace BioscoopReserveringsapplicatie
             int intensityInt = AskForExperienceIntensity();
             int timeLength = AskForExperienceTimeLength();
 
-            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, intensityInt, timeLength);
+            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, $"{intensityInt}", timeLength);
             if (experiencesLogic.AddExperience(newExperience))
             {
                 Console.Clear();

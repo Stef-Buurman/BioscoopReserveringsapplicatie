@@ -19,13 +19,13 @@
         {
             if (experience == null) return false;
             else if (!ValidateExperienceName(experience.Name)) return false;
-            else if (experience.Intensity < 0 || experience.Intensity > 10) return false;
+            else if (!ValidateExperienceIntensity(experience.Intensity)) return false;
             else if (!ValidateExperienceTimeLength(experience.TimeLength)) return false;
             return true;
         }
-
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
+        public bool ValidateExperienceIntensity(string Intensity) => (Intensity.ToLower() != "laag" || Intensity.ToLower() != "hoog" || Intensity.ToLower() != "medium") ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
 
         public bool AddExperience(ExperiencesModel experience)
