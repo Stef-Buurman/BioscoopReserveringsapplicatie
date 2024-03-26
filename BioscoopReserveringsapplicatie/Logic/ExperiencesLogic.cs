@@ -17,11 +17,15 @@
         public bool ValidateExperience(ExperiencesModel experience)
         {
             if (experience == null) return false;
-            else if (experience.Name == null || experience.Name == "") return false;
+            else if (!ValidateExperienceName(experience.Name)) return false;
             else if (experience.Intensity < 0 || experience.Intensity > 10) return false;
-            else if (experience.TimeLength < 0) return false;
+            else if (!ValidateExperienceTimeLength(experience.TimeLength)) return false;
             return true;
         }
+
+        public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
+        public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
+        public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
 
         public bool AddExperience(ExperiencesModel experience)
         {
