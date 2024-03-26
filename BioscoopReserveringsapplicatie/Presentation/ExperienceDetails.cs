@@ -1,27 +1,30 @@
-static class ExperienceDetails
+namespace BioscoopReserveringsapplicatie
 {
-    static private ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
-    private static ExperiencesModel? experience;
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-    private static MovieModel? movie;
-
-    public static void Start(int experienceId)
+    static class ExperienceDetails
     {
-        experience = ExperienceLogic.GetById(experienceId);
+        static private ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
+        private static ExperiencesModel? experience;
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MovieModel? movie;
 
-        movie = MoviesLogic.GetMovieById(experience.FilmId);
+        public static void Start(int experienceId)
+        {
+            experience = ExperienceLogic.GetById(experienceId);
 
-        var options = new List<Option<string>>
+            movie = MoviesLogic.GetMovieById(experience.FilmId);
+
+            var options = new List<Option<string>>
             {
                 new Option<string>("Koop tickets"),
                 new Option<string>("Terug"),
             };
 
-        SelectionMenu.Create(options, Print);
-    }
+            SelectionMenu.Create(options, Print);
+        }
 
-    private static void Print()
-    {
-        if (experience != null) Console.WriteLine($"Experience details:\nNaam experience: {experience.Name} \nIntensiteit: {experience.Intensity} \nTijdsduur: {experience.TimeLength} \nTitel: {movie.Title} \nOmschrijving: {movie.Description} \nGenre(s): {string.Join(", ", movie.Genres)} \nKijkwijzer: {movie.Rating} \n\nWat wil je doen?");
+        private static void Print()
+        {
+            if (experience != null) Console.WriteLine($"Experience details:\nNaam experience: {experience.Name} \nIntensiteit: {experience.Intensity} \nTijdsduur: {experience.TimeLength} \nTitel: {movie.Title} \nOmschrijving: {movie.Description} \nGenre(s): {string.Join(", ", movie.Genres)} \nKijkwijzer: {movie.Rating} \n\nWat wil je doen?");
+        }
     }
 }
