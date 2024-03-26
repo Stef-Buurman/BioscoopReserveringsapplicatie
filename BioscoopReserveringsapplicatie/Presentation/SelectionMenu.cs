@@ -109,8 +109,8 @@
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    options[index].Select();
                     Console.CursorVisible = true;
+                    options[index].Select();
                     return options[index].Value;
                 }
             }
