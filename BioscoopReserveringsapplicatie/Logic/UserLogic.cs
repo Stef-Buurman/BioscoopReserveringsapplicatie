@@ -126,7 +126,7 @@ namespace BioscoopReserveringsapplicatie
                         Preferences.Start();
                     }
                     Console.WriteLine($"Welkom {CurrentUser.FullName}!");
-                    //UserMenu.Start();
+                    UserMenu.Start();
                 }
             }
             return CurrentUser;
