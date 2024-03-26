@@ -22,7 +22,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Write("Rating: ");
             string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
 
-            var options = new List<Option<string>>
+            List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Edit movie", () => {
                     if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenre, newRating))

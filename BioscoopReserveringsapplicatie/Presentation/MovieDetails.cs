@@ -9,7 +9,7 @@ namespace BioscoopReserveringsapplicatie
         {
             movie = MoviesLogic.GetMovieById(movieId);
 
-            var options = new List<Option<string>>
+            List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Edit movie", () => MovieEdit.Start(movie.Id)),
                 new Option<string>("Delete movie", () => MovieDelete.Start(movie.Id)),
