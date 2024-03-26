@@ -17,8 +17,11 @@ namespace BioscoopReserveringsapplicatie
             string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
         List<string> newGenres = new List<string>();
-        List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
-        Console.WriteLine("Choose up to 3 genres from the following list:");
+        List<string> availableGenres = new List<string> {
+                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+            };
         Console.WriteLine(string.Join(", ", availableGenres) + "\n");
 
         for (int i = 0; i < 3; i++)
@@ -30,7 +33,7 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                Console.WriteLine("Invalid genre, please select from the list.");
+                Console.WriteLine("Ongeldige genre, selecteer een genre uit de lijst.");
                 i--;
             }
         }
@@ -43,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Bewerk film", () => {
                     if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenres, newRating))
                         {
-                            Console.WriteLine("Filmdetails zijn succesvol bijgewerkt!");
+                            Console.WriteLine("Filmdetails zijn bijgewerkt!");
                             MovieDetails.Start(movie.Id);
                         }
                         else

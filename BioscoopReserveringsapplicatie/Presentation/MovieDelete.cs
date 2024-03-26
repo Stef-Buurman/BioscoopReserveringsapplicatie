@@ -10,14 +10,14 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> options = new List<Option<string>>
             {
-                new Option<string>("Delete movie", () => {
+                new Option<string>("Verwijder movie", () => {
                     MoviesLogic.RemoveMovie(movieId);
                     Console.WriteLine($"Film {movie.Title} is verwijderd.");
                     Console.Clear();
                     MovieOverview.Start();
                 }),
                 new Option<string>("Annuleer", () => {
-                    Console.WriteLine($"Bent u zeker dat u de film {movie.Title} wilt verwijderen?");
+                    Console.WriteLine($"Weet u zeker dat u de film {movie.Title} wilt verwijderen?");
                     Console.Clear();
                     MovieDetails.Start(movieId);
                 }),

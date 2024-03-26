@@ -40,7 +40,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            Console.WriteLine("Dit zijn jouw aanbevolen experiences op basis van jouw voorkeuren:");
+            Console.WriteLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren:");
         }
     }
 }
