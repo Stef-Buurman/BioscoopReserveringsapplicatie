@@ -1,12 +1,14 @@
-static class MovieDelete
+namespace BioscoopReserveringsapplicatie
 {
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-
-    public static void Start(int movieId)
+    static class MovieDelete
     {
-        MovieModel movie = MoviesLogic.GetMovieById(movieId);
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
 
-        var options = new List<Option<string>>
+        public static void Start(int movieId)
+        {
+            MovieModel movie = MoviesLogic.GetMovieById(movieId);
+
+            var options = new List<Option<string>>
             {
                 new Option<string>("Delete movie", () => {
                     MoviesLogic.RemoveMovie(movieId);
@@ -20,6 +22,7 @@ static class MovieDelete
                     MovieDetails.Start(movieId);
                 }),
             };
-        SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to delete the movie {movie.Title}?"));
+            SelectionMenu.Create(options, () => Console.WriteLine($"Are you sure you want to delete the movie {movie.Title}?"));
+        }
     }
 }

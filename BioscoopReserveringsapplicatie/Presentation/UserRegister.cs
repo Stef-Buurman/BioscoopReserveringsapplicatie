@@ -1,6 +1,8 @@
-static class UserRegister
+namespace BioscoopReserveringsapplicatie
 {
-    static private UserLogic userLogic = new UserLogic();
+    static class UserRegister
+    {
+        static private UserLogic userLogic = new UserLogic();
 
     public static void Start(string? errorMessage = null)
     {
@@ -17,6 +19,7 @@ static class UserRegister
         Console.Write("Wachtwoord: ");
         string userPassword = Console.ReadLine() ?? "";
 
-        userLogic.RegisterNewUser(userName, userEmail.ToLower(), userPassword);
+            userLogic.RegisterNewUser(userName, userEmail.ToLower(), userPassword);
+        }
     }
 }
