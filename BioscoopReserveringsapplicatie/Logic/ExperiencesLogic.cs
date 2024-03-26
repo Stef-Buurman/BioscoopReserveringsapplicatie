@@ -3,6 +3,7 @@
     public class ExperiencesLogic
     {
         private List<ExperiencesModel> _experiences;
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
 
         public ExperiencesLogic()
         {
@@ -17,8 +18,8 @@
         public bool ValidateExperience(ExperiencesModel experience)
         {
             if (experience == null) return false;
-            else if (experience.Name == null || experience.Name == "") return false;
-            else if (experience.Intensity < 0 || experience.Intensity > 10) return false;
+            else if (experience.Name == null) return false;
+            else if (experience.Intensity == null) return false;
             else if (experience.TimeLength < 0) return false;
             return true;
         }
@@ -33,6 +34,27 @@
             _experiences.Add(experience);
             ExperiencesAccess.WriteAll(_experiences);
             return true;
+        }
+
+        public List<ExperiencesModel> GetExperiences()
+        {
+            return _experiences;
+        }
+
+        public List<ExperiencesModel> GetExperiencesByUserPreferences(UserModel currentUser)
+        {
+            List<ExperiencesModel> experiences = new List<ExperiencesModel>();
+
+            foreach (ExperiencesModel experience in _experiences)
+            {
+                MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+
+                if (movie.Genres.Intersect(currentUser.Genres).Any() && Convert.ToInt32(movie.Rating) <= Convert.ToInt32(currentUser.AgeCategory) && experience.Intensity == currentUser.Intensity)
+                {
+                    experiences.Add(experience);
+                }
+            }
+            return experiences;
         }
     }
 }
