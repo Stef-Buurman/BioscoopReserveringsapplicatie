@@ -25,7 +25,7 @@
         }
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
-        public bool ValidateExperienceIntensity(string Intensity) => (Intensity.ToLower() != "laag" || Intensity.ToLower() != "hoog" || Intensity.ToLower() != "medium") ? false : true;
+        public bool ValidateExperienceIntensity(string Intensity) => (Intensity.ToLower() != "laag" && Intensity.ToLower() != "hoog" && Intensity.ToLower() != "medium") ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
 
         public bool AddExperience(ExperiencesModel experience)
