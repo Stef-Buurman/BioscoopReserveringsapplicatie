@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-
+﻿//This class is not static so later on we can use inheritance and interfaces
 namespace BioscoopReserveringsapplicatie
 {
-    //This class is not static so later on we can use inheritance and interfaces
     public class UserLogic
     {
         private List<UserModel> _accounts;
@@ -89,8 +84,9 @@ namespace BioscoopReserveringsapplicatie
 
             if (validated)
             {
-                UserModel newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<string>(), 0, "", "");
+                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<string>(), 0, "", "");
                 UpdateList(newAccount);
+                CheckLogin(email, password);
             }
             else
             {
@@ -98,7 +94,7 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        public UserModel? CheckLogin(string? email, string? password)
+        public UserModel? CheckLogin(string email, string password)
         {
 
             if (email == null || password == null)
@@ -117,6 +113,22 @@ namespace BioscoopReserveringsapplicatie
             }
 
             CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
+            if (CurrentUser != null)
+            {
+                if (CurrentUser.IsAdmin)
+                {
+                    AdminMenu.Start();
+                }
+                else
+                {
+                    if (CurrentUser.FirstTimeLogin)
+                    {
+                        Preferences.Start();
+                    }
+                    Console.WriteLine($"Welkom {CurrentUser.FullName}!");
+                    //UserMenu.Start();
+                }
+            }
             return CurrentUser;
         }
 
@@ -146,43 +158,38 @@ namespace BioscoopReserveringsapplicatie
                 CurrentUser.AgeCategory = ageCategory;
                 CurrentUser.Intensity = intensity;
                 CurrentUser.Language = language;
+                CurrentUser.FirstTimeLogin = false;
                 UpdateList(CurrentUser);
             }
         }
 
         public bool ValidateGenres(List<string> genres)
         {
-            if (genres.Count > 3)
-            {
-                Console.WriteLine("You can only select up to 3 genres.");
-                return false;
-            }
-    public bool ValidateGenres(List<string> genres)
-    {
-    List <string> CorrectGenre = new List<string>
+            List<string> CorrectGenre = new List<string>
         {
             "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
             "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
             "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
         };
-    
-        if (genres.Count > 3)
-        {
-            Console.WriteLine("U kunt maximaal 3 genres selecteren.");
-            return false;
-        }
 
-        if (genres.Distinct().Count() != genres.Count)
-        {
-            Console.WriteLine("U mag niet een genre meerdere keren selecteren.");
-            return false;
-        } 
+            if (genres.Count > 3)
+            {
+                Console.WriteLine("U kunt maximaal 3 genres selecteren.");
+                return false;
+            }
+
+            if (genres.Distinct().Count() != genres.Count)
+            {
+                Console.WriteLine("U mag niet een genre meerdere keren selecteren.");
+                return false;
+            }
 
             foreach (string genre in genres)
+
             {
-                if (genre != "Action" && genre != "Adventure" && genre != "Animation" && genre != "Comedy" && genre != "Crime" && genre != "Drama" && genre != "Fantasy" && genre != "Historical" && genre != "Horror" && genre != "Mystery" && genre != "Romance" && genre != "Science Fiction" && genre != "Thriller" && genre != "Western")
+                if (!CorrectGenre.Contains(genre))
                 {
-                    Console.WriteLine("Invalid genre, please select from the list.");
+                    Console.WriteLine("Ongeldige input, Selecteer genres uit de lijst.");
                     return false;
                 }
             }
@@ -196,47 +203,26 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
-        foreach (string genre in genres)
-        
+
+        public bool ValidateIntensity(string intensity)
         {
-            if (!CorrectGenre.Contains(genre))
+            if (intensity.ToLower() != "laag" && intensity.ToLower() != "medium" && intensity.ToLower() != "hoog")
             {
-                Console.WriteLine("Ongeldige input, Selecteer genres uit de lijst.");
                 return false;
             }
-        }
-        return true;
-    }
-    public bool ValidateAgeCategory(int ageCategory)
-    {
-        if (ageCategory != 6 && ageCategory != 9 && ageCategory != 12 && ageCategory != 14 && ageCategory != 16 && ageCategory != 18)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    public bool ValidateIntensity(string intensity)
-    {
-        if (intensity.ToLower() != "laag" && intensity.ToLower() != "medium" && intensity.ToLower() != "hoog")
-        {
-            return false;
-        }
 
             return true;
         }
 
-    public bool ValidateLanguage(string language)
-    {
-        if (language.ToLower() != "engels" && language.ToLower() != "nederlands")
+        public bool ValidateLanguage(string language)
         {
-            return false;
+            if (language.ToLower() != "english" && language.ToLower() != "nederlands")
+            {
+                return false;
+            }
+            return true;
         }
-        return true;
+
+
     }
-
-
 }
-
-
-

@@ -135,12 +135,12 @@
 
         public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu = null)
         {
-            return Create(options, 10, ActionBeforeMenu);
+            return Create(options, 9, ActionBeforeMenu);
         }
 
         public static T Create<T>(List<T> options, Action ActionBeforeMenu = null)
         {
-            return Create(options, 10, ActionBeforeMenu);
+            return Create(options, 9, ActionBeforeMenu);
         }
 
         static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null)
