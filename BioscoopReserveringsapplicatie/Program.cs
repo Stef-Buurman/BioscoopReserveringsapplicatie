@@ -6,6 +6,7 @@
         {
             Console.WriteLine("Welcome to this amazing program");
             LandingPage.Start();
+            //Preferences.Start();
         }
     }
 }

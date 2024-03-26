@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
 
         public void WriteAll(List<T> accounts)
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
             string json = JsonSerializer.Serialize(accounts, options);
             File.WriteAllText(Path, json);
         }

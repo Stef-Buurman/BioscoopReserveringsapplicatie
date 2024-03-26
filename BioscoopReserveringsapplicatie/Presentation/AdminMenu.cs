@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
             if (CurrentUser != null && CurrentUser.IsAdmin)
             {
                 Console.Clear();
-                var options = new List<Option<string>>
+                List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Film toevoegen", () => AddMovie.Start()),
                 new Option<string>("Filmoverzicht", () => MovieOverview.Start()),

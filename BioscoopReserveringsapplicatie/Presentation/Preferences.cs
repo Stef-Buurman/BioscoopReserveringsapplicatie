@@ -1,74 +1,79 @@
 namespace BioscoopReserveringsapplicatie
 {
-    static class Preferences
+    public static class Preferences
     {
-        public static UserLogic prefencesLogic = new UserLogic();
+        public static UserLogic PreferencesLogic = new UserLogic();
         public static void Start()
         {
-            UserLogic prefencesLogic = new UserLogic();
             Console.Clear();
-            Console.WriteLine("Welcome to the preferences page.\n");
-            Console.WriteLine("Please enter your preferences.\n");
 
             List<string> selectedGenres = SelectGenres();
             int ageCategory = SelectAgeCategory();
             string intensity = SelectIntensity();
             string language = SelectLanguage();
 
-
             Console.Clear();
-            Console.WriteLine("Your selected preferences are:");
+            Console.WriteLine("Dit zijn uw voorkeuren:\n");
             Console.WriteLine($"Genres: {string.Join(", ", selectedGenres)}");
-            Console.WriteLine($"Age Category: {ageCategory}");
-            Console.WriteLine($"Intensity: {intensity}");
-            Console.WriteLine($"Language: {language}");
+            Console.WriteLine($"Kijkwijzer: {ageCategory}");
+            Console.WriteLine($"Intensiteit: {intensity}");
+            Console.WriteLine($"Taal: {language}");
 
-            prefencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
-
+            PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
         }
 
-        static List<string> SelectGenres()
+        public static List<string> SelectGenres()
         {
-            List<string> genres = new List<string>();
-            List<string> availableGenres = new List<string> { "Horror", "Comedy", "Action", "Drama", "Thriller", "Romance", "Sci-fi", "Fantasy", "Adventure", "Animation", "Crime", "Mystery", "Family", "War", "History", "Music", "Documentary", "Western", "TV Movie" };
-            Console.WriteLine("Choose up to 3 genres from the following list:");
-            Console.WriteLine(string.Join(", ", availableGenres) + "\n");
-
-            for (int i = 0; i < 3; i++)
+            List<string> selectedGenres = new List<string>();
+            List<string> availableGenres = new List<string>
             {
-                string genre = Console.ReadLine() ?? "";
-                if (availableGenres.Contains(genre))
+                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
+                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
+                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
+            };
+            bool firstTime = true;
+            while (selectedGenres.Count < 3)
+            {
+                string genre = "";
+                if (firstTime)
                 {
-                    genres.Add(genre);
+                    genre = SelectionMenu.Create(availableGenres, () =>
+                    {
+                        ColorConsole.WriteColorLine("[Welkom op de voorkeur pagina]", Globals.TitleColor);
+                        ColorConsole.WriteColorLine("[Hier kunt u uw voorkeuren selecteren.]\n", Globals.TitleColor);
+                        ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification);
+                    }
+                    );
                 }
                 else
                 {
-                    Console.WriteLine("Invalid genre, please select from the list.");
-                    i--;
+                    genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
-                if (genres.Count == 3)
+                if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
                 {
-                    if (!prefencesLogic.ValidateGenres(genres))
-                    {
-                        Console.WriteLine("Invalid genres selected. Please choose again.");
-                        genres.Clear();
-                        i = -1;
-                    }
+                    availableGenres.Remove(genre);
+                    selectedGenres.Add(genre);
                 }
+                else
+                {
+                    Console.WriteLine("Error. Probeer het opnieuw.");
+                }
+                firstTime = false;
             }
 
-            return genres;
+            return selectedGenres;
         }
 
-        static int SelectAgeCategory()
+        public static int SelectAgeCategory()
         {
-            Console.WriteLine("Choose an age category (6, 9, 12, 14, 16, 18):");
-            int ageCategory = Convert.ToInt32(Console.ReadLine());
+            List<int> options = new List<int> { 6, 9, 12, 14, 16, 18 };
 
-            while (!prefencesLogic.ValidateAgeCategory(ageCategory))
+            int ageCategory = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
+            while (!PreferencesLogic.ValidateAgeCategory(ageCategory))
             {
-                Console.WriteLine("Invalid age category, please choose from the list.");
+                Console.WriteLine("Error. Probeer het opnieuw.");
+                ageCategory = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
             }
 
             return ageCategory;
@@ -76,34 +81,30 @@ namespace BioscoopReserveringsapplicatie
 
         public static string SelectIntensity()
         {
-            Console.WriteLine("Choose intensity (Low/Medium/High):");
-            string intensity;
-            do
-            {
-                intensity = Console.ReadLine();
-                if (prefencesLogic.ValidateIntensity(intensity))
-                    break;
+            List<string> options = new List<string> { "Laag", "Medium", "Hoog" };
+            string intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
 
-                Console.WriteLine("Invalid choice. Please select from (Low/Medium/High)");
-            } while (true);
+            while (!PreferencesLogic.ValidateIntensity(intensity))
+            {
+                Console.WriteLine("Error. Probeer het opnieuw.");
+                intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+            }
 
             return intensity;
         }
 
-        static string SelectLanguage()
+        public static string SelectLanguage()
         {
-            Console.WriteLine("Choose language (English/Dutch):");
-            string language;
-            do
+            List<string> options = new List<string> { "English", "Nederlands" };
+            string language = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
+
+            while (!PreferencesLogic.ValidateLanguage(language))
             {
-                language = Console.ReadLine();
-                if (prefencesLogic.ValidateLanguage(language))
-                    break;
+                Console.WriteLine("Error. Probeer het opnieuw.");
+                language = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
+            }
 
-                Console.WriteLine("Invalid choice. Please select English or Dutch.");
-            } while (true);
-
-            return language.ToLower();
+            return language;
         }
     }
 }
