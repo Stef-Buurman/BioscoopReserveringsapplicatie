@@ -13,11 +13,11 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsTrue(this._accountsLogic.ValidateEmail(email));
         }
 
-        [DataRow("testGmail.nl", false)]
-        [DataRow("WaaromEenApestaartje?", false)]
-        [DataRow("", false)]
+        [DataRow("testGmail.nl")]
+        [DataRow("WaaromEenApestaartje?")]
+        [DataRow("")]
         [DataTestMethod]
-        public void IncorrectEmail(string email, bool answer)
+        public void IncorrectEmail(string email)
         {
             Assert.IsFalse(this._accountsLogic.ValidateEmail(email));
         }

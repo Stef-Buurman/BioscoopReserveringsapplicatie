@@ -12,7 +12,8 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Voer de film beschrijving in:");
             string description = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Voer de film genre in:");
+            Console.WriteLine("Voer de film genre in");
+            Console.WriteLine("U kunt maximaal 3 verschillende genres kiezen");
             List<string> genres = new List<string>();
             List<string> availableGenres = new List<string> {
                 "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
