@@ -15,8 +15,8 @@ namespace BioscoopReserveringsapplicatie
 
             var options = new List<Option<string>>
             {
-                new Option<string>("Koop tickets"),
-                new Option<string>("Terug"),
+                new Option<string>("Koop tickets", () => Console.WriteLine("Nog niet geimplementeerd")),
+                new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
             SelectionMenu.Create(options, Print);
