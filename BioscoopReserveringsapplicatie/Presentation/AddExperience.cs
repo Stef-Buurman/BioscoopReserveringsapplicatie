@@ -11,10 +11,10 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
             string name = AskForExperienceName();
             int filmId = AskForMovie();
-            int intensityInt = AskForExperienceIntensity();
+            string intensity = AskForExperienceIntensity();
             int timeLength = AskForExperienceTimeLength();
 
-            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, $"{intensityInt}", timeLength);
+            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, $"{intensity}", timeLength);
             if (experiencesLogic.AddExperience(newExperience))
             {
                 Console.Clear();
@@ -22,7 +22,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("\n[De details van de experience zijn:]", Globals.TitleColor);
                 Console.WriteLine($"Experience naam: {name}");
                 Console.WriteLine($"Film: {moviesLogic.GetMovieById(filmId).Title}");
-                Console.WriteLine($"Experience intensiteit: {intensityInt}");
+                Console.WriteLine($"Experience intensiteit: {intensity}");
                 Console.WriteLine($"Experience lengte (minuten): {timeLength}");
             }
             else
@@ -45,17 +45,17 @@ namespace BioscoopReserveringsapplicatie
             return name;
         }
 
-        private static int AskForExperienceIntensity()
+        private static string AskForExperienceIntensity()
         {
             ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-            string intensityStr = Console.ReadLine() ?? "";
-            while (!int.TryParse(intensityStr, out int _) || (int.TryParse(intensityStr, out int intensitInt) && (intensitInt < 0 || intensitInt > 10)))
+            string intensity = Console.ReadLine() ?? "";
+            while (!experiencesLogic.ValidateExperienceIntensity(intensity))
             {
                 Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
                 ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-                intensityStr = Console.ReadLine() ?? "";
+                intensity = Console.ReadLine() ?? "";
             }
-            return Convert.ToInt32(intensityStr);
+            return intensity;
         }
 
         private static int AskForExperienceTimeLength()
@@ -69,7 +69,7 @@ namespace BioscoopReserveringsapplicatie
                 timeLengthStr = Console.ReadLine() ?? "";
             }
             return Convert.ToInt32(timeLengthStr);
-        }   
+        }
 
         private static int AskForMovie()
         {

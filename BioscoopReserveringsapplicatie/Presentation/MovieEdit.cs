@@ -16,34 +16,34 @@ namespace BioscoopReserveringsapplicatie
             Console.Write("Beschrijving: ");
             string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
-        List<string> newGenres = new List<string>();
-        List<string> availableGenres = new List<string> {
+            List<string> newGenres = new List<string>();
+            List<string> availableGenres = new List<string> {
                 "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
                 "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
                 "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
             };
-        Console.WriteLine(string.Join(", ", availableGenres) + "\n");
+            Console.WriteLine(string.Join(", ", availableGenres) + "\n");
 
-        for (int i = 0; i < 3; i++)
-        {
-            string genre = Console.ReadLine() ?? "";
-            if (availableGenres.Contains(genre))
+            for (int i = 0; i < 3; i++)
             {
-                newGenres.Add(genre);
+                string genre = Console.ReadLine() ?? "";
+                if (availableGenres.Contains(genre))
+                {
+                    newGenres.Add(genre);
+                }
+                else
+                {
+                    Console.WriteLine("Ongeldige genre, selecteer een genre uit de lijst.");
+                    i--;
+                }
             }
-            else
-            {
-                Console.WriteLine("Ongeldige genre, selecteer een genre uit de lijst.");
-                i--;
-            }
-        }
 
             Console.Write("Beoordeling: ");
             string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
 
             List<Option<string>> options = new List<Option<string>>
             {
-                new Option<string>("Bewerk film", () => {
+                new Option<string>("Ja", () => {
                     if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, newGenres, newRating))
                         {
                             Console.WriteLine("Filmdetails zijn bijgewerkt!");
@@ -55,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                             MovieDetails.Start(movie.Id);
                         }
                 }),
-                new Option<string>("Annuleren", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
+                new Option<string>("Nee", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
             };
             SelectionMenu.Create(options, () => Console.WriteLine($"Weet u zeker dat u de filmdetails van {movie.Title} wilt bewerken?"));
         }
