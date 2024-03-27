@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
                 List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Experienceoverzicht", () => PreferredExperiences.Start()),
-                new Option<string>("Mijn account", () => Console.WriteLine("Nog niet geimplementeerd")),
+                // new Option<string>("Mijn account"),
                 new Option<string>("Uitloggen", () => LandingPage.Start()),
             };
                 SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {CurrentUser.FullName}!\n"));

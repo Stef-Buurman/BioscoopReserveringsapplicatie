@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
 
             var options = new List<Option<string>>
             {
-                new Option<string>("Koop tickets", () => Console.WriteLine("Nog niet geimplementeerd")),
+                // new Option<string>("Koop tickets"),
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
@@ -24,7 +24,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            if (experience != null) Console.WriteLine($"Experience details:\nNaam experience: {experience.Name} \nIntensiteit: {experience.Intensity} \nTijdsduur: {experience.TimeLength} \nTitel: {movie.Title} \nOmschrijving: {movie.Description} \nGenre(s): {string.Join(", ", movie.Genres)} \nKijkwijzer: {movie.Rating} \n\nWat wil je doen?");
+            if (experience != null) Console.WriteLine($"De experience details zijn:\nNaam experience: {experience.Name} \nIntensiteit experience: {experience.Intensity} \nTijdsduur experience: {experience.TimeLength} minuten \nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.Rating} \n\nWat wil je doen?");
         }
     }
 }
