@@ -1,28 +1,35 @@
-static class MovieDelete
+namespace BioscoopReserveringsapplicatie
 {
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-
-    public static void Start(int movieId)
+    static class MovieDelete
     {
-        MovieModel movie = MoviesLogic.GetMovieById(movieId);
-        Console.Write($"Are you sure you want to delete the movie {movie.Title}? (Y/N)");
-        string input = Console.ReadLine().ToUpper();
-        if (input == "Y")
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
+
+        public static void Start(int movieId)
         {
-            MoviesLogic.RemoveMovie(movieId);
-            Console.WriteLine($"Movie {movie.Title} has been deleted.");
-            Console.WriteLine("Press any key to return.");
-            Console.ReadKey();
-            Console.Clear();
-            MovieOverview.Start();
+            MovieModel movie = MoviesLogic.GetMovieById(movieId);
+
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                    MoviesLogic.RemoveMovie(movieId);
+                    MovieOverview.Start();
+                }),
+                new Option<string>("Nee", () => {
+                    MovieDetails.Start(movieId);
+                }),
+            };
+            SelectionMenu.Create(options, () => Print(movie.Title, movie.Description, movie.Genres, movie.Rating));
         }
-        else
+
+        private static void Print(string title, string description, List<string> genres, string rating)
         {
-            Console.WriteLine($"Movie {movie.Title} has not been deleted.");
-            Console.WriteLine("Press any key to return.");
-            Console.ReadKey();
-            Console.Clear();
-            MovieDetails.Start(movieId);
+            Console.WriteLine("De film details zijn:");
+            Console.WriteLine($"Film titel: {title}");
+            Console.WriteLine($"Film beschrijving: {description}");
+            Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
+            Console.WriteLine($"Film kijkwijzer: {rating}\n");
+
+            Console.WriteLine($"Weet u zeker dat u de film {title} wilt verwijderen?");
         }
     }
 }

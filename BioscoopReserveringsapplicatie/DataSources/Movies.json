@@ -1,16 +1,35 @@
 [
-    {
-        "id": 1,
-        "title": "Test1",
-        "description": "Test1",
-        "genre": "Test1",
-        "rating": "Test1"
-    },
-    {
-        "id": 2,
-        "title": "Test2",
-        "description": "Test2",
-        "genre": "Test2",
-        "rating": "Test2"
-    }
+  {
+    "id": 1,
+    "title": "Film 1",
+    "description": "Beschrijving 1",
+    "genres": [
+      "Horror",
+      "Komedie",
+      "Actie"
+    ],
+    "rating": "12"
+  },
+  {
+    "id": 2,
+    "title": "Film 2",
+    "description": "Beschrijving 2",
+    "genres": [
+      "Horror",
+      "Komedie",
+      "Actie"
+    ],
+    "rating": "14"
+  },
+  {
+    "id": 3,
+    "title": "Film 3",
+    "description": "Beschrijving 3",
+    "genres": [
+      "Horror",
+      "Komedie",
+      "Actie"
+    ],
+    "rating": "16"
+  }
 ]

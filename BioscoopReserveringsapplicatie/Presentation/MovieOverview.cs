@@ -1,36 +1,39 @@
-static class MovieOverview
+namespace BioscoopReserveringsapplicatie
 {
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-
-    public static void Start()
+    static class MovieOverview
     {
-        int movieId = ShowAllMovies();
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
 
-        if (movieId != 0)
+        public static void Start()
         {
-            MovieDetails.Start(movieId);
-        }
-    }
+            int movieId = ShowAllMovies();
 
-    private static int ShowAllMovies()
-    {
-        List<Option<int>> options = new List<Option<int>>();
-        List<MovieModel> movies = MoviesLogic.GetAllMovies();
-
-        foreach (MovieModel movie in movies)
-        {
-            options.Add(new Option<int>(movie.Id, movie.Title));
+            if (movieId != 0)
+            {
+                MovieDetails.Start(movieId);
+            }
         }
 
-        options.Add(new Option<int>(0, "Back", () => { Console.Clear(); Menu.Start(); }));
+        private static int ShowAllMovies()
+        {
+            List<Option<int>> options = new List<Option<int>>();
+            List<MovieModel> movies = MoviesLogic.GetAllMovies();
 
-        int movieId = SelectionMenu.Create(options, Print);
-        Console.Clear();
-        return movieId;
-    }
+            foreach (MovieModel movie in movies)
+            {
+                options.Add(new Option<int>(movie.Id, movie.Title));
+            }
 
-    private static void Print()
-    {
-        Console.WriteLine("This are all movies currently available:");
+        options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); AdminMenu.Start(); }));
+
+            int movieId = SelectionMenu.Create(options, Print);
+            Console.Clear();
+            return movieId;
+        }
+
+        private static void Print()
+        {
+            Console.WriteLine("Dit zijn alle films die momenteel beschikbaar zijn:");
+        }
     }
 }

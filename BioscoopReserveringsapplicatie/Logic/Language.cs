@@ -1,0 +1,5 @@
+enum Language
+{
+    Dutch,
+    English
+}

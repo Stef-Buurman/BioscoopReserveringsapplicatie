@@ -1,10 +1,12 @@
-﻿public static class Globals
+﻿namespace BioscoopReserveringsapplicatie
 {
-    static string CurrentDirectoryDevelop = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-    static string CurrentDirectoryProduction = Environment.CurrentDirectory;
-    public static string currentDirectory = CurrentDirectoryDevelop;
+    public static class Globals
+    {
+        static string CurrentDirectoryDevelop = System.IO.Path.GetFullPath(System.IO.Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, @"BioscoopReserveringsapplicatie"));
+        static string CurrentDirectoryProduction = Environment.CurrentDirectory;
+        public static string currentDirectory = CurrentDirectoryDevelop;
 
-    public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
-    public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
+        public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
+        public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
+    }
 }
-

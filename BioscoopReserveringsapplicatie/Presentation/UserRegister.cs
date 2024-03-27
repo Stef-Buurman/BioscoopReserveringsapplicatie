@@ -1,22 +1,25 @@
-static class UserRegister
+namespace BioscoopReserveringsapplicatie
 {
-    static private AccountsLogic accountsLogic = new AccountsLogic();
+    static class UserRegister
+    {
+        static private UserLogic userLogic = new UserLogic();
 
     public static void Start(string? errorMessage = null)
     {
         Console.Clear();
-        Console.WriteLine("registratiepagina\n\n");
+        Console.WriteLine("Registratiepagina\n");
         if (errorMessage != null)
         {
             Console.WriteLine(errorMessage);
         }
-        Console.WriteLine("Naam: ");
+        Console.Write("Naam: ");
         string userName = Console.ReadLine() ?? "";
-        Console.WriteLine("Email: ");
+        Console.Write("Email: ");
         string userEmail = Console.ReadLine() ?? "";
-        Console.WriteLine("Wachtwoord: ");
+        Console.Write("Wachtwoord: ");
         string userPassword = Console.ReadLine() ?? "";
 
-        accountsLogic.RegisterNewUser(userName, userEmail, userPassword);
+            userLogic.RegisterNewUser(userName, userEmail.ToLower(), userPassword);
+        }
     }
 }

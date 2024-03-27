@@ -1,32 +1,29 @@
-static class UserLogin
+namespace BioscoopReserveringsapplicatie
 {
-    static private AccountsLogic accountsLogic = new AccountsLogic();
-    static private bool isFirstTime = true;
-
-    public static void Start()
+    static class UserLogin
     {
-        Console.Clear();
-        if (isFirstTime) 
+        static private UserLogic _userLogic = new UserLogic();
+        static private bool _isFirstTime = true;
+
+        public static void Start()
         {
-            ColorConsole.WriteColorLine("Welcome to the [login page]", ConsoleColor.Blue);
-            isFirstTime = false; 
+            Console.Clear();
+            if (_isFirstTime)
+            {
+                ColorConsole.WriteColorLine("Welkom bij de [login pagina]", ConsoleColor.Blue);
+                _isFirstTime = false;
+            }
+            Console.Write("Vul uw e-mailadres in: ");
+            string email = Console.ReadLine() ?? "";
+            Console.Write("Vul uw wachtwoord in: ");
+            string password = Console.ReadLine() ?? "";
+            if (_userLogic.CheckLogin(email, password) == null)
+            {
+                Console.WriteLine("Er is geen account gevonden met dat e-mailadres en wachtwoord.");
+                Console.WriteLine("Druk op een willekeurige toets om het opnieuw te proberen.");
+                Console.ReadKey();
+                Start();
+            }
         }
-        Console.Write("Please enter your email address: ");
-        string email = Console.ReadLine();
-        Console.Write("Please enter your password: ");
-        string password = Console.ReadLine();
-        AccountModel acc = accountsLogic.CheckLogin(email, password);
-        if (acc != null)
-        {
-            ColorConsole.WriteColorLine($"[Welcome back {acc.FullName}]", ConsoleColor.Green);
-            Console.WriteLine($"Your email is {acc.EmailAddress}");
-        }
-        else
-        {
-            Console.WriteLine("No account found with that email and password.");
-            Console.WriteLine("Press any key to try again.");
-            Console.ReadKey();
-            Start(); 
-        }
-    }   
+    }
 }

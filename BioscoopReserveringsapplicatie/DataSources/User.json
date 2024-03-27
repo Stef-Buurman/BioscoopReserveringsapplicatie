@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "isAdmin": true,
+    "firstTimeLogin": false,
+    "emailAddress": "admin@mail.com",
+    "password": "admin",
+    "fullName": "Admin",
+    "genres": null,
+    "ageCategory": 0,
+    "intensity": null,
+    "language": null
+  },
+  {
+    "id": 2,
+    "isAdmin": false,
+    "firstTimeLogin": false,
+    "emailAddress": "user@mail.com",
+    "password": "user123",
+    "fullName": "user",
+    "genres": [
+      "Horror",
+      "Komedie",
+      "Actie"
+    ],
+    "ageCategory": 16,
+    "intensity": "Medium",
+    "language": "Nederlands"
+  }
+]

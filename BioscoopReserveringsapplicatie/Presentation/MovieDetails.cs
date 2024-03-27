@@ -1,23 +1,26 @@
-static class MovieDetails
+namespace BioscoopReserveringsapplicatie
 {
-    static private MoviesLogic MoviesLogic = new MoviesLogic();
-    private static MovieModel movie;
-
-    public static void Start(int movieId)
+    static class MovieDetails
     {
-        movie = MoviesLogic.GetMovieById(movieId);
+        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MovieModel? movie;
 
-        var options = new List<Option<string>>
+        public static void Start(int movieId)
+        {
+            movie = MoviesLogic.GetMovieById(movieId);
+
+            List<Option<string>> options = new List<Option<string>>
             {
-                new Option<string>("Edit movie", () => MovieEdit.Start(movie.Id)),
-                new Option<string>("Delete movie", () => MovieDelete.Start(movie.Id)),
-                new Option<string>("Back", () => {Console.Clear(); MovieOverview.Start();}),
+                new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
+                new Option<string>("Verwijder film", () => MovieDelete.Start(movie.Id)),
+                new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
             };
-        SelectionMenu.Create(options, Print);
-    }
+            SelectionMenu.Create(options, Print);
+        }
 
-    private static void Print()
-    {
-        if (movie != null) Console.WriteLine($"Movie details:\nTitle: {movie.Title} \nDescription: {movie.Description} \nGenre: {movie.Genre} \nRating: {movie.Rating} \n\nWhat would you like to do?");
+        private static void Print()
+        {
+            if (movie != null) Console.WriteLine($"De film details zijn:\nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.Rating} \n\nWat zou je willen doen?");
+        }
     }
 }

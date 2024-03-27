@@ -1,65 +1,98 @@
 ﻿using System;
-
-static class AddExperience
+namespace BioscoopReserveringsapplicatie
 {
-    private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
-    private static MoviesLogic moviesLogic = new MoviesLogic();
-    public static void Start()
+    static class AddExperience
     {
-        Console.Clear();
-        ColorConsole.WriteColorLine("[Add Experience]\n", Globals.TitleColor);
-        ColorConsole.WriteColor($"What is the [name] of the experience?: ", Globals.ColorInputcClarification);
-        string name = Console.ReadLine() ?? "";
-        int filmId = AskForMovie();
-        ColorConsole.WriteColor($"What is the [intensity]?: ", Globals.ColorInputcClarification);
-        string intensityStr = Console.ReadLine() ?? "";
-        while (!int.TryParse(intensityStr, out int _) || (int.TryParse(intensityStr, out int intensitInt) && (intensitInt < 0 || intensitInt > 10)))
-        {
-            Console.WriteLine("Please enter a valid intensity!");
-            ColorConsole.WriteColor($"What is the [intensity]?: ", Globals.ColorInputcClarification);
-            intensityStr = Console.ReadLine() ?? "";
-        }
-        int intensityInt = Convert.ToInt32(intensityStr);
-        ColorConsole.WriteColor($"What is the [time length]? (in minutes): ", Globals.ColorInputcClarification);
-        string timeLengthStr = Console.ReadLine() ?? "";
-        while (!int.TryParse(timeLengthStr, out int _))
-        {
-            Console.WriteLine("Please enter a valid time!");
-            ColorConsole.WriteColor($"What is the [time length]? (minutes): ", Globals.ColorInputcClarification);
-            timeLengthStr = Console.ReadLine() ?? "";
-        }
-        int timeLength = Convert.ToInt32(timeLengthStr);
-        ExperiencesModel newExperience = new ExperiencesModel(0, name, filmId, intensityInt, timeLength);
-        if (experiencesLogic.AddExperience(newExperience))
+        private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
+        private static MoviesLogic moviesLogic = new MoviesLogic();
+        public static void Start()
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[The movie has been added succesfully.]", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("\n[The movie details are:]", Globals.TitleColor);
-            Console.WriteLine($"Experience name: {name}");
-            Console.WriteLine($"Movie: {moviesLogic.GetMovieById(filmId).Title}");
-            Console.WriteLine($"Experience intensity: {intensityInt}");
-            Console.WriteLine($"Experience length (minutes): {timeLength}");
+            ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
+            string name = AskForExperienceName();
+            int filmId = AskForMovie();
+            string intensity = AskForExperienceIntensity();
+            int timeLength = AskForExperienceTimeLength();
+
+            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, $"{intensity}", timeLength);
+            if (experiencesLogic.AddExperience(newExperience))
+            {
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
+                };
+                SelectionMenu.Create(options, () => Print(name, filmId, intensity, timeLength));
+            }
+            else
+            {
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
+                };
+                SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red));
+            }
         }
-        else
+
+        private static string AskForExperienceName()
         {
+            ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
+            string name = Console.ReadLine() ?? "";
+            while (!experiencesLogic.ValidateExperienceName(name))
+            {
+                Console.WriteLine("Voer alstublieft een geldige naam in!");
+                ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
+                name = Console.ReadLine() ?? "";
+            }
+            return name;
+        }
+
+        private static string AskForExperienceIntensity()
+        {
+            ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
+            string intensity = Console.ReadLine() ?? "";
+            while (!experiencesLogic.ValidateExperienceIntensity(intensity))
+            {
+                Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
+                ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
+                intensity = Console.ReadLine() ?? "";
+            }
+            return intensity;
+        }
+
+        private static int AskForExperienceTimeLength()
+        {
+            ColorConsole.WriteColor($"Wat is de [tijdsduur]? (in minuten): ", Globals.ColorInputcClarification);
+            string timeLengthStr = Console.ReadLine() ?? "";
+            while (!experiencesLogic.ValidateExperienceTimeLength(timeLengthStr))
+            {
+                Console.WriteLine("Voer alstublieft een geldige tijdsduur in!");
+                ColorConsole.WriteColor($"Wat is de [tijdsduur]? (in minuten): ", Globals.ColorInputcClarification);
+                timeLengthStr = Console.ReadLine() ?? "";
+            }
+            return Convert.ToInt32(timeLengthStr);
+        }
+
+        private static int AskForMovie()
+        {
+            List<MovieModel> movies = moviesLogic.GetAllMovies();
+            List<Option<int>> movieOptions = new List<Option<int>>();
+            foreach (MovieModel movie in movies)
+            {
+                movieOptions.Add(new Option<int>(movie.Id, movie.Title));
+            }
+            int movieId = SelectionMenu.Create(movieOptions, 10, () => Console.WriteLine("Welke film wilt u toevoegen?"));
             Console.Clear();
-            ColorConsole.WriteColorLine("[An error occurred while adding the experience.]", ConsoleColor.Red);
+            return movieId;
         }
-    }
 
-    private static int AskForMovie()
-    {
-        List<MovieModel> movies = moviesLogic.GetAllMovies();
-        List<Option<int>> movieOptions = new List<Option<int>>();
-        foreach (MovieModel movie in movies)
+        private static void Print(string name, int filmId, string intensity, int timeLength)
         {
-            movieOptions.Add(new Option<int>(movie.Id, movie.Title));
+            ColorConsole.WriteColorLine("[De experience is succesvol toegevoegd.]", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("\n[De details van de experience zijn:]", Globals.TitleColor);
+            Console.WriteLine($"Experience naam: {name}");
+            Console.WriteLine($"Film: {moviesLogic.GetMovieById(filmId).Title}");
+            Console.WriteLine($"Experience intensiteit: {intensity}");
+            Console.WriteLine($"Experience lengte (minuten): {timeLength}\n");
         }
-        int movieId = SelectionMenu.Create(movieOptions, 10, PrintTitle);
-        Console.Clear();
-        return movieId;
     }
-
-    private static void PrintTitle() => Console.WriteLine("Which movie do you want to add?");
 }
-
