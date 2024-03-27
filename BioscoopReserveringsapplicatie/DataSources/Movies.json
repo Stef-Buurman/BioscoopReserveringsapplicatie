@@ -2,45 +2,34 @@
   {
     "id": 1,
     "title": "Film 1",
-    "description": "Omschrijving 1",
+    "description": "Beschrijving 1",
     "genres": [
       "Horror",
-      "Comedy",
-      "Action"
+      "Komedie",
+      "Actie"
     ],
     "rating": "12"
   },
   {
     "id": 2,
     "title": "Film 2",
-    "description": "Omschrijving 2",
+    "description": "Beschrijving 2",
     "genres": [
       "Horror",
-      "Comedy",
-      "Action"
+      "Komedie",
+      "Actie"
     ],
     "rating": "14"
   },
   {
     "id": 3,
     "title": "Film 3",
-    "description": "Omschrijving 3",
+    "description": "Beschrijving 3",
     "genres": [
       "Horror",
-      "Comedy",
-      "Action"
+      "Komedie",
+      "Actie"
     ],
     "rating": "16"
-  },
-  {
-    "id": 4,
-    "title": "Film 4",
-    "description": "Omschrijving 4",
-    "genres": [
-      "Horror",
-      "Comedy",
-      "Action"
-    ],
-    "rating": "18"
   }
 ]

@@ -4,7 +4,7 @@
     "isAdmin": true,
     "firstTimeLogin": false,
     "emailAddress": "admin@mail.com",
-    "password": "Admin123",
+    "password": "admin",
     "fullName": "Admin",
     "genres": null,
     "ageCategory": 0,
@@ -15,39 +15,15 @@
     "id": 2,
     "isAdmin": false,
     "firstTimeLogin": false,
-    "emailAddress": "tim@gmail.com",
-    "password": "test123",
-    "fullName": "Tim",
-    "genres": [],
-    "ageCategory": 0,
-    "intensity": "",
-    "language": ""
-  },
-  {
-    "id": 3,
-    "isAdmin": false,
-    "firstTimeLogin": true,
-    "emailAddress": "henk@henk.henk",
-    "password": "henk12321",
-    "fullName": "henk",
-    "genres": [],
-    "ageCategory": 0,
-    "intensity": "",
-    "language": ""
-  },
-  {
-    "id": 4,
-    "isAdmin": false,
-    "firstTimeLogin": false,
-    "emailAddress": "test@test.test",
-    "password": "testtest",
-    "fullName": "test",
+    "emailAddress": "user@mail.com",
+    "password": "user123",
+    "fullName": "user",
     "genres": [
+      "Horror",
       "Komedie",
-      "Drama",
-      "Sci-fi"
+      "Actie"
     ],
-    "ageCategory": 18,
+    "ageCategory": 16,
     "intensity": "Medium",
     "language": "Nederlands"
   }

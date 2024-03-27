@@ -17,18 +17,19 @@ namespace BioscoopReserveringsapplicatie
             ExperiencesModel newExperience = new ExperiencesModel(name, filmId, $"{intensity}", timeLength);
             if (experiencesLogic.AddExperience(newExperience))
             {
-                Console.Clear();
-                ColorConsole.WriteColorLine("[De experience is succesvol toegevoegd.]", ConsoleColor.Green);
-                ColorConsole.WriteColorLine("\n[De details van de experience zijn:]", Globals.TitleColor);
-                Console.WriteLine($"Experience naam: {name}");
-                Console.WriteLine($"Film: {moviesLogic.GetMovieById(filmId).Title}");
-                Console.WriteLine($"Experience intensiteit: {intensity}");
-                Console.WriteLine($"Experience lengte (minuten): {timeLength}");
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
+                };
+                SelectionMenu.Create(options, () => Print(name, filmId, intensity, timeLength));
             }
             else
             {
-                Console.Clear();
-                ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red);
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
+                };
+                SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red));
             }
         }
 
@@ -82,6 +83,16 @@ namespace BioscoopReserveringsapplicatie
             int movieId = SelectionMenu.Create(movieOptions, 10, () => Console.WriteLine("Welke film wilt u toevoegen?"));
             Console.Clear();
             return movieId;
+        }
+
+        private static void Print(string name, int filmId, string intensity, int timeLength)
+        {
+            ColorConsole.WriteColorLine("[De experience is succesvol toegevoegd.]", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("\n[De details van de experience zijn:]", Globals.TitleColor);
+            Console.WriteLine($"Experience naam: {name}");
+            Console.WriteLine($"Film: {moviesLogic.GetMovieById(filmId).Title}");
+            Console.WriteLine($"Experience intensiteit: {intensity}");
+            Console.WriteLine($"Experience lengte (minuten): {timeLength}\n");
         }
     }
 }
