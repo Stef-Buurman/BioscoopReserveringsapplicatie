@@ -12,17 +12,24 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Ja", () => {
                     MoviesLogic.RemoveMovie(movieId);
-                    Console.WriteLine($"Film {movie.Title} is verwijderd.");
-                    Console.Clear();
                     MovieOverview.Start();
                 }),
                 new Option<string>("Nee", () => {
-                    Console.WriteLine($"Weet u zeker dat u de film {movie.Title} wilt verwijderen?");
-                    Console.Clear();
                     MovieDetails.Start(movieId);
                 }),
             };
-            SelectionMenu.Create(options, () => Console.WriteLine($"Weet u zeker dat u de film {movie.Title} wilt verwijderen?"));
+            SelectionMenu.Create(options, () => Print(movie.Title, movie.Description, movie.Genres, movie.Rating));
+        }
+
+        private static void Print(string title, string description, List<string> genres, string rating)
+        {
+            Console.WriteLine("De film details zijn:");
+            Console.WriteLine($"Film titel: {title}");
+            Console.WriteLine($"Film beschrijving: {description}");
+            Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
+            Console.WriteLine($"Film kijkwijzer: {rating}\n");
+
+            Console.WriteLine($"Weet u zeker dat u de film {title} wilt verwijderen?");
         }
     }
 }

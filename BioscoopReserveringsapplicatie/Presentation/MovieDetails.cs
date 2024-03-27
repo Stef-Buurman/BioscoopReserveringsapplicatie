@@ -20,7 +20,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            if (movie != null) Console.WriteLine($"Film details:\nTitel: {movie.Title} \nBeschrijving: {movie.Description} \nGenre: {string.Join(", ", movie.Genres)} \nBeoordeling: {movie.Rating} \n\nWat zou je willen doen?");
+            if (movie != null) Console.WriteLine($"De film details zijn:\nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.Rating} \n\nWat zou je willen doen?");
         }
     }
 }
