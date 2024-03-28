@@ -17,6 +17,8 @@ namespace BioscoopReserveringsapplicatie
 
         public bool AddMovie(string title, string description, List<string> genres, string rating)
         {
+            GetAllMovies();
+            
             if (title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
             {
                 Console.WriteLine("Vul alstublieft alle velden in.");

@@ -12,6 +12,7 @@
 
         public ExperiencesModel GetById(int id)
         {
+            _experiences = ExperiencesAccess.LoadAll();
             return _experiences.Find(i => i.Id == id);
         }
 
@@ -42,16 +43,21 @@
 
         public List<ExperiencesModel> GetExperiences()
         {
+            _experiences = ExperiencesAccess.LoadAll();
             return _experiences;
         }
 
         public List<ExperiencesModel> GetExperiencesByUserPreferences(UserModel currentUser)
         {
+            GetExperiences();
+            
             List<ExperiencesModel> experiences = new List<ExperiencesModel>();
 
             foreach (ExperiencesModel experience in _experiences)
             {
                 MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+
+                if(movie == null) continue;
 
                 if (movie.Genres.Intersect(currentUser.Genres).Any() && Convert.ToInt32(movie.Rating) <= Convert.ToInt32(currentUser.AgeCategory) && experience.Intensity == currentUser.Intensity)
                 {
