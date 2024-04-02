@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Profielgegevens",() => UserDetails.Start()),
                     new Option<string>("Terug", () => UserMenu.Start())
                 };
-                SelectionMenu.Create(options, () => Console.WriteLine($"Hallo {CurrentUser.FullName}!\n"));
+                SelectionMenu.Create(options, () => ColorConsole.WriteColorLine($"[Hallo {CurrentUser.FullName}!]\n", ConsoleColor.Cyan));
             }
         }
     }

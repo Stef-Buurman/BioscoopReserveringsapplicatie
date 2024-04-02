@@ -6,7 +6,12 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
-            UserInfo();
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Profielgegevens",() => Console.WriteLine("Not implemented")),
+                new Option<string>("Terug", () => Profile.Start())
+            };
+            SelectionMenu.Create(options, () => UserInfo());
         }
 
         private static void UserInfo()
@@ -14,7 +19,8 @@ namespace BioscoopReserveringsapplicatie
             if(CurrentUser != null)
             {
                 Console.Clear();
-                Console.WriteLine(CurrentUser.FullName);
+                ColorConsole.WriteColorLine("[Profielgegevens]\n", ConsoleColor.Cyan);
+                
             }
         }
     }
