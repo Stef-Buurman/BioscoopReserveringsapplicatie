@@ -15,7 +15,8 @@ namespace BioscoopReserveringsapplicatie
 
             var options = new List<Option<string>>
             {
-                // new Option<string>("Koop tickets"),
+                new Option<string>("Koop tickets"),
+                // new Option<string>("Archiveer experience", () => ExperienceArchive.Start(experienceId)),
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
