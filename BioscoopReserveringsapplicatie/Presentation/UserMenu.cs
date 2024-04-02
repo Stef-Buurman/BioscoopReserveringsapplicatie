@@ -9,11 +9,11 @@ namespace BioscoopReserveringsapplicatie
             {
                 Console.Clear();
                 List<Option<string>> options = new List<Option<string>>
-            {
-                new Option<string>("Experienceoverzicht", () => PreferredExperiences.Start()),
-                // new Option<string>("Mijn account"),
-                new Option<string>("Uitloggen", () => LandingPage.Start()),
-            };
+                {
+                    new Option<string>("Experienceoverzicht", () => PreferredExperiences.Start()),
+                    new Option<string>("Mijn account", () => Profile.Start()),
+                    new Option<string>("Uitloggen", () => LandingPage.Start()),
+                };
                 SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {CurrentUser.FullName}!\n"));
             }
             else
