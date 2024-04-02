@@ -1,4 +1,4 @@
-enum Language
+public enum Language
 {
     Dutch,
     English

@@ -7,7 +7,7 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            List<string> selectedGenres = SelectGenres();
+            List<Genre> selectedGenres = SelectGenres();
             int ageCategory = SelectAgeCategory();
             string intensity = SelectIntensity();
             string language = SelectLanguage();
@@ -22,19 +22,14 @@ namespace BioscoopReserveringsapplicatie
             PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
         }
 
-        public static List<string> SelectGenres()
+        public static List<Genre> SelectGenres()
         {
-            List<string> selectedGenres = new List<string>();
-            List<string> availableGenres = new List<string>
-            {
-                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-            };
+            List<Genre> selectedGenres = new List<Genre>();
+            List<Genre> availableGenres = Globals.GetAllGenres();
             bool firstTime = true;
             while (selectedGenres.Count < 3)
             {
-                string genre = "";
+                Genre genre;
                 if (firstTime)
                 {
                     genre = SelectionMenu.Create(availableGenres, () =>
@@ -50,7 +45,7 @@ namespace BioscoopReserveringsapplicatie
                     genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
-                if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
+                if (genre != default && availableGenres.Contains(genre))
                 {
                     availableGenres.Remove(genre);
                     selectedGenres.Add(genre);

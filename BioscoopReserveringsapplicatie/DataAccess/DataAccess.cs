@@ -2,7 +2,7 @@
 
 namespace BioscoopReserveringsapplicatie
 {
-    public class DataAccess<T>
+    public class DataAccess<T> : IDataAccess<T>
     {
         private readonly string Filename;
         private string Path

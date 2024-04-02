@@ -18,17 +18,12 @@ namespace BioscoopReserveringsapplicatie
             Console.Write("Voer de film beschrijving in: ");
             string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
-            List<string> genres = new List<string>();
-            List<string> availableGenres = new List<string>
-            {
-                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-            };
+            List<Genre> genres = new List<Genre>();
+            List<Genre> availableGenres = Globals.GetAllGenres();
             bool firstTime = true;
             while (genres.Count < 3)
             {
-                string genre = "";
+                Genre genre;
                 if (firstTime)
                 {
                     genre = SelectionMenu.Create(availableGenres, () =>
@@ -44,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
                     genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
-                if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
+                if (genre != default && availableGenres.Contains(genre))
                 {
                     availableGenres.Remove(genre);
                     genres.Add(genre);
@@ -80,7 +75,7 @@ namespace BioscoopReserveringsapplicatie
             SelectionMenu.Create(options, () => Print(movie.Title, newTitle, newDescription, genres, newRating));
         }
 
-        private static void Print(string currentTitle, string newTitle, string description, List<string> genres, string rating)
+        private static void Print(string currentTitle, string newTitle, string description, List<Genre> genres, string rating)
         {
             Console.WriteLine("De nieuwe film details zijn:");
             Console.WriteLine($"Film titel: {newTitle}");

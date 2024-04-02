@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
         public string FullName { get; set; }
 
         [JsonPropertyName("genres")]
-        public List<string> Genres { get; set; }
+        public List<Genre> Genres { get; set; }
 
         [JsonPropertyName("ageCategory")]
         public int AgeCategory { get; set; }
@@ -34,7 +34,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("language")]
         public string Language { get; set; }
 
-        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<string> genres, int ageCategory, string intensity, string language)
+        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<Genre> genres, int ageCategory, string intensity, string language)
         {
             Id = id;
             IsAdmin = isAdmin;
