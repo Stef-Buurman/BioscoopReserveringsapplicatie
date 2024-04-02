@@ -90,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
 
             if (validated)
             {
-                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, "");
+                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
@@ -156,7 +156,7 @@ namespace BioscoopReserveringsapplicatie
             return email.Contains("@");
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, int ageCategory, Intensity intensity, string language)
+        public void addPreferencesToAccount(List<Genre> genres, int ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
             {
@@ -215,9 +215,9 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-        public bool ValidateLanguage(string language)
+        public bool ValidateLanguage(Language language)
         {
-            if (language.ToLower() != "english" && language.ToLower() != "nederlands")
+            if (!Enum.IsDefined(typeof(Language), language))
             {
                 return false;
             }

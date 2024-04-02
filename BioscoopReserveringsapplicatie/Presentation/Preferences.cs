@@ -10,7 +10,7 @@ namespace BioscoopReserveringsapplicatie
             List<Genre> selectedGenres = SelectGenres();
             int ageCategory = SelectAgeCategory();
             Intensity intensity = SelectIntensity();
-            string language = SelectLanguage();
+            Language language = SelectLanguage();
 
             Console.Clear();
             Console.WriteLine("Uw geselecteerde voorkeuren zijn:\n");
@@ -88,10 +88,10 @@ namespace BioscoopReserveringsapplicatie
             return intensity;
         }
 
-        public static string SelectLanguage()
+        public static Language SelectLanguage()
         {
-            List<string> options = new List<string> { "English", "Nederlands" };
-            string language = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
+            List<Language> options = Globals.GetAllEnum<Language>();
+            Language language = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
 
             while (!PreferencesLogic.ValidateLanguage(language))
             {

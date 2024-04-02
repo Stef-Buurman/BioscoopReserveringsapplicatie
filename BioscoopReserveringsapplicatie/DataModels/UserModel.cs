@@ -34,10 +34,11 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("intensity")]
         public Intensity Intensity { get; set; }
 
+        [JsonConverter(typeof(LanguageConverter))]
         [JsonPropertyName("language")]
-        public string Language { get; set; }
+        public Language Language { get; set; }
 
-        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<Genre> genres, int ageCategory, Intensity intensity, string language)
+        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<Genre> genres, int ageCategory, Intensity intensity, Language language)
         {
             Id = id;
             IsAdmin = isAdmin;
