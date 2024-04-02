@@ -19,7 +19,7 @@ namespace BioscoopReserveringsapplicatie
             string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
 
             List<Genre> genres = new List<Genre>();
-            List<Genre> availableGenres = Globals.GetAllGenres();
+            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
             while (genres.Count < 3)
             {

@@ -90,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
 
             if (validated)
             {
-                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, "", "");
+                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, "");
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
@@ -158,7 +158,7 @@ namespace BioscoopReserveringsapplicatie
             return email.Contains("@");
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, int ageCategory, string intensity, string language)
+        public void addPreferencesToAccount(List<Genre> genres, int ageCategory, Intensity intensity, string language)
         {
             if (CurrentUser != null)
             {
@@ -173,7 +173,7 @@ namespace BioscoopReserveringsapplicatie
 
         public bool ValidateGenres(List<Genre> genres)
         {
-            List<Genre> CorrectGenre = Globals.GetAllGenres();
+            List<Genre> CorrectGenre = Globals.GetAllEnum<Genre>();
 
             if (genres.Count > 3)
             {
@@ -207,9 +207,9 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-        public bool ValidateIntensity(string intensity)
+        public bool ValidateIntensity(Intensity intensity)
         {
-            if (intensity.ToLower() != "laag" && intensity.ToLower() != "medium" && intensity.ToLower() != "hoog")
+            if (!Enum.IsDefined(typeof(Intensity), intensity))
             {
                 return false;
             }

@@ -17,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
             string description = Console.ReadLine() ?? "";
 
             List<Genre> genres = new List<Genre>();
-            List<Genre> availableGenres = Globals.GetAllGenres();
+            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
             while (genres.Count < 3)
             {

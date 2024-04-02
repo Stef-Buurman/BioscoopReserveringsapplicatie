@@ -9,19 +9,14 @@
         public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
 
-        public static List<Genre> GetAllGenres()
+        public static List<T> GetAllEnum<T>()
         {
-            List<Genre> availableGenres = new List<Genre>();
-            foreach (Genre genre in Enum.GetValues(typeof(Genre)))
+            List<T> availableT = new List<T>();
+            foreach (T itemT in Enum.GetValues(typeof(T)))
             {
-                availableGenres.Add(genre);
+                availableT.Add(itemT);
             }
-            return availableGenres;
-        }
-
-        public static T ParseEnum<T>(string value)
-        {
-            return (T)Enum.Parse(typeof(T), value, true);
+            return availableT;
         }
     }
 }

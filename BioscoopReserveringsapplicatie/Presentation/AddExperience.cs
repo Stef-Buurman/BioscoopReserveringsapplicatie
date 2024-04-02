@@ -11,10 +11,10 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
             string name = AskForExperienceName();
             int filmId = AskForMovie();
-            string intensity = AskForExperienceIntensity();
+            Intensity intensity = AskForExperienceIntensity();
             int timeLength = AskForExperienceTimeLength();
 
-            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, $"{intensity}", timeLength);
+            ExperiencesModel newExperience = new ExperiencesModel(name, filmId, intensity, timeLength);
             if (experiencesLogic.AddExperience(newExperience))
             {
                 List<Option<string>> options = new List<Option<string>>
@@ -46,15 +46,16 @@ namespace BioscoopReserveringsapplicatie
             return name;
         }
 
-        private static string AskForExperienceIntensity()
+        private static Intensity AskForExperienceIntensity()
         {
             ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-            string intensity = Console.ReadLine() ?? "";
-            while (!experiencesLogic.ValidateExperienceIntensity(intensity))
+            string intensitystr = Console.ReadLine() ?? "";
+            Intensity intensity;
+            while (!Enum.TryParse(intensitystr, out intensity) && !experiencesLogic.ValidateExperienceIntensity(intensity))
             {
                 Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
                 ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-                intensity = Console.ReadLine() ?? "";
+                intensitystr = Console.ReadLine() ?? "";
             }
             return intensity;
         }
@@ -85,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
             return movieId;
         }
 
-        private static void Print(string name, int filmId, string intensity, int timeLength)
+        private static void Print(string name, int filmId, Intensity intensity, int timeLength)
         {
             ColorConsole.WriteColorLine("[De experience is succesvol toegevoegd.]", ConsoleColor.Green);
             ColorConsole.WriteColorLine("\n[De details van de experience zijn:]", Globals.TitleColor);

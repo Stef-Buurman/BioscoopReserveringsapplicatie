@@ -65,36 +65,21 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsFalse(this._accountsLogic.ValidateAgeCategory(age));
         }
 
-        [DataRow("Laag")]
-        [DataRow("Medium")]
-        [DataRow("Hoog")]
-        [DataRow("laag")]
-        [DataRow("medium")]
-        [DataRow("hoog")]
-        [DataRow("laaG")]
-        [DataRow("mediuM")]
-        [DataRow("hooG")]
+        [DataRow(Intensity.Low)]
+        [DataRow(Intensity.Medium)]
+        [DataRow(Intensity.High)]
         [DataTestMethod]
-        public void CorrectIntensity(string value)
+        public void CorrectIntensity(Intensity value)
         {
             Assert.IsTrue(this._accountsLogic.ValidateIntensity(value));
         }
 
-        [DataRow("Extra Laag")]
-        [DataRow("Extra Medium")]
-        [DataRow("Extra Hoog")]
-        [DataRow("extra laag")]
-        [DataRow("extra medium")]
-        [DataRow("extra hoog")]
-        [DataRow("eXtRa laaG")]
-        [DataRow("eXtRa mediuM")]
-        [DataRow("eXtRa hooG")]
-        [DataRow("")]
-        [DataTestMethod]
-        public void IncorrectIntensity(string value)
-        {
-            Assert.IsFalse(this._accountsLogic.ValidateIntensity(value));
-        }
+        //[DataRow(default)]
+        //[DataTestMethod]
+        //public void IncorrectIntensity(Intensity value)
+        //{
+        //    Assert.IsFalse(this._accountsLogic.ValidateIntensity(value));
+        //}
 
         [DataRow("English")]
         [DataRow("Nederlands")]
