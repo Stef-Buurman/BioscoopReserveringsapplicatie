@@ -223,6 +223,10 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-
+        public static void LogOut()
+        {
+            CurrentUser = null;
+            LandingPage.Start();
+        }
     }
 }
