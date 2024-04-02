@@ -57,8 +57,6 @@
 
             foreach (ExperiencesModel experience in _experiences)
             {
-                if (experience.Archived) continue;
-                    
                 MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
 
                 if(movie == null) continue;
