@@ -9,9 +9,15 @@ namespace BioscoopReserveringsapplicatie
         //This can be used to get the current logged in account from anywhere in the program
         //private set, so this can only be set by the class itself
         static public UserModel? CurrentUser { get; private set; }
+        //private IDataAccess<UserModel> UserAccess;
+
+        public UserModel? GetCurrentUser { get => CurrentUser; }
 
         public UserLogic()
         {
+            //if (userAccess != null) UserAccess = userAccess;
+            //else UserAccess = new UserAccess();
+
             _accounts = UserAccess.LoadAll();
         }
 
@@ -84,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
 
             if (validated)
             {
-                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<string>(), 0, "", "");
+                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, "", "");
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
@@ -107,12 +113,11 @@ namespace BioscoopReserveringsapplicatie
                 return null;
             }
 
-            if (!ValidatePassword(email.ToLower(), password))
+            if (!LoginUser(email.ToLower(), password))
             {
                 return null;
             }
 
-            CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
             if (CurrentUser != null)
             {
                 Console.WriteLine("U bent ingelogd.");
@@ -127,17 +132,19 @@ namespace BioscoopReserveringsapplicatie
                     {
                         Preferences.Start();
                     }
-                    UserMenu.Start();
+                    Console.WriteLine($"Welkom {CurrentUser.FullName}!");
+                    //UserMenu.Start();
                 }
             }
             return CurrentUser;
         }
 
-        private bool ValidatePassword(string email, string password)
+        public bool LoginUser(string email, string password)
         {
             UserModel? account = _accounts.Find(i => i.EmailAddress == email);
             if (account != null && account.Password == password)
             {
+                CurrentUser = account;
                 return true;
             }
             else
@@ -151,7 +158,7 @@ namespace BioscoopReserveringsapplicatie
             return email.Contains("@");
         }
 
-        public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
+        public void addPreferencesToAccount(List<Genre> genres, int ageCategory, string intensity, string language)
         {
             if (CurrentUser != null)
             {
@@ -164,14 +171,9 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        public bool ValidateGenres(List<string> genres)
+        public bool ValidateGenres(List<Genre> genres)
         {
-            List<string> CorrectGenre = new List<string>
-        {
-            "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-            "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-            "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-        };
+            List<Genre> CorrectGenre = Globals.GetAllGenres();
 
             if (genres.Count > 3)
             {
@@ -185,7 +187,7 @@ namespace BioscoopReserveringsapplicatie
                 return false;
             }
 
-            foreach (string genre in genres)
+            foreach (Genre genre in genres)
 
             {
                 if (!CorrectGenre.Contains(genre))

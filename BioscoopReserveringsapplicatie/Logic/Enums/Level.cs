@@ -1,4 +1,4 @@
-enum Level
+public enum Level
 {
     User,
     Editor,

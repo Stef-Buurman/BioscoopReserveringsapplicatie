@@ -14,12 +14,12 @@ namespace BioscoopReserveringsapplicatie
         public string Description { get; set; }
 
         [JsonPropertyName("genres")]
-        public List<string> Genres { get; set; }
+        public List<Genre> Genres { get; set; }
 
         [JsonPropertyName("rating")]
         public string Rating { get; set; }
 
-        public MovieModel(int id, string title, string description, List<string> genres, string rating)
+        public MovieModel(int id, string title, string description, List<Genre> genres, string rating)
         {
             Id = id;
             Title = title;

@@ -8,5 +8,15 @@
 
         public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
+
+        public static List<Genre> GetAllGenres()
+        {
+            List<Genre> availableGenres = new List<Genre>();
+            foreach (Genre genre in Enum.GetValues(typeof(Genre)))
+            {
+                availableGenres.Add(genre);
+            }
+            return availableGenres;
+        }
     }
 }

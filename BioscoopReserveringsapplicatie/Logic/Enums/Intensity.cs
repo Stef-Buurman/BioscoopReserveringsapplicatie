@@ -1,4 +1,4 @@
-enum Intensity
+public enum Intensity
 {
     Low,
     Medium,
