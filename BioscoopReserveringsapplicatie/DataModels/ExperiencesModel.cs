@@ -20,18 +20,22 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("timeLength")]
         public int TimeLength { get; set; }
 
-        public ExperiencesModel(int id, string name, int FilmId, Intensity intensity, int timeLength)
+        [JsonPropertyName("archived")]
+        public bool Archived { get; set; }
+
+        public ExperiencesModel(int id, string name, int FilmId, Intensity intensity, int timeLength, bool archived)
         {
             this.Id = id;
             this.Name = name;
             this.FilmId = FilmId;
             this.Intensity = intensity;
             this.TimeLength = timeLength;
+            this.Archived = archived;
         }
-        public ExperiencesModel(string name, int FilmId, Intensity intensity, int timeLength) : this(0, name, FilmId, intensity, timeLength)
+        public ExperiencesModel(string name, int FilmId, Intensity intensity, int timeLength, bool archived) : this(0, name, FilmId, intensity, timeLength, archived)
         { }
 
-        public ExperiencesModel() : this(0, "", 0, default, 0)
+        public ExperiencesModel() : this(0, "", 0, default, 0, false)
         { }
     }
 }
