@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using System.Xml;
+using BioscoopReserveringsapplicatie.DataModels.JsonConvert;
 
 namespace BioscoopReserveringsapplicatie
 {
@@ -22,9 +24,12 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("fullName")]
         public string FullName { get; set; }
 
+        //private static List<Genre> _genres;
+        //[JsonPropertyName("genres")]
+        //public List<Genre> Genres { get => _genres; set => _genres = (Genre)Enum.Parse(typeof(Genre), value); }
+        [JsonConverter(typeof(GenreListConverter))]
         [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
-
         [JsonPropertyName("ageCategory")]
         public int AgeCategory { get; set; }
 

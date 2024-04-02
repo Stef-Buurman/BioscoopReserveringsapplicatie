@@ -1,8 +1,8 @@
 public enum Genre
 {
     Horror,
-    Comedy,
-    Action,
+    Komedie,
+    Actie,
     Drama,
     Thriller,
     Romance,
