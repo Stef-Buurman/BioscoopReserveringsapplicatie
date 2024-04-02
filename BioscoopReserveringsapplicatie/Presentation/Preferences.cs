@@ -9,7 +9,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<Genre> selectedGenres = SelectGenres();
             int ageCategory = SelectAgeCategory();
-            string intensity = SelectIntensity();
+            Intensity intensity = SelectIntensity();
             string language = SelectLanguage();
 
             Console.Clear();
@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
         public static List<Genre> SelectGenres()
         {
             List<Genre> selectedGenres = new List<Genre>();
-            List<Genre> availableGenres = Globals.GetAllGenres();
+            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
             while (selectedGenres.Count < 3)
             {
@@ -74,10 +74,10 @@ namespace BioscoopReserveringsapplicatie
             return ageCategory;
         }
 
-        public static string SelectIntensity()
+        public static Intensity SelectIntensity()
         {
-            List<string> options = new List<string> { "Laag", "Medium", "Hoog" };
-            string intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+            List<Intensity> options = Globals.GetAllEnum<Intensity>();
+            Intensity intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
 
             while (!PreferencesLogic.ValidateIntensity(intensity))
             {
