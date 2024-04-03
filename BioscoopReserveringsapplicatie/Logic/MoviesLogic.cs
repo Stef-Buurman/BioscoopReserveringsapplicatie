@@ -15,17 +15,17 @@ namespace BioscoopReserveringsapplicatie
             return _Movies;
         }
 
-        public bool AddMovie(string title, string description, List<Genre> genres, string rating)
+        public bool AddMovie(string title, string description, List<Genre> genres, AgeCategory rating)
         {
             GetAllMovies();
             
-            if (title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
+            if (title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating == AgeCategory.Undefined)
             {
                 Console.WriteLine("Vul alstublieft alle velden in.");
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any() && !string.IsNullOrWhiteSpace(rating))
+            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any())
             {
                 try
                 {
@@ -47,21 +47,21 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
-        public bool EditMovie(int id, string title, string description, List<Genre> genres, string rating)
+        public bool EditMovie(int id, string title, string description, List<Genre> genres, AgeCategory rating)
         {
-            if (id == 0 || title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
+            if (id == 0 || title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating == AgeCategory.Undefined)
             {
                 Console.WriteLine("Vul alstublieft alle velden in.");
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any() && !string.IsNullOrWhiteSpace(rating))
+            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any())
             {
                 MovieModel movie = GetMovieById(id);
                 movie.Title = title;
                 movie.Description = description;
                 movie.Genres = genres;
-                movie.Rating = rating;
+                movie.AgeCategory = rating;
 
                 UpdateList(movie);
                 return true;

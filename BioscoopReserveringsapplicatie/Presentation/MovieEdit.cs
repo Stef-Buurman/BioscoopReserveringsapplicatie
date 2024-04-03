@@ -51,8 +51,7 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            Console.Write("Voer de film kijkwijzer in: ");
-            string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
+            AgeCategory newRating = SelectionMenu.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
 
             List<Option<string>> options = new List<Option<string>>
             {
@@ -75,7 +74,7 @@ namespace BioscoopReserveringsapplicatie
             SelectionMenu.Create(options, () => Print(movie.Title, newTitle, newDescription, genres, newRating));
         }
 
-        private static void Print(string currentTitle, string newTitle, string description, List<Genre> genres, string rating)
+        private static void Print(string currentTitle, string newTitle, string description, List<Genre> genres, AgeCategory rating)
         {
             Console.WriteLine("De nieuwe film details zijn:");
             Console.WriteLine($"Film titel: {newTitle}");

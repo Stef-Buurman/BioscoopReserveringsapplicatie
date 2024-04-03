@@ -59,7 +59,7 @@
 
                 if(movie == null) continue;
 
-                if (movie.Genres.Intersect(currentUser.Genres).Any() && Convert.ToInt32(movie.Rating) <= Convert.ToInt32(currentUser.AgeCategory) && experience.Intensity == currentUser.Intensity)
+                if (movie.Genres.Intersect(currentUser.Genres).Any() && Convert.ToInt32(movie.AgeCategory) <= Convert.ToInt32(currentUser.AgeCategory) && experience.Intensity == currentUser.Intensity)
                 {
                     experiences.Add(experience);
                 }

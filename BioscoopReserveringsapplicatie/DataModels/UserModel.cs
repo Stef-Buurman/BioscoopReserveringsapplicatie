@@ -27,6 +27,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
 
+        [JsonConverter(typeof(AgeCategoryConverter))]
         [JsonPropertyName("ageCategory")]
         public AgeCategory AgeCategory { get; set; }
 
