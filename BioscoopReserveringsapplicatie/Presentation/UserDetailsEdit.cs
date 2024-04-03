@@ -2,22 +2,39 @@ namespace BioscoopReserveringsapplicatie
 {
     static class UserDetailsEdit
     {
+        private static UserLogic _userLogic = new UserLogic();
+
         public static void Start()
         {
             if(UserLogic.CurrentUser != null)
-            {
-                Console.Clear();
+            {   
+                string newName = "";
+                bool validName = false;
+                while(!validName)
+                {
+                    Console.Clear();
+                    Console.WriteLine("(druk op Enter om de huidige te behouden)");
+                    Console.Write("Voer uw naam in: ");
+                    newName = EditDefaultValueUtil.EditDefaultValue(UserLogic.CurrentUser.FullName);
+                    if(newName != null && newName != "")
+                    {
+                        validName = true;
+                    }
+                }
 
-                Console.WriteLine("Voer nieuwe profielgegevens in (druk op Enter om de huidige te behouden):");
-
-                Console.Write("Voer uw naam in: ");
-                string newName = EditDefaultValueUtil.EditDefaultValue(UserLogic.CurrentUser.FullName);
-
-                Console.Write("Voer uw emailadres in: ");
-                string newEmail = EditDefaultValueUtil.EditDefaultValue(UserLogic.CurrentUser.EmailAddress);
+                string newEmail = "";
+                bool validEmail = false;
+                while(!validEmail)
+                {
+                    Console.Clear();
+                    Console.WriteLine("(druk op Enter om de huidige te behouden)");
+                    Console.Write("Voer uw emailadres in: ");
+                    newEmail = EditDefaultValueUtil.EditDefaultValue(UserLogic.CurrentUser.EmailAddress);
+                    validEmail = _userLogic.ValidateEmail(newEmail);
+                }
 
                 List<Genre> newGenres = new List<Genre>();
-                List<Genre> availableGenres = Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
+                List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
 
                 while (newGenres.Count < 3)
                 {
@@ -30,18 +47,26 @@ namespace BioscoopReserveringsapplicatie
                     }
                 }
 
-                List<Intensity> intensities = Enum.GetValues(typeof(Intensity)).Cast<Intensity>().ToList();
+                List<Intensity> intensities = Globals.GetAllEnum<Intensity>();
                 Intensity newIntensity = SelectionMenu.Create(intensities, () => ColorConsole.WriteColorLine("Kies een [Intensiteit]: \n", Globals.ColorInputcClarification));
 
-                List<AgeCategory> ageCategories = Enum.GetValues(typeof(AgeCategory)).Cast<AgeCategory>().ToList();
+                List<AgeCategory> ageCategories = Globals.GetAllEnum<AgeCategory>();
                 AgeCategory newAgeCategory = SelectionMenu.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
 
                 List<Option<string>> options = new List<Option<string>>
                 {
                     new Option<string>("Ja", () => {
-                        if(UserLogic.EditUser(newName, newEmail, newGenres, newIntensity, newAgeCategory))
+                        if(_userLogic.EditUser(newName, newEmail, newGenres, newIntensity, newAgeCategory))
                         {
-
+                            UserDetails.Start();
+                        }
+                        else
+                        {
+                            List<Option<string>> options = new List<Option<string>>
+                            {
+                                new Option<string>("Terug", () => {Console.Clear(); UserDetails.Start();}),
+                            };
+                            SelectionMenu.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n"));
                         }
                     }),
                     new Option<string>("Nee", () => UserDetails.Start())
