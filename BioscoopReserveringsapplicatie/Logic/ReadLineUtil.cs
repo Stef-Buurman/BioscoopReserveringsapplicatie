@@ -2,10 +2,12 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ReadLineUtil
     {
-        public static string EditValue(string defaultValue, Action escapeAction)
+        public static string EditValue(string defaultValue, Action actionBeforeStart, Action escapeAction)
         {
             string input = defaultValue;
             int originalPosX = Console.CursorLeft;
+            Console.Clear();
+            actionBeforeStart();
             Console.Write(defaultValue);
 
             while (true)
@@ -13,10 +15,7 @@ namespace BioscoopReserveringsapplicatie
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Escape)
                 {
-                    Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
-                    Thread.Sleep(2000);
-                    escapeAction();
-                    break;
+                    if (EscapeKeyPressed(actionBeforeStart, escapeAction, input)) break;
                 }
                 else if (key.Key == ConsoleKey.Enter)
                 {
@@ -42,20 +41,19 @@ namespace BioscoopReserveringsapplicatie
             return input;
         }
 
-        public static string EnterValue(Action escapeAction)
+        public static string EnterValue(Action actionBeforeStart, Action escapeAction)
         {
             string input = "";
             int originalPosX = Console.CursorLeft;
+            Console.Clear();
+            actionBeforeStart();
 
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Escape)
                 {
-                    Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
-                    Thread.Sleep(1000);
-                    escapeAction();
-                    break;
+                    if (EscapeKeyPressed(actionBeforeStart, escapeAction, input)) break;
                 }
                 else if (key.Key == ConsoleKey.Enter)
                 {
@@ -79,6 +77,30 @@ namespace BioscoopReserveringsapplicatie
                 }
             }
             return input;
+        }
+
+        public static bool EscapeKeyPressed(Action actionBeforeStart, Action escapeAction, string input)
+        {
+            bool WantToLeave = false;
+            List<Option<string>> options = new List<Option<string>>
+                    {
+                        new Option<string>("Ja", () => {
+                                Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
+                                Thread.Sleep(2000);
+                                escapeAction();
+                                WantToLeave = true;
+                            }
+                        ),
+                        new Option<string>("Nee", () => {
+                                Console.Clear();
+                                actionBeforeStart();
+                                Console.Write(input);
+                                WantToLeave = false;
+                            }
+                        ),
+                    };
+            SelectionMenu.Create(options, () => Console.WriteLine("Weet je zeker dat je weg wilt gaan?"));
+            return WantToLeave;
         }
     }
 }
