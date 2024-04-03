@@ -7,6 +7,16 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int experienceId)
         {
             ExperiencesModel experience = ExperienceLogic.GetById(experienceId);
+            if (experience.Archived)
+            {
+                Console.Clear();
+                Console.WriteLine("Deze experience is al gearchiveerd.");
+                Console.WriteLine("Druk op een toets om verder te gaan.");
+                Console.ReadKey();
+                ExperienceDetails.Start(experienceId);
+            }
+            else
+            {
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
@@ -17,7 +27,8 @@ namespace BioscoopReserveringsapplicatie
                     ExperienceDetails.Start(experienceId);
                 }),
             };
-            SelectionMenu.Create(options, () => Print(experience.Name, experience.Intensity.ToString(), experience.TimeLength));
+            SelectionMenu.Create(options, () => Print(experience.Name, experience.Intensity, experience.TimeLength));
+            }
         }
 
         public static void Print(string name, string intensity, int timeLength)
