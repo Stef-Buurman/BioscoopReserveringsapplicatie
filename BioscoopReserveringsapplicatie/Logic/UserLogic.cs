@@ -62,7 +62,7 @@
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAlreadyExists}\n";
             }
-            else if (ValidateEmail(email))
+            else if (!ValidateEmail(email))
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
             }

@@ -1,13 +1,10 @@
-﻿using BioscoopReserveringsapplicatie;
-using NSubstitute;
+﻿using NSubstitute;
 
 namespace BioscoopReserveringsapplicatieTests
 {
     [TestClass]
-    public class UserManage
+    public class UserLogicTest
     {
-        //private UserLogic userLogic;
-        //[TestMethod]
         public UserLogic Initialize()
         {
             var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
@@ -28,6 +25,10 @@ namespace BioscoopReserveringsapplicatieTests
             return new UserLogic();
         }
 
+        // -------------------------------------------------------------------------------------------------------------------------------
+        // GetUser -----------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------------------------------
+
         [TestMethod]
         public void Correct_GetUser_By_Id()
         {
@@ -44,29 +45,74 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsNull(userName);
         }
 
+        // -------------------------------------------------------------------------------------------------------------------------------
+        // RegisterNewUser ---------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------------------------------
+
+        private string CorrectUserName = "Henk";
+        private string CorrectEmail = "Henk@Gerda.nl";
+        private string IncorrectEmailCharsCount = "@.";
+        private string IncorrectEmailNoAtSign = "HenkGerda.nl";
+        private string IncorrectEmailNoDot = "Henk@Gerdanl";
+        private string CorrectPassword = "DitIsEenHeelMooiWachtWoord";
+        private string IncorrectPasswordCharsCount = "Henk";
+
+        // Name ---------------------------------------------------------------------------------------------------------------
+
         [TestMethod]
         public void Incorrect_Register_New_User_Name_Is_Empty()
         {
             UserLogic userLogic = Initialize();
-            RegistrationResult results = userLogic.RegisterNewUser("", "Henk@Gerda.nl", "DitIsEenHeelMooiWachtWoord");
+            RegistrationResult results = userLogic.RegisterNewUser("", this.CorrectEmail, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.NameEmpty));
         }
+
+        // Email --------------------------------------------------------------------------------------------------------------
 
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Is_Empty()
         {
             UserLogic userLogic = Initialize();
-            RegistrationResult results = userLogic.RegisterNewUser("Henk", "", "DitIsEenHeelMooiWachtWoord");
+            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, "", this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailEmpty));
         }
 
         [TestMethod]
+        public void Incorrect_Register_New_User_Email_Not_Enough_Characters()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailCharsCount, this.CorrectPassword);
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
+        }
+
+        [TestMethod]
+        public void Incorrect_Register_New_User_Email_No_At_Sign()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoAtSign, this.CorrectPassword);
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
+        }
+
+        [TestMethod]
+        public void Incorrect_Register_New_User_Email_No_Dot()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoDot, this.CorrectPassword);
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
+        }
+
+        // Password -----------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
         public void Incorrect_Register_New_User_Password_Is_Empty()
         {
             UserLogic userLogic = Initialize();
-            RegistrationResult results = userLogic.RegisterNewUser("Henk", "Henk@Gerda.nl", "");
+            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordEmpty));
         }
@@ -75,7 +121,7 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Register_New_User_Password_Has_Too_Few_Characters()
         {
             UserLogic userLogic = Initialize();
-            RegistrationResult results = userLogic.RegisterNewUser("Henk", "Henk@Gerda.nl", "henk");
+            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, this.IncorrectPasswordCharsCount);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
