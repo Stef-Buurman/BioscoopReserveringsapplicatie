@@ -18,9 +18,9 @@
         [TestMethod]
         public void Incorrect_Experience_Name_Validation_With_Experience()
         {
-            ExperiencesModel experience = new ExperiencesModel("", 0, Intensity.Low, 0);
+            ExperiencesModel experience = new ExperiencesModel("", 0, Intensity.Low, 0, false);
             Assert.IsFalse(_experiencesLogic.ValidateExperience(experience));
-            ExperiencesModel experience2 = new ExperiencesModel(null, 0, Intensity.Low, 0);
+            ExperiencesModel experience2 = new ExperiencesModel(null, 0, Intensity.Low, 0, false);
             Assert.IsFalse(_experiencesLogic.ValidateExperience(experience2));
         }
 
@@ -35,9 +35,9 @@
         [TestMethod]
         public void Incorrect_Experience_Intensity_With_Experience()
         {
-            ExperiencesModel experience = new ExperiencesModel("test1", 0, (Intensity)909, 10);
+            ExperiencesModel experience = new ExperiencesModel("test1", 0, (Intensity)909, 10, false);
             Assert.IsFalse(_experiencesLogic.ValidateExperience(experience));
-            ExperiencesModel experience2 = new ExperiencesModel("test1", 0, (Intensity)1002, 10);
+            ExperiencesModel experience2 = new ExperiencesModel("test1", 0, (Intensity)1002, 10, false);
             Assert.IsFalse(_experiencesLogic.ValidateExperience(experience2));
         }
 
@@ -75,7 +75,7 @@
         [TestMethod]
         public void Incorrect_Experience_TimeLength_Validation_With_Experience()
         {
-            ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.Low, -10);
+            ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.Low, -10, false);
             Assert.IsFalse(_experiencesLogic.ValidateExperience(experience));
         }
 
@@ -96,7 +96,7 @@
         [TestMethod]
         public void CorrectExperience()
         {
-            ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.High, 10);
+            ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.High, 10, false);
             Assert.IsTrue(_experiencesLogic.ValidateExperience(experience));
         }
 
