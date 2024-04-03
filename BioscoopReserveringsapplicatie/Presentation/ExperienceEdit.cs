@@ -85,7 +85,7 @@ namespace BioscoopReserveringsapplicatie
             while (true)
             {
                 Console.Write("Selecteer de intensiteit van de experience");
-                List<string> options = new() { "Laag", "Medium", "Hoog" };
+                List<string> options = Globals.GetAllEnum<Intensity>().Select(x => x.ToString()).ToList();
                 string newIntensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
                 if (options.Contains(newIntensity))
                 {
