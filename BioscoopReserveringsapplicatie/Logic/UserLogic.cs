@@ -148,7 +148,15 @@ namespace BioscoopReserveringsapplicatie
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@");
+            if(email.Contains("@") && email.Contains("."))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+               
         }
 
         public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
