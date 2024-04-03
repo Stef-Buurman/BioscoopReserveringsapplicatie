@@ -28,6 +28,7 @@
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
+        public bool ValidateMovieId(int filmId) => MoviesLogic.GetMovieById(filmId) == null ? false : true;
 
         public bool AddExperience(ExperiencesModel experience)
         {
@@ -66,19 +67,15 @@
             }
             return experiences;
         }
-         public bool EditExperience (int id, string name, string intensity, int timeLength, int filmId)
+        public bool EditExperience (int id, string name, Intensity intensity, int timeLength, int filmId)
         {
-            if (id == 0 || name.Trim() == "" || intensity.Trim() == "" )
-            {
-                Console.WriteLine("Vul alstublieft alle velden in.");
-                return false;
-            }
+        
 
-            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(intensity) && !string.IsNullOrWhiteSpace(timeLength.ToString()) && !string.IsNullOrWhiteSpace(filmId.ToString()))
+            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(timeLength.ToString()) && !string.IsNullOrWhiteSpace(filmId.ToString()))
             {
                 ExperiencesModel experience = GetById(id);
                 experience.Name = name;
-                experience.Intensity = (Intensity)Enum.Parse(typeof(Intensity), intensity);
+                experience.Intensity = intensity;
                 experience.FilmId = filmId;
                 experience.TimeLength = timeLength;
                 

@@ -1,9 +1,10 @@
+
 namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceEdit
     {
         static public ExperiencesLogic ExperiencesLogic = new();
-        static public MoviesLogic MoviesLogic = new();
+        static public MoviesLogic MoviesLogic = new MoviesLogic();
 
         public static void Start(int experienceId)
         {
@@ -17,16 +18,15 @@ namespace BioscoopReserveringsapplicatie
 
             int selectedMovieId = SelectMovie();
 
-            string newIntensity = SelectIntensity();
+            Intensity newIntensity = SelectIntensity();
 
             int timeInInt = ExperienceLength(experience);
 
             string MovieName = MoviesLogic.GetMovieById(selectedMovieId).Title;
 
-
-            List<Option<string>> saveOptions = new()
+            List<Option<string>> saveOptions = new List<Option<string>>()
             {
-                new ("Ja", () =>
+                new Option<string> ("Ja", () =>
                 {
                     if (ExperiencesLogic.EditExperience(experienceId, newName, newIntensity, timeInInt, selectedMovieId))
                     {
@@ -34,83 +34,75 @@ namespace BioscoopReserveringsapplicatie
                     }
                     else
                     {
-                        List<Option<string>> errorOptions = new()
+                        List<Option<string>> errorOptions = new List<Option<string>>()
                         {
-                            new("Back", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
+                            new Option<string>("Terug", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
                         };
-                        SelectionMenu.Create(errorOptions, () => Console.WriteLine("An error occurred while editing the experience. Please try again.\n"));
+                        SelectionMenu.Create(errorOptions, () => Console.WriteLine("Error. Probeer het opnieuw \n"));
                     }
                 }),
-                new("No", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
+                new Option<string>("Nee", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
             };
             SelectionMenu.Create(saveOptions, () => Print(newName, MovieName, newIntensity, timeInInt));
         }
 
         public static string ExperienceName(ExperiencesModel experience)
         {
-            while (true)
+        {
+            Console.Clear();
+            Console.Write("Voer de experience naam in: ");
+            string newName = EditDefaultValueUtil.EditDefaultValue(experience.Name);
+            while (string.IsNullOrEmpty(newName))
             {
-                Console.Write("Voer de experience naam in: ");
-                string newName = EditDefaultValueUtil.EditDefaultValue(experience.Name);
-                if (!string.IsNullOrEmpty(newName))
-                {
-                    return newName;
-                }
-                Console.WriteLine("Invalid input. Please enter a valid name.");
+                Console.WriteLine("Naam mag niet leeg zijn.");
+                newName = EditDefaultValueUtil.EditDefaultValue(newName);
+            }
+            return newName;
             }
         }
 
         public static int SelectMovie()
         {
-            while (true)
+            Console.WriteLine("Selecteer de film die bij de experience hoort");
+            List<MovieModel> movies = MoviesLogic.GetAllMovies();
+            List<int> moviesId = movies.Select(movie => movie.Id).ToList();
+            int selectedMovieId = SelectionMenu.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
+            while (!ExperiencesLogic.ValidateMovieId(selectedMovieId))
             {
-                Console.WriteLine("Selecteer de film die bij de experience hoort");
-                List<MovieModel> movies = MoviesLogic.GetAllMovies();
-                Dictionary<string, int> movieDictionary = new();
-                foreach (MovieModel movie in movies)
-                {
-                    movieDictionary.Add(movie.Title, movie.Id);
-                }
-                string selectedMovieTitle = SelectionMenu.Create(movieDictionary.Keys.ToList(), () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
-                if (movieDictionary.ContainsKey(selectedMovieTitle))
-                {
-                    return movieDictionary[selectedMovieTitle];
-                }
-                Console.WriteLine("Invalid input. Please select a valid movie.");
+                Console.WriteLine("Ongeldige Input. Probeer het opnieuw.");
+                selectedMovieId = SelectionMenu.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
             }
+            return selectedMovieId;
         }
 
-        public static string SelectIntensity()
+        public static Intensity SelectIntensity()
         {
-            while (true)
+            Console.Write("Selecteer de intensiteit van de experience");
+            List<Intensity> options = Globals.GetAllEnum<Intensity>();
+            Intensity newIntensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+            while (!ExperiencesLogic.ValidateExperienceIntensity(newIntensity))
             {
-                Console.Write("Selecteer de intensiteit van de experience");
-                List<string> options = Globals.GetAllEnum<Intensity>().Select(x => x.ToString()).ToList();
-                string newIntensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
-                if (options.Contains(newIntensity))
-                {
-                    return newIntensity;
-                }
-                Console.WriteLine("Invalid input. Please select a valid intensity.");
+                Console.Write("Ongeldige input. Probeer het opnieuw");
+                newIntensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
             }
+            return newIntensity;
         }
 
         public static int ExperienceLength(ExperiencesModel experience)
         {
-            while (true)
+            Console.Clear();
+            Console.Write("Voer de lengte van de experience in (in minuten)");
+            string timeInString = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
+            while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
             {
-                Console.Clear();
-                Console.Write("Voer de lengte van de experience in (in minuten)");
-                string timeInStr = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
-                if (int.TryParse(timeInStr, out int timeInInt))
-                {
-                    return timeInInt;
-                }
-                Console.WriteLine("Invalid input. Please enter a valid number.");
+                Console.WriteLine("Ongeldige invoer. Voer een geldig getal in.");
+                timeInString = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
             }
+            return int.Parse(timeInString);
         }
+            
 
-        public static void Print(string newName, string selectedMovieTitle, string newIntensity, int timeInInt)
+        private static void Print(string newName, string selectedMovieTitle, Intensity newIntensity, int timeInInt)
         {
             Console.WriteLine("Dit zijn de nieuwe experience details:");
             Console.WriteLine($"Experience naam: {newName}");
