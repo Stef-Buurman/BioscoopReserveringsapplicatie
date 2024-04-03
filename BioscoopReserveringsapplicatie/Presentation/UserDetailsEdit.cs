@@ -36,7 +36,30 @@ namespace BioscoopReserveringsapplicatie
                 List<AgeCategory> ageCategories = Enum.GetValues(typeof(AgeCategory)).Cast<AgeCategory>().ToList();
                 AgeCategory newAgeCategory = SelectionMenu.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
 
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Ja", () => {
+                        if(UserLogic.EditUser(newName, newEmail, newGenres, newIntensity, newAgeCategory))
+                        {
+
+                        }
+                    }),
+                    new Option<string>("Nee", () => UserDetails.Start())
+                };
+                SelectionMenu.Create(options, () => PendingChanges(newName, newEmail, newGenres, newIntensity, newAgeCategory));
             }
+        }
+
+        private static void PendingChanges(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        {
+            Console.Clear();
+            ColorConsole.WriteColorLine("[Nieuwe Profielgegevens]", ConsoleColor.Cyan);
+            ColorConsole.WriteColorLine($"[Naam: ]{newName}", ConsoleColor.Cyan);
+            ColorConsole.WriteColorLine($"[Email: ]{newEmail}\n", ConsoleColor.Cyan);
+            ColorConsole.WriteColorLine("[Persoonlijke voorkeuren]", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Genre: ]{string.Join(", ", newGenres)}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Intensiteit: ]{newIntensity}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory}\n", ConsoleColor.Green);
         }
     }
 }

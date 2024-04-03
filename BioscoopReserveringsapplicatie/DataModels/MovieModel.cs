@@ -13,6 +13,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
+        [JsonConverter(typeof(GenreListConverter))]
         [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
 
