@@ -2,10 +2,9 @@ namespace BioscoopReserveringsapplicatie
 {
     static class UserMenu
     {
-        private static UserModel? CurrentUser = UserLogic.CurrentUser;
         public static void Start()
         {
-            if (CurrentUser != null)
+            if (UserLogic.CurrentUser != null)
             {
                 Console.Clear();
                 List<Option<string>> options = new List<Option<string>>
@@ -14,7 +13,7 @@ namespace BioscoopReserveringsapplicatie
                 // new Option<string>("Mijn account"),
                 new Option<string>("Uitloggen", () => UserLogic.LogOut()),
             };
-                SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {CurrentUser.FullName}!\n"));
+                SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n"));
             }
             else
             {
