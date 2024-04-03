@@ -7,15 +7,13 @@ namespace BioscoopReserveringsapplicatie
         static private MoviesLogic MoviesLogic = new MoviesLogic();
         private static MovieModel? movie;
 
-        private static UserModel? CurrentUser = UserLogic.CurrentUser;
-
         public static void Start(int experienceId)
         {
-            if (CurrentUser != null && !CurrentUser.IsAdmin)
+            if (UserLogic.CurrentUser != null && !UserLogic.CurrentUser.IsAdmin)
             {
                 UserPreview(experienceId);
             }
-            else if (CurrentUser != null && CurrentUser.IsAdmin)
+            else if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
             {
                 AdminPreview(experienceId);
             }
