@@ -55,6 +55,8 @@
 
             foreach (ExperiencesModel experience in _experiences)
             {
+                if (experience.Archived) continue;
+                    
                 MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
 
                 if(movie == null) continue;
@@ -70,11 +72,13 @@
         public void ArchiveExperience(int id)
         {
             ExperiencesModel experience = GetById(id);
-            if (experience != null)
+
+            if (experience.Archived)
             {
-                experience.Archived = true;
-                ExperiencesAccess.WriteAll(_experiences);
+                return;
             }
+            experience.Archived = true;
+            ExperiencesAccess.WriteAll(_experiences);
         }
     }
 }
