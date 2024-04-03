@@ -27,7 +27,7 @@ namespace BioscoopReserveringsapplicatie
                     ExperienceDetails.Start(experienceId);
                 }),
             };
-            SelectionMenu.Create(options, () => Print(experience.Name, experience.Intensity, experience.TimeLength));
+            SelectionMenu.Create(options, () => Print(experience.Name, experience.Intensity.ToString(), experience.TimeLength));
             }
         }
 
