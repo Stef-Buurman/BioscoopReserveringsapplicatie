@@ -8,5 +8,15 @@
 
         public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
+
+        public static List<T> GetAllEnum<T>()
+        {
+            List<T> availableT = new List<T>();
+            foreach (T itemT in Enum.GetValues(typeof(T)))
+            {
+                if (!itemT.Equals(default(T))) availableT.Add(itemT);
+            }
+            return availableT;
+        }
     }
 }

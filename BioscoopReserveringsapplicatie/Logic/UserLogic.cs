@@ -1,5 +1,4 @@
-﻿//This class is not static so later on we can use inheritance and interfaces
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     public class UserLogic
     {
@@ -12,6 +11,9 @@ namespace BioscoopReserveringsapplicatie
 
         public UserLogic()
         {
+            //if (userAccess != null) UserAccess = userAccess;
+            //else UserAccess = new UserAccess();
+
             _accounts = UserAccess.LoadAll();
         }
 
@@ -40,42 +42,34 @@ namespace BioscoopReserveringsapplicatie
             return _accounts.Find(i => i.Id == id);
         }
 
-        public void RegisterNewUser(string name, string email, string password)
+        public RegistrationResult RegisterNewUser(string name, string email, string password)
         {
             bool validated = false;
             string errorMessage = "";
 
             if (name == "")
             {
-                errorMessage += "Naam mag niet leeg zijn!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.NameEmpty}\n";
             }
             else if (email == "")
             {
-                errorMessage += "Email mag niet leeg zijn!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.EmailEmpty}\n";
             }
             else if (_accounts.Exists(i => i.EmailAddress == email))
             {
-                errorMessage += "Email is al in gebruik!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.EmailAlreadyExists}\n";
             }
-            else if (email.Length < 6)
+            else if (!ValidateEmail(email))
             {
-                errorMessage += "Email moet minimaal 6 karakters bevatten!\n";
-            }
-            else if (!email.Contains("@"))
-            {
-                errorMessage += "Email moet een @ bevatten!\n";
-            }
-            else if (!email.Contains("."))
-            {
-                errorMessage += "Email moet een . bevatten!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
             }
             else if (password == "")
             {
-                errorMessage += "Wachtwoord mag niet leeg zijn\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.PasswordEmpty}\n";
             }
             else if (password.Length < 5)
             {
-                errorMessage += "Wachtwoord moet minimaal 5 karakters bevatten!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
             }
             else
             {
@@ -84,14 +78,11 @@ namespace BioscoopReserveringsapplicatie
 
             if (validated)
             {
-                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<string>(), 0, "", "");
+                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
-            else
-            {
-                UserRegister.Start(errorMessage);
-            }
+            return new RegistrationResult(validated, errorMessage);
         }
 
         public UserModel? CheckLogin(string email, string password)
@@ -107,12 +98,11 @@ namespace BioscoopReserveringsapplicatie
                 return null;
             }
 
-            if (!ValidatePassword(email.ToLower(), password))
+            if (!LoginUser(email.ToLower(), password))
             {
                 return null;
             }
 
-            CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
             if (CurrentUser != null)
             {
                 Console.WriteLine("U bent ingelogd.");
@@ -127,17 +117,19 @@ namespace BioscoopReserveringsapplicatie
                     {
                         Preferences.Start();
                     }
-                    UserMenu.Start();
+                    Console.WriteLine($"Welkom {CurrentUser.FullName}!");
+                    //UserMenu.Start();
                 }
             }
             return CurrentUser;
         }
 
-        private bool ValidatePassword(string email, string password)
+        public bool LoginUser(string email, string password)
         {
             UserModel? account = _accounts.Find(i => i.EmailAddress == email);
             if (account != null && account.Password == password)
             {
+                CurrentUser = account;
                 return true;
             }
             else
@@ -148,10 +140,10 @@ namespace BioscoopReserveringsapplicatie
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@");
+            return email.Contains("@") && email.Contains(".") && email.Length > 6;
         }
 
-        public void addPreferencesToAccount(List<string> genres, int ageCategory, string intensity, string language)
+        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
             {
@@ -164,14 +156,9 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        public bool ValidateGenres(List<string> genres)
+        public bool ValidateGenres(List<Genre> genres)
         {
-            List<string> CorrectGenre = new List<string>
-        {
-            "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-            "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-            "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-        };
+            List<Genre> CorrectGenre = Globals.GetAllEnum<Genre>();
 
             if (genres.Count > 3)
             {
@@ -185,7 +172,7 @@ namespace BioscoopReserveringsapplicatie
                 return false;
             }
 
-            foreach (string genre in genres)
+            foreach (Genre genre in genres)
 
             {
                 if (!CorrectGenre.Contains(genre))
@@ -196,18 +183,18 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
-        public bool ValidateAgeCategory(int ageCategory)
+        public bool ValidateAgeCategory(AgeCategory ageCategory)
         {
-            if (ageCategory != 6 && ageCategory != 9 && ageCategory != 12 && ageCategory != 14 && ageCategory != 16 && ageCategory != 18)
+            if (!Enum.IsDefined(typeof(AgeCategory), ageCategory))
             {
                 return false;
             }
             return true;
         }
 
-        public bool ValidateIntensity(string intensity)
+        public bool ValidateIntensity(Intensity intensity)
         {
-            if (intensity.ToLower() != "laag" && intensity.ToLower() != "medium" && intensity.ToLower() != "hoog")
+            if (!Enum.IsDefined(typeof(Intensity), intensity))
             {
                 return false;
             }
@@ -215,9 +202,9 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-        public bool ValidateLanguage(string language)
+        public bool ValidateLanguage(Language language)
         {
-            if (language.ToLower() != "english" && language.ToLower() != "nederlands")
+            if (!Enum.IsDefined(typeof(Language), language))
             {
                 return false;
             }

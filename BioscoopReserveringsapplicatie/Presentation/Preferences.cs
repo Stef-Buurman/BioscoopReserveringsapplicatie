@@ -7,10 +7,10 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            List<string> selectedGenres = SelectGenres();
-            int ageCategory = SelectAgeCategory();
-            string intensity = SelectIntensity();
-            string language = SelectLanguage();
+            List<Genre> selectedGenres = SelectGenres();
+            AgeCategory ageCategory = SelectAgeCategory();
+            Intensity intensity = SelectIntensity();
+            Language language = SelectLanguage();
 
             Console.Clear();
             Console.WriteLine("Uw geselecteerde voorkeuren zijn:\n");
@@ -22,19 +22,14 @@ namespace BioscoopReserveringsapplicatie
             PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
         }
 
-        public static List<string> SelectGenres()
+        public static List<Genre> SelectGenres()
         {
-            List<string> selectedGenres = new List<string>();
-            List<string> availableGenres = new List<string>
-            {
-                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-            };
+            List<Genre> selectedGenres = new List<Genre>();
+            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
             while (selectedGenres.Count < 3)
             {
-                string genre = "";
+                Genre genre;
                 if (firstTime)
                 {
                     genre = SelectionMenu.Create(availableGenres, () =>
@@ -50,7 +45,7 @@ namespace BioscoopReserveringsapplicatie
                     genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
-                if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
+                if (genre != default && availableGenres.Contains(genre))
                 {
                     availableGenres.Remove(genre);
                     selectedGenres.Add(genre);
@@ -65,11 +60,11 @@ namespace BioscoopReserveringsapplicatie
             return selectedGenres;
         }
 
-        public static int SelectAgeCategory()
+        public static AgeCategory SelectAgeCategory()
         {
-            List<int> options = new List<int> { 6, 9, 12, 14, 16, 18 };
+            List<AgeCategory> options = Globals.GetAllEnum<AgeCategory>();
 
-            int ageCategory = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
+            AgeCategory ageCategory = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
             while (!PreferencesLogic.ValidateAgeCategory(ageCategory))
             {
                 Console.WriteLine("Error. Probeer het opnieuw.");
@@ -79,10 +74,10 @@ namespace BioscoopReserveringsapplicatie
             return ageCategory;
         }
 
-        public static string SelectIntensity()
+        public static Intensity SelectIntensity()
         {
-            List<string> options = new List<string> { "Laag", "Medium", "Hoog" };
-            string intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+            List<Intensity> options = Globals.GetAllEnum<Intensity>();
+            Intensity intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
 
             while (!PreferencesLogic.ValidateIntensity(intensity))
             {
@@ -93,10 +88,10 @@ namespace BioscoopReserveringsapplicatie
             return intensity;
         }
 
-        public static string SelectLanguage()
+        public static Language SelectLanguage()
         {
-            List<string> options = new List<string> { "English", "Nederlands" };
-            string language = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
+            List<Language> options = Globals.GetAllEnum<Language>();
+            Language language = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
 
             while (!PreferencesLogic.ValidateLanguage(language))
             {

@@ -1,6 +1,7 @@
-enum AgeCategory
+public enum AgeCategory
 {
-    AL = 0,
+    ALL = -1,
+    Undefined = 0,
     AGE_6 = 6,
     AGE_9 = 9,
     AGE_12 = 12,

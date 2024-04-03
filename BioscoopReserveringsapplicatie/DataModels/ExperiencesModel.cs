@@ -13,13 +13,14 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("filmId")]
         public int FilmId { get; set; }
 
+        [JsonConverter(typeof(IntensityConverter))]
         [JsonPropertyName("intensity")]
-        public string Intensity { get; set; }
+        public Intensity Intensity { get; set; }
 
         [JsonPropertyName("timeLength")]
         public int TimeLength { get; set; }
 
-        public ExperiencesModel(int id, string name, int FilmId, string intensity, int timeLength)
+        public ExperiencesModel(int id, string name, int FilmId, Intensity intensity, int timeLength)
         {
             this.Id = id;
             this.Name = name;
@@ -27,10 +28,10 @@ namespace BioscoopReserveringsapplicatie
             this.Intensity = intensity;
             this.TimeLength = timeLength;
         }
-        public ExperiencesModel(string name, int FilmId, string intensity, int timeLength) : this(0, name, FilmId, intensity, timeLength)
+        public ExperiencesModel(string name, int FilmId, Intensity intensity, int timeLength) : this(0, name, FilmId, intensity, timeLength)
         { }
 
-        public ExperiencesModel() : this(0, "", 0, "", 0)
+        public ExperiencesModel() : this(0, "", 0, default, 0)
         { }
     }
 }

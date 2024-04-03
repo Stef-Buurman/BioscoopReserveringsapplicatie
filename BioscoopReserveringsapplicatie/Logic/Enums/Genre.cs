@@ -1,8 +1,9 @@
-enum Genre
+public enum Genre
 {
+    Undefined,
     Horror,
-    Comedy,
-    Action,
+    Komedie,
+    Actie,
     Drama,
     Thriller,
     Romance,

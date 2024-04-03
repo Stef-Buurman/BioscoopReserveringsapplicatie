@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace BioscoopReserveringsapplicatie
 {
     static class AddMovie
@@ -14,17 +16,12 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Voer de film beschrijving in:");
             string description = Console.ReadLine() ?? "";
 
-            List<string> genres = new List<string>();
-            List<string> availableGenres = new List<string>
-            {
-                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-            };
+            List<Genre> genres = new List<Genre>();
+            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
             while (genres.Count < 3)
             {
-                string genre = "";
+                Genre genre;
                 if (firstTime)
                 {
                     genre = SelectionMenu.Create(availableGenres, () =>
@@ -40,7 +37,7 @@ namespace BioscoopReserveringsapplicatie
                     genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
-                if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
+                if (genre != default && availableGenres.Contains(genre))
                 {
                     availableGenres.Remove(genre);
                     genres.Add(genre);
@@ -73,7 +70,7 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print(string title, string description, List<string> genres, string rating)
+        private static void Print(string title, string description, List<Genre> genres, string rating)
         {
             Console.WriteLine("De film is toegevoegd.");
             Console.WriteLine("\nDe film details zijn:");

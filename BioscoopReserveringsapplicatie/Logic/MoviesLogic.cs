@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
             return _Movies;
         }
 
-        public bool AddMovie(string title, string description, List<string> genres, string rating)
+        public bool AddMovie(string title, string description, List<Genre> genres, string rating)
         {
             GetAllMovies();
             
@@ -47,7 +47,7 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
-        public bool EditMovie(int id, string title, string description, List<string> genres, string rating)
+        public bool EditMovie(int id, string title, string description, List<Genre> genres, string rating)
         {
             if (id == 0 || title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating.Trim() == "")
             {

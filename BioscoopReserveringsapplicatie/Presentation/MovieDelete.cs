@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
             SelectionMenu.Create(options, () => Print(movie.Title, movie.Description, movie.Genres, movie.Rating));
         }
 
-        private static void Print(string title, string description, List<string> genres, string rating)
+        private static void Print(string title, string description, List<Genre> genres, string rating)
         {
             Console.WriteLine("De film details zijn:");
             Console.WriteLine($"Film titel: {title}");
