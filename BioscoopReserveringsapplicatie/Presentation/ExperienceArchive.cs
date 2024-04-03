@@ -7,20 +7,28 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int experienceId)
         {
             ExperiencesModel experience = ExperienceLogic.GetById(experienceId);
-            
+            if (experience.Archived)
+            {
+                Console.Clear();
+                Console.WriteLine("Deze experience is al gearchiveerd.");
+                Console.WriteLine("Druk op een toets om verder te gaan.");
+                Console.ReadKey();
+                ExperienceDetails.Start(experienceId);
+            }
+            else
+            {
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
                     ExperienceLogic.ArchiveExperience(experienceId);
-                    // Hier moet nog admin experience overzicht komen.
-                    // Maar voor nu terug naar preferred.
-                    PreferredExperiences.Start();
+                    ExperienceDetails.Start(experienceId);
                 }),
                 new Option<string>("Nee", () => {
                     ExperienceDetails.Start(experienceId);
                 }),
             };
             SelectionMenu.Create(options, () => Print(experience.Name, experience.Intensity, experience.TimeLength));
+            }
         }
 
         public static void Print(string name, string intensity, int timeLength)
