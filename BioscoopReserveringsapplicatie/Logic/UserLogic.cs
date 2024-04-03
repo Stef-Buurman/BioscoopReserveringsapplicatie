@@ -51,11 +51,11 @@
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.NameEmpty}\n";
             }
-            else if (email == "")
+            if (email == "")
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailEmpty}\n";
             }
-            else if (_accounts.Exists(i => i.EmailAddress == email))
+            if (_accounts.Exists(i => i.EmailAddress == email))
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAlreadyExists}\n";
             }
@@ -63,15 +63,15 @@
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
             }
-            else if (password == "")
+            if (password == "")
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordEmpty}\n";
             }
-            else if (password.Length < 5)
+            if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
             }
-            else
+            if (errorMessage == "")
             {
                 validated = true;
             }
