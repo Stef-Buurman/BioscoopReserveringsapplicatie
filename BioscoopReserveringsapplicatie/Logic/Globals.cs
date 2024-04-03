@@ -14,7 +14,7 @@
             List<T> availableT = new List<T>();
             foreach (T itemT in Enum.GetValues(typeof(T)))
             {
-                availableT.Add(itemT);
+                if (!itemT.Equals(default(T))) availableT.Add(itemT);
             }
             return availableT;
         }

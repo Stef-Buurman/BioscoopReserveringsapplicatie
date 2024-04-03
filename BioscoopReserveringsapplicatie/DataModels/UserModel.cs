@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
         public List<Genre> Genres { get; set; }
 
         [JsonPropertyName("ageCategory")]
-        public int AgeCategory { get; set; }
+        public AgeCategory AgeCategory { get; set; }
 
         [JsonConverter(typeof(IntensityConverter))]
         [JsonPropertyName("intensity")]
@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("language")]
         public Language Language { get; set; }
 
-        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<Genre> genres, int ageCategory, Intensity intensity, Language language)
+        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             Id = id;
             IsAdmin = isAdmin;

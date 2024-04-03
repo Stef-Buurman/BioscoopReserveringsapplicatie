@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
 
             List<Genre> selectedGenres = SelectGenres();
-            int ageCategory = SelectAgeCategory();
+            AgeCategory ageCategory = SelectAgeCategory();
             Intensity intensity = SelectIntensity();
             Language language = SelectLanguage();
 
@@ -60,11 +60,11 @@ namespace BioscoopReserveringsapplicatie
             return selectedGenres;
         }
 
-        public static int SelectAgeCategory()
+        public static AgeCategory SelectAgeCategory()
         {
-            List<int> options = new List<int> { 6, 9, 12, 14, 16, 18 };
+            List<AgeCategory> options = Globals.GetAllEnum<AgeCategory>();
 
-            int ageCategory = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
+            AgeCategory ageCategory = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
             while (!PreferencesLogic.ValidateAgeCategory(ageCategory))
             {
                 Console.WriteLine("Error. Probeer het opnieuw.");
