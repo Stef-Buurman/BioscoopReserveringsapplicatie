@@ -8,11 +8,14 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
-            Console.WriteLine("Voer de film titel in:");
-            string title = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Voer de film beschrijving in:");
-            string description = Console.ReadLine() ?? "";
+            Console.WriteLine("Voer filmdetails in (druk op Esc om terug te gaan):\n");
+
+            Console.Write("Voer de film titel in: ");
+            string title = ReadLineUtil.EnterValue(() => AdminMenu.Start());
+
+            Console.Write("Voer de film beschrijving in: ");
+            string description = ReadLineUtil.EnterValue(() => AdminMenu.Start());
 
             List<string> genres = new List<string>();
             List<string> availableGenres = new List<string>
@@ -52,8 +55,8 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            Console.WriteLine("Voer de film kijkwijzer in:");
-            string rating = Console.ReadLine() ?? "";
+            Console.Write("Voer de film kijkwijzer in: ");
+            string rating = ReadLineUtil.EnterValue(() => AdminMenu.Start());
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
