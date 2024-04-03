@@ -250,7 +250,7 @@
             }
         }
 
-        public static bool EditUser(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public bool EditUser(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             throw new NotImplementedException();
         }
