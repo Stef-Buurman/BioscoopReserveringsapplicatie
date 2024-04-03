@@ -13,16 +13,15 @@ namespace BioscoopReserveringsapplicatie
 
         private static int ShowExperiencesWithUserPreferences()
         {
-            UserModel? currentUser = UserLogic.CurrentUser;
 
-            if (currentUser == null)
+            if (UserLogic.CurrentUser == null)
             {
                 Console.WriteLine("Geen gebruiker gevonden");
                 return 0;
             }
 
             List<Option<int>> options = new List<Option<int>>();
-            List<ExperiencesModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(currentUser);
+            List<ExperiencesModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser);
 
             foreach (ExperiencesModel experience in experiences)
             {

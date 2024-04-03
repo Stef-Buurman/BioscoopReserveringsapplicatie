@@ -9,6 +9,18 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId)
         {
+            if (UserLogic.CurrentUser != null && !UserLogic.CurrentUser.IsAdmin)
+            {
+                UserPreview(experienceId);
+            }
+            else if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            {
+                AdminPreview(experienceId);
+            }
+        }
+
+        private static void UserPreview(int experienceId)
+        {
             experience = ExperienceLogic.GetById(experienceId);
 
             movie = MoviesLogic.GetMovieById(experience.FilmId);
@@ -17,6 +29,22 @@ namespace BioscoopReserveringsapplicatie
             {
                 // new Option<string>("Koop tickets"),
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
+            };
+
+            SelectionMenu.Create(options, Print);
+        }
+
+        private static void AdminPreview(int experienceId)
+        {
+            experience = ExperienceLogic.GetById(experienceId);
+
+            movie = MoviesLogic.GetMovieById(experience.FilmId);
+
+            var options = new List<Option<string>>
+            {
+                new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
+                new Option<string>("Archiveer experience", () => ExperienceDelete.Start(experienceId)),
+                new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
             };
 
             SelectionMenu.Create(options, Print);

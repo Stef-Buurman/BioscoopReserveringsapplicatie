@@ -115,6 +115,8 @@ namespace BioscoopReserveringsapplicatie
             CurrentUser = _accounts.Find(i => i.EmailAddress == email.ToLower());
             if (CurrentUser != null)
             {
+                Console.WriteLine("U bent ingelogd.");
+                Thread.Sleep(2000);
                 if (CurrentUser.IsAdmin)
                 {
                     AdminMenu.Start();
@@ -125,7 +127,6 @@ namespace BioscoopReserveringsapplicatie
                     {
                         Preferences.Start();
                     }
-                    Console.WriteLine($"Welkom {CurrentUser.FullName}!");
                     UserMenu.Start();
                 }
             }
@@ -223,6 +224,12 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-
+        public static void LogOut()
+        {
+            CurrentUser = null;
+            Console.WriteLine("U bent uitgelogd.");
+            Thread.Sleep(2000);
+            LandingPage.Start();
+        }
     }
 }
