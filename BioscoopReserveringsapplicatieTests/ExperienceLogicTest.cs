@@ -35,9 +35,9 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Experience_Name_Validation_With_Experience()
         {
             ExperiencesLogic experiencesLogic = Initialize();
-            ExperiencesModel experience = new ExperiencesModel("", 0, Intensity.Low, 0, false);
+            ExperiencesModel experience = new ExperiencesModel("", 0, Intensity.Low, 0, false, false);
             Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
-            ExperiencesModel experience2 = new ExperiencesModel(null, 0, Intensity.Low, 0, false);
+            ExperiencesModel experience2 = new ExperiencesModel(null, 0, Intensity.Low, 0, false, false);
             Assert.IsFalse(experiencesLogic.ValidateExperience(experience2));
         }
 
@@ -59,6 +59,8 @@ namespace BioscoopReserveringsapplicatieTests
             ExperiencesModel experience2 = new ExperiencesModel("test1", 0, (Intensity)1002, 10, false);
             Assert.IsFalse(experiencesLogic.ValidateExperience(experience2));
         }
+
+        // Intensity ------------------------------------------------------------------------------------------------------------------
 
         // Intensity ------------------------------------------------------------------------------------------------------------------
 
