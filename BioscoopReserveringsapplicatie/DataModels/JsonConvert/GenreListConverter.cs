@@ -21,7 +21,12 @@ namespace BioscoopReserveringsapplicatie
 
         public override void Write(Utf8JsonWriter writer, List<Genre> value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            writer.WriteStartArray();
+            foreach (var genre in value)
+            {
+                writer.WriteStringValue(genre.ToString());
+            }
+            writer.WriteEndArray();
         }
     }
 }

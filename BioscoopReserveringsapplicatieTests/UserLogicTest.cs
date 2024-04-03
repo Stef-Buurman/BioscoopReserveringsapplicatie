@@ -29,23 +29,6 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void GetUserNameById_Returns_UserName1()
-        {
-            UserLogic userLogic = Initialize();
-
-            var x = userLogic.LoginUser("Henk@henk.henk", "testtest");
-            userLogic.addPreferencesToAccount(new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.Low, Language.Nederlands);
-            UserModel userName = userLogic.GetById(1);
-
-            Assert.IsNotNull(userName);
-            Assert.IsTrue(x);
-            Assert.AreEqual("henk", userName.FullName);
-            Assert.AreEqual(AgeCategory.AGE_6, userName.AgeCategory);
-            Assert.AreEqual(Intensity.Low, userName.Intensity);
-            Assert.AreEqual(Language.Nederlands, userName.Language);
-        }
-
-        [TestMethod]
         public void Correct_GetUser_By_Id()
         {
             UserLogic userLogic = Initialize();
@@ -61,35 +44,56 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsNull(userName);
         }
 
+        [TestMethod]
+        public void Incorrect_Register_New_User_Name_Is_Empty()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser("", "Henk@Gerda.nl", "DitIsEenHeelMooiWachtWoord");
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.NameEmpty));
+        }
+
+        [TestMethod]
+        public void Incorrect_Register_New_User_Email_Is_Empty()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser("Henk", "", "DitIsEenHeelMooiWachtWoord");
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailEmpty));
+        }
+
+        [TestMethod]
+        public void Incorrect_Register_New_User_Password_Is_Empty()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser("Henk", "Henk@Gerda.nl", "");
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordEmpty));
+        }
+
+        [TestMethod]
+        public void Incorrect_Register_New_User_Password_Has_Too_Few_Characters()
+        {
+            UserLogic userLogic = Initialize();
+            RegistrationResult results = userLogic.RegisterNewUser("Henk", "Henk@Gerda.nl", "henk");
+            Assert.IsFalse(results.IsValid);
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
+        }
+
         // -------------------------------------------------------------------------------------------------------------------------------
         // AddPreferences ----------------------------------------------------------------------------------------------------------------
         // -------------------------------------------------------------------------------------------------------------------------------
-        
+
+        private List<Genre> TestGenres = new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Crime, Genre.Animation };
+
         public UserModel Initialize_Preferences_For_User()
         {
             UserLogic userLogic = Initialize();
 
             var x = userLogic.LoginUser("Henk@henk.henk", "testtest");
             Assert.IsTrue(x);
-            userLogic.addPreferencesToAccount(new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Crime, Genre.Animation }, AgeCategory.AGE_6, Intensity.Low, Language.Nederlands);
+            userLogic.addPreferencesToAccount(TestGenres, AgeCategory.AGE_6, Intensity.Low, Language.Nederlands);
             return userLogic.GetById(1);
-        }
-
-        [TestMethod]
-        public void Correct_GetUser_By_Id1()
-        {
-            UserModel userName = Initialize_Preferences_For_User();
-
-            Assert.IsNotNull(userName);
-            Assert.AreEqual("henk", userName.FullName);
-            Assert.AreEqual(AgeCategory.AGE_6, userName.AgeCategory);
-            Assert.AreEqual(Intensity.Low, userName.Intensity);
-            Assert.AreEqual(Language.Nederlands, userName.Language);
-            Assert.IsTrue(userName.Genres.Contains(Genre.Animation));
-            Assert.IsTrue(userName.Genres.Contains(Genre.Adventure));
-            Assert.IsTrue(userName.Genres.Contains(Genre.Drama));
-            Assert.IsTrue(userName.Genres.Contains(Genre.Mystery));
-            Assert.IsTrue(userName.Genres.Contains(Genre.Crime));
         }
 
         // AgeCategory ------------------------------------------------------------------------------------------------------------------
@@ -122,6 +126,52 @@ namespace BioscoopReserveringsapplicatieTests
         {
             UserModel userName = Initialize_Preferences_For_User();
             Assert.AreNotEqual(Intensity.Undefined, userName.Intensity);
+        }
+
+        // Language ------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Language_After_Preferences_Added()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            Assert.AreEqual(Language.Nederlands, userName.Language);
+        }
+
+        [TestMethod]
+        public void Incorrect_Language_After_Preferences_Added()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            Assert.AreNotEqual(Language.Undefined, userName.Language);
+        }
+
+        // Genres ------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Genres_After_Preferences_Added()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+
+            foreach (Genre genre in TestGenres)
+            {
+                Assert.IsTrue(userName.Genres.Contains(genre));
+            }
+        }
+
+        [TestMethod]
+        public void Incorrect_Genres_After_Preferences_Added()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            Assert.IsNotNull(userName.Genres);
+        }
+
+        [TestMethod]
+        public void Genres_After_Preferences_Added_Has_No_Other_Genres()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            foreach (Genre genre in Enum.GetValues(typeof(Genre)))
+            {
+                if (!TestGenres.Contains(genre)) Assert.IsFalse(userName.Genres.Contains(genre));
+            }
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------
