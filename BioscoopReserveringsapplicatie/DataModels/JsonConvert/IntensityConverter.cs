@@ -16,7 +16,7 @@ namespace BioscoopReserveringsapplicatie
 
         public override void Write(Utf8JsonWriter writer, Intensity value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            writer.WriteStringValue(value.ToString());
         }
     }
 }

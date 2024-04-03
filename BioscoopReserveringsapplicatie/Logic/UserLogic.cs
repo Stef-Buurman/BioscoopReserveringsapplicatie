@@ -1,5 +1,4 @@
-﻿//This class is not static so later on we can use inheritance and interfaces
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     public class UserLogic
     {
@@ -46,42 +45,34 @@ namespace BioscoopReserveringsapplicatie
             return _accounts.Find(i => i.Id == id);
         }
 
-        public void RegisterNewUser(string name, string email, string password)
+        public RegistrationResult RegisterNewUser(string name, string email, string password)
         {
             bool validated = false;
             string errorMessage = "";
 
             if (name == "")
             {
-                errorMessage += "Naam mag niet leeg zijn!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.NameEmpty}\n";
             }
             else if (email == "")
             {
-                errorMessage += "Email mag niet leeg zijn!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.EmailEmpty}\n";
             }
             else if (_accounts.Exists(i => i.EmailAddress == email))
             {
-                errorMessage += "Email is al in gebruik!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.EmailAlreadyExists}\n";
             }
-            else if (email.Length < 6)
+            else if (ValidateEmail(email))
             {
-                errorMessage += "Email moet minimaal 6 karakters bevatten!\n";
-            }
-            else if (!email.Contains("@"))
-            {
-                errorMessage += "Email moet een @ bevatten!\n";
-            }
-            else if (!email.Contains("."))
-            {
-                errorMessage += "Email moet een . bevatten!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
             }
             else if (password == "")
             {
-                errorMessage += "Wachtwoord mag niet leeg zijn\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.PasswordEmpty}\n";
             }
             else if (password.Length < 5)
             {
-                errorMessage += "Wachtwoord moet minimaal 5 karakters bevatten!\n";
+                errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
             }
             else
             {
@@ -94,10 +85,7 @@ namespace BioscoopReserveringsapplicatie
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
-            else
-            {
-                UserRegister.Start(errorMessage);
-            }
+            return new RegistrationResult(validated, errorMessage);
         }
 
         public UserModel? CheckLogin(string email, string password)
@@ -153,7 +141,7 @@ namespace BioscoopReserveringsapplicatie
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@");
+            return email.Contains("@") && email.Contains(".") && email.Length > 6;
         }
 
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)

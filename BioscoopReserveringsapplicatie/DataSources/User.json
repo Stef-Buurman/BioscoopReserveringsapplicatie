@@ -8,8 +8,8 @@
     "fullName": "Admin",
     "genres": null,
     "ageCategory": 0,
-    "intensity": null,
-    "language": null
+    "intensity": "Undefined",
+    "language": "Undefined"
   },
   {
     "id": 2,
@@ -24,6 +24,22 @@
       "Actie"
     ],
     "ageCategory": 16,
+    "intensity": "Medium",
+    "language": "Nederlands"
+  },
+  {
+    "id": 3,
+    "isAdmin": false,
+    "firstTimeLogin": false,
+    "emailAddress": "hsdasdb@nsakdjas.asdhbas",
+    "password": "hasdnasdnasjkd",
+    "fullName": "uashdikas",
+    "genres": [
+      "Drama",
+      "ScienceFiction",
+      "Thriller"
+    ],
+    "ageCategory": 14,
     "intensity": "Medium",
     "language": "Nederlands"
   }
