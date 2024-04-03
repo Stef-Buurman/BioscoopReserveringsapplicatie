@@ -10,11 +10,14 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
-            Console.WriteLine("Voer de film titel in:");
-            string title = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Voer de film beschrijving in:");
-            string description = Console.ReadLine() ?? "";
+            Console.WriteLine("Voer filmdetails in (druk op Esc om terug te gaan):\n");
+
+            Console.Write("Voer de film titel in: ");
+            string title = ReadLineUtil.EnterValue(() => AdminMenu.Start());
+
+            Console.Write("Voer de film beschrijving in: ");
+            string description = ReadLineUtil.EnterValue(() => AdminMenu.Start());
 
             List<Genre> genres = new List<Genre>();
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
