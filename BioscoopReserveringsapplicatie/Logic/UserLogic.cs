@@ -156,7 +156,7 @@ namespace BioscoopReserveringsapplicatie
             return email.Contains("@");
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, int ageCategory, Intensity intensity, Language language)
+        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
             {
@@ -196,9 +196,9 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
-        public bool ValidateAgeCategory(int ageCategory)
+        public bool ValidateAgeCategory(AgeCategory ageCategory)
         {
-            if (ageCategory != 6 && ageCategory != 9 && ageCategory != 12 && ageCategory != 14 && ageCategory != 16 && ageCategory != 18)
+            if (!Enum.IsDefined(typeof(AgeCategory), ageCategory))
             {
                 return false;
             }

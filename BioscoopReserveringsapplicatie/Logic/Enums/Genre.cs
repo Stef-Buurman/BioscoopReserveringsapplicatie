@@ -1,5 +1,6 @@
 public enum Genre
 {
+    Undefined,
     Horror,
     Komedie,
     Actie,
