@@ -28,7 +28,6 @@ namespace BioscoopReserveringsapplicatie
             var options = new List<Option<string>>
             {
                 new Option<string>("Koop tickets"),
-                // new Option<string>("Archiveer experience", () => ExperienceArchive.Start(experienceId)),
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
@@ -44,7 +43,7 @@ namespace BioscoopReserveringsapplicatie
             var options = new List<Option<string>>
             {
                 new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
-                new Option<string>("Archiveer experience", () => ExperienceDelete.Start(experienceId)),
+                new Option<string>("Archiveer experience", () => ExperienceArchive.Start(experienceId)),
                 new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
             };
 
