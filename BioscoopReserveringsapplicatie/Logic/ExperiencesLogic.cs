@@ -80,17 +80,5 @@
             experience.Archived = true;
             ExperiencesAccess.WriteAll(_experiences);
         }
-
-        public void ArchiveExperience(int id)
-        {
-            ExperiencesModel experience = GetById(id);
-
-            if (experience.Archived)
-            {
-                return;
-            }
-            experience.Archived = true;
-            ExperiencesAccess.WriteAll(_experiences);
-        }
     }
 }
