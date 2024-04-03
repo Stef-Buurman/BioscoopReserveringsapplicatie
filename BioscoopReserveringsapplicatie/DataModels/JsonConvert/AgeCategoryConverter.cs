@@ -7,11 +7,23 @@ namespace BioscoopReserveringsapplicatie
     {
         public override AgeCategory Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string Intens = JsonSerializer.Deserialize<string>(ref reader, options);
-            if (Intens == null) return default;
+            using (JsonDocument doc = JsonDocument.ParseValue(ref reader))
+            {
+                JsonElement element = doc.RootElement;
 
-            if (Enum.TryParse(Intens, out AgeCategory IntensityEnum)) return IntensityEnum;
-            return default;
+                if (element.ValueKind != JsonValueKind.Number) return default;
+                
+                int ageCategoryValue = element.GetInt32();
+
+                if (Enum.TryParse(ageCategoryValue.ToString(), out AgeCategory ageCategory))
+                {
+                    return ageCategory;
+                }
+                else
+                {
+                    return default;
+                }
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, AgeCategory value, JsonSerializerOptions options)

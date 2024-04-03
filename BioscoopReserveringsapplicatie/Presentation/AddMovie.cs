@@ -49,8 +49,7 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            Console.WriteLine("Voer de film kijkwijzer in:");
-            string rating = Console.ReadLine() ?? "";
+            AgeCategory rating = SelectionMenu.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
@@ -70,7 +69,7 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print(string title, string description, List<Genre> genres, string rating)
+        private static void Print(string title, string description, List<Genre> genres, AgeCategory rating)
         {
             Console.WriteLine("De film is toegevoegd.");
             Console.WriteLine("\nDe film details zijn:");
