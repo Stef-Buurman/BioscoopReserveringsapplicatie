@@ -109,11 +109,13 @@
         public void ArchiveExperience(int id)
         {
             ExperiencesModel experience = GetById(id);
-            if (experience != null)
+
+            if (experience.Archived)
             {
-                experience.Archived = true;
-                ExperiencesAccess.WriteAll(_experiences);
+                return;
             }
+            experience.Archived = true;
+            ExperiencesAccess.WriteAll(_experiences);
         }
     }
 }
