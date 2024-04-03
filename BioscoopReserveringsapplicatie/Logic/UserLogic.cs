@@ -47,6 +47,8 @@
             bool validated = false;
             string errorMessage = "";
 
+            email = email.ToLower();
+
             if (name == "")
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.NameEmpty}\n";
@@ -227,6 +229,11 @@
             Console.WriteLine("U bent uitgelogd.");
             Thread.Sleep(2000);
             LandingPage.Start();
+        }
+
+        public static bool EditUser(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        {
+            throw new NotImplementedException();
         }
     }
 }
