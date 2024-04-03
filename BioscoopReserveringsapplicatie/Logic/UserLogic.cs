@@ -140,19 +140,7 @@
 
         public bool ValidateEmail(string email)
         {
-<<<<<<< HEAD
             return email.Contains("@") && email.Contains(".") && email.Length > 6;
-=======
-            if(email.Contains("@") && email.Contains("."))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-               
->>>>>>> f11705f0b16bf4e562203d0b8197a20692403c26
         }
 
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
