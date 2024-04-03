@@ -49,35 +49,40 @@ namespace BioscoopReserveringsapplicatie
             {
                 errorMessage += "Naam mag niet leeg zijn!\n";
             }
-            else if (email == "")
+            if (email == "")
             {
                 errorMessage += "Email mag niet leeg zijn!\n";
             }
-            else if (_accounts.Exists(i => i.EmailAddress == email))
+            if (_accounts.Exists(i => i.EmailAddress == email))
             {
                 errorMessage += "Email is al in gebruik!\n";
+                email = "";
             }
-            else if (email.Length < 6)
+            if (email.Length < 6)
             {
                 errorMessage += "Email moet minimaal 6 karakters bevatten!\n";
+                email = "";
             }
-            else if (!email.Contains("@"))
+            if (!email.Contains("@"))
             {
                 errorMessage += "Email moet een @ bevatten!\n";
+                email = "";
             }
-            else if (!email.Contains("."))
+            if (!email.Contains("."))
             {
                 errorMessage += "Email moet een . bevatten!\n";
+                email = "";
             }
-            else if (password == "")
+            if (password == "")
             {
                 errorMessage += "Wachtwoord mag niet leeg zijn\n";
             }
-            else if (password.Length < 5)
+            if (password.Length < 5)
             {
                 errorMessage += "Wachtwoord moet minimaal 5 karakters bevatten!\n";
+                password = "";
             }
-            else
+            if (errorMessage == "")
             {
                 validated = true;
             }
@@ -90,7 +95,7 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                UserRegister.Start(errorMessage);
+                UserRegister.Start(errorMessage, email, name, password);
             }
         }
 
