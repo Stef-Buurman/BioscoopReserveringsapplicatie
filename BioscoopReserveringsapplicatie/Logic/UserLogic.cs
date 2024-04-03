@@ -58,10 +58,12 @@
             if (_accounts.Exists(i => i.EmailAddress == email))
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAlreadyExists}\n";
+                email = "";
             }
             else if (!ValidateEmail(email))
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
+                email = "";
             }
             if (password == "")
             {
@@ -70,19 +72,27 @@
             if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
+                password = "";
             }
+
             if (errorMessage == "")
             {
                 validated = true;
             }
 
+            UserModel newAccount = null;
+
             if (validated)
             {
-                UserModel newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
-            return new RegistrationResult(validated, errorMessage);
+            else
+            {
+                newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
+            }
+            return new RegistrationResult(validated, errorMessage, newAccount);
         }
 
         public UserModel? CheckLogin(string email, string password)
