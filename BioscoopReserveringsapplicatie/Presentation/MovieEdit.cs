@@ -7,16 +7,16 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             Console.Clear();
-            
+
             MovieModel movie = MoviesLogic.GetMovieById(movieId);
 
-            Console.WriteLine("Voer nieuwe filmdetails in (druk op Enter om de huidige te behouden):");
+            Console.WriteLine("Voer nieuwe filmdetails in (druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan):\n");
 
             Console.Write("Voer de film titel in: ");
-            string newTitle = EditDefaultValueUtil.EditDefaultValue(movie.Title);
+            string newTitle = ReadLineUtil.EditValue(movie.Title, () => MovieDetails.Start(movieId));
 
             Console.Write("Voer de film beschrijving in: ");
-            string newDescription = EditDefaultValueUtil.EditDefaultValue(movie.Description);
+            string newDescription = ReadLineUtil.EditValue(movie.Description, () => MovieDetails.Start(movieId));
 
             List<Genre> genres = new List<Genre>();
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
@@ -52,7 +52,7 @@ namespace BioscoopReserveringsapplicatie
             }
 
             Console.Write("Voer de film kijkwijzer in: ");
-            string newRating = EditDefaultValueUtil.EditDefaultValue(movie.Rating);
+            string newRating = ReadLineUtil.EditValue(movie.Rating, () => MovieDetails.Start(movieId));
 
             List<Option<string>> options = new List<Option<string>>
             {
