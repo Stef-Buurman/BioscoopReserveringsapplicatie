@@ -27,7 +27,7 @@
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
         public bool ValidateExperienceIntensity(string Intensity) => (Intensity.ToLower() != "laag" && Intensity.ToLower() != "hoog" && Intensity.ToLower() != "medium") ? false : true;
-        public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
+        public bool ValidateExperienceTimeLength(string timeLength) => int.TryParse(timeLength, out int _) ? true : false;
 
         public bool AddExperience(ExperiencesModel experience)
         {
@@ -66,5 +66,46 @@
             }
             return experiences;
         }
+         public bool EditExperience (int id, string name, string intensity, int timeLength, int filmId)
+        {
+            if (id == 0 || name.Trim() == "" || intensity.Trim() == "" )
+            {
+                Console.WriteLine("Vul alstublieft alle velden in.");
+                return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(intensity) && !string.IsNullOrWhiteSpace(timeLength.ToString()) && !string.IsNullOrWhiteSpace(filmId.ToString()))
+            {
+                ExperiencesModel experience = GetById(id);
+                experience.Name = name;
+                experience.Intensity = intensity;
+                experience.FilmId = filmId;
+                experience.TimeLength = timeLength;
+                
+                UpdateList(experience);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void UpdateList(ExperiencesModel experience)
+        {
+            //Find if there is already an model with the same id
+            int index = _experiences.FindIndex(s => s.Id == experience.Id);
+
+            if (index != -1)
+            {
+                //update existing model
+                _experiences[index] = experience;
+            }
+            else
+            {
+                //add new model
+                _experiences.Add(experience);
+            }
+            ExperiencesAccess.WriteAll(_experiences);
+        }
+
     }
 }
