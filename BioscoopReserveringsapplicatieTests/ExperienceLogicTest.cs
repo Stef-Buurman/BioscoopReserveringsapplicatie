@@ -105,5 +105,20 @@
         {
             Assert.IsFalse(_experiencesLogic.ValidateExperience(null));
         }
+        
+        // Archive ----------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Experience_Archive_Success()
+        {
+            ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.High, 10, false);
+            
+        }
+
+        [TestMethod]
+        public void Incorrect()
+        {
+
+        }
     }
 }
