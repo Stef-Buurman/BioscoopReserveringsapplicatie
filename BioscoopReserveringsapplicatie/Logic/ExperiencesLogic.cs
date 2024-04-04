@@ -29,6 +29,7 @@
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
         public bool ValidateMovieId(int filmId) => MoviesLogic.GetMovieById(filmId) == null ? false : true;
+        public bool ValidateExperienceArchive(bool archived) => true;
 
         public bool AddExperience(ExperiencesModel experience)
         {
@@ -56,6 +57,8 @@
 
             foreach (ExperiencesModel experience in _experiences)
             {
+                if (experience.Archived) continue;
+                    
                 MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
 
                 if(movie == null) continue;
@@ -102,6 +105,32 @@
                 _experiences.Add(experience);
             }
             ExperiencesAccess.WriteAll(_experiences);
+        }
+
+        public void ArchiveExperience(int id)
+        {
+            ExperiencesModel experience = GetById(id);
+            if (experience != null)
+            {   
+                experience.Archived = true;
+                ExperiencesAccess.WriteAll(_experiences);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public List<ExperiencesModel> GetAllArchivedExperiences()
+        {
+            _experiences = ExperiencesAccess.LoadAll();
+            return _experiences.FindAll(e => e.Archived);
+        }
+
+        public List<ExperiencesModel> GetAllActiveExperiences()
+        {
+            _experiences = ExperiencesAccess.LoadAll();
+            return _experiences.FindAll(e => !e.Archived);
         }
     }
 }
