@@ -152,6 +152,13 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsTrue(experiencesLogic.GetById(1).Archived);
         }
 
+        // [TestMethod]
+        // public void Correct_Experience_AlreadyArchived_Still_Archived(int id)
+        // {
+        //     //ExperiencesLogic experiencesLogic = Initialize();
+
+        // }
+
         [TestMethod]
         public void Correct_Multiple_Experience_Archive_Success()
         {
