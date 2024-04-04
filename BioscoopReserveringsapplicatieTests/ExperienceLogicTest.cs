@@ -9,9 +9,9 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var experienceRepositoryMock = Substitute.For<IDataAccess<ExperiencesModel>>();
             List<ExperiencesModel> experiences = new List<ExperiencesModel>() {
-                new ExperiencesModel("", 0, Intensity.Low, 20, false),
-                new ExperiencesModel("", 0, Intensity.Medium, 20, true),
-
+                new ExperiencesModel(0, "", 0, Intensity.Low, 20, false),
+                new ExperiencesModel(1, "", 0, Intensity.Medium, 20, true),
+                new ExperiencesModel(2, "", 0, Intensity.High, 20, false),
             };
             experienceRepositoryMock.LoadAll().Returns(experiences);
             experienceRepositoryMock.WriteAll(Arg.Any<List<ExperiencesModel>>());
@@ -138,20 +138,26 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Experience_Archive_Success()
         {
             ExperiencesLogic experiencesLogic = Initialize();
-            Assert.IsTrue(experiencesLogic.ValidateExperienceArchive(true));
+            experiencesLogic.ArchiveExperience(0); 
+            Assert.IsTrue(experiencesLogic.GetById(0).Archived);
         }
 
-        // [TestMethod]
-        // public void Correct_Experience_AlreadyArchived_Still_Archived(int id)
-        // {
-        //     //ExperiencesLogic experiencesLogic = Initialize();
-
-        // }
-
         [TestMethod]
-        public void Incorrect_Experience_Archive_Failure()
+        public void Correct_Experience_AlreadyArchived_Still_Archived()
         {
             ExperiencesLogic experiencesLogic = Initialize();
+            experiencesLogic.ArchiveExperience(1);
+            Assert.IsTrue(experiencesLogic.GetById(1).Archived);
+        }
+
+        [TestMethod]
+        public void Correct_Multiple_Experience_Archive_Success()
+        {
+            ExperiencesLogic experiencesLogic = Initialize();
+            experiencesLogic.ArchiveExperience(0);
+            experiencesLogic.ArchiveExperience(2);
+            Assert.IsTrue(experiencesLogic.GetById(0).Archived);
+            Assert.IsTrue(experiencesLogic.GetById(2).Archived);
         }
     }
 }

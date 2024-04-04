@@ -22,7 +22,6 @@
             else if (!ValidateExperienceName(experience.Name)) return false;
             else if (!ValidateExperienceIntensity(experience.Intensity)) return false;
             else if (!ValidateExperienceTimeLength(experience.TimeLength)) return false;
-            else if (!ValidateExperienceArchive(experience.Archived)) return false;
             return true;
         }
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
@@ -111,11 +110,6 @@
         public void ArchiveExperience(int id)
         {
             ExperiencesModel experience = GetById(id);
-
-            if (experience.Archived)
-            {
-                return;
-            }
             experience.Archived = true;
             ExperiencesAccess.WriteAll(_experiences);
         }
