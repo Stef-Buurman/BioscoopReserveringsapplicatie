@@ -75,6 +75,9 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Ja", () => {
                         if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, newGenres, newIntensity, newAgeCategory))
                         {
+                            Console.Clear();
+                            ColorConsole.WriteColorLine("[Gebruikers gegevens zijn gewijzigd!]", ConsoleColor.Green);
+                            Thread.Sleep(2000);
                             UserDetails.Start();
                         }
                         else
