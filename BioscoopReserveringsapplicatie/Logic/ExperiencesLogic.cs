@@ -22,14 +22,12 @@
             else if (!ValidateExperienceName(experience.Name)) return false;
             else if (!ValidateExperienceIntensity(experience.Intensity)) return false;
             else if (!ValidateExperienceTimeLength(experience.TimeLength)) return false;
-            else if (!ValidateExperienceArchive(experience.Archived)) return false;
             return true;
         }
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
-        public bool ValidateExperienceArchive(bool archived) => true;
 
         public bool AddExperience(ExperiencesModel experience)
         {
@@ -74,11 +72,6 @@
         public void ArchiveExperience(int id)
         {
             ExperiencesModel experience = GetById(id);
-
-            if (experience.Archived)
-            {
-                return;
-            }
             experience.Archived = true;
             ExperiencesAccess.WriteAll(_experiences);
         }
