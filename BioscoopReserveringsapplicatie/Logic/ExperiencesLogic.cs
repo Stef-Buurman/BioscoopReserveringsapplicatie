@@ -110,8 +110,15 @@
         public void ArchiveExperience(int id)
         {
             ExperiencesModel experience = GetById(id);
-            experience.Archived = true;
-            ExperiencesAccess.WriteAll(_experiences);
+            if (experience != null)
+            {   
+                experience.Archived = true;
+                ExperiencesAccess.WriteAll(_experiences);
+            }
+            else
+            {
+                return;
+            }
         }
 
         public List<ExperiencesModel> GetAllArchivedExperiences()

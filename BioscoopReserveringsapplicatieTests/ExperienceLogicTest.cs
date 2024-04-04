@@ -159,5 +159,14 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsTrue(experiencesLogic.GetById(0).Archived);
             Assert.IsTrue(experiencesLogic.GetById(2).Archived);
         }
+
+        [TestMethod]
+        public void Incorrect_Experience_Archive_Nonexistent_ID()
+        {
+            ExperiencesLogic experiencesLogic = Initialize();
+            int nonexistentID = 999;
+            experiencesLogic.ArchiveExperience(nonexistentID);
+            Assert.IsNull(experiencesLogic.GetById(nonexistentID));
+}
     }
 }
