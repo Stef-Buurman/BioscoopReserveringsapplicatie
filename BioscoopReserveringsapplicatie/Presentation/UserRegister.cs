@@ -56,5 +56,14 @@ namespace BioscoopReserveringsapplicatie
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
             if (!registrationResult.IsValid) Start(registrationResult.ErrorMessage, registrationResult.User);
         }
+
+        private static void PrintTitleAndErrorWhenTrue(string? errorMessage)
+        {
+            ColorConsole.WriteColorLine("[Registratiepagina]\n", Globals.TitleColor);
+            if (errorMessage != null)
+            {
+                Console.WriteLine(errorMessage);
+            }
+        }
     }
 }
