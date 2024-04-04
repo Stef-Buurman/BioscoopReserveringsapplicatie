@@ -3,7 +3,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceEdit
     {
-        static public ExperiencesLogic ExperiencesLogic = new();
+        static public ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
         static public MoviesLogic MoviesLogic = new MoviesLogic();
 
         public static void Start(int experienceId)
@@ -48,7 +48,6 @@ namespace BioscoopReserveringsapplicatie
 
         public static string ExperienceName(ExperiencesModel experience)
         {
-        {
             Console.Clear();
             Console.Write("Voer de experience naam in: ");
             string newName = EditDefaultValueUtil.EditDefaultValue(experience.Name);
@@ -58,7 +57,6 @@ namespace BioscoopReserveringsapplicatie
                 newName = EditDefaultValueUtil.EditDefaultValue(newName);
             }
             return newName;
-            }
         }
 
         public static int SelectMovie()
