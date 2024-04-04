@@ -38,14 +38,27 @@ namespace BioscoopReserveringsapplicatie
         {
             experience = ExperienceLogic.GetById(experienceId);
 
+            List<Option<string>> options; 
+
             movie = MoviesLogic.GetMovieById(experience.FilmId);
 
-            var options = new List<Option<string>>
+            if (experience.Archived)
             {
-                new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
-                new Option<string>("Archiveer experience", () => ExperienceArchive.Start(experienceId)),
-                new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
-            };
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
+                };
+            }
+            else
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Archiveer experience", () => ExperienceArchive.Start(experienceId)),
+                    new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
+                };
+            }
 
             SelectionMenu.Create(options, Print);
         }
