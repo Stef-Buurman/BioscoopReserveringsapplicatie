@@ -28,6 +28,7 @@
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
+        public bool ValidateMovieId(int filmId) => MoviesLogic.GetMovieById(filmId) == null ? false : true;
 
         public bool AddExperience(ExperiencesModel experience)
         {
@@ -65,6 +66,42 @@
                 }
             }
             return experiences;
+        }
+        public bool EditExperience (int id, string name, Intensity intensity, int timeLength, int filmId)
+        {
+        
+
+            if (ValidateExperienceName(name) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
+            {
+                ExperiencesModel experience = GetById(id);
+                experience.Name = name;
+                experience.Intensity = intensity;
+                experience.FilmId = filmId;
+                experience.TimeLength = timeLength;
+                
+                UpdateList(experience);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void UpdateList(ExperiencesModel experience)
+        {
+            //Find if there is already an model with the same id
+            int index = _experiences.FindIndex(s => s.Id == experience.Id);
+
+            if (index != -1)
+            {
+                //update existing model
+                _experiences[index] = experience;
+            }
+            else
+            {
+                //add new model
+                _experiences.Add(experience);
+            }
+            ExperiencesAccess.WriteAll(_experiences);
         }
     }
 }
