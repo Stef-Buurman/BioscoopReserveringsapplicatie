@@ -71,7 +71,7 @@
         {
         
 
-            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(timeLength.ToString()) && !string.IsNullOrWhiteSpace(filmId.ToString()))
+            if (ValidateExperienceName(name) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
             {
                 ExperiencesModel experience = GetById(id);
                 experience.Name = name;
