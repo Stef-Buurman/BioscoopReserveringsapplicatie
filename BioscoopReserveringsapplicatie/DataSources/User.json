@@ -2,7 +2,6 @@
   {
     "id": 1,
     "isAdmin": true,
-    "firstTimeLogin": false,
     "emailAddress": "admin@mail.com",
     "password": "admin",
     "fullName": "Admin",
@@ -14,32 +13,11 @@
   {
     "id": 2,
     "isAdmin": false,
-    "firstTimeLogin": false,
     "emailAddress": "user@mail.com",
     "password": "user123",
-    "fullName": "user",
-    "genres": [
-      "Horror",
-      "Komedie",
-      "Actie"
-    ],
+    "fullName": "User",
+    "genres": ["Horror", "Komedie", "Actie"],
     "ageCategory": 16,
-    "intensity": "Medium",
-    "language": "Nederlands"
-  },
-  {
-    "id": 3,
-    "isAdmin": false,
-    "firstTimeLogin": false,
-    "emailAddress": "hsdasdb@nsakdjas.asdhbas",
-    "password": "hasdnasdnasjkd",
-    "fullName": "uashdikas",
-    "genres": [
-      "Drama",
-      "ScienceFiction",
-      "Thriller"
-    ],
-    "ageCategory": 14,
     "intensity": "Medium",
     "language": "Nederlands"
   }

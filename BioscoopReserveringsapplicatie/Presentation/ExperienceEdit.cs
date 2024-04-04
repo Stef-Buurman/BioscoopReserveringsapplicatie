@@ -12,8 +12,6 @@ namespace BioscoopReserveringsapplicatie
 
             ExperiencesModel experience = ExperiencesLogic.GetById(experienceId);
 
-            Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
-
             string newName = ExperienceName(experience);
 
             int selectedMovieId = SelectMovie();
@@ -49,12 +47,20 @@ namespace BioscoopReserveringsapplicatie
         public static string ExperienceName(ExperiencesModel experience)
         {
             Console.Clear();
-            Console.Write("Voer de experience naam in: ");
-            string newName = EditDefaultValueUtil.EditDefaultValue(experience.Name);
+
+            string newName = ReadLineUtil.EditValue(experience.Name, () =>
+            {
+                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                Console.Write("Voer de experience naam in: ");
+            }, () => ExperienceOverview.Start());
             while (string.IsNullOrEmpty(newName))
             {
                 Console.WriteLine("Naam mag niet leeg zijn.");
-                newName = EditDefaultValueUtil.EditDefaultValue(newName);
+                newName = ReadLineUtil.EditValue(newName, () =>
+                {
+                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                    Console.Write("Voer de experience naam in: ");
+                }, () => ExperienceOverview.Start());
             }
             return newName;
         }
@@ -89,16 +95,24 @@ namespace BioscoopReserveringsapplicatie
         public static int ExperienceLength(ExperiencesModel experience)
         {
             Console.Clear();
-            Console.Write("Voer de lengte van de experience in (in minuten)");
-            string timeInString = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
+
+            string timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
+            {
+                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                Console.Write("Voer de lengte van de experience in (in minuten): ");
+            }, () => ExperienceOverview.Start());
             while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
             {
                 Console.WriteLine("Ongeldige invoer. Voer een geldig getal in.");
-                timeInString = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
+                timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
+                {
+                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                    Console.Write("Voer de lengte van de experience in (in minuten): ");
+                }, () => ExperienceOverview.Start());
             }
             return int.Parse(timeInString);
         }
-            
+
 
         private static void Print(string newName, string selectedMovieTitle, Intensity newIntensity, int timeInInt)
         {
@@ -106,7 +120,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine($"Experience naam: {newName}");
             Console.WriteLine($"Film gekoppeld aan experience: {selectedMovieTitle}");
             Console.WriteLine($"Experience intensiteit: {newIntensity}");
-            Console.WriteLine($"Experience tijdsduur: {timeInInt} minutes\n");
+            Console.WriteLine($"Experience tijdsduur: {timeInInt} minuten\n");
 
             Console.WriteLine($"Weet u zeker dat u de aanpassingen op {newName} wilt opslaan?");
         }
