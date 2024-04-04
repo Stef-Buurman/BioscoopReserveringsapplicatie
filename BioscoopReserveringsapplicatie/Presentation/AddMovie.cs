@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace BioscoopReserveringsapplicatie
 {
     static class AddMovie
@@ -12,7 +10,6 @@ namespace BioscoopReserveringsapplicatie
             string title = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
-                Console.WriteLine("Voer filmdetails in (druk op Esc om terug te gaan):\n");
                 Console.Write("Voer de film titel in: ");
             }, 
             () => AdminMenu.Start());
@@ -20,7 +17,6 @@ namespace BioscoopReserveringsapplicatie
             string description = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
-                Console.WriteLine("Voer filmdetails in (druk op Esc om terug te gaan):\n");
                 Console.WriteLine($"Voer de film titel in: {title}");
                 Console.Write("Voer de film beschrijving in: ");
             }, 
