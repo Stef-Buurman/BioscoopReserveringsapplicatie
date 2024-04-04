@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace BioscoopReserveringsapplicatie
 {
     static class AddMovie
@@ -9,12 +7,20 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
-            Console.WriteLine("Voer de film titel in:");
-            string title = Console.ReadLine() ?? "";
+            string title = ReadLineUtil.EnterValue(() =>
+            {
+                ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
+                Console.Write("Voer de film titel in: ");
+            }, 
+            () => AdminMenu.Start());
 
-            Console.WriteLine("Voer de film beschrijving in:");
-            string description = Console.ReadLine() ?? "";
+            string description = ReadLineUtil.EnterValue(() =>
+            {
+                ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
+                Console.WriteLine($"Voer de film titel in: {title}");
+                Console.Write("Voer de film beschrijving in: ");
+            }, 
+            () => AdminMenu.Start());
 
             List<Genre> genres = new List<Genre>();
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();

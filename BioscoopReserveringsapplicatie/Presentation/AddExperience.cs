@@ -8,18 +8,17 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
-            string name = AskForExperienceName();
-            int filmId = AskForMovie();
-            Intensity intensity = AskForExperienceIntensity();
-            int timeLength = AskForExperienceTimeLength();
+            string name = AskForExperienceName(() => WriteTitle());
+            int filmId = AskForMovie(() => WriteTitle());
+            Intensity intensity = AskForExperienceIntensity(() => WriteTitle());
+            int timeLength = AskForExperienceTimeLength(() => WriteTitle());
 
             ExperiencesModel newExperience = new ExperiencesModel(name, filmId, intensity, timeLength);
             if (experiencesLogic.AddExperience(newExperience))
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
+                    new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
                 SelectionMenu.Create(options, () => Print(name, filmId, intensity, timeLength));
             }
@@ -27,53 +26,92 @@ namespace BioscoopReserveringsapplicatie
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
+                    new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
                 SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red));
             }
         }
 
-        private static string AskForExperienceName()
+        private static void WriteTitle() => ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
+
+        private static void WhatToDoWhenGoBack()
         {
-            ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
-            string name = Console.ReadLine() ?? "";
+            Console.Clear();
+            AdminMenu.Start();
+        }
+
+        private static string AskForExperienceName(Action functionToShow)
+        {
+            string name = ReadLineUtil.EnterValue(
+                () =>
+                {
+                    functionToShow();
+                    ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
+                },
+                WhatToDoWhenGoBack);
             while (!experiencesLogic.ValidateExperienceName(name))
             {
-                Console.WriteLine("Voer alstublieft een geldige naam in!");
-                ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
-                name = Console.ReadLine() ?? "";
+                name = ReadLineUtil.EnterValue(
+                () =>
+                {
+                    functionToShow();
+                    Console.WriteLine("Voer alstublieft een geldige naam in!");
+                    ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
+                },
+                WhatToDoWhenGoBack);
             }
             return name;
         }
 
-        private static Intensity AskForExperienceIntensity()
+        private static Intensity AskForExperienceIntensity(Action functionToShow)
         {
-            ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-            string intensitystr = Console.ReadLine() ?? "";
+
+            string intensitystr = ReadLineUtil.EnterValue(
+                () =>
+                {
+                    functionToShow();
+                    ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
+                },
+                WhatToDoWhenGoBack);
             Intensity intensity;
             while (!Enum.TryParse(intensitystr, out intensity) && !experiencesLogic.ValidateExperienceIntensity(intensity))
             {
-                Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
-                ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-                intensitystr = Console.ReadLine() ?? "";
+                intensitystr = ReadLineUtil.EnterValue(
+                () =>
+                {
+                    functionToShow();
+                    Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
+                    ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
+                },
+                WhatToDoWhenGoBack);
             }
             return intensity;
         }
 
-        private static int AskForExperienceTimeLength()
+        private static int AskForExperienceTimeLength(Action functionToShow)
         {
-            ColorConsole.WriteColor($"Wat is de [tijdsduur]? (in minuten): ", Globals.ColorInputcClarification);
-            string timeLengthStr = Console.ReadLine() ?? "";
+            string timeLengthStr = ReadLineUtil.EnterValue(
+                () =>
+                {
+                    functionToShow();
+                    ColorConsole.WriteColor($"Wat is de [tijdsduur]? (in minuten): ", Globals.ColorInputcClarification);
+                },
+                WhatToDoWhenGoBack);
             while (!experiencesLogic.ValidateExperienceTimeLength(timeLengthStr))
             {
-                Console.WriteLine("Voer alstublieft een geldige tijdsduur in!");
-                ColorConsole.WriteColor($"Wat is de [tijdsduur]? (in minuten): ", Globals.ColorInputcClarification);
-                timeLengthStr = Console.ReadLine() ?? "";
+                timeLengthStr = ReadLineUtil.EnterValue(
+                () =>
+                {
+                    functionToShow();
+                    Console.WriteLine("Voer alstublieft een geldige tijdsduur in!");
+                    ColorConsole.WriteColor($"Wat is de [tijdsduur]? (in minuten): ", Globals.ColorInputcClarification);
+                },
+                WhatToDoWhenGoBack);
             }
             return Convert.ToInt32(timeLengthStr);
         }
 
-        private static int AskForMovie()
+        private static int AskForMovie(Action functionToShow)
         {
             List<MovieModel> movies = moviesLogic.GetAllMovies();
             List<Option<int>> movieOptions = new List<Option<int>>();
@@ -81,7 +119,12 @@ namespace BioscoopReserveringsapplicatie
             {
                 movieOptions.Add(new Option<int>(movie.Id, movie.Title));
             }
-            int movieId = SelectionMenu.Create(movieOptions, 10, () => Console.WriteLine("Welke film wilt u toevoegen?"));
+            int movieId = SelectionMenu.Create(movieOptions, 10, () =>
+            {
+                functionToShow();
+                Console.WriteLine("Welke film wilt u toevoegen?");
+            }
+            );
             Console.Clear();
             return movieId;
         }
