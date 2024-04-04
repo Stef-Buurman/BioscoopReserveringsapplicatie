@@ -80,5 +80,17 @@
             experience.Archived = true;
             ExperiencesAccess.WriteAll(_experiences);
         }
+
+        public List<ExperiencesModel> GetAllArchivedExperiences()
+        {
+            _experiences = ExperiencesAccess.LoadAll();
+            return _experiences.FindAll(e => e.Archived);
+        }
+
+        public List<ExperiencesModel> GetAllActiveExperiences()
+        {
+            _experiences = ExperiencesAccess.LoadAll();
+            return _experiences.FindAll(e => !e.Archived);
+        }
     }
 }
