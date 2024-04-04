@@ -22,6 +22,7 @@
             else if (!ValidateExperienceName(experience.Name)) return false;
             else if (!ValidateExperienceIntensity(experience.Intensity)) return false;
             else if (!ValidateExperienceTimeLength(experience.TimeLength)) return false;
+            else if (!ValidateExperienceArchive(experience.Archived)) return false;
             return true;
         }
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
@@ -29,6 +30,7 @@
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
         public bool ValidateMovieId(int filmId) => MoviesLogic.GetMovieById(filmId) == null ? false : true;
+        public bool ValidateExperienceArchive(bool archived) => true;
 
         public bool AddExperience(ExperiencesModel experience)
         {
