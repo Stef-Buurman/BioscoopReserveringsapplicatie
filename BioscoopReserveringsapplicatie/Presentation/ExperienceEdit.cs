@@ -50,11 +50,11 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             Console.Write("Voer de experience naam in: ");
-            string newName = EditDefaultValueUtil.EditDefaultValue(experience.Name);
+            string newName = ReadLineUtil.EditValue(experience.Name, null, () => ExperienceOverview.Start());
             while (string.IsNullOrEmpty(newName))
             {
                 Console.WriteLine("Naam mag niet leeg zijn.");
-                newName = EditDefaultValueUtil.EditDefaultValue(newName);
+                newName = ReadLineUtil.EditValue(newName, null, () => ExperienceOverview.Start());
             }
             return newName;
         }
@@ -90,15 +90,15 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             Console.Write("Voer de lengte van de experience in (in minuten)");
-            string timeInString = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
+            string timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), null, () => ExperienceOverview.Start());
             while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
             {
                 Console.WriteLine("Ongeldige invoer. Voer een geldig getal in.");
-                timeInString = EditDefaultValueUtil.EditDefaultValue(experience.TimeLength.ToString());
+                timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), null, () => ExperienceOverview.Start());
             }
             return int.Parse(timeInString);
         }
-            
+
 
         private static void Print(string newName, string selectedMovieTitle, Intensity newIntensity, int timeInInt)
         {
