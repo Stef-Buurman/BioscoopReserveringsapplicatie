@@ -1,9 +1,24 @@
-﻿namespace BioscoopReserveringsapplicatieTests
+﻿using NSubstitute;
+
+namespace BioscoopReserveringsapplicatieTests
 {
     [TestClass]
     public class ExperienceTest
     {
-        private ExperiencesLogic _experiencesLogic = new ExperiencesLogic();
+        public ExperiencesLogic Initialize()
+        {
+            var experienceRepositoryMock = Substitute.For<IDataAccess<ExperiencesModel>>();
+            List<ExperiencesModel> experiences = new List<ExperiencesModel>() {
+                new ExperiencesModel("", 0, Intensity.Low, 20, false),
+                new ExperiencesModel("", 0, Intensity.Medium, 20, true),
+
+            };
+            experienceRepositoryMock.LoadAll().Returns(experiences);
+            experienceRepositoryMock.WriteAll(Arg.Any<List<ExperiencesModel>>());
+
+            ExperiencesAccess.NewDataAccess(experienceRepositoryMock);
+            return new ExperiencesLogic();
+        }
 
         // Name ------------------------------------------------------------------------------------------------------------------
 
@@ -12,16 +27,18 @@
         [DataTestMethod]
         public void Correct_Experience_Name_Validation(string name)
         {
-            Assert.IsTrue(_experiencesLogic.ValidateExperienceName(name));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsTrue(experiencesLogic.ValidateExperienceName(name));
         }
 
         [TestMethod]
         public void Incorrect_Experience_Name_Validation_With_Experience()
         {
+            ExperiencesLogic experiencesLogic = Initialize();
             ExperiencesModel experience = new ExperiencesModel("", 0, Intensity.Low, 0, false);
-            Assert.IsFalse(_experiencesLogic.ValidateExperience(experience));
+            Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
             ExperiencesModel experience2 = new ExperiencesModel(null, 0, Intensity.Low, 0, false);
-            Assert.IsFalse(_experiencesLogic.ValidateExperience(experience2));
+            Assert.IsFalse(experiencesLogic.ValidateExperience(experience2));
         }
 
         [DataRow("")]
@@ -29,16 +46,18 @@
         [DataTestMethod]
         public void Incorrect_Experience_Name_Validation_With_Name(string name)
         {
-            Assert.IsFalse(_experiencesLogic.ValidateExperienceName(name));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsFalse(experiencesLogic.ValidateExperienceName(name));
         }
 
         [TestMethod]
         public void Incorrect_Experience_Intensity_With_Experience()
         {
+            ExperiencesLogic experiencesLogic = Initialize();
             ExperiencesModel experience = new ExperiencesModel("test1", 0, (Intensity)909, 10, false);
-            Assert.IsFalse(_experiencesLogic.ValidateExperience(experience));
+            Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
             ExperiencesModel experience2 = new ExperiencesModel("test1", 0, (Intensity)1002, 10, false);
-            Assert.IsFalse(_experiencesLogic.ValidateExperience(experience2));
+            Assert.IsFalse(experiencesLogic.ValidateExperience(experience2));
         }
 
         // Intensity ------------------------------------------------------------------------------------------------------------------
@@ -49,7 +68,8 @@
         [DataTestMethod]
         public void Correct_Experience_Intensity_Validation_With_Intensity(Intensity intensity)
         {
-            Assert.IsTrue(_experiencesLogic.ValidateExperienceIntensity(intensity));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsTrue(experiencesLogic.ValidateExperienceIntensity(intensity));
         }
 
         [DataRow((Intensity)909)]
@@ -57,7 +77,8 @@
         [DataTestMethod]
         public void Incorrect_Experience_Intensity_Validation_With_Intensity(Intensity intensity)
         {
-            Assert.IsFalse(_experiencesLogic.ValidateExperienceIntensity(intensity));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsFalse(experiencesLogic.ValidateExperienceIntensity(intensity));
         }
 
         // TimeLength ------------------------------------------------------------------------------------------------------------------
@@ -69,14 +90,16 @@
         [DataTestMethod]
         public void CorrectExperienceTimeLength(int time)
         {
-            Assert.IsTrue(_experiencesLogic.ValidateExperienceTimeLength(time));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsTrue(experiencesLogic.ValidateExperienceTimeLength(time));
         }
 
         [TestMethod]
         public void Incorrect_Experience_TimeLength_Validation_With_Experience()
         {
+            ExperiencesLogic experiencesLogic = Initialize();
             ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.Low, -10, false);
-            Assert.IsFalse(_experiencesLogic.ValidateExperience(experience));
+            Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
         }
 
         [DataRow(-6)]
@@ -88,7 +111,8 @@
         [DataTestMethod]
         public void Incorrect_Experience_TimeLength_Validation_With_Time(int time)
         {
-            Assert.IsFalse(_experiencesLogic.ValidateExperienceTimeLength(time));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsFalse(experiencesLogic.ValidateExperienceTimeLength(time));
         }
 
         // Experience ------------------------------------------------------------------------------------------------------------------
@@ -96,14 +120,16 @@
         [TestMethod]
         public void CorrectExperience()
         {
+            ExperiencesLogic experiencesLogic = Initialize();
             ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.High, 10, false);
-            Assert.IsTrue(_experiencesLogic.ValidateExperience(experience));
+            Assert.IsTrue(experiencesLogic.ValidateExperience(experience));
         }
 
         [TestMethod]
         public void Incorrect_Experience_Null()
         {
-            Assert.IsFalse(_experiencesLogic.ValidateExperience(null));
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsFalse(experiencesLogic.ValidateExperience(null));
         }
         
         // Archive ----------------------------------------------------------------------------------------------------------------------
@@ -111,14 +137,21 @@
         [TestMethod]
         public void Correct_Experience_Archive_Success()
         {
-            ExperiencesModel experience = new ExperiencesModel("test1", 0, Intensity.High, 10, false);
-            
+            ExperiencesLogic experiencesLogic = Initialize();
+            Assert.IsTrue(experiencesLogic.ValidateExperienceArchive(true));
         }
 
-        [TestMethod]
-        public void Incorrect()
-        {
+        // [TestMethod]
+        // public void Correct_Experience_AlreadyArchived_Still_Archived(int id)
+        // {
+        //     //ExperiencesLogic experiencesLogic = Initialize();
 
+        // }
+
+        [TestMethod]
+        public void Incorrect_Experience_Archive_Failure()
+        {
+            ExperiencesLogic experiencesLogic = Initialize();
         }
     }
 }
