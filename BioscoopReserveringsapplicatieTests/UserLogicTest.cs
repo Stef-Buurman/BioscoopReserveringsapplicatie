@@ -136,7 +136,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             UserLogic userLogic = Initialize();
 
-            var x = userLogic.LoginUser("Henk@henk.henk", "testtest");
+            var x = userLogic.Login("Henk@henk.henk", "testtest");
             Assert.IsTrue(x);
             userLogic.addPreferencesToAccount(TestGenres, AgeCategory.AGE_6, Intensity.Low, Language.Nederlands);
             return userLogic.GetById(1);
@@ -227,49 +227,49 @@ namespace BioscoopReserveringsapplicatieTests
         // Correct User Login ------------------------------------------------------------------------------------------------------------
 
         [TestMethod]
-        public void Correct_LoginUser_Validation_NoAdmin()
+        public void Correct_Login_Validation_NoAdmin()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsTrue(userLogic.LoginUser("Henk@henk.henk", "testtest"));
+            Assert.IsTrue(userLogic.Login("Henk@henk.henk", "testtest"));
         }
 
         [TestMethod]
-        public void Correct_LoginUser_Validation_Admin()
+        public void Correct_Login_Validation_Admin()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsTrue(userLogic.LoginUser("Petra@Petra.Petra", "testtest"));
+            Assert.IsTrue(userLogic.Login("Petra@Petra.Petra", "testtest"));
         }
 
         // Incorrect NoAdmin Login -------------------------------------------------------------------------------------------------------
 
         [TestMethod]
-        public void Incorrect_LoginUser_Validation_NoAdmin_WrongPassword()
+        public void Incorrect_Login_Validation_NoAdmin_WrongPassword()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.LoginUser("Tim@Tim.Tim", "testtest"));
+            Assert.IsFalse(userLogic.Login("Tim@Tim.Tim", "testtest"));
         }
 
         [TestMethod]
-        public void Incorrect_LoginUser_Validation_NoAdmin_WrongEmail()
+        public void Incorrect_Login_Validation_NoAdmin_WrongEmail()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.LoginUser("DitIsGewoonEenHeelAnderEmail@Adress.nl", "testtest"));
+            Assert.IsFalse(userLogic.Login("DitIsGewoonEenHeelAnderEmail@Adress.nl", "testtest"));
         }
 
         // Incorrect Admin Login ---------------------------------------------------------------------------------------------------------
 
         [TestMethod]
-        public void Incorrect_LoginUser_Validation_Admin_WrongPassword()
+        public void Incorrect_Login_Validation_Admin_WrongPassword()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.LoginUser("Pieter@Pieter.Pieter", "lalalalalalalalalala"));
+            Assert.IsFalse(userLogic.Login("Pieter@Pieter.Pieter", "lalalalalalalalalala"));
         }
 
         [TestMethod]
-        public void Incorrect_LoginUser_Validation_Admin_WrongEmail()
+        public void Incorrect_Login_Validation_Admin_WrongEmail()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.LoginUser("DitIsGewoonEenHeelAnderEmail@Adress.nl", "PieterPassword"));
+            Assert.IsFalse(userLogic.Login("DitIsGewoonEenHeelAnderEmail@Adress.nl", "PieterPassword"));
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------

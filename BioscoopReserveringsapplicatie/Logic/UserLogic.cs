@@ -110,7 +110,7 @@
                 return null;
             }
 
-            if (!LoginUser(email.ToLower(), password))
+            if (!Login(email.ToLower(), password))
             {
                 return null;
             }
@@ -136,7 +136,7 @@
             return CurrentUser;
         }
 
-        public bool LoginUser(string email, string password)
+        public bool Login(string email, string password)
         {
             UserModel? account = _accounts.Find(i => i.EmailAddress == email);
             if (account != null && account.Password == password)
@@ -153,6 +153,11 @@
         public bool ValidateEmail(string email)
         {
             return email.Contains("@") && email.Contains(".") && email.Length > 6;
+        }
+
+        public bool ValidateName(string name)
+        {
+            return name != null && name != ""; 
         }
 
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
@@ -231,9 +236,38 @@
             LandingPage.Start();
         }
 
-        public bool EditUser(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
-            throw new NotImplementedException();
+            UserModel? user = GetById(id);
+            if(user != null)
+            {
+                if (newName.Trim() == "" || newEmail.Trim() == "" || newGenres.Count == 0 ||
+                    newIntensity == Intensity.Undefined || newAgeCategory == AgeCategory.Undefined)
+                {
+                    Console.WriteLine("Niet alle velden zijn ingevuld.");
+                    Thread.Sleep(3000);
+                    return false;
+                }
+                else
+                {   
+                    user.FullName = newName;
+                    newEmail = newEmail.ToLower();
+                    user.EmailAddress = newEmail;
+                    user.Genres = newGenres;
+                    user.Intensity = newIntensity;
+                    user.AgeCategory = newAgeCategory;
+
+                    UpdateList(user);
+                    CurrentUser = user;
+                    return true;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Gebruiker bestaat niet.");
+                Thread.Sleep(3000);
+                return false;
+            }
         }
     }
 }
