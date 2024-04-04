@@ -152,12 +152,12 @@
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@") && email.Contains(".") && email.Length > 6;
+            return email.Contains("@") && email.Contains(".") && email.Length > 6 && email.Trim() != "";
         }
 
         public bool ValidateName(string name)
         {
-            return name != null && name != ""; 
+            return name != null && name.Trim() != ""; 
         }
 
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
@@ -241,8 +241,8 @@
             UserModel? user = GetById(id);
             if(user != null)
             {
-                if (newName.Trim() == "" || newEmail.Trim() == "" || newGenres.Count == 0 ||
-                    newIntensity == Intensity.Undefined || newAgeCategory == AgeCategory.Undefined)
+                if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
+                    !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
                     Console.WriteLine("Niet alle velden zijn ingevuld.");
                     Thread.Sleep(3000);
