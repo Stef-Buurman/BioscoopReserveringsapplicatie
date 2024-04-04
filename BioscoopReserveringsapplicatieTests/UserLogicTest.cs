@@ -273,6 +273,49 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------
+        // User login --------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Edit_Validation()
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsTrue(userLogic.Edit(6, "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+        }
+
+        [TestMethod]
+        public void Incorrect_Id_Edit_validation()
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsFalse(userLogic.Edit(999999999, "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+        }
+
+        [TestMethod]
+        public void Incorrect_Name_Edit_validation()
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsFalse(userLogic.Edit(6, "   ", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+        }
+
+        [DataRow("")]
+        [DataRow("     ")]
+        [DataRow("MailZonder@eenpunt")]
+        [DataRow("GeenAppenstaartje.nl")]
+        [TestMethod]
+        public void Incorrect_Email_Edit_validation(string email)
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsFalse(userLogic.Edit(6, "Tim van Eert", "   ", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+        }
+
+        [TestMethod]
+        public void Incorrect_Genre_Edit_validation()
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsFalse(userLogic.Edit(6, "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6));
+        }
+
+        // -------------------------------------------------------------------------------------------------------------------------------
         // User validations --------------------------------------------------------------------------------------------------------------
         // -------------------------------------------------------------------------------------------------------------------------------
 
@@ -311,6 +354,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow("testGmail.nl")]
         [DataRow("WaaromEenApestaartje?")]
         [DataRow("")]
+        [DataRow("      ")]
         [DataTestMethod]
         public void Incorrect_Email_Validation(string email)
         {

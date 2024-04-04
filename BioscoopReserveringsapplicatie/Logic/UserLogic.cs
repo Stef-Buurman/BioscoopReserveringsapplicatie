@@ -244,7 +244,7 @@
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
-                    Console.WriteLine("Niet alle velden zijn ingevuld.");
+                    Console.WriteLine("Niet alle velden zijn correct ingevuld.");
                     Thread.Sleep(3000);
                     return false;
                 }
