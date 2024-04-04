@@ -13,7 +13,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Filmoverzicht", () => MovieOverview.Start()),
                 new Option<string>("Experience toevoegen", () => AddExperience.Start()),
                 new Option<string>("Experienceoverzicht", () => ExperienceOverview.Start()),
-                new Option<string>("Uitloggen", () => UserLogic.LogOut()),
+                new Option<string>("Uitloggen", () => { UserLogic.Logout(); LandingPage.Start(); }),
             };
                 SelectionMenu.Create(options, () => Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n"));
             }
