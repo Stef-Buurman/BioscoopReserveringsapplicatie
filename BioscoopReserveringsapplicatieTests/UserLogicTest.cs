@@ -276,7 +276,28 @@ namespace BioscoopReserveringsapplicatieTests
         // User validations --------------------------------------------------------------------------------------------------------------
         // -------------------------------------------------------------------------------------------------------------------------------
 
-        // Email ------------------------------------------------------------------------------------------------------------------------
+        // Name --------------------------------------------------------------------------------------------------------------------------
+
+        [DataRow("TestName")]
+        [DataRow("Naam met Achternaam")]
+        [DataTestMethod]
+        public void Correct_Name_Validation(string name)
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsTrue(userLogic.ValidateName(name));
+        }
+
+        [DataRow("")]
+        [DataRow("            ")]
+        [DataRow(null)]
+        [DataTestMethod]
+        public void Incorrect_Name_Validation(string name)
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsFalse(userLogic.ValidateName(name));
+        }
+
+        // Email -------------------------------------------------------------------------------------------------------------------------
 
         [DataRow("test@gmail.nl")]
         [DataRow("ditIsNogEenEmailAdress@hotmail.nl")]
