@@ -84,13 +84,13 @@
 
             if (validated)
             {
-                newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(_accounts.Count + 1, false, true, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<Genre>(), 0, default, default);
             }
             return new RegistrationResult(validated, errorMessage, newAccount);
         }
@@ -113,24 +113,6 @@
                 return null;
             }
 
-            if (CurrentUser != null)
-            {
-                Console.WriteLine("U bent ingelogd.");
-                Thread.Sleep(2000);
-                if (CurrentUser.IsAdmin)
-                {
-                    AdminMenu.Start();
-                }
-                else
-                {
-                    if (CurrentUser.FirstTimeLogin)
-                    {
-                        Preferences.Start();
-                    }
-                    Console.WriteLine($"Welkom {CurrentUser.FullName}!");
-                    UserMenu.Start();
-                }
-            }
             return CurrentUser;
         }
 
@@ -153,6 +135,18 @@
             return email.Contains("@") && email.Contains(".") && email.Length > 6;
         }
 
+        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
+        {
+            if (user != null)
+            {
+                user.Genres = genres;
+                user.AgeCategory = ageCategory;
+                user.Intensity = intensity;
+                user.Language = language;
+                UpdateList(user);
+            }
+        }
+
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
@@ -161,7 +155,6 @@
                 CurrentUser.AgeCategory = ageCategory;
                 CurrentUser.Intensity = intensity;
                 CurrentUser.Language = language;
-                CurrentUser.FirstTimeLogin = false;
                 UpdateList(CurrentUser);
             }
         }
@@ -221,12 +214,11 @@
             return true;
         }
 
-        public static void LogOut()
+        public static void Logout()
         {
             CurrentUser = null;
             Console.WriteLine("U bent uitgelogd.");
             Thread.Sleep(2000);
-            LandingPage.Start();
         }
     }
 }

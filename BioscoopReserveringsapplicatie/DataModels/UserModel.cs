@@ -11,9 +11,6 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("isAdmin")]
         public bool IsAdmin { get; }
 
-        [JsonPropertyName("firstTimeLogin")]
-        public bool FirstTimeLogin { get; set; }
-
         [JsonPropertyName("emailAddress")]
         public string EmailAddress { get; set; }
 
@@ -39,7 +36,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("language")]
         public Language Language { get; set; }
 
-        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
+        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             Id = id;
             IsAdmin = isAdmin;
@@ -50,7 +47,6 @@ namespace BioscoopReserveringsapplicatie
             AgeCategory = ageCategory;
             Intensity = intensity;
             Language = language;
-            FirstTimeLogin = firstTimeLogin;
         }
     }
 }

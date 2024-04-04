@@ -3,7 +3,7 @@ namespace BioscoopReserveringsapplicatie
     public static class Preferences
     {
         public static UserLogic PreferencesLogic = new UserLogic();
-        public static void Start()
+        public static void Start(UserModel user)
         {
             Console.Clear();
 
@@ -12,14 +12,7 @@ namespace BioscoopReserveringsapplicatie
             Intensity intensity = SelectIntensity();
             Language language = SelectLanguage();
 
-            Console.Clear();
-            Console.WriteLine("Uw geselecteerde voorkeuren zijn:\n");
-            Console.WriteLine($"Genres: {string.Join(", ", selectedGenres)}");
-            Console.WriteLine($"Leeftijdscategorie: {ageCategory}");
-            Console.WriteLine($"Intensiteit: {intensity}");
-            Console.WriteLine($"Taal: {language}");
-
-            PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language);
+            PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language, user);
         }
 
         public static List<Genre> SelectGenres()
