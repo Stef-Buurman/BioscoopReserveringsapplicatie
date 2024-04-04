@@ -8,6 +8,7 @@
 
         public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
+        public static readonly ConsoleColor ColorEditInput = ConsoleColor.Yellow;
 
         public static List<T> GetAllEnum<T>()
         {

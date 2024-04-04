@@ -12,19 +12,21 @@ namespace BioscoopReserveringsapplicatie
 
             string newTitle = ReadLineUtil.EditValue(movie.Title, () =>
             {
-                Console.WriteLine("Voer nieuwe filmdetails in (druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan):\n");
+                ColorConsole.WriteColorLine("[Voer nieuwe filmdetails in:]\n", Globals.TitleColor);
                 Console.Write("Voer de film titel in: ");
             },
-            () => MovieDetails.Start(movieId));
+            () => MovieDetails.Start(movieId),
+            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
 
             Console.Write("Voer de film beschrijving in: ");
             string newDescription = ReadLineUtil.EditValue(movie.Description, () =>
             {
-                Console.WriteLine("Voer nieuwe filmdetails in (druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan):\n");
+                ColorConsole.WriteColorLine("[Voer nieuwe filmdetails in:]\n", Globals.TitleColor);
                 Console.WriteLine($"Voer de film titel in: {newTitle}");
                 Console.Write("Voer de film beschrijving in: ");
             }, 
-            () => MovieDetails.Start(movieId));
+            () => MovieDetails.Start(movieId),
+            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
 
             List<Genre> genres = new List<Genre>();
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
