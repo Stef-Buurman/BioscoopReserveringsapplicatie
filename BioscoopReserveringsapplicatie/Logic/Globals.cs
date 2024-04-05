@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
             string projectName = Assembly.GetCallingAssembly().GetName().Name;
             return System.IO.Path.Combine(TryGetSolutionDirectoryInfo(), projectName);
         }
-
+      
         public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
         public static readonly ConsoleColor ColorEditInput = ConsoleColor.Yellow;

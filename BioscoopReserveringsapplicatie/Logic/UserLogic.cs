@@ -154,6 +154,18 @@
             }
         }
 
+        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
+        {
+            if (user != null)
+            {
+                user.Genres = genres;
+                user.AgeCategory = ageCategory;
+                user.Intensity = intensity;
+                user.Language = language;
+                UpdateList(user);
+            }
+        }
+
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
@@ -226,7 +238,6 @@
             CurrentUser = null;
             Console.WriteLine("U bent uitgelogd.");
             Thread.Sleep(2000);
-        }
 
         public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
