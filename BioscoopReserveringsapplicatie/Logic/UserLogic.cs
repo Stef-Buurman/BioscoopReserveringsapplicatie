@@ -142,11 +142,6 @@
             return name != null && name.Trim() != ""; 
         }
 
-        public bool ValidateName(string name)
-        {
-            return name != null && name != ""; 
-        }
-
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
@@ -230,40 +225,6 @@
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
                     Console.WriteLine("Niet alle velden zijn correct ingevuld.");
-                    Thread.Sleep(3000);
-                    return false;
-                }
-                else
-                {   
-                    user.FullName = newName;
-                    newEmail = newEmail.ToLower();
-                    user.EmailAddress = newEmail;
-                    user.Genres = newGenres;
-                    user.Intensity = newIntensity;
-                    user.AgeCategory = newAgeCategory;
-
-                    UpdateList(user);
-                    CurrentUser = user;
-                    return true;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Gebruiker bestaat niet.");
-                Thread.Sleep(3000);
-                return false;
-            }
-        }
-
-        public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
-        {
-            UserModel? user = GetById(id);
-            if(user != null)
-            {
-                if (newName.Trim() == "" || newEmail.Trim() == "" || newGenres.Count == 0 ||
-                    newIntensity == Intensity.Undefined || newAgeCategory == AgeCategory.Undefined)
-                {
-                    Console.WriteLine("Niet alle velden zijn ingevuld.");
                     Thread.Sleep(3000);
                     return false;
                 }
