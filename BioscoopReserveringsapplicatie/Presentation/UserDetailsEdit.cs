@@ -15,9 +15,13 @@ namespace BioscoopReserveringsapplicatie
                 while(!validName)
                 {
                     Console.Clear();
-                    Console.WriteLine("(druk op Enter om de huidige te behouden)");
-                    Console.Write("Voer uw naam in: ");
-                    newName = EditDefaultValueUtil.EditDefaultValue(UserLogic.CurrentUser.FullName);
+                    newName = ReadLineUtil.EditValue(UserLogic.CurrentUser.FullName, 
+                        () => {
+                            Console.Write("Voer uw naam in: ");
+                        },
+                        () => UserDetails.Start(),
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                    );
                     validName = _userLogic.ValidateName(newName);
                 }
 
@@ -26,9 +30,13 @@ namespace BioscoopReserveringsapplicatie
                 while(!validEmail)
                 {
                     Console.Clear();
-                    Console.WriteLine("(druk op Enter om de huidige te behouden)");
-                    Console.Write("Voer uw emailadres in: ");
-                    newEmail = EditDefaultValueUtil.EditDefaultValue(UserLogic.CurrentUser.EmailAddress);
+                    newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress, 
+                        () => {
+                            Console.Write("Voer uw emailadres in: ");
+                        },
+                        () => UserDetails.Start(),
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                    );
                     validEmail = _userLogic.ValidateEmail(newEmail);
                 }
 

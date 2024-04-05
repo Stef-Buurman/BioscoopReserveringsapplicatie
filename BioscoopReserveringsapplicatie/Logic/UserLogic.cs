@@ -142,6 +142,18 @@
             return name != null && name.Trim() != ""; 
         }
 
+        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
+        {
+            if (user != null)
+            {
+                user.Genres = genres;
+                user.AgeCategory = ageCategory;
+                user.Intensity = intensity;
+                user.Language = language;
+                UpdateList(user);
+            }
+        }
+
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             if (CurrentUser != null)
