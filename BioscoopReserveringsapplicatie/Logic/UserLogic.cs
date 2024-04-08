@@ -154,28 +154,9 @@
             }
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
-        {
-            if (user != null)
-            {
-                user.Genres = genres;
-                user.AgeCategory = ageCategory;
-                user.Intensity = intensity;
-                user.Language = language;
-                UpdateList(user);
-            }
-        }
-
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
-            if (CurrentUser != null)
-            {
-                CurrentUser.Genres = genres;
-                CurrentUser.AgeCategory = ageCategory;
-                CurrentUser.Intensity = intensity;
-                CurrentUser.Language = language;
-                UpdateList(CurrentUser);
-            }
+            if (CurrentUser != null) addPreferencesToAccount(genres, ageCategory, intensity, language, CurrentUser);
         }
 
         public bool ValidateGenres(List<Genre> genres)
@@ -238,6 +219,7 @@
             CurrentUser = null;
             Console.WriteLine("U bent uitgelogd.");
             Thread.Sleep(2000);
+        }
 
         public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
