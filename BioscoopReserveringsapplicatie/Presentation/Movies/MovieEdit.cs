@@ -3,9 +3,11 @@ namespace BioscoopReserveringsapplicatie
     static class MovieEdit
     {
         static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static Action actionWhenEscapePressed = MovieOverview.Start;
 
         public static void Start(int movieId)
         {
+            actionWhenEscapePressed = () => MovieDetails.Start(movieId);
             Console.Clear();
 
             MovieModel movie = MoviesLogic.GetMovieById(movieId);
@@ -15,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("[Voer nieuwe filmdetails in:]\n", Globals.TitleColor);
                 Console.Write("Voer de film titel in: ");
             },
-            () => MovieDetails.Start(movieId),
+            actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
 
             Console.Write("Voer de film beschrijving in: ");
@@ -25,7 +27,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine($"Voer de film titel in: {newTitle}");
                 Console.Write("Voer de film beschrijving in: ");
             }, 
-            () => MovieDetails.Start(movieId),
+            actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
 
             List<Genre> genres = new List<Genre>();
@@ -41,12 +43,12 @@ namespace BioscoopReserveringsapplicatie
                         ColorConsole.WriteColorLine("[Voer film genre in]", Globals.TitleColor);
                         ColorConsole.WriteColorLine("[U kunt maximaal 3 verschillende genres kiezen.]\n", Globals.TitleColor);
                         ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification);
-                    }
+                    }, actionWhenEscapePressed
                     );
                 }
                 else
                 {
-                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
+                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
                 }
 
                 if (genre != default && availableGenres.Contains(genre))
@@ -61,7 +63,7 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            AgeCategory newRating = SelectionMenuUtil.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
+            AgeCategory newRating = SelectionMenuUtil.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
 
             List<Option<string>> options = new List<Option<string>>
             {
