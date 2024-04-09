@@ -9,7 +9,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId)
         {
-            actionWhenEscapePressed = () => ExperienceEdit.Start(experienceId);
+            actionWhenEscapePressed = () => ExperienceDetails.Start(experienceId);
             Console.Clear();
 
             ExperiencesModel experience = ExperiencesLogic.GetById(experienceId);
