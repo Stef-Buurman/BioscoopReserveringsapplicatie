@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            Console.WriteLine("Dit zijn alle films die momenteel beschikbaar zijn:");
+            ColorConsole.WriteColorLine("[Dit zijn alle films die momenteel beschikbaar zijn:]", Globals.TitleColor);
         }
     }
 }
