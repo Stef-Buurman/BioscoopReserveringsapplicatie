@@ -31,13 +31,13 @@ namespace BioscoopReserveringsapplicatie
                 {
                     MovieModel latestMovie = _Movies.Last();
 
-                    MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genres, rating);
+                    MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genres, rating, false);
 
                     UpdateList(movie);
                 }
                 catch (InvalidOperationException)
                 {
-                    MovieModel movie = new MovieModel(1, title, description, genres, rating);
+                    MovieModel movie = new MovieModel(1, title, description, genres, rating, false);
 
                     UpdateList(movie);
                 }
@@ -94,10 +94,30 @@ namespace BioscoopReserveringsapplicatie
             return _Movies.Find(i => i.Id == id);
         }
 
-        public void RemoveMovie(int id)
+        public void Archive(int id)
         {
-            _Movies.RemoveAll(i => i.Id == id);
-            MoviesAccess.WriteAll(_Movies);
+            MovieModel movie = GetMovieById(id);
+            if (movie != null)
+            {   
+                movie.Archived = true;
+                UpdateList(movie);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public List<MovieModel> GetAllArchivedMovies()
+        {
+            _Movies = MoviesAccess.LoadAll();
+            return _Movies.FindAll(m => m.Archived);
+        }
+
+        public List<MovieModel> GetAllActiveMovies()
+        {
+            _Movies = MoviesAccess.LoadAll();
+            return _Movies.FindAll(m => !m.Archived);
         }
     }
 }
