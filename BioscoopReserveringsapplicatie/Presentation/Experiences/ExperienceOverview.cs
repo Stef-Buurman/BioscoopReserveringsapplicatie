@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceOverview
     {
-        static private ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
 
         public static void Start()
         {
