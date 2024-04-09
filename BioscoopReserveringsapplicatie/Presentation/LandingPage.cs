@@ -16,7 +16,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Registreren", () => UserRegister.Start()),
                 new Option<string>("Applicatie sluiten", () => Environment.Exit(0)),
             };
-            SelectionMenuUtil.Create(options, () => Print(), false);
+            SelectionMenuUtil.Create(options, () => Print());
 
         }
 
