@@ -4,12 +4,9 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class Globals
     {
-        //static string CurrentDirectoryDevelop = System.IO.Path.GetFullPath(System.IO.Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, @"BioscoopReserveringsapplicatie"));
-        //static string CurrentDirectoryProduction = Environment.CurrentDirectory;
-        //public static string currentDirectory = CurrentDirectoryDevelop;
-
+        static string CurrentDirectoryProduction = Environment.CurrentDirectory;
         public static string currentDirectory = getPath();
-        public static string TryGetSolutionDirectoryInfo(string currentPath = null)
+        public static string getPath(string currentPath = null)
         {
             var directory = new DirectoryInfo(
                 currentPath ?? Directory.GetCurrentDirectory());
@@ -17,13 +14,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 directory = directory.Parent;
             }
-            return directory?.ToString() ?? "";
-        }
-
-        private static string getPath()
-        {
-            string projectName = Assembly.GetCallingAssembly().GetName().Name;
-            return System.IO.Path.Combine(TryGetSolutionDirectoryInfo(), projectName);
+            return System.IO.Path.Combine(directory?.ToString() ?? "", Assembly.GetCallingAssembly().GetName().Name ?? "");
         }
       
         public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
