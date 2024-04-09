@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenu.Create(options, () => Console.WriteLine("Wilt u genres selecteren?"));
+            SelectionMenuUtil.Create(options, () => Console.WriteLine("Wilt u genres selecteren?"));
 
             if (!choose)
             {
@@ -86,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenu.Create(optionsMenu, () => Console.WriteLine("Wilt u een leeftijdscategorie selecteren?"));
+            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een leeftijdscategorie selecteren?"));
 
             if (!choose)
             {
@@ -117,7 +117,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenu.Create(optionsMenu, () => Console.WriteLine("Wilt u een intensiteit selecteren?"));
+            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een intensiteit selecteren?"));
 
             if (!choose)
             {
@@ -125,12 +125,8 @@ namespace BioscoopReserveringsapplicatie
             }
 
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
-<<<<<<< HEAD:BioscoopReserveringsapplicatie/Presentation/Users/Preferences.cs
-            Intensity intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
-=======
 
-            Intensity intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
->>>>>>> 06b9602 (Preferences are now optional to enter):BioscoopReserveringsapplicatie/Presentation/Preferences.cs
+            Intensity intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
 
             while (!PreferencesLogic.ValidateIntensity(intensity))
             {
