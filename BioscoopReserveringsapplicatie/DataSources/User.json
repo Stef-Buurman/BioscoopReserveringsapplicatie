@@ -21,21 +21,6 @@
       "Komedie",
       "Actie"
     ],
-    "ageCategory": 16,
-    "intensity": "Medium",
-    "language": "Nederlands"
-  },
-  {
-    "id": 3,
-    "isAdmin": false,
-    "emailAddress": "nick@test.nl",
-    "password": "12345",
-    "fullName": "nick@test.nl",
-    "genres": [
-      "Horror",
-      "Komedie",
-      "Actie"
-    ],
     "ageCategory": 18,
     "intensity": "Medium",
     "language": "Nederlands"
