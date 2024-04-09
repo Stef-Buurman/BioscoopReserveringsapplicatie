@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    public class MovieModel
+    public class MovieModel : IID
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

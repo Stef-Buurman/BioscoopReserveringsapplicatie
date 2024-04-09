@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace BioscoopReserveringsapplicatie
 {
-    public class UserModel
+    public class UserModel : IID
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
