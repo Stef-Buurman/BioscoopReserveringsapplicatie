@@ -110,7 +110,7 @@ namespace BioscoopReserveringsapplicatie
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
                                 Thread.Sleep(2000);
-                                escapeAction();
+                                if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
                         ),
@@ -134,7 +134,7 @@ namespace BioscoopReserveringsapplicatie
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
                                 Thread.Sleep(2000);
-                                escapeAction();
+                                if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
                         ),
