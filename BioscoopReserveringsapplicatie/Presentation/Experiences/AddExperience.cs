@@ -119,12 +119,11 @@ namespace BioscoopReserveringsapplicatie
             {
                 movieOptions.Add(new Option<int>(movie.Id, movie.Title));
             }
-            int movieId = SelectionMenuUtil.Create(movieOptions, 10, () =>
+            int movieId = SelectionMenuUtil.Create(movieOptions, 15, () =>
             {
                 functionToShow();
                 Console.WriteLine("Welke film wilt u toevoegen?");
-            }
-            );
+            }, WhatToDoWhenGoBack);
             Console.Clear();
             return movieId;
         }
