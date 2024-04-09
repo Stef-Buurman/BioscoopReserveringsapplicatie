@@ -1,5 +1,6 @@
-enum Level
+public enum Level
 {
+    Undefined,
     User,
     Editor,
     Admin

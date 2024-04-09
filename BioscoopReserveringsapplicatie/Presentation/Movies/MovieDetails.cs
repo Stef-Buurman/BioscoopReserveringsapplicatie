@@ -15,12 +15,12 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Verwijder film", () => MovieDelete.Start(movie.Id)),
                 new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
             };
-            SelectionMenu.Create(options, Print);
+            SelectionMenuUtil.Create(options, Print);
         }
 
         private static void Print()
         {
-            if (movie != null) Console.WriteLine($"De film details zijn:\nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.Rating} \n\nWat zou je willen doen?");
+            if (movie != null) Console.WriteLine($"De film details zijn:\nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.AgeCategory} \n\nWat zou je willen doen?");
         }
     }
 }

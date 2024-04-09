@@ -13,19 +13,21 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
+        [JsonConverter(typeof(GenreListConverter))]
         [JsonPropertyName("genres")]
-        public List<string> Genres { get; set; }
+        public List<Genre> Genres { get; set; }
 
-        [JsonPropertyName("rating")]
-        public string Rating { get; set; }
+        [JsonConverter(typeof(AgeCategoryConverter))]
+        [JsonPropertyName("ageCategory")]
+        public AgeCategory AgeCategory { get; set; }
 
-        public MovieModel(int id, string title, string description, List<string> genres, string rating)
+        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory)
         {
             Id = id;
             Title = title;
             Description = description;
             Genres = genres;
-            Rating = rating;
+            AgeCategory = ageCategory;
         }
     }
 }

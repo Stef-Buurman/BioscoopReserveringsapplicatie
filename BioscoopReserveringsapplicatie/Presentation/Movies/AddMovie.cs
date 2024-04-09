@@ -7,27 +7,30 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
-            Console.WriteLine("Voer de film titel in:");
-            string title = Console.ReadLine() ?? "";
-
-            Console.WriteLine("Voer de film beschrijving in:");
-            string description = Console.ReadLine() ?? "";
-
-            List<string> genres = new List<string>();
-            List<string> availableGenres = new List<string>
+            string title = ReadLineUtil.EnterValue(() =>
             {
-                "Horror", "Komedie", "Actie", "Drama", "Thriller", "Romantiek", "Sci-fi",
-                "Fantasie", "Avontuur", "Animatie", "Misdaad", "Mysterie", "Familie",
-                "Oorlog", "Geschiedenis", "Muziek", "Documentaire", "Westers", "TV-film"
-            };
+                ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
+                Console.Write("Voer de film titel in: ");
+            }, 
+            () => AdminMenu.Start());
+
+            string description = ReadLineUtil.EnterValue(() =>
+            {
+                ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
+                Console.WriteLine($"Voer de film titel in: {title}");
+                Console.Write("Voer de film beschrijving in: ");
+            }, 
+            () => AdminMenu.Start());
+
+            List<Genre> genres = new List<Genre>();
+            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
             while (genres.Count < 3)
             {
-                string genre = "";
+                Genre genre;
                 if (firstTime)
                 {
-                    genre = SelectionMenu.Create(availableGenres, () =>
+                    genre = SelectionMenuUtil.Create(availableGenres, () =>
                     {
                         ColorConsole.WriteColorLine("[Voer film genre in]", Globals.TitleColor);
                         ColorConsole.WriteColorLine("[U kunt maximaal 3 verschillende genres kiezen.]\n", Globals.TitleColor);
@@ -37,10 +40,10 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
+                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
-                if (!string.IsNullOrWhiteSpace(genre) && availableGenres.Contains(genre))
+                if (genre != default && availableGenres.Contains(genre))
                 {
                     availableGenres.Remove(genre);
                     genres.Add(genre);
@@ -52,8 +55,7 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            Console.WriteLine("Voer de film kijkwijzer in:");
-            string rating = Console.ReadLine() ?? "";
+            AgeCategory rating = SelectionMenuUtil.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
@@ -61,7 +63,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
                 };
-                SelectionMenu.Create(options, () => Print(title, description, genres, rating));
+                SelectionMenuUtil.Create(options, () => Print(title, description, genres, rating));
             }
             else
             {
@@ -69,11 +71,11 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
                 };
-                SelectionMenu.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n"));
+                SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n"));
             }
         }
 
-        private static void Print(string title, string description, List<string> genres, string rating)
+        private static void Print(string title, string description, List<Genre> genres, AgeCategory rating)
         {
             Console.WriteLine("De film is toegevoegd.");
             Console.WriteLine("\nDe film details zijn:");

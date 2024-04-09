@@ -1,5 +1,0 @@
-enum Language
-{
-    Dutch,
-    English
-}

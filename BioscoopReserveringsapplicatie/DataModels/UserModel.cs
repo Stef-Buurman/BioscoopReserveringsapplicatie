@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Xml;
 
 namespace BioscoopReserveringsapplicatie
 {
@@ -10,9 +11,6 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("isAdmin")]
         public bool IsAdmin { get; }
 
-        [JsonPropertyName("firstTimeLogin")]
-        public bool FirstTimeLogin { get; set; }
-
         [JsonPropertyName("emailAddress")]
         public string EmailAddress { get; set; }
 
@@ -22,19 +20,23 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("fullName")]
         public string FullName { get; set; }
 
+        [JsonConverter(typeof(GenreListConverter))]
         [JsonPropertyName("genres")]
-        public List<string> Genres { get; set; }
+        public List<Genre> Genres { get; set; }
 
+        [JsonConverter(typeof(AgeCategoryConverter))]
         [JsonPropertyName("ageCategory")]
-        public int AgeCategory { get; set; }
+        public AgeCategory AgeCategory { get; set; }
 
+        [JsonConverter(typeof(IntensityConverter))]
         [JsonPropertyName("intensity")]
-        public string Intensity { get; set; }
+        public Intensity Intensity { get; set; }
 
+        [JsonConverter(typeof(LanguageConverter))]
         [JsonPropertyName("language")]
-        public string Language { get; set; }
+        public Language Language { get; set; }
 
-        public UserModel(int id, bool isAdmin, bool firstTimeLogin, string emailAddress, string password, string fullName, List<string> genres, int ageCategory, string intensity, string language)
+        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
             Id = id;
             IsAdmin = isAdmin;
@@ -45,7 +47,6 @@ namespace BioscoopReserveringsapplicatie
             AgeCategory = ageCategory;
             Intensity = intensity;
             Language = language;
-            FirstTimeLogin = firstTimeLogin;
         }
     }
 }
