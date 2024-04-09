@@ -67,13 +67,13 @@ namespace BioscoopReserveringsapplicatie
         {   
             functionToShow();
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
-            Intensity intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+            Intensity intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification), WhatToDoWhenGoBack);
 
             while (!experiencesLogic.ValidateExperienceIntensity(intensity))
             {
                 functionToShow();
                 Console.WriteLine("Error. Probeer het opnieuw.");
-                intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+                intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification), WhatToDoWhenGoBack);
             }
             return intensity;
         }
