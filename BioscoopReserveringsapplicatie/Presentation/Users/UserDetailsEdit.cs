@@ -44,7 +44,6 @@ namespace BioscoopReserveringsapplicatie
 
                 List<Genre> selectedGenres = Preferences.SelectGenres();
 
-
                 AgeCategory ageCategory = Preferences.SelectAgeCategory();
 
                 Intensity intensity = Preferences.SelectIntensity();
