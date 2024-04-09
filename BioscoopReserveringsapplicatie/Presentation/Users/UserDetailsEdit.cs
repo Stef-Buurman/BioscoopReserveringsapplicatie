@@ -43,22 +43,10 @@ namespace BioscoopReserveringsapplicatie
                 }
 
                 List<Genre> selectedGenres = Preferences.SelectGenres();
-                // if (selectedGenres.Count == 0)
-                // {
-                //     selectedGenres = UserLogic.CurrentUser.Genres;
-                // }
 
                 AgeCategory ageCategory = Preferences.SelectAgeCategory();
-                // if (ageCategory == AgeCategory.Undefined)
-                // {
-                //     ageCategory = UserLogic.CurrentUser.AgeCategory;
-                // }
 
                 Intensity intensity = Preferences.SelectIntensity();
-                // if (intensity == Intensity.Undefined)
-                // {
-                //     intensity = UserLogic.CurrentUser.Intensity;
-                // }
 
                 List<Option<string>> options = new List<Option<string>>
                 {
