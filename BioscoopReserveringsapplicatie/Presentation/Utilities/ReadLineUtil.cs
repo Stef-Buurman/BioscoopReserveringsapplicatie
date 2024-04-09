@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ReadLineUtil
     {
-        public static string EditValue(string defaultValue, Action actionBeforeStartGotten, Action escapeAction, string textToShowEscapability = "Klik op escape om dit onderdeel te verlaten.")
+        public static string EditValue(string defaultValue, Action actionBeforeStartGotten, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
         {
             string input = defaultValue;
             int originalPosX = Console.CursorLeft;
@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
             return input;
         }
 
-        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, string textToShowEscapability = "Klik op escape om dit onderdeel te verlaten.")
+        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
         {
             string input = "";
             int originalPosX = Console.CursorLeft;
@@ -109,7 +109,7 @@ namespace BioscoopReserveringsapplicatie
                     {
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
-                                Thread.Sleep(2000);
+                                Thread.Sleep(1500);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
@@ -151,7 +151,7 @@ namespace BioscoopReserveringsapplicatie
         }
         private static void print()
         {
-            ColorConsole.WriteColorLine("[Weet je zeker dat je weg wilt gaan?]", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("[Weet je zeker dat je terug wilt gaan?]", ConsoleColor.Red);
         }
     }
 }
