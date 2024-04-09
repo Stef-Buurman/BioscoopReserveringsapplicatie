@@ -2,7 +2,7 @@
 {
     static class SelectionMenuUtil
     {
-        public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = true, Action escapeAction = null)
+        public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
         {
             Console.CursorVisible = false;
             int index = 0;
@@ -116,7 +116,7 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && canBeEscaped)
                 {
-                    ReadLineUtil.EscapeKeyPressed(ActionBeforeMenu, escapeAction, () => WriteMenu(options, options[index], ActionBeforeMenu));
+                    ReadLineUtil.EscapeKeyPressed(ActionBeforeMenu, escapeAction, () => WriteMenu(GetOptionsToShow<T>(options, maxVisibility, amountOptionsAbove, (amountOptionsAbove > 0)), options[index], ActionBeforeMenu));
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);
@@ -127,7 +127,7 @@
             return default;
         }
 
-        public static T Create<T>(List<T> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = true, Action escapeAction = null)
+        public static T Create<T>(List<T> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
         {
             // When you give a list of T, it will be converted to a list of Options.
             List<Option<T>> optionList = new List<Option<T>>();
@@ -138,15 +138,35 @@
             return Create(optionList, maxVisibility, ActionBeforeMenu, canBeEscaped, escapeAction);
         }
 
-        public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu = null, bool canBeEscaped = true, Action escapeAction = null)
+        public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
         {
             return Create(options, 9, ActionBeforeMenu, canBeEscaped, escapeAction);
         }
 
-        public static T Create<T>(List<T> options, Action ActionBeforeMenu = null, bool canBeEscaped = true, Action escapeAction = null)
+        public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu, Action escapeAction)
+        {
+            return Create(options, 9, ActionBeforeMenu, true, escapeAction);
+        }
+
+        public static T Create<T>(List<T> options, Action ActionBeforeMenu, Action escapeAction)
+        {
+            return Create(options, 9, ActionBeforeMenu, true, escapeAction);
+        }
+
+        public static T Create<T>(List<T> options, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
         {
             return Create(options, 9, ActionBeforeMenu, canBeEscaped, escapeAction);
         }
+
+        public static T Create<T>(List<T> options, int maxVisibility, Action ActionBeforeMenu, Action escapeAction)
+        {
+            return Create(options, maxVisibility, ActionBeforeMenu, true, escapeAction);
+        }
+
+        //public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
+        //{
+
+        //}
 
         static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null)
         {
