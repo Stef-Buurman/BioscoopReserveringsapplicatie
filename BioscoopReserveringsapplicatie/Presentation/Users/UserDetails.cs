@@ -9,7 +9,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Profielgegevens bewerken",() => UserDetailsEdit.Start()),
                 new Option<string>("Terug", () => Profile.Start())
             };
-            SelectionMenu.Create(options, () => UserInfo());
+            SelectionMenuUtil.Create(options, () => UserInfo());
         }
 
         private static void UserInfo()

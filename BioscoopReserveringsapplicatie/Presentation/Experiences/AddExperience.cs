@@ -20,7 +20,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
-                SelectionMenu.Create(options, () => Print(name, filmId, intensity, timeLength));
+                SelectionMenuUtil.Create(options, () => Print(name, filmId, intensity, timeLength));
             }
             else
             {
@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
-                SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red));
             }
         }
 
@@ -119,7 +119,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 movieOptions.Add(new Option<int>(movie.Id, movie.Title));
             }
-            int movieId = SelectionMenu.Create(movieOptions, 10, () =>
+            int movieId = SelectionMenuUtil.Create(movieOptions, 10, () =>
             {
                 functionToShow();
                 Console.WriteLine("Welke film wilt u toevoegen?");

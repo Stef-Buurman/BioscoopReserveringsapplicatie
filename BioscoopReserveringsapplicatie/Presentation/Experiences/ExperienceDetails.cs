@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
-            SelectionMenu.Create(options, Print);
+            SelectionMenuUtil.Create(options, Print);
         }
 
         private static void AdminPreview(int experienceId)
@@ -60,7 +60,7 @@ namespace BioscoopReserveringsapplicatie
                 };
             }
 
-            SelectionMenu.Create(options, Print);
+            SelectionMenuUtil.Create(options, Print);
         }
 
         private static void Print()

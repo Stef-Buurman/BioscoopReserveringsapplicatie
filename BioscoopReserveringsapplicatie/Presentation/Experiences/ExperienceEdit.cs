@@ -36,12 +36,12 @@ namespace BioscoopReserveringsapplicatie
                         {
                             new Option<string>("Terug", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
                         };
-                        SelectionMenu.Create(errorOptions, () => Console.WriteLine("Error. Probeer het opnieuw \n"));
+                        SelectionMenuUtil.Create(errorOptions, () => Console.WriteLine("Error. Probeer het opnieuw \n"));
                     }
                 }),
                 new Option<string>("Nee", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
             };
-            SelectionMenu.Create(saveOptions, () => Print(newName, MovieName, newIntensity, timeInInt));
+            SelectionMenuUtil.Create(saveOptions, () => Print(newName, MovieName, newIntensity, timeInInt));
         }
 
         public static string ExperienceName(ExperiencesModel experience)
@@ -70,11 +70,11 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Selecteer de film die bij de experience hoort");
             List<MovieModel> movies = MoviesLogic.GetAllMovies();
             List<int> moviesId = movies.Select(movie => movie.Id).ToList();
-            int selectedMovieId = SelectionMenu.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
+            int selectedMovieId = SelectionMenuUtil.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
             while (!ExperiencesLogic.ValidateMovieId(selectedMovieId))
             {
                 Console.WriteLine("Ongeldige Input. Probeer het opnieuw.");
-                selectedMovieId = SelectionMenu.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
+                selectedMovieId = SelectionMenuUtil.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification));
             }
             return selectedMovieId;
         }
@@ -83,11 +83,11 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Write("Selecteer de intensiteit van de experience");
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
-            Intensity newIntensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+            Intensity newIntensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
             while (!ExperiencesLogic.ValidateExperienceIntensity(newIntensity))
             {
                 Console.Write("Ongeldige input. Probeer het opnieuw");
-                newIntensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
+                newIntensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
             }
             return newIntensity;
         }

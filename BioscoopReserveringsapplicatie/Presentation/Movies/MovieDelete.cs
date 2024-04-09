@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
                     MovieDetails.Start(movieId);
                 }),
             };
-            SelectionMenu.Create(options, () => Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory));
+            SelectionMenuUtil.Create(options, () => Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory));
         }
 
         private static void Print(string title, string description, List<Genre> genres, AgeCategory rating)

@@ -26,7 +26,7 @@ namespace BioscoopReserveringsapplicatie
 
         options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); AdminMenu.Start(); }));
 
-            int movieId = SelectionMenu.Create(options, Print);
+            int movieId = SelectionMenuUtil.Create(options, Print);
             Console.Clear();
             return movieId;
         }

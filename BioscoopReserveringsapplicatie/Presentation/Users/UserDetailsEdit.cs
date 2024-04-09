@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
                     List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
                     while (newGenres.Count < 3)
                     {
-                        Genre newGenre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification));
+                        Genre newGenre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification));
 
                         if(availableGenres.Contains(newGenre))
                         {
@@ -64,7 +64,7 @@ namespace BioscoopReserveringsapplicatie
                 while(!validIntensity)
                 {
                     List<Intensity> intensities = Globals.GetAllEnum<Intensity>();
-                    newIntensity = SelectionMenu.Create(intensities, () => ColorConsole.WriteColorLine("Kies een [Intensiteit]: \n", Globals.ColorInputcClarification));
+                    newIntensity = SelectionMenuUtil.Create(intensities, () => ColorConsole.WriteColorLine("Kies een [Intensiteit]: \n", Globals.ColorInputcClarification));
                     validIntensity = _userLogic.ValidateIntensity(newIntensity);
                 }
 
@@ -73,7 +73,7 @@ namespace BioscoopReserveringsapplicatie
                 while(!validAgeCategory)
                 {
                     List<AgeCategory> ageCategories = Globals.GetAllEnum<AgeCategory>();
-                    newAgeCategory = SelectionMenu.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
+                    newAgeCategory = SelectionMenuUtil.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
                     validAgeCategory = _userLogic.ValidateAgeCategory(newAgeCategory);
                 }
 
@@ -94,12 +94,12 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); UserDetails.Start();}),
                             };
-                            SelectionMenu.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n"));
+                            SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n"));
                         }
                     }),
                     new Option<string>("Nee", () => UserDetails.Start())
                 };
-                SelectionMenu.Create(options, () => PendingChanges(newName, newEmail, newGenres, newIntensity, newAgeCategory));
+                SelectionMenuUtil.Create(options, () => PendingChanges(newName, newEmail, newGenres, newIntensity, newAgeCategory));
             }
         }
 

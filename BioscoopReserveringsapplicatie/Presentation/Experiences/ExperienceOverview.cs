@@ -14,7 +14,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle experiences", () => ShowAllExperiences()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-                SelectionMenu.Create(options, () => Console.WriteLine($"Alle experiences"));
+                SelectionMenuUtil.Create(options, () => Console.WriteLine($"Alle experiences"));
         }
 
         private static void ShowExperienceDetails(int experienceId)
@@ -36,7 +36,7 @@ namespace BioscoopReserveringsapplicatie
 
             options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); Start(); }));
 
-            int experienceId = SelectionMenu.Create(options, Print);
+            int experienceId = SelectionMenuUtil.Create(options, Print);
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;

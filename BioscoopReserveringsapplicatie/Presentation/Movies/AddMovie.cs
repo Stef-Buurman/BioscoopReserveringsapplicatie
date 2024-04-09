@@ -30,7 +30,7 @@ namespace BioscoopReserveringsapplicatie
                 Genre genre;
                 if (firstTime)
                 {
-                    genre = SelectionMenu.Create(availableGenres, () =>
+                    genre = SelectionMenuUtil.Create(availableGenres, () =>
                     {
                         ColorConsole.WriteColorLine("[Voer film genre in]", Globals.TitleColor);
                         ColorConsole.WriteColorLine("[U kunt maximaal 3 verschillende genres kiezen.]\n", Globals.TitleColor);
@@ -40,7 +40,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    genre = SelectionMenu.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
+                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
                 }
 
                 if (genre != default && availableGenres.Contains(genre))
@@ -55,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            AgeCategory rating = SelectionMenu.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
+            AgeCategory rating = SelectionMenuUtil.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
@@ -63,7 +63,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
                 };
-                SelectionMenu.Create(options, () => Print(title, description, genres, rating));
+                SelectionMenuUtil.Create(options, () => Print(title, description, genres, rating));
             }
             else
             {
@@ -71,7 +71,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
                 };
-                SelectionMenu.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n"));
+                SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n"));
             }
         }
 

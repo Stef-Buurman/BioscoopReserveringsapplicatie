@@ -1,6 +1,6 @@
 ﻿namespace BioscoopReserveringsapplicatie
 {
-    static class SelectionMenu
+    static class SelectionMenuUtil
     {
         public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = true, Action escapeAction = null)
         {
