@@ -8,13 +8,26 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             movie = MoviesLogic.GetMovieById(movieId);
+            List<Option<string>> options;
 
-            List<Option<string>> options = new List<Option<string>>
+            if (movie.Archived)
             {
-                new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
-                new Option<string>("Verwijder film", () => MovieDelete.Start(movie.Id)),
-                new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
-            };
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
+                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                };
+            }
+            else
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
+                    new Option<string>("Archiveer film", () => MovieArchive.Start(movie.Id)),
+                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                };
+            }
+
             SelectionMenuUtil.Create(options, Print);
         }
 

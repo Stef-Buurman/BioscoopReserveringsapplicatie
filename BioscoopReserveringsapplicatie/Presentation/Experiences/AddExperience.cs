@@ -117,7 +117,11 @@ namespace BioscoopReserveringsapplicatie
             List<Option<int>> movieOptions = new List<Option<int>>();
             foreach (MovieModel movie in movies)
             {
-                movieOptions.Add(new Option<int>(movie.Id, movie.Title));
+                if (!movie.Archived)
+                {
+                    movieOptions.Add(new Option<int>(movie.Id, movie.Title));
+
+                }
             }
             int movieId = SelectionMenuUtil.Create(movieOptions, 15, () =>
             {
