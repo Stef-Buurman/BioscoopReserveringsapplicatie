@@ -3,7 +3,7 @@
     public class ExperiencesLogic
     {
         private List<ExperiencesModel> _experiences;
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public ExperiencesLogic()
         {
