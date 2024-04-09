@@ -65,26 +65,14 @@ namespace BioscoopReserveringsapplicatie
 
         private static Intensity AskForExperienceIntensity(Action functionToShow)
         {
-
-            string intensitystr = ReadLineUtil.EnterValue(
-                () =>
-                {
-                    functionToShow();
-                    ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-                },
-                WhatToDoWhenGoBack);
-            Intensity intensity;
-            while (!Enum.TryParse(intensitystr, out intensity) && !experiencesLogic.ValidateExperienceIntensity(intensity))
+            List<Intensity> intensityenum = Globals.GetAllEnum<Intensity>();
+            List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
+            Intensity intensity = SelectionMenuUtil.Create(intensityOption, 15, () =>
             {
-                intensitystr = ReadLineUtil.EnterValue(
-                () =>
-                {
-                    functionToShow();
-                    Console.WriteLine("Voer alstublieft een geldige intensiteit in!");
-                    ColorConsole.WriteColor($"Wat is de [intensiteit]? ", Globals.ColorInputcClarification);
-                },
-                WhatToDoWhenGoBack);
-            }
+                functionToShow();
+                Console.WriteLine("Welke intensiteit wilt u? ");
+            }, WhatToDoWhenGoBack);
+            Console.Clear();
             return intensity;
         }
 
