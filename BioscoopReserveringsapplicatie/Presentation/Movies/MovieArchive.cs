@@ -7,11 +7,10 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             MovieModel movie = MoviesLogic.GetMovieById(movieId);
-
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    MoviesLogic.RemoveMovie(movieId);
+                    MoviesLogic.Archive(movieId);
                     MovieOverview.Start();
                 }),
                 new Option<string>("Nee", () => {
@@ -29,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
             Console.WriteLine($"Film kijkwijzer: {rating}\n");
 
-            Console.WriteLine($"Weet u zeker dat u de film {title} wilt verwijderen?");
+            Console.WriteLine($"Weet u zeker dat u de film {title} wilt archiveren?");
         }
     }
 }
