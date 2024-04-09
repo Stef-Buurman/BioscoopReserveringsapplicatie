@@ -8,15 +8,16 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
-            if(UserLogic.CurrentUser != null)
-            {   
+            if (UserLogic.CurrentUser != null)
+            {
                 string newName = "";
                 bool validName = false;
-                while(!validName)
+                while (!validName)
                 {
                     Console.Clear();
-                    newName = ReadLineUtil.EditValue(UserLogic.CurrentUser.FullName, 
-                        () => {
+                    newName = ReadLineUtil.EditValue(UserLogic.CurrentUser.FullName,
+                        () =>
+                        {
                             Console.Write("Voer uw naam in: ");
                         },
                         () => UserDetails.Start(),
@@ -27,11 +28,12 @@ namespace BioscoopReserveringsapplicatie
 
                 string newEmail = "";
                 bool validEmail = false;
-                while(!validEmail)
+                while (!validEmail)
                 {
                     Console.Clear();
-                    newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress, 
-                        () => {
+                    newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress,
+                        () =>
+                        {
                             Console.Write("Voer uw emailadres in: ");
                         },
                         () => UserDetails.Start(),
@@ -40,48 +42,28 @@ namespace BioscoopReserveringsapplicatie
                     validEmail = _userLogic.ValidateEmail(newEmail);
                 }
 
+                List<Genre> selectedGenres = Preferences.SelectGenres();
+                // if (selectedGenres.Count == 0)
+                // {
+                //     selectedGenres = UserLogic.CurrentUser.Genres;
+                // }
 
-                List<Genre> newGenres = new List<Genre>();
-                bool validGenres = false;
-                while(!validGenres)
-                {
-                    List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
-                    while (newGenres.Count < 3)
-                    {
-                        Genre newGenre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification));
+                AgeCategory ageCategory = Preferences.SelectAgeCategory();
+                // if (ageCategory == AgeCategory.Undefined)
+                // {
+                //     ageCategory = UserLogic.CurrentUser.AgeCategory;
+                // }
 
-                        if(availableGenres.Contains(newGenre))
-                        {
-                            availableGenres.Remove(newGenre);
-                            newGenres.Add(newGenre);
-                        }
-                    }
-                    validGenres = _userLogic.ValidateGenres(newGenres);
-                }
-
-                Intensity newIntensity = Intensity.Undefined;
-                bool validIntensity = false;
-                while(!validIntensity)
-                {
-                    List<Intensity> intensities = Globals.GetAllEnum<Intensity>();
-                    newIntensity = SelectionMenuUtil.Create(intensities, () => ColorConsole.WriteColorLine("Kies een [Intensiteit]: \n", Globals.ColorInputcClarification));
-                    validIntensity = _userLogic.ValidateIntensity(newIntensity);
-                }
-
-                AgeCategory newAgeCategory = AgeCategory.Undefined;
-                bool validAgeCategory = false;
-                while(!validAgeCategory)
-                {
-                    List<AgeCategory> ageCategories = Globals.GetAllEnum<AgeCategory>();
-                    newAgeCategory = SelectionMenuUtil.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
-                    validAgeCategory = _userLogic.ValidateAgeCategory(newAgeCategory);
-                }
-
+                Intensity intensity = Preferences.SelectIntensity();
+                // if (intensity == Intensity.Undefined)
+                // {
+                //     intensity = UserLogic.CurrentUser.Intensity;
+                // }
 
                 List<Option<string>> options = new List<Option<string>>
                 {
                     new Option<string>("Ja", () => {
-                        if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, newGenres, newIntensity, newAgeCategory))
+                        if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, selectedGenres, intensity, ageCategory))
                         {
                             Console.Clear();
                             ColorConsole.WriteColorLine("[Gebruikers gegevens zijn gewijzigd!]", ConsoleColor.Green);
@@ -99,7 +81,7 @@ namespace BioscoopReserveringsapplicatie
                     }),
                     new Option<string>("Nee", () => UserDetails.Start())
                 };
-                SelectionMenuUtil.Create(options, () => PendingChanges(newName, newEmail, newGenres, newIntensity, newAgeCategory));
+                SelectionMenuUtil.Create(options, () => PendingChanges(newName, newEmail, selectedGenres, intensity, ageCategory));
             }
         }
 
