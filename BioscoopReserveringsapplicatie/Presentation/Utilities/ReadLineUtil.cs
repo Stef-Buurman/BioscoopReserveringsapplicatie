@@ -122,7 +122,7 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            SelectionMenu.Create(options, print);
+            SelectionMenuUtil.Create(options, print);
             return WantToLeave;
         }
 
@@ -146,7 +146,7 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            SelectionMenu.Create(options, print, false);
+            SelectionMenuUtil.Create(options, print, false);
             return WantToLeave;
         }
         private static void print()

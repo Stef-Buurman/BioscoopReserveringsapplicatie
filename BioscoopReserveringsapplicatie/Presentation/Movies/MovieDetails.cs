@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Verwijder film", () => MovieDelete.Start(movie.Id)),
                 new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
             };
-            SelectionMenu.Create(options, Print);
+            SelectionMenuUtil.Create(options, Print);
         }
 
         private static void Print()
