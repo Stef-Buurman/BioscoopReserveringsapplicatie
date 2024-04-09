@@ -7,6 +7,6 @@ namespace BioscoopReserveringsapplicatie
 
         public static List<MovieModel> LoadAll() => _dataAccess.LoadAll();
 
-        public static void WriteAll(List<MovieModel> accounts) => _dataAccess.WriteAll(accounts);
+        public static void WriteAll(List<MovieModel> movies) => _dataAccess.WriteAll(movies);
     }
 }
