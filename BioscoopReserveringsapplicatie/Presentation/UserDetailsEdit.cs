@@ -73,7 +73,9 @@ namespace BioscoopReserveringsapplicatie
                 while(!validAgeCategory)
                 {
                     List<AgeCategory> ageCategories = Globals.GetAllEnum<AgeCategory>();
-                    newAgeCategory = SelectionMenu.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
+                    List<string> EnumDescription = ageCategories.Select(o => o.GetDisplayName()).ToList();
+                    string selectedDescription = SelectionMenu.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
+                    newAgeCategory = ageCategories.FirstOrDefault(o => o.GetDisplayName() == selectedDescription);
                     validAgeCategory = _userLogic.ValidateAgeCategory(newAgeCategory);
                 }
 

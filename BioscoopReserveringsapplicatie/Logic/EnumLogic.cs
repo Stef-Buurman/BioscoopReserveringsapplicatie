@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
                         .GetCustomAttribute<DisplayAttribute>()
                         .GetName();
         }
-        
+
     }
 }
 

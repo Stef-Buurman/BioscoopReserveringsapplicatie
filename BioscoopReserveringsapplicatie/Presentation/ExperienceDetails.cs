@@ -65,7 +65,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            if (experience != null) Console.WriteLine($"De experience details zijn:\nNaam experience: {experience.Name} \nIntensiteit experience: {experience.Intensity} \nTijdsduur experience: {experience.TimeLength} minuten \nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.AgeCategory} \n\nWat wil je doen?");
+            if (experience != null) Console.WriteLine($"De experience details zijn:\nNaam experience: {experience.Name} \nIntensiteit experience: {experience.Intensity} \nTijdsduur experience: {experience.TimeLength} minuten \nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.AgeCategory.GetDisplayName()} \n\nWat wil je doen?");
         }
     }
 }
