@@ -7,6 +7,6 @@ namespace BioscoopReserveringsapplicatie
         public static void NewDataAccess(IDataAccess<ExperiencesModel> dataAccess) => _dataAccess = dataAccess;
         public static List<ExperiencesModel> LoadAll() => _dataAccess.LoadAll();
 
-        public static void WriteAll(List<ExperiencesModel> accounts) => _dataAccess.WriteAll(accounts);
+        public static void WriteAll(List<ExperiencesModel> experiences) => _dataAccess.WriteAll(experiences);
     }
 }
