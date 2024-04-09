@@ -1,6 +1,6 @@
 namespace BioscoopReserveringsapplicatie
 {
-    class MoviesLogic
+    public class MoviesLogic
     {
         private List<MovieModel> _Movies;
 
