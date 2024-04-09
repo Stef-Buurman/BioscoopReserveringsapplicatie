@@ -7,13 +7,13 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-        public LocationModel(int id, string title)
+        public LocationModel(int id, string name)
         {
             Id = id;
-            Title = title;
+            Name = name;
         }
     }
 }
