@@ -7,7 +7,6 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-
             List<Genre> selectedGenres = SelectGenres();
             AgeCategory ageCategory = SelectAgeCategory();
             Intensity intensity = SelectIntensity();
@@ -130,12 +129,7 @@ namespace BioscoopReserveringsapplicatie
             }
 
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
-<<<<<<< HEAD:BioscoopReserveringsapplicatie/Presentation/Users/Preferences.cs
             Intensity intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
-=======
-
-            Intensity intensity = SelectionMenu.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
->>>>>>> 06b9602 (Preferences are now optional to enter):BioscoopReserveringsapplicatie/Presentation/Preferences.cs
 
             while (!PreferencesLogic.ValidateIntensity(intensity))
             {
