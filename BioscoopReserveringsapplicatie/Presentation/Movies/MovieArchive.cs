@@ -1,6 +1,6 @@
 namespace BioscoopReserveringsapplicatie
 {
-    static class MovieDelete
+    static class MovieArchive
     {
         static private MoviesLogic MoviesLogic = new MoviesLogic();
 
