@@ -73,7 +73,9 @@ namespace BioscoopReserveringsapplicatie
                 while(!validAgeCategory)
                 {
                     List<AgeCategory> ageCategories = Globals.GetAllEnum<AgeCategory>();
-                    newAgeCategory = SelectionMenuUtil.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
+                    List<string> EnumDescription = ageCategories.Select(o => o.GetDisplayName()).ToList();
+                    string selectedDescription = SelectionMenuUtil.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
+                    newAgeCategory = ageCategories.First(o => o.GetDisplayName() == selectedDescription);
                     validAgeCategory = _userLogic.ValidateAgeCategory(newAgeCategory);
                 }
 
@@ -112,7 +114,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Persoonlijke voorkeuren]", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Genre: ]{string.Join(", ", newGenres)}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Intensiteit: ]{newIntensity}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory}\n\n", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory.GetDisplayName()}\n\n", ConsoleColor.Green);
             ColorConsole.WriteColorLine("[Weet je zeker dat je de gegevens wilt aanpassen ?]", ConsoleColor.Red);
         }
     }
