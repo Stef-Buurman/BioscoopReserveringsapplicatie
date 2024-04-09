@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
-                    new Option<string>("Archiveer film", () => MovieDelete.Start(movie.Id)),
+                    new Option<string>("Archiveer film", () => MovieArchive.Start(movie.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
                 };
             }
