@@ -37,7 +37,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 Console.WriteLine("Er is geen account gevonden met dat e-mailadres en wachtwoord.");
                 Console.WriteLine("Druk op een willekeurige toets om het opnieuw te proberen.");
-                Console.ReadKey();
+                Console.ReadKey(true);
                 Start();
             }
         }
