@@ -117,7 +117,7 @@ namespace BioscoopReserveringsapplicatie
                         new Option<string>("Nee", () => {
                                 Console.Clear();
                                 actionBeforeStart();
-                                Console.Write(input);
+                                ColorConsole.WriteColor($"[{input}]", Globals.ColorEditInput);
                                 WantToLeave = false;
                             }
                         ),
