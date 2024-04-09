@@ -9,6 +9,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.Clear();
                 List<Option<string>> options = new List<Option<string>>
             {
+                new Option<string>("Experience inplannen", () => ScheduleExperince.Start()),
                 new Option<string>("Film toevoegen", () => AddMovie.Start()),
                 new Option<string>("Filmoverzicht", () => MovieOverview.Start()),
                 new Option<string>("Experience toevoegen", () => AddExperience.Start()),
