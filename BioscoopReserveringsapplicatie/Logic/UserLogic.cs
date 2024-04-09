@@ -86,13 +86,13 @@
 
             if (validated)
             {
-                newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
             }
             return new RegistrationResult(validated, errorMessage, newAccount);
         }

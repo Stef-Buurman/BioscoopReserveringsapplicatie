@@ -27,20 +27,8 @@ namespace BioscoopReserveringsapplicatie
 
             if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any())
             {
-                try
-                {
-                    MovieModel latestMovie = _Movies.Last();
-
-                    MovieModel movie = new MovieModel(latestMovie.Id + 1, title, description, genres, rating, false);
-
-                    UpdateList(movie);
-                }
-                catch (InvalidOperationException)
-                {
-                    MovieModel movie = new MovieModel(1, title, description, genres, rating, false);
-
-                    UpdateList(movie);
-                }
+                MovieModel movie = new MovieModel(IdGenerator.GetNextId(_Movies), title, description, genres, rating, false);
+                UpdateList(movie);
                 return true;
             }
 

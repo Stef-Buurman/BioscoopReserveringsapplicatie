@@ -37,7 +37,7 @@
             {
                 return false;
             }
-            if (this.GetById(experience.Id) == null) experience.Id = GetNextId.GetNextIdForExperience(_experiences);
+            if (this.GetById(experience.Id) == null) experience.Id = IdGenerator.GetNextId(_experiences);
             _experiences.Add(experience);
             ExperiencesAccess.WriteAll(_experiences);
             return true;
