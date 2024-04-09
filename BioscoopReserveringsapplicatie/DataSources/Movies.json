@@ -8,14 +8,14 @@
       "Komedie",
       "Actie"
     ],
-    "ageCategory": 16
+    "ageCategory": 14
   },
   {
     "id": 2,
-    "title": "Film 4",
-    "description": "Beschrijving 5",
+    "title": "Film 2",
+    "description": "Beschrijving 2",
     "genres": [
-      "Crime",
+      "Horror",
       "Drama",
       "Romance"
     ],
@@ -26,10 +26,10 @@
     "title": "Film 3",
     "description": "Beschrijving 3",
     "genres": [
-      "Horror",
-      "Komedie",
+      "History",
+      "War",
       "Actie"
     ],
-    "ageCategory": 0
+    "ageCategory": 18
   }
 ]

@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Experience 1",
     "filmId": 1,
-    "intensity": "Laag",
+    "intensity": "Low",
     "timeLength": 20,
     "archived": false
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "name": "Experience 2",
     "filmId": 2,
-    "intensity": "Laag",
+    "intensity": "Medium",
     "timeLength": 20,
     "archived": false
   },
@@ -19,64 +19,8 @@
     "id": 3,
     "name": "Experience 3",
     "filmId": 3,
-    "intensity": "Laag",
+    "intensity": "High",
     "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 4,
-    "name": "Experience 4",
-    "filmId": 1,
-    "intensity": "Medium",
-    "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 5,
-    "name": "Experience 5",
-    "filmId": 2,
-    "intensity": "Medium",
-    "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 6,
-    "name": "Experience 6",
-    "filmId": 3,
-    "intensity": "Medium",
-    "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 7,
-    "name": "Experience 7",
-    "filmId": 1,
-    "intensity": "Hoog",
-    "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 8,
-    "name": "Experience 8",
-    "filmId": 2,
-    "intensity": "Hoog",
-    "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 9,
-    "name": "Experience 9",
-    "filmId": 3,
-    "intensity": "Hoog",
-    "timeLength": 20,
-    "archived": false
-  },
-  {
-    "id": 10,
-    "name": "Experience 3000",
-    "filmId": 3,
-    "intensity": "laag",
-    "timeLength": 120,
     "archived": false
   }
 ]

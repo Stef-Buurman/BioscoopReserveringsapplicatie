@@ -10,6 +10,7 @@ namespace BioscoopReserveringsapplicatie
             List<Genre> selectedGenres = SelectGenres();
             AgeCategory ageCategory = SelectAgeCategory();
             Intensity intensity = SelectIntensity();
+
             Language language = SelectLanguage();
 
             PreferencesLogic.addPreferencesToAccount(selectedGenres, ageCategory, intensity, language, user);
@@ -18,8 +19,27 @@ namespace BioscoopReserveringsapplicatie
         public static List<Genre> SelectGenres()
         {
             List<Genre> selectedGenres = new List<Genre>();
+
+            bool choose = false;
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                    choose = true;
+                }),
+                new Option<string>("Nee", () => {
+                    choose = false;
+                }),
+            };
+            SelectionMenuUtil.Create(options, () => Console.WriteLine("Wilt u genres selecteren?"));
+
+            if (!choose)
+            {
+                return selectedGenres;
+            }
+
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             bool firstTime = true;
+
             while (selectedGenres.Count < 3)
             {
                 Genre genre;
@@ -55,6 +75,23 @@ namespace BioscoopReserveringsapplicatie
 
         public static AgeCategory SelectAgeCategory()
         {
+            bool choose = false;
+            List<Option<string>> optionsMenu = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                    choose = true;
+                }),
+                new Option<string>("Nee", () => {
+                    choose = false;
+                }),
+            };
+            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een leeftijdscategorie selecteren?"));
+
+            if (!choose)
+            {
+                return AgeCategory.Undefined;
+            }
+
             List<AgeCategory> options = Globals.GetAllEnum<AgeCategory>();
             List<string> EnumDescription = options.Select(o => o.GetDisplayName()).ToList();
             string selectedDescription = SelectionMenuUtil.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
@@ -74,6 +111,23 @@ namespace BioscoopReserveringsapplicatie
 
         public static Intensity SelectIntensity()
         {
+            bool choose = false;
+            List<Option<string>> optionsMenu = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                    choose = true;
+                }),
+                new Option<string>("Nee", () => {
+                    choose = false;
+                }),
+            };
+            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een intensiteit selecteren?"));
+
+            if (!choose)
+            {
+                return Intensity.Undefined;
+            }
+
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
             Intensity intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
 
