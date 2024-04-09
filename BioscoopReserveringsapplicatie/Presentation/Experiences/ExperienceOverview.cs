@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceOverview
     {
-        static private ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
 
         public static void Start()
         {
@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
             return ShowExperiences(archivedExperiences);
         }
 
-        private static int ShowAllActiveExperiences()
+        public static int ShowAllActiveExperiences()
         {
             List<ExperiencesModel> activeExperiences = ExperiencesLogic.GetAllActiveExperiences();
             return ShowExperiences(activeExperiences);
