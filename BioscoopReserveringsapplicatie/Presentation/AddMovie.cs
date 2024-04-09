@@ -49,7 +49,10 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            AgeCategory rating = SelectionMenu.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
+            List<AgeCategory> AgeGenres = Globals.GetAllEnum<AgeCategory>();
+            List<string> EnumDescription = AgeGenres.Select(o => o.GetDisplayName()).ToList();
+            string selectedDescription = SelectionMenu.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
+            AgeCategory rating = AgeGenres.First(o => o.GetDisplayName() == selectedDescription);
 
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
@@ -76,7 +79,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine($"Film titel: {title}");
             Console.WriteLine($"Film beschrijving: {description}");
             Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
-            Console.WriteLine($"Film kijkwijzer: {rating}\n");
+            Console.WriteLine($"Film kijkwijzer: {rating.GetDisplayName()}\n");
         }
     }
 }

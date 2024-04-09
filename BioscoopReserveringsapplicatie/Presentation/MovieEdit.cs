@@ -51,7 +51,11 @@ namespace BioscoopReserveringsapplicatie
                 firstTime = false;
             }
 
-            AgeCategory newRating = SelectionMenu.Create(Globals.GetAllEnum<AgeCategory>(), () => ColorConsole.WriteColorLine("Kies een [kijkwijzer]: \n", Globals.ColorInputcClarification));
+            List<AgeCategory> AgeGenres = Globals.GetAllEnum<AgeCategory>();
+            List<string> EnumDescription = AgeGenres.Select(o => o.GetDisplayName()).ToList();
+            string selectedDescription = SelectionMenu.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
+            AgeCategory newRating = AgeGenres.First(o => o.GetDisplayName() == selectedDescription);
+
 
             List<Option<string>> options = new List<Option<string>>
             {
@@ -80,7 +84,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine($"Film titel: {newTitle}");
             Console.WriteLine($"Film beschrijving: {description}");
             Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
-            Console.WriteLine($"Film kijkwijzer: {rating}\n");
+            Console.WriteLine($"Film kijkwijzer: {rating.GetDisplayName()}\n");
 
             Console.WriteLine($"Weet u zeker dat u de filmdetails van {currentTitle} wilt bewerken?");
         }
