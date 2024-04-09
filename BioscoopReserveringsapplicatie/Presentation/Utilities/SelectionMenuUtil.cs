@@ -18,7 +18,7 @@
             ConsoleKeyInfo keyinfo;
             do
             {
-                keyinfo = Console.ReadKey();
+                keyinfo = Console.ReadKey(true);
                 // When the user presses the down arrow, the selected option will move down
                 if (keyinfo.Key == ConsoleKey.DownArrow)
                 {
