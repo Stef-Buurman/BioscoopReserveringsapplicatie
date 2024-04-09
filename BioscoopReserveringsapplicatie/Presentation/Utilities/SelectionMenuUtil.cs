@@ -148,9 +148,9 @@
             return Create(options, 9, ActionBeforeMenu, true, escapeAction);
         }
 
-        public static T Create<T>(List<T> options, Action ActionBeforeMenu, Action escapeAction)
+        public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu, Action escapeAction)
         {
-            return Create(options, 9, ActionBeforeMenu, true, escapeAction);
+            return Create(options, maxVisibility, ActionBeforeMenu, true, escapeAction);
         }
 
         public static T Create<T>(List<T> options, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
@@ -158,15 +158,15 @@
             return Create(options, 9, ActionBeforeMenu, canBeEscaped, escapeAction);
         }
 
+        public static T Create<T>(List<T> options, Action ActionBeforeMenu, Action escapeAction)
+        {
+            return Create(options, 9, ActionBeforeMenu, true, escapeAction);
+        }
+
         public static T Create<T>(List<T> options, int maxVisibility, Action ActionBeforeMenu, Action escapeAction)
         {
             return Create(options, maxVisibility, ActionBeforeMenu, true, escapeAction);
         }
-
-        //public static T Create<T>(List<Option<T>> options, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
-        //{
-
-        //}
 
         static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null)
         {
