@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenu.Create(options, () => Console.WriteLine("Wilt u genres selecteren?"));
+            SelectionMenuUtil.Create(options, () => Console.WriteLine("Wilt u genres selecteren?"));
 
             if (!choose)
             {
@@ -86,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenu.Create(optionsMenu, () => Console.WriteLine("Wilt u een leeftijdscategorie selecteren?"));
+            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een leeftijdscategorie selecteren?"));
 
             if (!choose)
             {
@@ -122,7 +122,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenu.Create(optionsMenu, () => Console.WriteLine("Wilt u een intensiteit selecteren?"));
+            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een intensiteit selecteren?"));
 
             if (!choose)
             {
