@@ -4,6 +4,7 @@
     {
         public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
         {
+            if (options.Count == 0) return default;
             Console.CursorVisible = false;
             int index = 0;
             int visibleIndex = 0;
@@ -13,7 +14,7 @@
 
             int halfOfMaxVisibility = Convert.ToInt32(Math.Round((double)maxVisibility / 2, MidpointRounding.AwayFromZero));
 
-            WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu);
+            WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu, canBeEscaped);
 
             ConsoleKeyInfo keyinfo;
             do
@@ -41,7 +42,7 @@
                             {
                                 amountOptionsAbove = options.Count - maxVisibility;
                                 optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
-                                WriteMenu(optionsToShow, optionsToShow[visibleIndex - 1], ActionBeforeMenu);
+                                WriteMenu(optionsToShow, optionsToShow[visibleIndex - 1], ActionBeforeMenu, canBeEscaped);
                             }
                             // When the selected option is higher than the half of the max visibility, this will be executed.
                             else if (visibleIndex > Math.Floor((double)maxVisibility / 2))
@@ -49,18 +50,18 @@
                                 amountOptionsAbove++;
                                 optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
                                 visibleIndex--;
-                                WriteMenu(optionsToShow, optionsToShow[visibleIndex], ActionBeforeMenu);
+                                WriteMenu(optionsToShow, optionsToShow[visibleIndex], ActionBeforeMenu, canBeEscaped);
                             }
                             // When the selected option is neither of the above, this will be executed.
                             else
                             {
                                 optionsToShow = GetOptionsToShow(options, maxVisibility);
-                                WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu);
+                                WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu, canBeEscaped);
                             }
                         }
                         else
                         {
-                            WriteMenu(options, options[index], ActionBeforeMenu);
+                            WriteMenu(options, options[index], ActionBeforeMenu, canBeEscaped);
                         }
                     }
                 }
@@ -82,14 +83,14 @@
                                 visibleIndex = index;
                                 amountOptionsAbove = 0;
                                 optionsToShow = GetOptionsToShow(options, maxVisibility);
-                                WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu);
+                                WriteMenu(optionsToShow, optionsToShow[index], ActionBeforeMenu, canBeEscaped);
                             }
                             // When the selected option is higher than (the option count minus the half of the max visibility), this will be executed.
                             else if (index >= options.Count - halfOfMaxVisibility)
                             {
                                 amountOptionsAbove = options.Count - maxVisibility;
                                 optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
-                                WriteMenu(optionsToShow, optionsToShow[visibleIndex - 1], ActionBeforeMenu);
+                                WriteMenu(optionsToShow, optionsToShow[visibleIndex - 1], ActionBeforeMenu, canBeEscaped);
                             }
                             // When the selected option is neither of the above, this will be executed.
                             else
@@ -97,12 +98,12 @@
                                 if (amountOptionsAbove > 0) amountOptionsAbove--;
                                 optionsToShow = GetOptionsToShow(options, maxVisibility, amountOptionsAbove, true);
                                 if (index + 1 < options.Count - halfOfMaxVisibility) visibleIndex++;
-                                WriteMenu(optionsToShow, optionsToShow[visibleIndex], ActionBeforeMenu);
+                                WriteMenu(optionsToShow, optionsToShow[visibleIndex], ActionBeforeMenu, canBeEscaped);
                             }
                         }
                         else
                         {
-                            WriteMenu(options, options[index], ActionBeforeMenu);
+                            WriteMenu(options, options[index], ActionBeforeMenu, canBeEscaped);
                         }
                     }
                 }
@@ -168,11 +169,13 @@
             return Create(options, maxVisibility, ActionBeforeMenu, true, escapeAction);
         }
 
-        static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null)
+        static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null, bool canBeEscaped = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
         {
             Console.Clear();
             // When you give a function to the menu, it will execute it before the menu is printed
+            if(canBeEscaped) Console.WriteLine(textToShowEscapability);
             if (ActionBeforeMenu != null) ActionBeforeMenu();
+            
 
 
             foreach (Option<T> option in options)
