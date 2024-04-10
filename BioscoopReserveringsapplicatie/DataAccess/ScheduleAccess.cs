@@ -7,6 +7,6 @@ namespace BioscoopReserveringsapplicatie
 
         public static List<ScheduleModel> LoadAll() => _dataAccess.LoadAll(); 
 
-        public static void WriteAll(List<ScheduleModel> rooms) => _dataAccess.WriteAll(rooms);
+        public static void WriteAll(List<ScheduleModel> schedules) => _dataAccess.WriteAll(schedules);
     }
 }
