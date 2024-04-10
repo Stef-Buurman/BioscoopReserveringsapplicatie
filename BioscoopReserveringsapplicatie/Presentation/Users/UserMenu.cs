@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace BioscoopReserveringsapplicatie
 {
     static class UserMenu
