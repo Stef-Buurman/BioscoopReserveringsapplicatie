@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
@@ -54,8 +54,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Bewerk experience", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Archiveer experience", () => ExperienceArchive.Start(experienceId)),
+                    new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Experience inplannen", () => ScheduleExperince.Start(experienceId)),
+                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
