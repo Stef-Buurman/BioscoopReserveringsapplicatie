@@ -10,14 +10,14 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             string title = ReadLineUtil.EnterValue(() =>
             {
-                ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
+                ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
                 Console.Write("Voer de film titel in: ");
             }, 
             actionWhenEscapePressed);
 
             string description = ReadLineUtil.EnterValue(() =>
             {
-                ColorConsole.WriteColorLine("[Film Toevoegen]\n", Globals.TitleColor);
+                ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
                 Console.WriteLine($"Voer de film titel in: {title}");
                 Console.Write("Voer de film beschrijving in: ");
             }, 
@@ -33,8 +33,8 @@ namespace BioscoopReserveringsapplicatie
                 {
                     genre = SelectionMenuUtil.Create(availableGenres, () =>
                     {
-                        ColorConsole.WriteColorLine("[Voer film genre in]", Globals.TitleColor);
-                        ColorConsole.WriteColorLine("[U kunt maximaal 3 verschillende genres kiezen.]\n", Globals.TitleColor);
+                        ColorConsole.WriteColorLine("Voer film genre in", Globals.TitleColor);
+                        ColorConsole.WriteColorLine("U kunt maximaal 3 verschillende genres kiezen.\n", Globals.TitleColor);
                         ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification);
                     }, actionWhenEscapePressed
                     );

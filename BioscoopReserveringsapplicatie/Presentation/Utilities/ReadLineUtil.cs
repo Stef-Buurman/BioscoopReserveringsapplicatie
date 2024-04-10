@@ -151,7 +151,7 @@ namespace BioscoopReserveringsapplicatie
         }
         private static void print()
         {
-            ColorConsole.WriteColorLine("[Weet je zeker dat je terug wilt gaan?]", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", ConsoleColor.Red);
         }
     }
 }
