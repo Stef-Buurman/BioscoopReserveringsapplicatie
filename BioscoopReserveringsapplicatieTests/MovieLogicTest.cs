@@ -65,7 +65,7 @@ namespace BioscoopReserveringsapplicatieTests
 
         [DataRow("")]
         [DataRow(null)]
-        [TestMethod]
+        [DataTestMethod]
         public void Incorrect_Movie_Description_Validation_With_Movie(string description)
         {
             MoviesLogic moviesLogic = Initialize();
@@ -86,11 +86,47 @@ namespace BioscoopReserveringsapplicatieTests
 
         // Genres ------------------------------------------------------------------------------------------------------------------
 
+        [DataRow(Genre.Western, Genre.Komedie, Genre.War)]
+        [DataRow(Genre.Family, Genre.Crime, Genre.Documentary)]
+        [DataRow(Genre.Music, Genre.Mystery, Genre.Fantasy)]
+        [DataTestMethod]
+        public void Correct_Movie_Genres_Validation_With_Genres(Genre genre1, Genre genre2, Genre genre3)
+        {
+            MoviesLogic moviesLogic = Initialize();
+            List<Genre> genresList = new List<Genre> { genre1, genre2, genre3 };
+            Assert.IsTrue(moviesLogic.ValidateMovieGenres(genresList));
+        }
 
+        [DataRow((Genre)909)]
+        [DataRow((Genre)1002)]
+        [DataTestMethod]
+        public void Incorrect_Movie_Genres_Validation_With_Genres(Genre genre)
+        {
+            MoviesLogic moviesLogic = Initialize();
+            List<Genre> genresList = new List<Genre> { genre };
+            Assert.IsFalse(moviesLogic.ValidateMovieGenres(genresList));
+        }
 
         // AgeCategory ------------------------------------------------------------------------------------------------------------------
 
+        [DataRow(AgeCategory.AGE_6)]
+        [DataRow(AgeCategory.AGE_12)]
+        [DataRow(AgeCategory.AGE_18)]
+        [DataTestMethod]
+        public void Correct_Movie_AgeCategory_Validation_With_AgeCategory(AgeCategory ageCategory)
+        {
+            MoviesLogic moviesLogic = Initialize();
+            Assert.IsTrue(moviesLogic.ValidateMovieAgeCategory(ageCategory));
+        }
 
+        [DataRow((AgeCategory)909)]
+        [DataRow((AgeCategory)1002)]
+        [DataTestMethod]
+        public void Incorrect_Movie_AgeCategory_Validation_With_AgeCategory(AgeCategory ageCategory)
+        {
+            MoviesLogic moviesLogic = Initialize();
+            Assert.IsFalse(moviesLogic.ValidateMovieAgeCategory(ageCategory));
+        }
 
         // Archived ------------------------------------------------------------------------------------------------------------------
 

@@ -18,16 +18,11 @@ namespace BioscoopReserveringsapplicatie
         public bool AddMovie(string title, string description, List<Genre> genres, AgeCategory rating)
         {
             GetAllMovies();
-            
-            if (title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating == AgeCategory.Undefined)
-            {
-                Console.WriteLine("Vul alstublieft alle velden in.");
-                return false;
-            }
 
-            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any())
+            MovieModel movie = new MovieModel(IdGenerator.GetNextId(_Movies), title, description, genres, rating, false);
+
+            if (this.ValidateMovie(movie))
             {
-                MovieModel movie = new MovieModel(IdGenerator.GetNextId(_Movies), title, description, genres, rating, false);
                 UpdateList(movie);
                 return true;
             }
@@ -37,13 +32,7 @@ namespace BioscoopReserveringsapplicatie
 
         public bool EditMovie(int id, string title, string description, List<Genre> genres, AgeCategory rating)
         {
-            if (id == 0 || title.Trim() == "" || description.Trim() == "" || genres.Count == 0 || rating == AgeCategory.Undefined)
-            {
-                Console.WriteLine("Vul alstublieft alle velden in.");
-                return false;
-            }
-
-            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(description) && genres.Any())
+            if (ValidateMovieTitle(title) && ValidateMovieDescription(description) && ValidateMovieGenres(genres) && ValidateMovieAgeCategory(rating) && id != 0)
             {
                 MovieModel movie = GetMovieById(id);
                 movie.Title = title;
@@ -56,6 +45,48 @@ namespace BioscoopReserveringsapplicatie
             }
 
             return false;
+        }
+
+        public bool ValidateMovie(MovieModel movie)
+        {
+            if (movie == null) return false;
+            else if (!ValidateMovieTitle(movie.Title)) return false;
+            else if (!ValidateMovieDescription(movie.Description)) return false;
+            else if (!ValidateMovieGenres(movie.Genres)) return false;
+            else if (!ValidateMovieAgeCategory(movie.AgeCategory)) return false;
+            return true;
+        }
+
+        public bool ValidateMovieTitle(string title)
+        {
+            return !string.IsNullOrWhiteSpace(title);
+        }
+
+        public bool ValidateMovieDescription(string description)
+        {
+            return !string.IsNullOrWhiteSpace(description);
+        }
+
+        public bool ValidateMovieGenres(List<Genre> genres)
+        {
+            foreach (Genre genre in genres)
+            {
+                if (!Enum.IsDefined(typeof(Genre), genre))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool ValidateMovieAgeCategory(AgeCategory rating)
+        {
+            return Enum.IsDefined(typeof(AgeCategory), rating);
+        }
+
+        public bool ValidateMovieArchived(bool archived)
+        {
+            return true;
         }
 
         public void UpdateList(MovieModel movie)
@@ -86,7 +117,7 @@ namespace BioscoopReserveringsapplicatie
         {
             MovieModel movie = GetMovieById(id);
             if (movie != null)
-            {   
+            {
                 movie.Archived = true;
                 UpdateList(movie);
             }
