@@ -28,11 +28,11 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("[Er is een error opgetreden tijdens het toevoegen van de experience.]", ConsoleColor.Red));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", ConsoleColor.Red));
             }
         }
 
-        private static void WriteTitle() => ColorConsole.WriteColorLine("[Experience Toevoegen]\n", Globals.TitleColor);
+        private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
 
         private static void WhatToDoWhenGoBack()
         {
@@ -122,8 +122,8 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print(string name, int filmId, Intensity intensity, int timeLength)
         {
-            ColorConsole.WriteColorLine("[De experience is succesvol toegevoegd.]", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("\n[De details van de experience zijn:]", Globals.TitleColor);
+            ColorConsole.WriteColorLine("De experience is succesvol toegevoegd.", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("\nDe details van de experience zijn:", Globals.TitleColor);
             Console.WriteLine($"Experience naam: {name}");
             Console.WriteLine($"Film: {moviesLogic.GetMovieById(filmId).Title}");
             Console.WriteLine($"Experience intensiteit: {intensity}");
