@@ -9,7 +9,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             Action actionBeforeStart = () =>
             {
-                ColorConsole.WriteColorLine($"[{textToShowEscapability}]", ConsoleColor.Gray);
+                ColorConsole.WriteLineInfo(textToShowEscapability);
                 actionBeforeStartGotten();
             };
             actionBeforeStart();
@@ -56,7 +56,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 actionBeforeStart = () =>
                 {
-                    ColorConsole.WriteColorLine($"[{textToShowEscapability}]", ConsoleColor.Gray);
+                    ColorConsole.WriteLineInfo(textToShowEscapability);
                     actionBeforeStartGotten();
                 };
             }
