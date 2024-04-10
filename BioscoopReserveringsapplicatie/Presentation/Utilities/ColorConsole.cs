@@ -17,7 +17,31 @@ namespace BioscoopReserveringsapplicatie
         }
         public static void WriteColor(string message, ConsoleColor color)
         {
-            string[] piecesOfMessage = Regex.Split(message, @"(\[[^\]]*\])");
+            ConsoleColor originalForeColor = Console.ForegroundColor;
+            List<string> piecesOfMessage = new List<string>(Regex.Split(message, @"(\[[^\]]*\])"));
+            if (piecesOfMessage.Count == 1)
+            {
+                Console.ForegroundColor = color;
+                Console.Write(message);
+                Console.ResetColor();
+            }
+            else
+            {
+                foreach (string messagePiece in piecesOfMessage)
+                {
+                    if (messagePiece.StartsWith("[") && messagePiece.EndsWith("]"))
+                    {
+                        Console.ForegroundColor = color;
+                        Console.Write(messagePiece.Substring(1, messagePiece.Length - 2));
+                    }
+                    else
+                    {
+                        Console.Write(messagePiece);
+                    }
+                    Console.ForegroundColor = originalForeColor;
+                }
+            }
+        }
 
         static void WriteColor(string message)
         {
@@ -30,7 +54,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 int closeBracketIndex = message.IndexOf(']', openBracketIndex);
                 if (closeBracketIndex == -1)
-            {
+                {
                     Console.ForegroundColor = originalForeColor;
                     Console.WriteLine(message.Substring(startIndex));
                     return;
@@ -45,11 +69,11 @@ namespace BioscoopReserveringsapplicatie
                 {
                     int endTagIndex = message.IndexOf("[/]", closeBracketIndex);
                     if (endTagIndex == -1)
-                {
+                    {
                         Console.ForegroundColor = originalForeColor;
                         Console.WriteLine(message.Substring(startIndex));
                         return;
-                }
+                    }
 
                     WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), color);
 
