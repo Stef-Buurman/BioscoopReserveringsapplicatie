@@ -11,15 +11,13 @@ namespace BioscoopReserveringsapplicatie
         
         public List<LocationModel> GetAll() => _Locations = LocationAccess.LoadAll();
 
-        private int GenerateId() => _Locations.Count == 0 ? 0 : _Locations.Max(location => location.Id) + 1;
-
         public LocationModel? GetById(int id) => LocationAccess.LoadAll().Find(i => i.Id == id);
 
         public void Add(string name)
         {
                 GetAll();
 
-                LocationModel location = new LocationModel(GenerateId(), name);
+                LocationModel location = new LocationModel(IdGenerator.GetNextId(_Locations), name);
 
                 UpdateList(location);
         }

@@ -11,15 +11,13 @@ namespace BioscoopReserveringsapplicatie
         
         public List<RoomModel> GetAll() => _Rooms = RoomAccess.LoadAll();
 
-        private int GenerateId() => _Rooms.Count == 0 ? 0 : _Rooms.Max(location => location.Id) + 1;
-
         public RoomModel? GetById(int id) => RoomAccess.LoadAll().Find(i => i.Id == id);
 
         public void Add(int locationId, int roomNumber, int capacity)
         {
                 GetAll();
 
-                RoomModel room = new RoomModel(GenerateId(), locationId, roomNumber, capacity);
+                RoomModel room = new RoomModel(IdGenerator.GetNextId(_Rooms), locationId, roomNumber, capacity);
 
                 UpdateList(room);
         }
