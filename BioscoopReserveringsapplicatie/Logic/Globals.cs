@@ -17,9 +17,11 @@ namespace BioscoopReserveringsapplicatie
             return System.IO.Path.Combine(directory?.ToString() ?? "", Assembly.GetCallingAssembly().GetName().Name ?? "");
         }
       
-        public static readonly ConsoleColor TitleColor = ConsoleColor.Cyan;
+        public static readonly ConsoleColor TitleColor = ConsoleColor.Magenta;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
         public static readonly ConsoleColor ColorEditInput = ConsoleColor.Yellow;
+        public static readonly ConsoleColor ExperienceColor = ConsoleColor.Cyan;
+        public static readonly ConsoleColor MovieColor = ConsoleColor.Green;
 
         public static List<T> GetAllEnum<T>()
         {
