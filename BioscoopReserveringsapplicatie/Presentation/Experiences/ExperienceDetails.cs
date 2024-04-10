@@ -67,11 +67,11 @@ namespace BioscoopReserveringsapplicatie
         {
             if (experience != null) 
             {
-                ColorConsole.WriteColorLine("[Experience details]", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("Experience details", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Naam experience: ]{experience.Name}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Intensiteit experience: ]{experience.Intensity}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Tijdsduur experience: ]{experience.TimeLength} minuten\n", Globals.ExperienceColor);
-                ColorConsole.WriteColorLine($"[Film details]", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"Film details", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Film Titel: ]{movie.Title}", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Film beschrijving: ]{movie.Description}", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", movie.Genres)}", Globals.MovieColor);
