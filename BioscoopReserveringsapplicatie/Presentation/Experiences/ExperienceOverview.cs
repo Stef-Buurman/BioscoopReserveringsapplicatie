@@ -14,7 +14,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle experiences", () => ShowAllExperiences()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("[Kies een van de volgende experience overzichten: ]", Globals.TitleColor));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("[Kies een van de volgende experience overzichten: ]\n", Globals.TitleColor));
         }
 
         private static void ShowExperienceDetails(int experienceId)

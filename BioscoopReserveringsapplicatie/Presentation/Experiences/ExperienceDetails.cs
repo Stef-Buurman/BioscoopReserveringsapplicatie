@@ -65,7 +65,19 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            if (experience != null) Console.WriteLine($"De experience details zijn:\nNaam experience: {experience.Name} \nIntensiteit experience: {experience.Intensity} \nTijdsduur experience: {experience.TimeLength} minuten \nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.AgeCategory.GetDisplayName()} \n\nWat wil je doen?");
+            if (experience != null) 
+            {
+                ColorConsole.WriteColorLine("[Experience details]", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Naam experience: ]{experience.Name}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Intensiteit experience: ]{experience.Intensity}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Tijdsduur experience: ]{experience.TimeLength} minuten\n", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Film details]", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film Titel: ]{movie.Title}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film beschrijving: ]{movie.Description}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", movie.Genres)}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film kijkwijzer: ]{movie.AgeCategory.GetDisplayName()}\n\n", Globals.MovieColor);
+                Console.WriteLine("Wat wil je doen?");
+            }   
         }
     }
 }
