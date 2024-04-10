@@ -27,5 +27,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.ResetColor();
             }
         }
+
+        public static void WriteLineInfo(string message) => WriteColorLine($"[{message}]", ConsoleColor.DarkGray);
     }
 }

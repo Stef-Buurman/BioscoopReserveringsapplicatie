@@ -2,9 +2,11 @@
 {
     static class SelectionMenuUtil
     {
+        private static bool moreOptionsThanVisibility = false;
         public static T Create<T>(List<Option<T>> options, int maxVisibility, Action ActionBeforeMenu = null, bool canBeEscaped = false, Action escapeAction = null)
         {
             if (options.Count == 0) return default;
+            moreOptionsThanVisibility = options.Count > maxVisibility;
             Console.CursorVisible = false;
             int index = 0;
             int visibleIndex = 0;
@@ -172,8 +174,8 @@
         static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null, bool canBeEscaped = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
         {
             Console.Clear();
+            if(canBeEscaped) ColorConsole.WriteLineInfo(textToShowEscapability);
             // When you give a function to the menu, it will execute it before the menu is printed
-            if(canBeEscaped) Console.WriteLine(textToShowEscapability);
             if (ActionBeforeMenu != null) ActionBeforeMenu();
             
 
@@ -190,6 +192,7 @@
                     Console.WriteLine($"  {option.Name}");
                 }
             }
+            if (moreOptionsThanVisibility) ColorConsole.WriteLineInfo($"\n*Navigeer met de pijltjestoetsen om meer opties te zien.*");
         }
 
         private static List<Option<T>> GetOptionsToShow<T>(List<Option<T>> options, int maxVisibility, int skipOptions = 0, bool hasSkipOptions = false)
