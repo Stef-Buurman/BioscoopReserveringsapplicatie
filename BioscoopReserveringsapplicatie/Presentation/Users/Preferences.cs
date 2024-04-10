@@ -47,8 +47,8 @@ namespace BioscoopReserveringsapplicatie
                 {
                     genre = SelectionMenuUtil.Create(availableGenres, () =>
                     {
-                        ColorConsole.WriteColorLine("[Welkom op de voorkeur pagina]", Globals.TitleColor);
-                        ColorConsole.WriteColorLine("[Hier kunt u uw voorkeuren selecteren.]\n", Globals.TitleColor);
+                        ColorConsole.WriteColorLine("Welkom op de voorkeur pagina", Globals.TitleColor);
+                        ColorConsole.WriteColorLine("Hier kunt u uw voorkeuren selecteren.\n", Globals.TitleColor);
                         ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification);
                     }
                     );

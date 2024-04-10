@@ -10,13 +10,13 @@ namespace BioscoopReserveringsapplicatie
 
             string email = ReadLineUtil.EnterValue(false, () =>
             {
-                ColorConsole.WriteColorLine("[Loginpagina]\n", Globals.TitleColor);
+                ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
                 Console.Write("Vul uw e-mailadres in: ");
             });
             Console.Write("Vul uw wachtwoord in: ");
             string password = ReadLineUtil.EnterValue(false, () =>
             {
-                ColorConsole.WriteColorLine("[Loginpagina]\n", Globals.TitleColor);
+                ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
                 Console.WriteLine($"Vul uw e-mailadres in: {email}");
                 Console.Write("Vul uw wachtwoord in: ");
             });

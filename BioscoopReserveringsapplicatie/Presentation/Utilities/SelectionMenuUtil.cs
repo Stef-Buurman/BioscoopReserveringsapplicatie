@@ -185,7 +185,7 @@
                 if (option == selectedOption)
                 {
                     // This will print the selected option in blue
-                    ColorConsole.WriteColorLine($"[>> {option.Name} <<]", ConsoleColor.Blue);
+                    ColorConsole.WriteColorLine($">> {option.Name} <<", ConsoleColor.Blue);
                 }
                 else
                 {

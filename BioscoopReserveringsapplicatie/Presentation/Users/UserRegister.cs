@@ -86,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void PrintTitleAndErrorWhenExist(string? errorMessage)
         {
-            ColorConsole.WriteColorLine("[Registratiepagina]\n", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Registratiepagina\n", Globals.TitleColor);
             if (errorMessage != null)
             {
                 Console.WriteLine(errorMessage);

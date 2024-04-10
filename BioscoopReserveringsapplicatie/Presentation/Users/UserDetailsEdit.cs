@@ -54,7 +54,7 @@ namespace BioscoopReserveringsapplicatie
                         if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, selectedGenres, intensity, ageCategory))
                         {
                             Console.Clear();
-                            ColorConsole.WriteColorLine("[Gebruikers gegevens zijn gewijzigd!]", ConsoleColor.Green);
+                            ColorConsole.WriteColorLine("Gebruikers gegevens zijn gewijzigd!", ConsoleColor.Green);
                             Thread.Sleep(2000);
                             UserDetails.Start();
                         }
@@ -76,14 +76,14 @@ namespace BioscoopReserveringsapplicatie
         private static void PendingChanges(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[Nieuwe Profielgegevens]", ConsoleColor.Cyan);
+            ColorConsole.WriteColorLine("Nieuwe Profielgegevens", ConsoleColor.Cyan);
             ColorConsole.WriteColorLine($"[Naam: ]{newName}", ConsoleColor.Cyan);
             ColorConsole.WriteColorLine($"[Email: ]{newEmail}\n", ConsoleColor.Cyan);
-            ColorConsole.WriteColorLine("[Persoonlijke voorkeuren]", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("Persoonlijke voorkeuren", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Genre: ]{(newGenres.Any() ? string.Join(", ", newGenres) : "Undefined")}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory.GetDisplayName()}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Intensiteit: ]{newIntensity}\n", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("[Weet je zeker dat je de gegevens wilt aanpassen ?]", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("Weet je zeker dat je de gegevens wilt aanpassen ?", ConsoleColor.Red);
         }
     }
 }
