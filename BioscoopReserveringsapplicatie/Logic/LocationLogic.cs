@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
 namespace BioscoopReserveringsapplicatie
 {
     class LocationLogic
