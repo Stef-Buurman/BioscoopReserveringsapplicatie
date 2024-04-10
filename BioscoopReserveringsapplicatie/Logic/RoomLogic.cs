@@ -13,6 +13,8 @@ namespace BioscoopReserveringsapplicatie
 
         public RoomModel? GetById(int id) => RoomAccess.LoadAll().Find(i => i.Id == id);
 
+        public List<RoomModel> GetByLocationId(int id) => RoomAccess.LoadAll().FindAll(i => i.LocationId == id);
+
         public void Add(int locationId, int roomNumber, int capacity)
         {
                 GetAll();
