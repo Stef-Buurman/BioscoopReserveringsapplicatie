@@ -58,7 +58,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Error. Probeer het opnieuw.");
+                    ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
                 }
                 firstTime = false;
             }

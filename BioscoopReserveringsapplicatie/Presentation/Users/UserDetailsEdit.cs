@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
                     newName = ReadLineUtil.EditValue(UserLogic.CurrentUser.FullName,
                         () =>
                         {
-                            Console.Write("Voer uw naam in: ");
+                            ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
                         },
                         actionWhenEscapePressed,
                         "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
@@ -34,7 +34,7 @@ namespace BioscoopReserveringsapplicatie
                     newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress,
                         () =>
                         {
-                            Console.Write("Voer uw emailadres in: ");
+                            ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
                         },
                         actionWhenEscapePressed,
                         "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
@@ -54,7 +54,7 @@ namespace BioscoopReserveringsapplicatie
                         if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, selectedGenres, intensity, ageCategory))
                         {
                             Console.Clear();
-                            ColorConsole.WriteColorLine("Gebruikers gegevens zijn gewijzigd!", ConsoleColor.Green);
+                            ColorConsole.WriteColorLine("Gebruikers gegevens zijn gewijzigd!", Globals.SuccessColor);
                             Thread.Sleep(2000);
                             UserDetails.Start();
                         }
@@ -64,7 +64,7 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); UserDetails.Start();}),
                             };
-                            SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n"));
+                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n, Globals.ErrorColor"));
                         }
                     }),
                     new Option<string>("Nee", actionWhenEscapePressed)

@@ -65,7 +65,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Error. Probeer het opnieuw.");
+                    ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
                 }
                 firstTime = false;
             }
@@ -100,7 +100,7 @@ namespace BioscoopReserveringsapplicatie
 
             while (!PreferencesLogic.ValidateAgeCategory(ageCategory))
             {
-                Console.WriteLine("Error. Probeer het opnieuw.");
+                ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
                 selectedDescription = SelectionMenuUtil.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification));
                 ageCategory = options.First(o => o.GetDisplayName() == selectedDescription);
 
@@ -133,7 +133,7 @@ namespace BioscoopReserveringsapplicatie
 
             while (!PreferencesLogic.ValidateIntensity(intensity))
             {
-                Console.WriteLine("Error. Probeer het opnieuw.");
+                ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
                 intensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification));
             }
 
@@ -147,7 +147,7 @@ namespace BioscoopReserveringsapplicatie
 
             while (!PreferencesLogic.ValidateLanguage(language))
             {
-                Console.WriteLine("Error. Probeer het opnieuw.");
+                ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
                 language = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
             }
 
