@@ -64,7 +64,7 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); UserDetails.Start();}),
                             };
-                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n, Globals.ErrorColor"));
+                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n", Globals.ErrorColor));
                         }
                     }),
                     new Option<string>("Nee", actionWhenEscapePressed)
