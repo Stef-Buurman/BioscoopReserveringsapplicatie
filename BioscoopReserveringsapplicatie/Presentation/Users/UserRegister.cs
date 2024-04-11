@@ -20,7 +20,7 @@ namespace BioscoopReserveringsapplicatie
                 userName = ReadLineUtil.EnterValue(true, () =>
                 {
                     PrintTitleAndErrorWhenExist(errorMessage);
-                    Console.Write("Naam: ");
+                    ColorConsole.WriteColor("Vul uw [naam] in: ", Globals.ColorInputcClarification);
                 }, LandingPage.Start);
             }
 
@@ -37,13 +37,13 @@ namespace BioscoopReserveringsapplicatie
                     PrintTitleAndErrorWhenExist(errorMessage);
                     if (userName != "")
                     {
-                        Console.WriteLine($"Naam: {userName}");
+                        ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
                     }
                     else
                     {
-                        Console.WriteLine("Naam: ");
+                        ColorConsole.WriteColorLine("Vul uw [naam] in: ", Globals.ColorInputcClarification);
                     }
-                    Console.Write("Email: ");
+                    ColorConsole.WriteColor("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
                 }, LandingPage.Start
                 );
             }
@@ -53,24 +53,23 @@ namespace BioscoopReserveringsapplicatie
                 PrintTitleAndErrorWhenExist(errorMessage);
                 if (userName != "")
                 {
-                    Console.WriteLine($"Naam: {userName}");
+                    ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
                 }
                 else
                 {
-                    Console.WriteLine("Naam: ");
+                    ColorConsole.WriteColorLine("Vul uw [naam] in: ", Globals.ColorInputcClarification);
                 }
                 if (userEmail != "")
                 {
-                    Console.WriteLine($"Email: {userEmail}");
+                    ColorConsole.WriteColorLine($"Vul uw [e-mail] in: {userEmail}", Globals.ColorInputcClarification);
                 }
                 else
                 {
-                    Console.WriteLine("Email: ");
+                    ColorConsole.WriteColorLine("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
                 }
-                Console.Write("Wachtwoord: ");
+                ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
             }, LandingPage.Start
             );
-
 
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
 
