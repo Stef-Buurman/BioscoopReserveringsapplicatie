@@ -19,12 +19,15 @@ namespace BioscoopReserveringsapplicatie
         {
             GetAllMovies();
 
-            MovieModel movie = new MovieModel(IdGenerator.GetNextId(_Movies), title, description, genres, rating, false);
-
-            if (this.ValidateMovie(movie))
+            if (ValidateMovieTitle(title) && ValidateMovieDescription(description) && ValidateMovieGenres(genres) && ValidateMovieAgeCategory(rating))
             {
-                UpdateList(movie);
-                return true;
+                MovieModel movie = new MovieModel(IdGenerator.GetNextId(_Movies), title, description, genres, rating, false);
+
+                if (this.ValidateMovie(movie))
+                {
+                    UpdateList(movie);
+                    return true;
+                }
             }
 
             return false;
