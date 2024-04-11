@@ -29,7 +29,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine(@"[Blue]|_|   /_/\_\[/][Red] .__/ \___|_|  |_|\___|_| |_|\___\___|[/]");
             ColorConsole.WriteColorLine(@"           [Red]|_|[/]                                    ");
 
-            Console.WriteLine("\nWelkom bij FXperience!\n");
+            ColorConsole.WriteColorLine("\nWelkom bij [Blue]FX[/][Red]perience[/]!\n");
             Console.WriteLine("Wat wil je doen?\n");
         }
     }

@@ -33,7 +33,14 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            if (movie != null) Console.WriteLine($"De film details zijn:\nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.AgeCategory.GetDisplayName()} \n\nWat zou je willen doen?");
+            if (movie != null) 
+            {
+                ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film titel: ]{movie.Title}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film beschrijving: ]{movie.Description}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", movie.Genres)}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film kijkwijzer ]{movie.AgeCategory.GetDisplayName()}\n", Globals.MovieColor);
+            }   
         }
     }
 }

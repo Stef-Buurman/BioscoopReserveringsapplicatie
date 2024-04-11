@@ -11,15 +11,15 @@ namespace BioscoopReserveringsapplicatie
             string title = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                Console.Write("Voer de film titel in: ");
+                ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
             }, 
             actionWhenEscapePressed);
 
             string description = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                Console.WriteLine($"Voer de film titel in: {title}");
-                Console.Write("Voer de film beschrijving in: ");
+                ColorConsole.WriteColorLine($"Voer de film [titel] in: {title}", Globals.ColorInputcClarification);
+                ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             }, 
             actionWhenEscapePressed);
 
