@@ -19,15 +19,20 @@ namespace BioscoopReserveringsapplicatie
 
         public List<ScheduleModel> GetByExperienceId(int id) => ScheduleAccess.LoadAll().FindAll(i => i.ExperienceId == id);
 
-        public void Add(int experienceId, int roomId, int locationId, string scheduledDateTime)
+        public bool Add(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
-            DateTime dateTime = DateTime.ParseExact(scheduledDateTime, "dd-M-yyyy hh:mm", CultureInfo.GetCultureInfo("nl-NL"));
+            if(UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            {
+                DateTime dateTime = DateTime.ParseExact(scheduledDateTime, "dd-M-yyyy hh:mm", CultureInfo.GetCultureInfo("nl-NL"));
 
-            GetAll();
+                GetAll();
 
-            ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTime);
+                ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTime);
 
-            UpdateList(schedule);
+                UpdateList(schedule);
+                return true;
+            }
+            else return false;
         }
 
         public void UpdateList(ScheduleModel schedule)

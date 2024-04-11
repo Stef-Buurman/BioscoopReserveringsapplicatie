@@ -6,6 +6,7 @@ namespace BioscoopReserveringsapplicatie
         private static LocationLogic locationLogic = new LocationLogic();
         private static RoomLogic roomLogic = new RoomLogic();
         private static ScheduleLogic scheduleLogic = new ScheduleLogic();
+
         public static void Start(int experienceId)
         {
             if(UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
@@ -40,14 +41,21 @@ namespace BioscoopReserveringsapplicatie
                 string experienceDate = SelectionMenuUtil.Create(dateOptions, () => { Header(); Console.WriteLine("Kies een datum om deze experience op in te plannen.\n"); }, () => ExperienceDetails.Start(experienceId));
 
 
-                List<Option<int>> hourOptions = new List<Option<int>>();
+                List<Option<string>> hourOptions = new List<Option<string>>();
 
                 for (int i = 7; i <= 23; i++)
                 {
-                    hourOptions.Add(new Option<int>(i));
+                    if(i.ToString().Length == 1)
+                    {
+                        hourOptions.Add(new Option<string>($"0{i}"));
+                    }
+                    else
+                    {
+                        hourOptions.Add(new Option<string>($"{i}"));
+                    }
                 }
 
-                int experienceHour = SelectionMenuUtil.Create(hourOptions, () => { Header(); Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n"); }, () => ExperienceDetails.Start(experienceId));
+                string experienceHour = SelectionMenuUtil.Create(hourOptions, () => { Header(); Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n"); }, () => ExperienceDetails.Start(experienceId));
 
                 List<Option<string>> timeOptions = new List<Option<string>>();
 
@@ -67,13 +75,47 @@ namespace BioscoopReserveringsapplicatie
 
                 string scheduledDateTime = $"{experienceDate} {experienceTime}";
 
-                scheduleLogic.Add(experienceId, roomId, locationId, scheduledDateTime);
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    
+                    new Option<string>("Ja", () => {
+                        if(scheduleLogic.Add(experienceId, roomId, locationId, scheduledDateTime))
+                        {
+                            Console.Clear();
+                            ColorConsole.WriteColorLine("Experience is ingepland!", Globals.SuccessColor);
+                            Thread.Sleep(2000);
+                            AdminMenu.Start();
+                        }
+                        else
+                        {
+                            List<Option<string>> options = new List<Option<string>>
+                            {
+                                new Option<string>("Terug", () => {Console.Clear(); ExperienceDetails.Start(experienceId);}),
+                            };
+                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het inplannen. Probeer het opnieuw.\n", Globals.ErrorColor));
+                        }
+                    }),
+                    new Option<string>("Nee", () => ExperienceDetails.Start(experienceId))
+                };
+                SelectionMenuUtil.Create(options, () => PendingSchedule(experienceId, roomId, locationId, scheduledDateTime));
             }
+            else ColorConsole.WriteColorLine("User is geen admin!", ConsoleColor.DarkRed);
         }
 
-        public static void Header()
+        private static void Header()
         {
             ColorConsole.WriteColorLine("[Experience inplannen]\n\n", Globals.TitleColor);
+        }
+
+        private static void PendingSchedule(int experienceId, int roomId, int locationId, string scheduledDateTime)
+        {
+            Console.Clear();
+            ColorConsole.WriteColorLine("Gegevens ingeplande experience", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Datum en tijd: ]{scheduledDateTime}\n", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("Weet je zeker dat je de experience wilt inplannen ?", ConsoleColor.Red);
         }
     }
 }
