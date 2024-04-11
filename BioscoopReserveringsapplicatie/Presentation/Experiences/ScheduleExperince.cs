@@ -5,6 +5,7 @@ namespace BioscoopReserveringsapplicatie
         private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
         private static LocationLogic locationLogic = new LocationLogic();
         private static RoomLogic roomLogic = new RoomLogic();
+        private static ScheduleLogic scheduleLogic = new ScheduleLogic();
         public static void Start(int experienceId)
         {
             if(UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
@@ -63,6 +64,10 @@ namespace BioscoopReserveringsapplicatie
                 }
 
                 string experienceTime = SelectionMenuUtil.Create(timeOptions, () => { Header(); Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n"); }, () => ExperienceDetails.Start(experienceId));
+
+                string scheduledDateTime = $"{experienceDate} {experienceTime}";
+
+                scheduleLogic.Add(experienceId, roomId, locationId, scheduledDateTime);
             }
         }
 
