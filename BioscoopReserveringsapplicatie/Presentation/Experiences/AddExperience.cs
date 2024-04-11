@@ -70,7 +70,7 @@ namespace BioscoopReserveringsapplicatie
             Intensity intensity = SelectionMenuUtil.Create(intensityOption, 15, () =>
             {
                 functionToShow();
-                ColorConsole.WriteColorLine("Welke intensiteit wilt u? ", Globals.ColorInputcClarification);
+                ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
             }, WhatToDoWhenGoBack);
             Console.Clear();
             return intensity;
@@ -114,7 +114,7 @@ namespace BioscoopReserveringsapplicatie
             int movieId = SelectionMenuUtil.Create(movieOptions, 15, () =>
             {
                 functionToShow();
-                Console.WriteLine("Welke film wilt u toevoegen?");
+                ColorConsole.WriteColorLine("Welke [film] wilt u toevoegen?", Globals.ColorInputcClarification);
             }, WhatToDoWhenGoBack);
             Console.Clear();
             return movieId;
