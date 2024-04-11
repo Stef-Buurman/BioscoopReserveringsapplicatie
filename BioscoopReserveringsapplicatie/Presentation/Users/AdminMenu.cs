@@ -15,12 +15,12 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Experienceoverzicht", () => ExperienceOverview.Start()),
                 new Option<string>("Uitloggen", () => { UserLogic.Logout(); LandingPage.Start(); }),
             };
-                SelectionMenuUtil.Create(options, () => Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n"));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green));
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("Uw account heeft geen toestemming om deze pagina te bekijken.");
+                ColorConsole.WriteColorLine("Uw account heeft geen toestemming om deze pagina te bekijken.",Globals.ErrorColor);
             }
         }
     }

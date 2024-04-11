@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", ConsoleColor.Red));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor));
             }
         }
 

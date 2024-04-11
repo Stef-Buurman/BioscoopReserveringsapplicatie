@@ -13,12 +13,12 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Mijn account", () => UserDetails.Start()),
                     new Option<string>("Uitloggen", () => { UserLogic.Logout(); LandingPage.Start(); }),
                 };
-                SelectionMenuUtil.Create(options, () => Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n"));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green));
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("Geen gebruiker gevonden.");
+                ColorConsole.WriteColorLine("Geen gebruiker gevonden.", Globals.ErrorColor);
             }
         }
     }
