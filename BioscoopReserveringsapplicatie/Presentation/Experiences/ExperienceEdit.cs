@@ -52,7 +52,7 @@ namespace BioscoopReserveringsapplicatie
 
             string newName = ReadLineUtil.EditValue(experience.Name, () =>
             {
-                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
                 ColorConsole.WriteColor("Voer de experience naam in: ", Globals.ColorInputcClarification);
             }, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(newName))
@@ -60,8 +60,8 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Naam mag niet leeg zijn.", Globals.ErrorColor);
                 newName = ReadLineUtil.EditValue(newName, () =>
                 {
-                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
-                    Console.Write("Voer de experience naam in: ");
+                    ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+                    ColorConsole.WriteColor("Voer de experience naam in: ", Globals.ColorInputcClarification);
                 }, actionWhenEscapePressed);
             }
             return newName;
@@ -69,7 +69,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static int SelectMovie()
         {
-            Console.WriteLine("Selecteer de film die bij de experience hoort");
+            ColorConsole.WriteColorLine("Selecteer de film die bij de experience hoort",Globals.TitleColor);
             List<MovieModel> movies = MoviesLogic.GetAllMovies();
             List<int> moviesId = movies.Select(movie => movie.Id).ToList();
             int selectedMovieId = SelectionMenuUtil.Create(moviesId, () => ColorConsole.WriteColorLine("Kies uw [film]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
@@ -83,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static Intensity SelectIntensity()
         {
-            Console.Write("Selecteer de intensiteit van de experience");
+            ColorConsole.WriteColor("Selecteer de intensiteit van de experience", Globals.TitleColor);
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
             Intensity newIntensity = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
             while (!ExperiencesLogic.ValidateExperienceIntensity(newIntensity))
@@ -100,7 +100,7 @@ namespace BioscoopReserveringsapplicatie
 
             string timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
             {
-                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
                 ColorConsole.WriteColor("Voer de lengte van de experience in (in minuten): ", Globals.ColorInputcClarification);
             }, actionWhenEscapePressed);
             while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
@@ -108,8 +108,8 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Ongeldige invoer. Voer een geldig getal in.", Globals.ErrorColor);
                 timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
                 {
-                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
-                    Console.Write("Voer de lengte van de experience in (in minuten): ");
+                    ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+                    ColorConsole.WriteColor("Voer de lengte van de experience in (in minuten): ", Globals.ColorInputcClarification);
                 }, actionWhenEscapePressed);
             }
             return int.Parse(timeInString);

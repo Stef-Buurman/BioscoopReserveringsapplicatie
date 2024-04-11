@@ -70,7 +70,7 @@ namespace BioscoopReserveringsapplicatie
             Intensity intensity = SelectionMenuUtil.Create(intensityOption, 15, () =>
             {
                 functionToShow();
-                Console.WriteLine("Welke intensiteit wilt u? ");
+                ColorConsole.WriteColorLine("Welke intensiteit wilt u? ", Globals.ColorInputcClarification);
             }, WhatToDoWhenGoBack);
             Console.Clear();
             return intensity;
