@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
                             ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
                         },
                         actionWhenEscapePressed,
-                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                     );
                     validName = _userLogic.ValidateName(newName);
                 }
@@ -37,7 +37,7 @@ namespace BioscoopReserveringsapplicatie
                             ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
                         },
                         actionWhenEscapePressed,
-                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                     );
                     validEmail = _userLogic.ValidateEmail(newEmail);
                 }

@@ -17,11 +17,11 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userName = ReadLineUtil.EnterValue(false, () =>
+                userName = ReadLineUtil.EnterValue(true, () =>
                 {
                     PrintTitleAndErrorWhenExist(errorMessage);
                     Console.Write("Naam: ");
-                });
+                }, LandingPage.Start);
             }
 
             string userEmail;
@@ -32,42 +32,45 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userEmail = ReadLineUtil.EnterValue(false, () =>
+                userEmail = ReadLineUtil.EnterValue(true, () =>
                 {
                     PrintTitleAndErrorWhenExist(errorMessage);
                     if (userName != "")
                     {
                         Console.WriteLine($"Naam: {userName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Naam: ");
                     }
                     Console.Write("Email: ");
-                }
+                }, LandingPage.Start
                 );
             }
 
-            string userPassword;
-
-            if (user != null && user.Password != "")
+            string userPassword = ReadLineUtil.EnterValue(true, () =>
             {
-                Console.WriteLine($"Wachtwoord: {user.Password}");
-                userPassword = user.Password;
-            }
-            else
-            {
-                userPassword = ReadLineUtil.EnterValue(false, () =>
+                PrintTitleAndErrorWhenExist(errorMessage);
+                if (userName != "")
                 {
-                    PrintTitleAndErrorWhenExist(errorMessage);
-                    if (userName != "")
-                    {
-                        Console.WriteLine($"Naam: {userName}");
-                    }
-                    if (userEmail != "")
-                    {
-                        Console.WriteLine($"Email: {userEmail}");
-                    }
-                    Console.Write("Wachtwoord: ");
+                    Console.WriteLine($"Naam: {userName}");
                 }
-                );
-            }
+                else
+                {
+                    Console.WriteLine("Naam: ");
+                }
+                if (userEmail != "")
+                {
+                    Console.WriteLine($"Email: {userEmail}");
+                }
+                else
+                {
+                    Console.WriteLine("Email: ");
+                }
+                Console.Write("Wachtwoord: ");
+            }, LandingPage.Start
+            );
+
 
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
 

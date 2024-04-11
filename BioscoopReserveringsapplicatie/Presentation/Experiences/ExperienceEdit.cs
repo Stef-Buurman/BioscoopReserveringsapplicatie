@@ -52,7 +52,7 @@ namespace BioscoopReserveringsapplicatie
 
             string newName = ReadLineUtil.EditValue(experience.Name, () =>
             {
-                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)\n");
                 Console.Write("Voer de experience naam in: ");
             }, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(newName))
@@ -60,7 +60,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Naam mag niet leeg zijn.", Globals.ErrorColor);
                 newName = ReadLineUtil.EditValue(newName, () =>
                 {
-                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)\n");
                     Console.Write("Voer de experience naam in: ");
                 }, actionWhenEscapePressed);
             }
@@ -100,7 +100,7 @@ namespace BioscoopReserveringsapplicatie
 
             string timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
             {
-                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)\n");
                 Console.Write("Voer de lengte van de experience in (in minuten): ");
             }, actionWhenEscapePressed);
             while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
@@ -108,7 +108,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Ongeldige invoer. Voer een geldig getal in.", Globals.ErrorColor);
                 timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
                 {
-                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
+                    Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)\n");
                     Console.Write("Voer de lengte van de experience in (in minuten): ");
                 }, actionWhenEscapePressed);
             }

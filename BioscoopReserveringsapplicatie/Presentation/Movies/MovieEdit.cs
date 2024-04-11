@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
             },
             actionWhenEscapePressed,
-            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
+            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
             Console.Write("Voer de film beschrijving in: ");
             string newDescription = ReadLineUtil.EditValue(movie.Description, () =>
@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             }, 
             actionWhenEscapePressed,
-            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
+            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
             List<Genre> genres = new List<Genre>();
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
