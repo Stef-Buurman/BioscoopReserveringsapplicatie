@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
             string newTitle = ReadLineUtil.EditValue(movie.Title, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                Console.Write("Voer de film titel in: ");
+                ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
             },
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
@@ -24,8 +24,8 @@ namespace BioscoopReserveringsapplicatie
             string newDescription = ReadLineUtil.EditValue(movie.Description, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                Console.WriteLine($"Voer de film titel in: {newTitle}");
-                Console.Write("Voer de film beschrijving in: ");
+                ColorConsole.WriteColorLine($"Voer de film [titel] in: {newTitle}", Globals.ColorInputcClarification);
+                ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             }, 
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)");
@@ -93,13 +93,12 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print(string currentTitle, string newTitle, string description, List<Genre> genres, AgeCategory rating)
         {
-            Console.WriteLine("De nieuwe film details zijn:");
-            Console.WriteLine($"Film titel: {newTitle}");
-            Console.WriteLine($"Film beschrijving: {description}");
-            Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
-            Console.WriteLine($"Film kijkwijzer: {rating.GetDisplayName()}\n");
-
-            Console.WriteLine($"Weet u zeker dat u de filmdetails van {currentTitle} wilt bewerken?");
+            ColorConsole.WriteColorLine("[De nieuwe film details:]", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film titel: ]{newTitle}", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"Weet u zeker dat u de filmdetails van {currentTitle} wilt [bewerken]?", Globals.ColorInputcClarification);
         }
     }
 }

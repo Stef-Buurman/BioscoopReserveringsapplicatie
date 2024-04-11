@@ -14,7 +14,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle films", () => ShowAllMovies()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-                SelectionMenuUtil.Create(options, () => Console.WriteLine($"Kies een categorie om te bekijken:"));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies een categorie om te bekijken: \n", Globals.TitleColor));
         }
 
         private static void ShowMovieDetails(int movieId)

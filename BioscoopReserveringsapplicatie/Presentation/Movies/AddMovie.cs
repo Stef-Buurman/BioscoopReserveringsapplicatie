@@ -11,15 +11,15 @@ namespace BioscoopReserveringsapplicatie
             string title = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                Console.Write("Voer de film titel in: ");
+                ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
             }, 
             actionWhenEscapePressed);
 
             string description = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                Console.WriteLine($"Voer de film titel in: {title}");
-                Console.Write("Voer de film beschrijving in: ");
+                ColorConsole.WriteColorLine($"Voer de film [titel] in: {title}", Globals.ColorInputcClarification);
+                ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             }, 
             actionWhenEscapePressed);
 
@@ -82,12 +82,12 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print(string title, string description, List<Genre> genres, AgeCategory rating)
         {
-            Console.WriteLine("De film is toegevoegd.");
-            Console.WriteLine("\nDe film details zijn:");
-            Console.WriteLine($"Film titel: {title}");
-            Console.WriteLine($"Film beschrijving: {description}");
-            Console.WriteLine($"Film genre(s): {string.Join(", ", genres)}");
-            Console.WriteLine($"Film kijkwijzer: {rating.GetDisplayName()}\n");
+            ColorConsole.WriteColorLine("De film is toegevoegd!\n", Globals.MovieColor);
+            ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
         }
     }
 }
