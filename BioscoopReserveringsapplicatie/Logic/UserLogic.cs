@@ -218,7 +218,7 @@
         public static void Logout()
         {
             CurrentUser = null;
-            Console.WriteLine("U bent uitgelogd.");
+            ColorConsole.WriteColorLine("U bent uitgelogd.", Globals.SuccessColor);
             Thread.Sleep(2000);
         }
 
