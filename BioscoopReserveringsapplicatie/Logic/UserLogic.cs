@@ -88,6 +88,7 @@
             {
                 newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
+                _accounts = UserAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
@@ -139,7 +140,7 @@
 
         public bool ValidateName(string name)
         {
-            return name != null && name.Trim() != ""; 
+            return name != null && name.Trim() != "";
         }
 
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
@@ -224,7 +225,7 @@
         public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             UserModel? user = GetById(id);
-            if(user != null)
+            if (user != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
@@ -234,7 +235,7 @@
                     return false;
                 }
                 else
-                {   
+                {
                     user.FullName = newName;
                     newEmail = newEmail.ToLower();
                     user.EmailAddress = newEmail;

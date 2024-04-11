@@ -171,7 +171,7 @@
             return Create(options, maxVisibility, ActionBeforeMenu, true, escapeAction);
         }
 
-        static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null, bool canBeEscaped = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
+        static void WriteMenu<T>(List<Option<T>> options, Option<T> selectedOption, Action ActionBeforeMenu = null, bool canBeEscaped = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
         {
             Console.Clear();
             if(canBeEscaped) ColorConsole.WriteLineInfo(textToShowEscapability);
