@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
                         {
                             new Option<string>("Terug", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
                         };
-                        SelectionMenuUtil.Create(errorOptions, () => Console.WriteLine("Error. Probeer het opnieuw \n"));
+                        SelectionMenuUtil.Create(errorOptions, () => ColorConsole.WriteColorLine("Error. Probeer het opnieuw \n",Globals.ErrorColor));
                     }
                 }),
                 new Option<string>("Nee", () => { Console.Clear(); ExperienceDetails.Start(experience.Id); })
@@ -53,7 +53,7 @@ namespace BioscoopReserveringsapplicatie
             string newName = ReadLineUtil.EditValue(experience.Name, () =>
             {
                 Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
-                Console.Write("Voer de experience naam in: ");
+                ColorConsole.WriteColor("Voer de experience naam in: ", Globals.ColorInputcClarification);
             }, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(newName))
             {
@@ -101,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
             string timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
             {
                 Console.WriteLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)");
-                Console.Write("Voer de lengte van de experience in (in minuten): ");
+                ColorConsole.WriteColor("Voer de lengte van de experience in (in minuten): ", Globals.ColorInputcClarification);
             }, actionWhenEscapePressed);
             while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
             {
@@ -118,13 +118,13 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print(string newName, string selectedMovieTitle, Intensity newIntensity, int timeInInt)
         {
-            Console.WriteLine("Dit zijn de nieuwe experience details:");
-            Console.WriteLine($"Experience naam: {newName}");
-            Console.WriteLine($"Film gekoppeld aan experience: {selectedMovieTitle}");
-            Console.WriteLine($"Experience intensiteit: {newIntensity}");
-            Console.WriteLine($"Experience tijdsduur: {timeInInt} minuten\n");
+            ColorConsole.WriteColorLine("Dit zijn de nieuwe experience details:",Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Experience naam:] {newName}", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {selectedMovieTitle}",Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Experience intensiteit:] {newIntensity}", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Experience tijdsduur:] {timeInInt} minuten\n", Globals.ExperienceColor);
 
-            Console.WriteLine($"Weet u zeker dat u de aanpassingen op {newName} wilt opslaan?");
+            ColorConsole.WriteColorLine($"Weet u zeker dat u de aanpassingen op {newName} wilt [opslaan?]", Globals.ColorInputcClarification);
         }
     }
 }
