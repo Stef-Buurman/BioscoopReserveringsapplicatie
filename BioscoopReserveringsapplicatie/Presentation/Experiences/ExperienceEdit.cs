@@ -53,7 +53,7 @@ namespace BioscoopReserveringsapplicatie
             string newName = ReadLineUtil.EditValue(experience.Name, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de experience naam in: ", Globals.ColorInputcClarification);
+                ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
             }, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(newName))
             {
@@ -61,7 +61,7 @@ namespace BioscoopReserveringsapplicatie
                 newName = ReadLineUtil.EditValue(newName, () =>
                 {
                     ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de experience naam in: ", Globals.ColorInputcClarification);
+                    ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
                 }, actionWhenEscapePressed);
             }
             return newName;
@@ -101,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
             string timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de lengte van de experience in (in minuten): ", Globals.ColorInputcClarification);
+                ColorConsole.WriteColor("Voer de [lengte] van de experience in (in minuten): ", Globals.ColorInputcClarification);
             }, actionWhenEscapePressed);
             while (!ExperiencesLogic.ValidateExperienceTimeLength(timeInString))
             {
@@ -109,7 +109,7 @@ namespace BioscoopReserveringsapplicatie
                 timeInString = ReadLineUtil.EditValue(experience.TimeLength.ToString(), () =>
                 {
                     ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de lengte van de experience in (in minuten): ", Globals.ColorInputcClarification);
+                    ColorConsole.WriteColor("Voer de [lengte] van de experience in (in minuten): ", Globals.ColorInputcClarification);
                 }, actionWhenEscapePressed);
             }
             return int.Parse(timeInString);
@@ -124,7 +124,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {newIntensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience tijdsduur:] {timeInInt} minuten\n", Globals.ExperienceColor);
 
-            ColorConsole.WriteColorLine($"Weet u zeker dat u de aanpassingen op {newName} wilt [opslaan?]", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine($"Weet u zeker dat u de aanpassingen op {newName} wilt opslaan?", Globals.ColorInputcClarification);
         }
     }
 }
