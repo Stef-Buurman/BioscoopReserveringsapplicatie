@@ -14,7 +14,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle films", () => ShowAllMovies()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies een categorie om te bekijken: \n", Globals.TitleColor));
+            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies een categorie om te bekijken: \n", Globals.TitleColor));
         }
 
         private static void ShowMovieDetails(int movieId)
@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 MovieDetails.Start(movieId);
             }
-        }        
+        }
 
         private static int ShowMovies(List<MovieModel> movies)
         {
@@ -40,22 +40,38 @@ namespace BioscoopReserveringsapplicatie
             return movieId;
         }
 
-        private static int ShowAllArchivedMovies()
+        private static void ShowAllArchivedMovies()
         {
             List<MovieModel> archivedMovies = MoviesLogic.GetAllArchivedMovies();
-            return ShowMovies(archivedMovies);
+
+            if (archivedMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen gearchiveerde movies gevonden.");
+            ShowMovies(archivedMovies);
         }
 
-        private static int ShowAllActiveMovies()
+        private static void ShowAllActiveMovies()
         {
             List<MovieModel> activeMovies = MoviesLogic.GetAllActiveMovies();
-            return ShowMovies(activeMovies);
+
+            if (activeMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen actieve movies gevonden.");
+            ShowMovies(activeMovies);
         }
 
-        private static int ShowAllMovies()
+        private static void ShowAllMovies()
         {
             List<MovieModel> allMovies = MoviesLogic.GetAllMovies();
-            return ShowMovies(allMovies);
+
+            if (allMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen movies gevonden.");
+            ShowMovies(allMovies);
+        }
+
+        private static void PrintWhenNoMoviesFound(string whichMovies)
+        {
+            Console.Clear();
+            Console.WriteLine(whichMovies);
+            Thread.Sleep(500);
+            Console.WriteLine("Terug naar movie overzicht...");
+            Thread.Sleep(1500);
+            Start();
         }
 
         private static void Print()

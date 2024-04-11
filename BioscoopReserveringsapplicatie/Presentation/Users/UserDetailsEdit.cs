@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
                             ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
                         },
                         actionWhenEscapePressed,
-                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                     );
                     validName = _userLogic.ValidateName(newName);
                 }
@@ -34,10 +34,11 @@ namespace BioscoopReserveringsapplicatie
                     newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress,
                         () =>
                         {
+                            ColorConsole.WriteColorLine($"Voer uw [naam] in: {newName}", Globals.ColorInputcClarification);
                             ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
                         },
                         actionWhenEscapePressed,
-                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                     );
                     validEmail = _userLogic.ValidateEmail(newEmail);
                 }
@@ -54,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                         if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, selectedGenres, intensity, ageCategory))
                         {
                             Console.Clear();
-                            ColorConsole.WriteColorLine("Gebruikers gegevens zijn gewijzigd!", Globals.SuccessColor);
+                            ColorConsole.WriteColorLine("Gebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                             Thread.Sleep(2000);
                             UserDetails.Start();
                         }
@@ -64,7 +65,7 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); UserDetails.Start();}),
                             };
-                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n", Globals.ErrorColor));
+                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het bewerken van uw gebruikersgegevens. Probeer het opnieuw.\n", Globals.ErrorColor));
                         }
                     }),
                     new Option<string>("Nee", actionWhenEscapePressed)
@@ -83,7 +84,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Genre: ]{(newGenres.Any() ? string.Join(", ", newGenres) : "Undefined")}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory.GetDisplayName()}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Intensiteit: ]{newIntensity}\n", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("Weet je zeker dat je de gegevens wilt aanpassen ?", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("Weet je zeker dat je de gegevens wilt aanpassen?", ConsoleColor.Red);
         }
     }
 }

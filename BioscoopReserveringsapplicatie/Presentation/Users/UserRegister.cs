@@ -17,11 +17,11 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userName = ReadLineUtil.EnterValue(false, () =>
+                userName = ReadLineUtil.EnterValue(true, () =>
                 {
                     PrintTitleAndErrorWhenExist(errorMessage);
-                    Console.Write("Naam: ");
-                });
+                    ColorConsole.WriteColor("Vul uw [naam] in: ", Globals.ColorInputcClarification);
+                }, LandingPage.Start);
             }
 
             string userEmail;
@@ -32,42 +32,44 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userEmail = ReadLineUtil.EnterValue(false, () =>
+                userEmail = ReadLineUtil.EnterValue(true, () =>
                 {
                     PrintTitleAndErrorWhenExist(errorMessage);
                     if (userName != "")
                     {
-                        Console.WriteLine($"Naam: {userName}");
+                        ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
                     }
-                    Console.Write("Email: ");
-                }
+                    else
+                    {
+                        ColorConsole.WriteColorLine("Vul uw [naam] in: ", Globals.ColorInputcClarification);
+                    }
+                    ColorConsole.WriteColor("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
+                }, LandingPage.Start
                 );
             }
 
-            string userPassword;
-
-            if (user != null && user.Password != "")
+            string userPassword = ReadLineUtil.EnterValue(true, () =>
             {
-                Console.WriteLine($"Wachtwoord: {user.Password}");
-                userPassword = user.Password;
-            }
-            else
-            {
-                userPassword = ReadLineUtil.EnterValue(false, () =>
+                PrintTitleAndErrorWhenExist(errorMessage);
+                if (userName != "")
                 {
-                    PrintTitleAndErrorWhenExist(errorMessage);
-                    if (userName != "")
-                    {
-                        Console.WriteLine($"Naam: {userName}");
-                    }
-                    if (userEmail != "")
-                    {
-                        Console.WriteLine($"Email: {userEmail}");
-                    }
-                    Console.Write("Wachtwoord: ");
+                    ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
                 }
-                );
-            }
+                else
+                {
+                    ColorConsole.WriteColorLine("Vul uw [naam] in: ", Globals.ColorInputcClarification);
+                }
+                if (userEmail != "")
+                {
+                    ColorConsole.WriteColorLine($"Vul uw [e-mail] in: {userEmail}", Globals.ColorInputcClarification);
+                }
+                else
+                {
+                    ColorConsole.WriteColorLine("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
+                }
+                ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
+            }, LandingPage.Start
+            );
 
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
 

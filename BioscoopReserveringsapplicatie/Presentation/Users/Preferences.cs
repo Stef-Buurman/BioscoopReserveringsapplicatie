@@ -30,7 +30,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenuUtil.Create(options, () => Console.WriteLine("Wilt u genres selecteren?"));
+            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Wilt u [genres] selecteren?", Globals.ColorInputcClarification));
 
             if (!choose)
             {
@@ -85,7 +85,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een leeftijdscategorie selecteren?"));
+            SelectionMenuUtil.Create(optionsMenu, () => ColorConsole.WriteColorLine("Wilt u een [leeftijdscategorie] selecteren?", Globals.ColorInputcClarification));
 
             if (!choose)
             {
@@ -121,7 +121,7 @@ namespace BioscoopReserveringsapplicatie
                     choose = false;
                 }),
             };
-            SelectionMenuUtil.Create(optionsMenu, () => Console.WriteLine("Wilt u een intensiteit selecteren?"));
+            SelectionMenuUtil.Create(optionsMenu, () => ColorConsole.WriteColorLine("Wilt u een [intensiteit] selecteren?", Globals.ColorInputcClarification));
 
             if (!choose)
             {
@@ -143,12 +143,12 @@ namespace BioscoopReserveringsapplicatie
         public static Language SelectLanguage()
         {
             List<Language> options = Globals.GetAllEnum<Language>();
-            Language language = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
+            Language language = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?) \n", Globals.ColorInputcClarification));
 
             while (!PreferencesLogic.ValidateLanguage(language))
             {
                 ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
-                language = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?): \n", Globals.ColorInputcClarification));
+                language = SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?) \n", Globals.ColorInputcClarification));
             }
 
             return language;

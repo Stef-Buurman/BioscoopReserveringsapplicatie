@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ReadLineUtil
     {
-        public static string EditValue(string defaultValue, Action actionBeforeStartGotten, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
+        public static string EditValue(string defaultValue, Action actionBeforeStartGotten, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
         {
             string input = defaultValue;
             int originalPosX = Console.CursorLeft;
@@ -20,7 +20,7 @@ namespace BioscoopReserveringsapplicatie
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Escape)
                 {
-                    if (EscapeKeyPressed(actionBeforeStart, escapeAction, input)) break;
+                    if (EscapeKeyPressed(actionBeforeStart, escapeAction, input, "edit")) break;
                 }
                 else if (key.Key == ConsoleKey.Enter)
                 {
@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
             return input;
         }
 
-        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten.*")
+        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
         {
             string input = "";
             int originalPosX = Console.CursorLeft;
@@ -71,7 +71,7 @@ namespace BioscoopReserveringsapplicatie
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Escape && isEscapable)
                 {
-                    if (EscapeKeyPressed(actionBeforeStart, escapeAction, input)) break;
+                    if (EscapeKeyPressed(actionBeforeStart, escapeAction, input, "enter")) break;
                 }
                 else if (key.Key == ConsoleKey.Enter)
                 {
@@ -102,14 +102,14 @@ namespace BioscoopReserveringsapplicatie
             return EnterValue(actionBeforeStart, escapeAction, isEscapable);
         }
 
-        public static bool EscapeKeyPressed(Action actionBeforeStart, Action escapeAction, string input)
+        public static bool EscapeKeyPressed(Action actionBeforeStart, Action escapeAction, string input, string type)
         {
             bool WantToLeave = false;
             List<Option<string>> options = new List<Option<string>>
                     {
                         new Option<string>("Ja", () => {
-                                Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
-                                Thread.Sleep(1500);
+                                Console.WriteLine("\nTeruggaan...");
+                                Thread.Sleep(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
@@ -117,7 +117,14 @@ namespace BioscoopReserveringsapplicatie
                         new Option<string>("Nee", () => {
                                 Console.Clear();
                                 actionBeforeStart();
-                                ColorConsole.WriteColor($"[{input}]", Globals.ColorEditInput);
+                                if(type == "enter")
+                                {
+                                    Console.Write(input);
+                                }
+                                else if (type == "edit")
+                                {
+                                    ColorConsole.WriteColor($"[{input}]", Globals.ColorEditInput);
+                                }
                                 WantToLeave = false;
                             }
                         ),
@@ -132,8 +139,8 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
                     {
                         new Option<string>("Ja", () => {
-                                Console.WriteLine("\nEscape-toets ingedrukt. Afsluiten...");
-                                Thread.Sleep(2000);
+                                Console.WriteLine("\nTeruggaan...");
+                                Thread.Sleep(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
