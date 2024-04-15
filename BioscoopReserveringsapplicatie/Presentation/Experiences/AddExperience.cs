@@ -67,12 +67,9 @@ namespace BioscoopReserveringsapplicatie
         {
             List<Intensity> intensityenum = Globals.GetAllEnum<Intensity>();
             List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
-            Intensity intensity = SelectionMenuUtil.Create(intensityOption, 15, () =>
-            {
-                functionToShow();
-                ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
-            }, WhatToDoWhenGoBack);
-            Console.Clear();
+            functionToShow();
+            ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
+            Intensity intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack).Create();
             return intensity;
         }
 
@@ -111,11 +108,9 @@ namespace BioscoopReserveringsapplicatie
 
                 }
             }
-            int movieId = SelectionMenuUtil.Create(movieOptions, 15, () =>
-            {
-                functionToShow();
-                ColorConsole.WriteColorLine("Welke [film] wilt u toevoegen?", Globals.ColorInputcClarification);
-            }, WhatToDoWhenGoBack);
+            functionToShow();
+            ColorConsole.WriteColorLine("Welke [film] wilt u toevoegen?", Globals.ColorInputcClarification);
+            int movieId = new SelectionMenuUtil2<int>(movieOptions, 15, WhatToDoWhenGoBack).Create();
             Console.Clear();
             return movieId;
         }
