@@ -9,6 +9,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId)
         {
+            Console.Clear();
             if (UserLogic.CurrentUser != null && !UserLogic.CurrentUser.IsAdmin)
             {
                 UserPreview(experienceId);
@@ -31,7 +32,8 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
-            SelectionMenuUtil.Create(options, Print);
+            Print();
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void AdminPreview(int experienceId)
@@ -61,7 +63,8 @@ namespace BioscoopReserveringsapplicatie
                 };
             }
 
-            SelectionMenuUtil.Create(options, Print);
+            Print();
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()
