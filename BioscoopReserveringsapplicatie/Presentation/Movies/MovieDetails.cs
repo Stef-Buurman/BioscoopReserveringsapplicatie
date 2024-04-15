@@ -8,19 +8,39 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             movie = MoviesLogic.GetMovieById(movieId);
+            List<Option<string>> options;
 
-            List<Option<string>> options = new List<Option<string>>
+            if (movie.Archived)
             {
-                new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
-                new Option<string>("Verwijder film", () => MovieDelete.Start(movie.Id)),
-                new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
-            };
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
+                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                };
+            }
+            else
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
+                    new Option<string>("Archiveer film", () => MovieArchive.Start(movie.Id)),
+                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                };
+            }
+
             SelectionMenuUtil.Create(options, Print);
         }
 
         private static void Print()
         {
-            if (movie != null) Console.WriteLine($"De film details zijn:\nFilm titel: {movie.Title} \nFilm beschrijving: {movie.Description} \nFilm genre(s): {string.Join(", ", movie.Genres)} \nFilm kijkwijzer: {movie.AgeCategory} \n\nWat zou je willen doen?");
+            if (movie != null) 
+            {
+                ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film titel: ]{movie.Title}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film beschrijving: ]{movie.Description}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", movie.Genres)}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Film kijkwijzer ]{movie.AgeCategory.GetDisplayName()}\n", Globals.MovieColor);
+            }   
         }
     }
 }

@@ -34,7 +34,7 @@
                 _accounts.Add(acc);
             }
             UserAccess.WriteAll(_accounts);
-
+            _accounts = UserAccess.LoadAll();
         }
 
         public UserModel? GetById(int id)
@@ -86,13 +86,14 @@
 
             if (validated)
             {
-                newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
+                _accounts = UserAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(_accounts.Count + 1, false, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
             }
             return new RegistrationResult(validated, errorMessage, newAccount);
         }
@@ -139,7 +140,7 @@
 
         public bool ValidateName(string name)
         {
-            return name != null && name.Trim() != ""; 
+            return name != null && name.Trim() != "";
         }
 
         public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
@@ -217,14 +218,14 @@
         public static void Logout()
         {
             CurrentUser = null;
-            Console.WriteLine("U bent uitgelogd.");
+            ColorConsole.WriteColorLine("U bent uitgelogd.", Globals.SuccessColor);
             Thread.Sleep(2000);
         }
 
         public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             UserModel? user = GetById(id);
-            if(user != null)
+            if (user != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
@@ -234,7 +235,7 @@
                     return false;
                 }
                 else
-                {   
+                {
                     user.FullName = newName;
                     newEmail = newEmail.ToLower();
                     user.EmailAddress = newEmail;

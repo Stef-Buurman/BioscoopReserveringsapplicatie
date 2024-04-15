@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    class MovieModel
+    public class MovieModel : IID
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -21,13 +21,17 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("ageCategory")]
         public AgeCategory AgeCategory { get; set; }
 
-        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory)
+       [JsonPropertyName("archived")]
+        public bool Archived { get; set; }
+
+        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory, bool archived)
         {
             Id = id;
             Title = title;
             Description = description;
             Genres = genres;
             AgeCategory = ageCategory;
+            Archived = archived;
         }
     }
 }

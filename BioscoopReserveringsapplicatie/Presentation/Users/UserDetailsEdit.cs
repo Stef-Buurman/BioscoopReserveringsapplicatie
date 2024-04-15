@@ -5,86 +5,57 @@ namespace BioscoopReserveringsapplicatie
     static class UserDetailsEdit
     {
         private static UserLogic _userLogic = new UserLogic();
-
+        private static Action actionWhenEscapePressed = UserDetails.Start;
         public static void Start()
         {
-            if(UserLogic.CurrentUser != null)
-            {   
+            if (UserLogic.CurrentUser != null)
+            {
                 string newName = "";
                 bool validName = false;
-                while(!validName)
+                while (!validName)
                 {
                     Console.Clear();
-                    newName = ReadLineUtil.EditValue(UserLogic.CurrentUser.FullName, 
-                        () => {
-                            Console.Write("Voer uw naam in: ");
+                    newName = ReadLineUtil.EditValue(UserLogic.CurrentUser.FullName,
+                        () =>
+                        {
+                            ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
                         },
-                        () => UserDetails.Start(),
-                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                        actionWhenEscapePressed,
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                     );
                     validName = _userLogic.ValidateName(newName);
                 }
 
                 string newEmail = "";
                 bool validEmail = false;
-                while(!validEmail)
+                while (!validEmail)
                 {
                     Console.Clear();
-                    newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress, 
-                        () => {
-                            Console.Write("Voer uw emailadres in: ");
+                    newEmail = ReadLineUtil.EditValue(UserLogic.CurrentUser.EmailAddress,
+                        () =>
+                        {
+                            ColorConsole.WriteColorLine($"Voer uw [naam] in: {newName}", Globals.ColorInputcClarification);
+                            ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
                         },
-                        () => UserDetails.Start(),
-                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)"
+                        actionWhenEscapePressed,
+                        "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                     );
                     validEmail = _userLogic.ValidateEmail(newEmail);
                 }
 
+                List<Genre> selectedGenres = Preferences.SelectGenres();
 
-                List<Genre> newGenres = new List<Genre>();
-                bool validGenres = false;
-                while(!validGenres)
-                {
-                    List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
-                    while (newGenres.Count < 3)
-                    {
-                        Genre newGenre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification));
+                AgeCategory ageCategory = Preferences.SelectAgeCategory();
 
-                        if(availableGenres.Contains(newGenre))
-                        {
-                            availableGenres.Remove(newGenre);
-                            newGenres.Add(newGenre);
-                        }
-                    }
-                    validGenres = _userLogic.ValidateGenres(newGenres);
-                }
-
-                Intensity newIntensity = Intensity.Undefined;
-                bool validIntensity = false;
-                while(!validIntensity)
-                {
-                    List<Intensity> intensities = Globals.GetAllEnum<Intensity>();
-                    newIntensity = SelectionMenuUtil.Create(intensities, () => ColorConsole.WriteColorLine("Kies een [Intensiteit]: \n", Globals.ColorInputcClarification));
-                    validIntensity = _userLogic.ValidateIntensity(newIntensity);
-                }
-
-                AgeCategory newAgeCategory = AgeCategory.Undefined;
-                bool validAgeCategory = false;
-                while(!validAgeCategory)
-                {
-                    List<AgeCategory> ageCategories = Globals.GetAllEnum<AgeCategory>();
-                    newAgeCategory = SelectionMenuUtil.Create(ageCategories, () => ColorConsole.WriteColorLine("Kies een [Kijkwijzer]: \n", Globals.ColorInputcClarification));
-                    validAgeCategory = _userLogic.ValidateAgeCategory(newAgeCategory);
-                }
-
+                Intensity intensity = Preferences.SelectIntensity();
 
                 List<Option<string>> options = new List<Option<string>>
                 {
                     new Option<string>("Ja", () => {
-                        if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, newGenres, newIntensity, newAgeCategory))
+                        if(_userLogic.Edit(UserLogic.CurrentUser.Id, newName, newEmail, selectedGenres, intensity, ageCategory))
                         {
                             Console.Clear();
-                            ColorConsole.WriteColorLine("[Gebruikers gegevens zijn gewijzigd!]", ConsoleColor.Green);
+                            ColorConsole.WriteColorLine("Gebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                             Thread.Sleep(2000);
                             UserDetails.Start();
                         }
@@ -94,26 +65,26 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); UserDetails.Start();}),
                             };
-                            SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van uw persoonsgegevens. Probeer het opnieuw.\n"));
+                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het bewerken van uw gebruikersgegevens. Probeer het opnieuw.\n", Globals.ErrorColor));
                         }
                     }),
-                    new Option<string>("Nee", () => UserDetails.Start())
+                    new Option<string>("Nee", actionWhenEscapePressed)
                 };
-                SelectionMenuUtil.Create(options, () => PendingChanges(newName, newEmail, newGenres, newIntensity, newAgeCategory));
+                SelectionMenuUtil.Create(options, () => PendingChanges(newName, newEmail, selectedGenres, intensity, ageCategory));
             }
         }
 
         private static void PendingChanges(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("[Nieuwe Profielgegevens]", ConsoleColor.Cyan);
+            ColorConsole.WriteColorLine("Nieuwe Profielgegevens", ConsoleColor.Cyan);
             ColorConsole.WriteColorLine($"[Naam: ]{newName}", ConsoleColor.Cyan);
             ColorConsole.WriteColorLine($"[Email: ]{newEmail}\n", ConsoleColor.Cyan);
-            ColorConsole.WriteColorLine("[Persoonlijke voorkeuren]", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Genre: ]{string.Join(", ", newGenres)}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Intensiteit: ]{newIntensity}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory}\n\n", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("[Weet je zeker dat je de gegevens wilt aanpassen ?]", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("Persoonlijke voorkeuren", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Genre: ]{(newGenres.Any() ? string.Join(", ", newGenres) : "Undefined")}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Kijkwijzer: ]{newAgeCategory.GetDisplayName()}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Intensiteit: ]{newIntensity}\n", ConsoleColor.Green);
+            ColorConsole.WriteColorLine("Weet je zeker dat je de gegevens wilt aanpassen?", ConsoleColor.Red);
         }
     }
 }

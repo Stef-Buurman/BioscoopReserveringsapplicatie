@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceOverview
     {
-        static private ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
 
         public static void Start()
         {
@@ -14,7 +14,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle experiences", () => ShowAllExperiences()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-                SelectionMenuUtil.Create(options, () => Console.WriteLine($"Alle experiences"));
+                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies een van de volgende experience overzichten: \n", Globals.TitleColor));
         }
 
         private static void ShowExperienceDetails(int experienceId)
@@ -34,30 +34,44 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(experience.Id, experience.Name));
             }
 
-            options.Add(new Option<int>(0, "Terug", () => { Console.Clear(); Start(); }));
-
-            int experienceId = SelectionMenuUtil.Create(options, Print);
+            int experienceId = SelectionMenuUtil.Create(options, 21, Print, () => { Console.Clear(); Start(); });
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;
         }
 
-        private static int ShowAllArchivedExperiences()
+        private static void ShowAllArchivedExperiences()
         {
             List<ExperiencesModel> archivedExperiences = ExperiencesLogic.GetAllArchivedExperiences();
-            return ShowExperiences(archivedExperiences);
+
+            if(archivedExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen gearchiveerde experiences gevonden.");
+            else ShowExperiences(archivedExperiences);
         }
 
-        private static int ShowAllActiveExperiences()
+        private static void ShowAllActiveExperiences()
         {
             List<ExperiencesModel> activeExperiences = ExperiencesLogic.GetAllActiveExperiences();
-            return ShowExperiences(activeExperiences);
+
+            if (activeExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen actieve experiences gevonden.");
+            else  ShowExperiences(activeExperiences);
         }
 
-        private static int ShowAllExperiences()
+        private static void ShowAllExperiences()
         {
             List<ExperiencesModel> allExperiences = ExperiencesLogic.GetExperiences();
-            return ShowExperiences(allExperiences);
+
+            if (allExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen experiences gevonden.");
+            else ShowExperiences(allExperiences);
+        }
+
+        private static void PrintWhenNoExperiencesFound(string whichExperiences)
+        {
+            Console.Clear();
+            Console.WriteLine(whichExperiences);
+            Thread.Sleep(500);
+            Console.WriteLine("Terug naar experience overzicht...");
+            Thread.Sleep(1500);
+            Start();
         }
 
         private static void Print()

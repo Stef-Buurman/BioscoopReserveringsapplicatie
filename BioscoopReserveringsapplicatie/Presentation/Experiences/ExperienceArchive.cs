@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceArchive
     {
-        static private ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
+        private static ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
 
         public static void Start(int experienceId)
         {
@@ -22,11 +22,11 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Print(string name, string intensity, int timeLength)
         {
-            Console.WriteLine("De experience details zijn:");
-            Console.WriteLine($"Experience naam: {name}");
-            Console.WriteLine($"Experience intensiteit: {intensity}");
-            Console.WriteLine($"Experience lengte (in minuten): {timeLength}\n");
-            Console.WriteLine($"Weet u zeker dat u de experience {name} wilt archiveren?");
+            ColorConsole.WriteColorLine("De experience details zijn:", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Experience naam:] {name}", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Experience intensiteit:] {intensity}", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Experience lengte (in minuten):] {timeLength}\n", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"Weet u zeker dat u de experience {name} wilt [archiveren]?", Globals.ColorInputcClarification);
         }
     }
 }

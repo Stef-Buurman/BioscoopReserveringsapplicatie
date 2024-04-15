@@ -3,7 +3,7 @@
     public class ExperiencesLogic
     {
         private List<ExperiencesModel> _experiences;
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public ExperiencesLogic()
         {
@@ -37,7 +37,7 @@
             {
                 return false;
             }
-            if (this.GetById(experience.Id) == null) experience.Id = GetNextId.GetNextIdForExperience(_experiences);
+            if (this.GetById(experience.Id) == null) experience.Id = IdGenerator.GetNextId(_experiences);
             _experiences.Add(experience);
             ExperiencesAccess.WriteAll(_experiences);
             return true;
@@ -52,27 +52,31 @@
         public List<ExperiencesModel> GetExperiencesByUserPreferences(UserModel currentUser)
         {
             GetExperiences();
-            
+
             List<ExperiencesModel> experiences = new List<ExperiencesModel>();
 
             foreach (ExperiencesModel experience in _experiences)
             {
                 if (experience.Archived) continue;
-                    
+
                 MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
 
-                if(movie == null) continue;
+                if (movie == null) continue;
 
-                if (movie.Genres.Intersect(currentUser.Genres).Any() && Convert.ToInt32(movie.AgeCategory) <= Convert.ToInt32(currentUser.AgeCategory) && experience.Intensity == currentUser.Intensity)
+                bool genreMatch = currentUser.Genres.Count == 0 || movie.Genres.Intersect(currentUser.Genres).Any();
+                bool ageMatch = currentUser.AgeCategory == AgeCategory.Undefined || Convert.ToInt32(movie.AgeCategory) <= Convert.ToInt32(currentUser.AgeCategory);
+                bool intensityMatch = currentUser.Intensity == Intensity.Undefined || experience.Intensity == currentUser.Intensity;
+
+                if (genreMatch && ageMatch && intensityMatch)
                 {
                     experiences.Add(experience);
                 }
             }
             return experiences;
         }
-        public bool EditExperience (int id, string name, Intensity intensity, int timeLength, int filmId)
+        public bool EditExperience(int id, string name, Intensity intensity, int timeLength, int filmId)
         {
-        
+
 
             if (ValidateExperienceName(name) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
             {
@@ -81,7 +85,7 @@
                 experience.Intensity = intensity;
                 experience.FilmId = filmId;
                 experience.TimeLength = timeLength;
-                
+
                 UpdateList(experience);
                 return true;
             }
@@ -111,7 +115,7 @@
         {
             ExperiencesModel experience = GetById(id);
             if (experience != null)
-            {   
+            {
                 experience.Archived = true;
                 ExperiencesAccess.WriteAll(_experiences);
             }

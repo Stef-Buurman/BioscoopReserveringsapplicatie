@@ -16,9 +16,13 @@
     "emailAddress": "user@mail.com",
     "password": "user123",
     "fullName": "User",
-    "genres": ["Horror", "Komedie", "Actie"],
-    "ageCategory": 16,
-    "intensity": "Medium",
+    "genres": [
+      "Horror",
+      "Komedie",
+      "Actie"
+    ],
+    "ageCategory": 18,
+    "intensity": "Undefined",
     "language": "Nederlands"
   }
 ]
