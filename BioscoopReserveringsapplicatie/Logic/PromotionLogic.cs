@@ -45,6 +45,28 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
+        public void Activate(int id)
+        {
+            PromotionModel? promotion = GetById(id);
+
+            if (promotion != null)
+            {
+                promotion.Status = true;
+                UpdateList(promotion);
+            }
+        }
+
+        public void Deactivate(int id)
+        {
+            PromotionModel? promotion = GetById(id);
+
+            if (promotion != null)
+            {
+                promotion.Status = false;
+                UpdateList(promotion);
+            }
+        }
+
         public bool ValidatePromotion(PromotionModel promotion)
         {
             if (promotion == null) return false;
