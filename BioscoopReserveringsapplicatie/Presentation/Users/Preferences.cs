@@ -55,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification));
+                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine($"Kies uw favoriete [genre]: \nDeze [genres] heeft u momenteel geselecteerd: [{string.Join(", ", selectedGenres)}]\n", Globals.ColorInputcClarification));
                 }
 
                 if (genre != default && availableGenres.Contains(genre))
