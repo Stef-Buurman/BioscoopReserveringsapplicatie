@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); PromotionOverview.Start();}),
+                    new Option<string>("Terug", () => {Console.Clear(); Promotions.Start();}),
                 };
                 SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n"));
             }
@@ -43,7 +43,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Promotie details]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
-            ColorConsole.WriteColorLine($"[Promotie status: ]{(status ? "Actief" : "Inactief")}", Globals.PromotionColor);
+            ColorConsole.WriteColorLine($"[Promotie status: ]{(status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
         }
     }
 }
