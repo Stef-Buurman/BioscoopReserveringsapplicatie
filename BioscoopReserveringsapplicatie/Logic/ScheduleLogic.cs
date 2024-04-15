@@ -21,16 +21,21 @@ namespace BioscoopReserveringsapplicatie
 
         public bool Add(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
-            if(UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
             {
-                DateTime dateTime = DateTime.ParseExact(scheduledDateTime, "dd-M-yyyy hh:mm", CultureInfo.GetCultureInfo("nl-NL"));
+                if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTime))
+                {
+                    GetAll();
 
-                GetAll();
+                    ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTime);
 
-                ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTime);
-
-                UpdateList(schedule);
-                return true;
+                    UpdateList(schedule);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else return false;
         }

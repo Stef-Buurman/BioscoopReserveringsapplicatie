@@ -34,7 +34,7 @@
                 _accounts.Add(acc);
             }
             UserAccess.WriteAll(_accounts);
-
+            _accounts = UserAccess.LoadAll();
         }
 
         public UserModel? GetById(int id)
