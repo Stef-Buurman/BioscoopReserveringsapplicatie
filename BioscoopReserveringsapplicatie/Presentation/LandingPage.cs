@@ -15,18 +15,18 @@ namespace BioscoopReserveringsapplicatie
             }
 
             Console.Clear();
-
+            PrintTopMenu();
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Inloggen", () => UserLogin.Start()),
                 new Option<string>("Registreren", () => UserRegister.Start()),
                 new Option<string>("Applicatie sluiten", () => Environment.Exit(0)),
             };
-            Print();
-            string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
+            SelectionMenuUtil.Create(options);
+
         }
 
-        private static void Print()
+        private static void PrintTopMenu()
         {
             ColorConsole.WriteColorLine(@" [Blue]_______  __[/]                [Red]_[/]                     ");
             ColorConsole.WriteColorLine(@"[Blue]|  ___\ \/ /[/][Red]_ __   ___ _ __(_) ___ _ __   ___ ___ [/]");
