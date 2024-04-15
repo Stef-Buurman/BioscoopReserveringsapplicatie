@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
 
                 for (int i = 1; i < 15; i++)
                 {
-                    dateOptions.Add(new Option<string>(DateTime.Today.AddDays(i).ToString("dd-M-yyyy")));
+                    dateOptions.Add(new Option<string>(DateTime.Today.AddDays(i).ToString("dd-MM-yyyy")));
                 }
                 
                 string experienceDate = SelectionMenuUtil.Create(dateOptions, () => { Header(); Console.WriteLine("Kies een datum om deze experience op in te plannen.\n"); }, () => ExperienceDetails.Start(experienceId));
