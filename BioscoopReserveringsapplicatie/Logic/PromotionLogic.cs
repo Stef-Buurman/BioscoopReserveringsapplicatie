@@ -11,21 +11,26 @@ namespace BioscoopReserveringsapplicatie
 
         public List<PromotionModel> GetAll()
         {
+            _promotions = PromotionAccess.LoadAll();
             return _promotions;
         }
 
         public PromotionModel? GetById(int id)
         {
+            _promotions = PromotionAccess.LoadAll();
             return _promotions.Find(s => s.Id == id);
         }
 
         public PromotionModel? GetByStatus(bool status)
         {
+            _promotions = PromotionAccess.LoadAll();
             return _promotions.Find(s => s.Status == status);
         }
 
         public bool Add(string title, string description)
         {
+            GetAll();
+
             if (ValidatePromotionTitle(title) && ValidatePromotionDescription(description))
             {
                 PromotionModel promotion = new PromotionModel(IdGenerator.GetNextId(_promotions), title, description, false);
@@ -74,7 +79,6 @@ namespace BioscoopReserveringsapplicatie
                 _promotions.Add(promotion);
             }
             PromotionAccess.WriteAll(_promotions);
-            _promotions = PromotionAccess.LoadAll();
         }
     }
 }
