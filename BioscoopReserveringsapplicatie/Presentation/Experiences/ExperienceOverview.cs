@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class ExperienceOverview
     {
         private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public static void Start()
         {
