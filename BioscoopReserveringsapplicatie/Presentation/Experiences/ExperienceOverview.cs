@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class ExperienceOverview
     {
         private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public static void Start()
         {
@@ -33,7 +34,9 @@ namespace BioscoopReserveringsapplicatie
 
             foreach (ExperiencesModel experience in experiences)
             {
-                options.Add(new Option<int>(experience.Id, experience.Name));
+                MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
+                string experienceInfo = $"{experience.Name,-15} {string.Join(",", movie.Genres),-15} {movie.AgeCategory.GetDisplayName(),-15} {experience.Intensity,-15} {(experience.Archived ? "Ja" : "Nee")}";
+                options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
             int experienceId = new SelectionMenuUtil2<int>(options,
@@ -82,6 +85,13 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Terug naar experience overzicht...");
             Thread.Sleep(1500);
             Start();
+        }
+
+        private static void Print()
+        {
+            Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:\n");
+            Console.WriteLine("Experience Naam  Genres                Leeftijdscategorie  Intensiteit  Gearchiveerd");
+            Console.WriteLine("---------------  --------------------  ------------------  -----------  ------------");
         }
     }
 }
