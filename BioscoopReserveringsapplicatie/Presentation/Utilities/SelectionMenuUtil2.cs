@@ -1,4 +1,6 @@
-﻿namespace BioscoopReserveringsapplicatie
+﻿using System;
+
+namespace BioscoopReserveringsapplicatie
 {
     public class SelectionMenuUtil2<T>
     {
@@ -45,7 +47,7 @@
             {
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
-            }
+        }
         }
 
         public SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
@@ -67,7 +69,7 @@
             {
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
-            }
+        }
         }
 
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
@@ -115,6 +117,7 @@
             Console.CursorVisible = false;
 
             WriteMenu(OptionsToShow, OptionsToShow[Index]);
+
             ConsoleKeyInfo keyinfo;
             do
             {
@@ -252,6 +255,7 @@
                 string x = "";
                 foreach (char character in strintToPrint) Console.Write(" ");
             }
+            if (moreOptionsThanVisibility) ColorConsole.WriteLineInfo($"\n*Navigeer met de pijltjestoetsen om meer opties te zien.*");
         }
 
         private List<Option<T>> GetOptionsToShow(List<Option<T>> Options, int MaxVisibility, int skipOptions = 0, bool hasSkipOptions = false)
