@@ -20,7 +20,8 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
-                SelectionMenuUtil.Create(options, () => Print(name, filmId, intensity, timeLength));
+                Print(name, filmId, intensity, timeLength);
+                new SelectionMenuUtil2<string>(options).Create();
             }
             else
             {
@@ -28,7 +29,8 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", WhatToDoWhenGoBack),
                 };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor));
+                ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor);
+                new SelectionMenuUtil2<string>(options);
             }
         }
 
@@ -69,7 +71,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
             functionToShow();
             ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
-            Intensity intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack).Create();
+            Intensity intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack, () => { }).Create();
             return intensity;
         }
 
@@ -110,7 +112,7 @@ namespace BioscoopReserveringsapplicatie
             }
             functionToShow();
             ColorConsole.WriteColorLine("Welke [film] wilt u toevoegen?", Globals.ColorInputcClarification);
-            int movieId = new SelectionMenuUtil2<int>(movieOptions, 15, WhatToDoWhenGoBack).Create();
+            int movieId = new SelectionMenuUtil2<int>(movieOptions, 15, WhatToDoWhenGoBack, () => { }).Create();
             Console.Clear();
             return movieId;
         }
