@@ -11,14 +11,17 @@ namespace BioscoopReserveringsapplicatie
 
         public List<PromotionModel> GetAll()
         {
-            _promotions = PromotionAccess.LoadAll();
             return _promotions;
         }
 
         public PromotionModel? GetById(int id)
         {
-            _promotions = PromotionAccess.LoadAll();
             return _promotions.Find(s => s.Id == id);
+        }
+
+        public PromotionModel? GetByStatus(bool status)
+        {
+            return _promotions.Find(s => s.Status == status);
         }
 
         public bool Add(string title, string description)
