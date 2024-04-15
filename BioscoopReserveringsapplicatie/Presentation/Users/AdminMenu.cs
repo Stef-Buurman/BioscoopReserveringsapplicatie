@@ -13,6 +13,7 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Filmoverzicht", () => MovieOverview.Start()),
                     new Option<string>("Experience toevoegen", () => AddExperience.Start()),
                     new Option<string>("Experienceoverzicht", () => ExperienceOverview.Start()),
+                    new Option<string>("Promoties", () => Promotions.Start()),
                     new Option<string>("Uitloggen", () => { UserLogic.Logout(); LandingPage.Start(); })
                 };
                 SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green));
@@ -20,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
             else
             {
                 Console.Clear();
-                ColorConsole.WriteColorLine("Uw account heeft geen toestemming om deze pagina te bekijken.",Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Uw account heeft geen toestemming om deze pagina te bekijken.", Globals.ErrorColor);
             }
         }
     }
