@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     public class SelectionMenuUtil2<T>
     {
@@ -117,7 +115,6 @@ namespace BioscoopReserveringsapplicatie
             Console.CursorVisible = false;
 
             WriteMenu(OptionsToShow, OptionsToShow[Index]);
-
             ConsoleKeyInfo keyinfo;
             do
             {
@@ -255,6 +252,8 @@ namespace BioscoopReserveringsapplicatie
                 string x = "";
                 foreach (char character in strintToPrint) Console.Write(" ");
             }
+            if (moreOptionsThanVisibility && VisibleSelectedArrows) Console.WriteLine($"   v");
+            else if (moreOptionsThanVisibility) Console.WriteLine($"v");
             if (moreOptionsThanVisibility) ColorConsole.WriteLineInfo($"\n*Navigeer met de pijltjestoetsen om meer opties te zien.*");
         }
 
