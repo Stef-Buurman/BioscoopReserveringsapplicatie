@@ -8,16 +8,30 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int promotionId)
         {
-            PromotionModel? promotionSelected = promotionLogic.GetById(promotionId);
+            promotion = promotionLogic.GetById(promotionId);
 
-            promotion = promotionSelected;
+            List<Option<string>> options;
 
-            List<Option<string>> options = new List<Option<string>>
+            if (promotion.Status)
             {
-                new Option<string>("Bewerk promotie"),
-                new Option<string>("Verwijder promotie"),
-                new Option<string>("Terug", () => PromotionOverview.Start()),
-            };
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Deactiveer promotie", () => {promotionLogic.Deactivate(promotionId); Start(promotionId);}),
+                    new Option<string>("Bewerk promotie"),
+                    new Option<string>("Verwijder promotie"),
+                    new Option<string>("Terug", () => PromotionOverview.Start()),
+                };
+            }
+            else
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Activeer promotie", () => {promotionLogic.Activate(promotionId); Start(promotionId);}),
+                    new Option<string>("Bewerk promotie"),
+                    new Option<string>("Verwijder promotie"),
+                    new Option<string>("Terug", () => PromotionOverview.Start()),
+                };
+            }
 
             SelectionMenuUtil.Create(options, Print);
         }
