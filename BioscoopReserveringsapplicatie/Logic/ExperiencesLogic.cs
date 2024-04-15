@@ -3,6 +3,8 @@
     public class ExperiencesLogic
     {
         private List<ExperiencesModel> _experiences;
+        private List<MovieModel> _Movies;
+
         private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public ExperiencesLogic()
@@ -91,6 +93,11 @@
             }
 
             return false;
+        }
+        public MovieModel GetMovieById(int id)
+        {
+            _Movies = MoviesAccess.LoadAll();
+            return _Movies.Find(i => i.Id == id);
         }
 
         public void UpdateList(ExperiencesModel experience)
