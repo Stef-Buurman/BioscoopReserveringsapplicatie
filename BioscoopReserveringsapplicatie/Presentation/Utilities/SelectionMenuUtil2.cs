@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     public class SelectionMenuUtil2<T>
     {
-        private static int maxSelectionMenu = 0;
+        private static int MaxSelectionMenu = 0;
 
         private int Index = 0;
         private int VisibleIndex = 0;
@@ -21,10 +19,11 @@ namespace BioscoopReserveringsapplicatie
 
         private bool CanBeEscaped;
         private Action? EscapeAction;
+        private Action? EscapeActionWhenNotEscaping;
         private bool EscapabilityVisible = false;
 
         private bool VisibleSelectedArrows;
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, bool visibleSelectedArrows = true)
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true)
         {
             MaxVisibility = maxVisibility;
             Options = options;
@@ -34,11 +33,12 @@ namespace BioscoopReserveringsapplicatie
             VisibleIndex = 0;
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
+            EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             HalfOfMaxVisibility = Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero));
             VisibleSelectedArrows = visibleSelectedArrows;
         }
 
-        public SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, bool visibleSelectedArrows = true)
+        public SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true)
         {
             // When you give a list of T, it will be converted to a list of Options.
             List<Option<T>> optionList = ConvertToOption(options);
@@ -50,39 +50,40 @@ namespace BioscoopReserveringsapplicatie
             VisibleIndex = 0;
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
+            EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             HalfOfMaxVisibility = Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero));
             VisibleSelectedArrows = visibleSelectedArrows;
         }
 
-        public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, bool visibleSelectedArrows = true)
-            : this(options, 9, canBeEscaped, escapeAction, visibleSelectedArrows) { }
+        public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true)
+            : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, bool visibleSelectedArrows = true)
-            : this(options, 9, true, escapeAction, visibleSelectedArrows) { }
+        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true)
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, bool visibleSelectedArrows = true) 
-            : this(options, maxVisibility, true, escapeAction, visibleSelectedArrows) { }
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true) 
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows) { }
 
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, bool visibleSelectedArrows = true)
-            : this(options, 9, false, null, visibleSelectedArrows) { }
+            : this(options, 9, false, null, null, visibleSelectedArrows) { }
 
-        public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false, Action escapeAction = null, bool visibleSelectedArrows = true) 
-            : this(options, 9, canBeEscaped, escapeAction, visibleSelectedArrows) { }
+        public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true) 
+            : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows) { }
 
-        public SelectionMenuUtil2(List<T> options, Action escapeAction, bool visibleSelectedArrows = true) 
-            : this(options, 9, true, escapeAction, visibleSelectedArrows) { }
+        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true) 
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping,visibleSelectedArrows) { }
 
         public SelectionMenuUtil2(List<T> options, bool visibleSelectedArrows = true)
-            : this(options, 9, false, null, visibleSelectedArrows) { }
+            : this(options, 9, false, null, null, visibleSelectedArrows) { }
 
         public SelectionMenuUtil2(List<T> options)
             : this(options, 9, false) { }
 
-        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, bool visibleSelectedArrows = true) 
-            : this(options, maxVisibility, true, escapeAction, visibleSelectedArrows) { }
+        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true) 
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows) { }
 
 
         public T Create()
@@ -93,7 +94,6 @@ namespace BioscoopReserveringsapplicatie
             Console.CursorVisible = false;
 
             WriteMenu(OptionsToShow, OptionsToShow[Index]);
-
             ConsoleKeyInfo keyinfo;
             do
             {
@@ -118,7 +118,8 @@ namespace BioscoopReserveringsapplicatie
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, () => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0)), Options[Index]));
+                    //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
+                    ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);
@@ -130,22 +131,23 @@ namespace BioscoopReserveringsapplicatie
         {
             if (CanBeEscaped && !EscapabilityVisible)
             {
-                ColorConsole.WriteLineInfo("\n" + textToShowEscapability + "\n");
-                Console.SetCursorPosition(0, Top + 3);
+                ColorConsole.WriteLineInfo(textToShowEscapability + "\n");
+                Console.SetCursorPosition(0, Top + 2);
                 EscapabilityVisible = true;
             }
             else if (EscapabilityVisible)
             {
-                Console.SetCursorPosition(0, Top + 3);
+                Console.SetCursorPosition(0, Top + 2);
             }
             else
             {
                 Console.SetCursorPosition(0, Top);
             }
 
-            int maxOptionsLength = Options.Max(x => x.Name).Length + 3;
-            if (maxSelectionMenu < maxOptionsLength) maxSelectionMenu = maxOptionsLength;
-
+            int maxOptionsLength = Options.Max(x => x.Name.Length);
+            if (MaxSelectionMenu < maxOptionsLength) MaxSelectionMenu = maxOptionsLength;
+            if (moreOptionsThanVisibility && VisibleSelectedArrows) Console.WriteLine($"   ^");
+            else if (moreOptionsThanVisibility) Console.WriteLine($"^");
             foreach (Option<T> option in Options)
             {
                 if (option == selectedOption)
@@ -154,7 +156,7 @@ namespace BioscoopReserveringsapplicatie
                     string strintToPrint = "";
                     if (VisibleSelectedArrows) strintToPrint = $">> {option.Name} <<";
                     else strintToPrint = $"{option.Name}";
-                    while (strintToPrint.Length < maxSelectionMenu + 3) strintToPrint += " ";
+                    while (strintToPrint.Length < MaxSelectionMenu + 3) strintToPrint += " ";
 
                     ColorConsole.WriteColorLine($"{strintToPrint}", ConsoleColor.Blue);
                 }
@@ -163,14 +165,16 @@ namespace BioscoopReserveringsapplicatie
                     string strintToPrint = "";
                     if (VisibleSelectedArrows) strintToPrint = $"   {option.Name}";
                     else strintToPrint = $"{option.Name}";
-                    while (strintToPrint.Length < maxSelectionMenu + 3) strintToPrint += " ";
+                    while (strintToPrint.Length < MaxSelectionMenu + 6) strintToPrint += " ";
                     Console.WriteLine($"{strintToPrint}");
                 }
             }
+            if (moreOptionsThanVisibility && VisibleSelectedArrows) Console.WriteLine($"   v");
+            else if (moreOptionsThanVisibility) Console.WriteLine($"v");
             if (moreOptionsThanVisibility) ColorConsole.WriteLineInfo($"\n*Navigeer met de pijltjestoetsen om meer opties te zien.*");
         }
 
-        private static List<Option<T>> GetOptionsToShow(List<Option<T>> Options, int MaxVisibility, int skipOptions = 0, bool hasSkipOptions = false)
+        private List<Option<T>> GetOptionsToShow(List<Option<T>> Options, int MaxVisibility, int skipOptions = 0, bool hasSkipOptions = false)
         {
             List<Option<T>> optionsToShow = new List<Option<T>>();
             //Loops trough all Options.
