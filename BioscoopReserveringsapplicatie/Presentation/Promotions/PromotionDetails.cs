@@ -17,8 +17,8 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Deactiveer promotie", () => {promotionLogic.Deactivate(promotionId); Start(promotionId);}),
-                    new Option<string>("Bewerk promotie"),
-                    new Option<string>("Verwijder promotie"),
+                    new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
+                    new Option<string>("Verwijder promotie", () => PromotionDelete.Start(promotionId)),
                     new Option<string>("Terug", () => PromotionOverview.Start()),
                 };
             }
@@ -27,8 +27,8 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Activeer promotie", () => {promotionLogic.Activate(promotionId); Start(promotionId);}),
-                    new Option<string>("Bewerk promotie"),
-                    new Option<string>("Verwijder promotie"),
+                    new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
+                    new Option<string>("Verwijder promotie", () => PromotionDelete.Start(promotionId)),
                     new Option<string>("Terug", () => PromotionOverview.Start()),
                 };
             }
