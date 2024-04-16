@@ -15,7 +15,8 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Experienceoverzicht", () => ExperienceOverview.Start()),
                     new Option<string>("Uitloggen", () => { UserLogic.Logout(); LandingPage.Start(); })
                 };
-                SelectionMenuUtil.Create(options, () => Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n"));
+                Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n");
+                new SelectionMenuUtil2<string>(options).Create();
             }
             else
             {
