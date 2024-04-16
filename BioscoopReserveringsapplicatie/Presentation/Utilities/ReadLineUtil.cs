@@ -129,8 +129,8 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            ColorConsole.WriteColorLine("\n----------------------------------------------------------------", ConsoleColor.Red);
-            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", Globals.ErrorColor);
             new SelectionMenuUtil2<string>(options).Create();
             return WantToLeave;
         }
