@@ -53,7 +53,7 @@ namespace BioscoopReserveringsapplicatie
                 Print();
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
                 };
                 new SelectionMenuUtil2<string>(options, () => Start(_returnToRating), Print).Create();
             }
@@ -114,7 +114,6 @@ namespace BioscoopReserveringsapplicatie
 
         private static void SelectMovieGenres()
         {
-            genres = new List<Genre>();
             List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
             while (genres.Count < 3)
             {
@@ -126,7 +125,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("U kunt maximaal 3 verschillende genres kiezen.\n", Globals.TitleColor);
                 ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification);
 
-                genre = new SelectionMenuUtil2<Genre>(availableGenres,() => Start(_returnToDescription), PrintAddingMovie).Create();
+                genre = new SelectionMenuUtil2<Genre>(availableGenres,() => Start(_returnToDescription), () => Start(_returnToGenres)).Create();
 
                 if (genre != default && availableGenres.Contains(genre))
                 {
@@ -148,7 +147,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<AgeCategory> AgeGenres = Globals.GetAllEnum<AgeCategory>();
             List<string> EnumDescription = AgeGenres.Select(o => o.GetDisplayName()).ToList();
-            string selectedDescription = new SelectionMenuUtil2<string>(EnumDescription, () => Start(_returnToGenres), PrintAddingMovie).Create();
+            string selectedDescription = new SelectionMenuUtil2<string>(EnumDescription, () => { genres = new List<Genre>(); Start(_returnToGenres); }, () => Start(_returnToRating)).Create();
             rating = AgeGenres.First(o => o.GetDisplayName() == selectedDescription);
         }
 
