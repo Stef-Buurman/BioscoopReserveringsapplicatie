@@ -11,8 +11,17 @@
         private int AmountOptionsAbove = 0;
         private bool HasOptionsAbove { get => AmountOptionsAbove > 0 && moreOptionsThanVisibility; }
         private bool HasOptionsBelow { get => AllOptions.Count - MaxVisibility != AmountOptionsAbove && moreOptionsThanVisibility; }
-        private int HalfOfMaxVisibility = 0;
-        private int MaxVisibility = 0;
+        private int HalfOfMaxVisibility { get => Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero)); }
+        private int _maxVisibility = 0;
+        private int MaxVisibility { 
+            get => _maxVisibility; 
+            set
+            {
+                if (value < 0) _maxVisibility = 9;
+                else if (value < 29) _maxVisibility = 9;
+                else _maxVisibility = (value % 2 == 0) ? (value + 1) : value;
+            }
+        }
 
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
@@ -39,7 +48,6 @@
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
             EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
-            HalfOfMaxVisibility = Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero));
             VisibleSelectedArrows = visibleSelectedArrows;
             if (textBeforeInputShown != default)
             {
@@ -67,7 +75,6 @@
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
             EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
-            HalfOfMaxVisibility = Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero));
             VisibleSelectedArrows = visibleSelectedArrows;
             if (textBeforeInputShown != default)
             {
