@@ -18,7 +18,22 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Deactiveer promotie", () => {promotionLogic.Deactivate(promotionId); Start(promotionId);}),
+                    new Option<string>("Deactiveer promotie", () =>
+                    {
+                        List<Option<string>> options2 = new List<Option<string>>
+                        {
+                            new Option<string>("Ja", () => {
+                                promotionLogic.Deactivate(promotionId); Start(promotionId);
+                                Start(promotionId);
+                            }),
+                            new Option<string>("Nee", () => {
+                                Start(promotionId);
+                            }),
+                        };
+                        ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+                        ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt deactiveren?", Globals.ErrorColor);
+                        string selectionMenu2 = new SelectionMenuUtil2<string>(options2).Create();
+                    }),
                     new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
                     new Option<string>("Verwijder promotie", () => PromotionDelete.Start(promotionId)),
                     new Option<string>("Terug", () => PromotionOverview.Start()),
@@ -28,7 +43,22 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Activeer promotie", () => {promotionLogic.Activate(promotionId); Start(promotionId);}),
+                    new Option<string>("Activeer promotie", () =>
+                    {
+                        List<Option<string>> options2 = new List<Option<string>>
+                        {
+                            new Option<string>("Ja", () => {
+                                promotionLogic.Activate(promotionId); Start(promotionId);
+                                Start(promotionId);
+                            }),
+                            new Option<string>("Nee", () => {
+                                Start(promotionId);
+                            }),
+                        };
+                        ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+                        ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt activeren?", Globals.ErrorColor);
+                        string selectionMenu2 = new SelectionMenuUtil2<string>(options2).Create();
+                    }),
                     new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
                     new Option<string>("Verwijder promotie", () => PromotionDelete.Start(promotionId)),
                     new Option<string>("Terug", () => PromotionOverview.Start()),
