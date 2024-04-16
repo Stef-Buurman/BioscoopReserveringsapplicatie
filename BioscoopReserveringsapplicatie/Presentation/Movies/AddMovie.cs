@@ -44,9 +44,6 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            
-
-
             if (MoviesLogic.AddMovie(title, description, genres, rating))
             {
                 Console.Clear();
