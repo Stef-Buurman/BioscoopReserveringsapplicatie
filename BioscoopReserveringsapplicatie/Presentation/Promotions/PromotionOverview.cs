@@ -6,6 +6,8 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
+            Console.Clear();
+
             List<PromotionModel> promotions = promotionLogic.GetAll();
 
             if (promotions.Count == 0) PrintWhenNoPromotionsFound("Er zijn geen promoties gevonden.");
@@ -21,7 +23,8 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(promotion.Id, promotion.Title));
             }
 
-            int promotionId = SelectionMenuUtil.Create(options, 21, Print, () => { Console.Clear(); Promotions.Start(); });
+            Print();
+            int promotionId = new SelectionMenuUtil2<int>(options, () => { Console.Clear(); Promotions.Start(); }, () => { Console.Clear(); Start(); }).Create();
             Console.Clear();
             ShowPromotionDetails(promotionId);
             return promotionId;

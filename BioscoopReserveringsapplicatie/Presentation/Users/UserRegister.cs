@@ -80,7 +80,7 @@ namespace BioscoopReserveringsapplicatie
             else
             {
                 Preferences.Start(registrationResult.User);
-                ColorConsole.WriteColorLine("U bent geregistreerd.", Globals.SuccessColor);
+                ColorConsole.WriteColorLine("\nU bent geregistreerd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
                 UserLogin.Start();
             }

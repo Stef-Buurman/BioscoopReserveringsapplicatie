@@ -22,7 +22,7 @@ namespace BioscoopReserveringsapplicatie
         public static readonly ConsoleColor ColorEditInput = ConsoleColor.Yellow;
         public static readonly ConsoleColor ExperienceColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor MovieColor = ConsoleColor.Green;
-        public static readonly ConsoleColor PromotionColor = ConsoleColor.DarkBlue;
+        public static readonly ConsoleColor PromotionColor = ConsoleColor.DarkYellow;
         public static readonly ConsoleColor ErrorColor = ConsoleColor.DarkRed;
         public static readonly ConsoleColor SuccessColor = ConsoleColor.DarkGreen;
 

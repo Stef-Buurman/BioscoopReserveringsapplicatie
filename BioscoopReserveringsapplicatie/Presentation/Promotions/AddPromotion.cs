@@ -6,6 +6,8 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
+            Console.Clear();
+
             string title = ReadLineUtil.EnterValue(true, () =>
             {
                 ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
@@ -25,7 +27,8 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); PromotionOverview.Start();}),
                 };
-                SelectionMenuUtil.Create(options, () => Print(title, description, false));
+                Print(title, description, false);
+                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
             }
             else
             {
@@ -33,13 +36,14 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); Promotions.Start();}),
                 };
-                SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n"));
+                ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n", Globals.ErrorColor);
+                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
             }
         }
 
         private static void Print(string title, string description, bool status)
         {
-            ColorConsole.WriteColorLine("De promotie is toegevoegd!\n", Globals.PromotionColor);
+            ColorConsole.WriteColorLine("\nDe promotie is toegevoegd!\n", Globals.PromotionColor);
             ColorConsole.WriteColorLine("[Promotie details]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);

@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
 
             if (_userLogic.CheckLogin(email, password) != null)
             {
-                ColorConsole.WriteColorLine("U bent ingelogd.", Globals.SuccessColor);
+                ColorConsole.WriteColorLine("\nU bent ingelogd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
 
                 if (UserLogic.CurrentUser.IsAdmin)

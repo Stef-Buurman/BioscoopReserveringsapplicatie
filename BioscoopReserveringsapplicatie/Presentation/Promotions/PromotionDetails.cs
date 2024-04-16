@@ -8,6 +8,8 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int promotionId)
         {
+            Console.Clear();
+
             promotion = promotionLogic.GetById(promotionId);
 
             List<Option<string>> options;
@@ -32,8 +34,8 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Terug", () => PromotionOverview.Start()),
                 };
             }
-
-            SelectionMenuUtil.Create(options, Print);
+            Print();
+            string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()
@@ -44,7 +46,6 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Promotie titel: ]{promotion.Title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{promotion.Description}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie status: ]{(promotion.Status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
-
         }
     }
 }
