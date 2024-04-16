@@ -99,7 +99,6 @@ namespace BioscoopReserveringsapplicatie
             description = ReadLineUtil.EnterValue(() =>
             {
                 ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Voer de film [titel] in: {title}", Globals.ColorInputcClarification);
                 ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             }, () => Start(_returnToTitle));
 
@@ -108,7 +107,6 @@ namespace BioscoopReserveringsapplicatie
                 description = ReadLineUtil.EnterValue(() =>
                 {
                     ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                    ColorConsole.WriteColorLine($"Voer de film [titel] in: {title}", Globals.ColorInputcClarification);
                     ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
                 }, () => Start(_returnToTitle));
             }
