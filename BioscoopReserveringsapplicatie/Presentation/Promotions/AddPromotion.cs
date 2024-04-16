@@ -3,13 +3,23 @@ namespace BioscoopReserveringsapplicatie
     public static class AddPromotion
     {
         private static PromotionLogic promotionLogic = new PromotionLogic();
+        private static string title = "";
+        private static string description = "";
 
         public static void Start(string returnTo = "")
         {
             Console.Clear();
 
-            string title = AskForPromotionName();
-            string description = AskForPromotionDescription(title);
+            if (returnTo == "" || returnTo == "Name")
+            {
+                title = AskForPromotionName();
+                returnTo = "";
+            }
+            if (returnTo == "" || returnTo == "Description")
+            {
+                description = AskForPromotionDescription(title);
+                returnTo = "";
+            }
 
             if (promotionLogic.Add(title, description))
             {
@@ -17,6 +27,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); PromotionOverview.Start();}),
                 };
+
                 Print(title, description, false);
                 string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
             }
@@ -26,6 +37,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Terug", () => {Console.Clear(); Promotions.Start();}),
                 };
+
                 ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n", Globals.ErrorColor);
                 string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
             }
@@ -47,7 +59,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
                 ColorConsole.WriteColorLine($"Vul de [titel] van de promotie in: {title}", Globals.ColorInputcClarification);
                 ColorConsole.WriteColor("Vul de [beschrijving] van de promotie in: ", Globals.ColorInputcClarification);
-            }, () => AskForPromotionName());
+            }, () => Start("Name"));
         }
 
         private static void Print(string title, string description, bool status)
