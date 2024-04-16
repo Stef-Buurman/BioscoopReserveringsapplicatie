@@ -17,7 +17,8 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Promoties", () => Promotions.Start()),
                     new Option<string>("Uitloggen", () => LandingPage.Start())
                 };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green));
+                Console.WriteLine($"Welkom {UserLogic.CurrentUser.FullName}!\n");
+                new SelectionMenuUtil2<string>(options).Create();
             }
             else
             {
