@@ -37,7 +37,7 @@ namespace BioscoopReserveringsapplicatie
                 ExperienceName();
                 returnTo = "";
             }
-            if (returnTo == "" || returnTo == _returnToMovie) 
+            if (returnTo == "" || returnTo == _returnToMovie)
             {
                 SelectMovie();
                 returnTo = "";
@@ -111,7 +111,7 @@ namespace BioscoopReserveringsapplicatie
         public static void SelectMovie()
         {
             PrintEditedList();
-            ColorConsole.WriteColorLine("\nSelecteer de film die bij de experience hoort",Globals.TitleColor);
+            ColorConsole.WriteColorLine("\nSelecteer de film die bij de experience hoort", Globals.TitleColor);
             List<MovieModel> movies = MoviesLogic.GetAllMovies();
             List<Option<int>> MovieOptions = new List<Option<int>>();
             foreach (MovieModel movie in movies)
@@ -169,15 +169,15 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine($"[Naam experience:] {_newName}", Globals.ExperienceColor);
             }
-            if(_selectedMovieId != 0)
+            if (_selectedMovieId != 0)
             {
                 ColorConsole.WriteColorLine($"[Film titel:] {MoviesLogic.GetMovieById(_selectedMovieId).Title}", Globals.ExperienceColor);
             }
-            if(_newIntensity != Intensity.Undefined)
+            if (_newIntensity != Intensity.Undefined)
             {
                 ColorConsole.WriteColorLine($"[Intensiteit experience:] {_newIntensity}", Globals.ExperienceColor);
             }
-            if(_timeInInt != 0)
+            if (_timeInInt != 0)
             {
                 ColorConsole.WriteColorLine($"[Tijdsduur experience:] {_timeInInt} minuten", Globals.ExperienceColor);
             }
