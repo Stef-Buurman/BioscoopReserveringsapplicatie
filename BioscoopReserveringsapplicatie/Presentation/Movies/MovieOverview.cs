@@ -7,6 +7,8 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
+            ColorConsole.WriteColorLine("Kies een categorie om te bekijken: \n", Globals.TitleColor);
+
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Alle active films", () => ShowAllActiveMovies()),
@@ -14,7 +16,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle films", () => ShowAllMovies()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies een categorie om te bekijken: \n", Globals.TitleColor));
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void ShowMovieDetails(int movieId)
@@ -25,19 +27,19 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static int ShowMovies(List<MovieModel> movies)
+        private static void ShowMovies(List<MovieModel> movies)
         {
-            List<Option<int>> options = new List<Option<int>>();
+            Console.Clear();
+            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:", Globals.TitleColor);
+
+            List<Option<string>> options = new List<Option<string>>();
 
             foreach (MovieModel movie in movies)
             {
-                options.Add(new Option<int>(movie.Id, movie.Title));
+                options.Add(new Option<string>(movie.Title, () => ShowMovieDetails(movie.Id)));
             }
 
-            int movieId = SelectionMenuUtil.Create(options, 21, Print, () => { Console.Clear(); AdminMenu.Start(); });
-            Console.Clear();
-            ShowMovieDetails(movieId);
-            return movieId;
+            new SelectionMenuUtil2<string>(options, () => AdminMenu.Start(), () => ShowMovies(movies)).Create();
         }
 
         private static void ShowAllArchivedMovies()
@@ -72,11 +74,6 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Terug naar movie overzicht...");
             Thread.Sleep(1500);
             Start();
-        }
-
-        private static void Print()
-        {
-            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:", Globals.TitleColor);
         }
     }
 }
