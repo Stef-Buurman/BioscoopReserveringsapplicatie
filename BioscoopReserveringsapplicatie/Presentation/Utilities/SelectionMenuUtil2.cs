@@ -18,7 +18,7 @@
             set
             {
                 if (value < 0) _maxVisibility = 9;
-                else if (value < 29) _maxVisibility = 9;
+                else if (value > 29) _maxVisibility = 9;
                 else _maxVisibility = (value % 2 == 0) ? (value + 1) : value;
             }
         }
