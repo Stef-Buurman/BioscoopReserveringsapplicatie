@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
                         List<Option<string>> options2 = new List<Option<string>>
                         {
                             new Option<string>("Ja", () => {
-                                promotionLogic.Deactivate(promotionId); Start(promotionId);
+                                promotionLogic.Deactivate(promotionId);
                                 Start(promotionId);
                             }),
                             new Option<string>("Nee", () => {
@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
                         List<Option<string>> options2 = new List<Option<string>>
                         {
                             new Option<string>("Ja", () => {
-                                promotionLogic.Activate(promotionId); Start(promotionId);
+                                promotionLogic.Activate(promotionId);
                                 Start(promotionId);
                             }),
                             new Option<string>("Nee", () => {

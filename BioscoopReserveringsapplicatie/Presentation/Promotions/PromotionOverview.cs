@@ -24,8 +24,8 @@ namespace BioscoopReserveringsapplicatie
             }
 
             Print();
-            int promotionId = new SelectionMenuUtil2<int>(options, () => { Console.Clear(); Promotions.Start(); }, () => { Console.Clear(); Start(); }).Create();
-            Console.Clear();
+            int promotionId = new SelectionMenuUtil2<int>(options, () => Promotions.Start(), () => Start()).Create();
+
             ShowPromotionDetails(promotionId);
             return promotionId;
         }
@@ -45,7 +45,6 @@ namespace BioscoopReserveringsapplicatie
 
         private static void PrintWhenNoPromotionsFound(string message)
         {
-            Console.Clear();
             Console.WriteLine(message);
             Thread.Sleep(500);
             Console.WriteLine("Terug naar promotie overzicht...");
