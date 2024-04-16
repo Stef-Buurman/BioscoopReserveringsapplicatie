@@ -27,17 +27,10 @@ namespace BioscoopReserveringsapplicatie
             {
                 options.Add(new Option<int>(experience.Id, experience.Name));
             }
-
-            int experienceId = SelectionMenuUtil.Create(options, 21, Print, () => { Console.Clear(); UserMenu.Start(); });
-
-            Console.Clear();
-
-            return experienceId;
-        }
-
-        private static void Print()
-        {
             Console.WriteLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren:");
+            int experienceId = new SelectionMenuUtil2<int>(options, 21).Create();
+            Console.Clear();
+            return experienceId;
         }
     }
 }
