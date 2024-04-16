@@ -11,6 +11,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Ja", () => {
                     MoviesLogic.Archive(movieId);
+                    Console.Clear();
+                    ColorConsole.WriteColorLine($"De Film: {movie.Title} is gearchiveerd!", Globals.SuccessColor);
+                    Thread.Sleep(4000);
                     MovieOverview.Start();
                 }),
                 new Option<string>("Nee", () => {
