@@ -45,6 +45,12 @@
             {
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
+            }
+        }
+            if (textBeforeInputShown != default)
+            {
+                TextBeforeInputShown = textBeforeInputShown;
+                TextBeforeInputShownVisible = true;
         }
         }
 
@@ -252,9 +258,6 @@
                 string x = "";
                 foreach (char character in strintToPrint) Console.Write(" ");
             }
-            if (moreOptionsThanVisibility && VisibleSelectedArrows) Console.WriteLine($"   v");
-            else if (moreOptionsThanVisibility) Console.WriteLine($"v");
-            if (moreOptionsThanVisibility) ColorConsole.WriteLineInfo($"\n*Navigeer met de pijltjestoetsen om meer opties te zien.*");
         }
 
         private List<Option<T>> GetOptionsToShow(List<Option<T>> Options, int MaxVisibility, int skipOptions = 0, bool hasSkipOptions = false)
