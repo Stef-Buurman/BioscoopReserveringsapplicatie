@@ -7,6 +7,9 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             MovieModel movie = MoviesLogic.GetMovieById(movieId);
+            Console.Clear();
+            Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory);
+            
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
@@ -20,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
                     MovieDetails.Start(movieId);
                 }),
             };
-            SelectionMenuUtil.Create(options, () => Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory));
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print(string title, string description, List<Genre> genres, AgeCategory rating)
