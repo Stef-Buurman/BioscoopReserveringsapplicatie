@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
             foreach (ExperiencesModel experience in experiences)
             {
                 MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
-                string experienceInfo = $"{experience.Name,-15} {string.Join(",", movie.Genres),-15} {movie.AgeCategory.GetDisplayName(),-15} {experience.Intensity,-15} {(experience.Archived ? "Ja" : "Nee")}";
+                string experienceInfo = $"{experience.Name,-15} {string.Join(",", movie.Genres),-21} {movie.AgeCategory.GetDisplayName(),-19} {experience.Intensity,-12} {(experience.Archived ? "Ja" : "Nee")}";
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
@@ -87,11 +87,73 @@ namespace BioscoopReserveringsapplicatie
             Start();
         }
 
+        // private static void Print()
+        // {
+        //     Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:\n");
+        //     Console.WriteLine("Experience Naam   Genres                 Leeftijdscategorie  Intensiteit  Gearchiveerd");
+        //     Console.WriteLine("----------------  ---------------------  ------------------  -----------  ------------");
+        // }
         private static void Print()
         {
+            List<string> columnHeaders = new List<string>
+            {
+                "Experience Naam",
+                "Genres",
+                "Leeftijdscategorie",
+                "Intensiteit",
+                "Gearchiveerd"
+            };
+
+            List<ExperiencesModel> allExperiences = ExperiencesLogic.GetExperiences();
+            int[] columnWidths = CalculateColumnWidths(columnHeaders, allExperiences);
+
             Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:\n");
-            Console.WriteLine("Experience Naam  Genres                Leeftijdscategorie  Intensiteit  Gearchiveerd");
-            Console.WriteLine("---------------  --------------------  ------------------  -----------  ------------");
+
+            for (int i = 0; i < columnHeaders.Count; i++)
+            {
+                Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 2));
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i < columnHeaders.Count; i++)
+            {
+                Console.Write(new string('-', columnWidths[i]));
+                if (i < columnHeaders.Count - 1) Console.Write("  ");
+            }
+            Console.WriteLine();
+        }
+
+        private static int[] CalculateColumnWidths(List<string> columnHeaders, List<ExperiencesModel> experiences)
+        {
+            int[] columnWidths = new int[columnHeaders.Count];
+
+            foreach (string header in columnHeaders)
+            {
+                int index = columnHeaders.IndexOf(header);
+                columnWidths[index] = header.Length;
+            }
+
+            foreach (ExperiencesModel experience in experiences)
+            {
+                MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
+
+                string[] experienceInfo = {
+                    experience.Name,
+                    string.Join(",", movie.Genres),
+                    movie.AgeCategory.ToString(),
+                    movie.AgeCategory.GetDisplayName(),
+                    experience.Archived ? "Ja" : "Nee"
+                };
+
+                for (int i = 0; i < experienceInfo.Length; i++)
+                {
+                    if (experienceInfo[i].Length > columnWidths[i])
+                    {
+                        columnWidths[i] = experienceInfo[i].Length;
+                    }
+                }
+            }
+            return columnWidths;
         }
     }
 }
