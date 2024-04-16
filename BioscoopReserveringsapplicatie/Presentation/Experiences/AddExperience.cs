@@ -5,7 +5,6 @@ namespace BioscoopReserveringsapplicatie
     {
         private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
         private static MoviesLogic MoviesLogic = new MoviesLogic();
-        private static ExperiencesModel _experience;
         private static string _newName = "";
         private static int _selectedMovieId = 0;
         private static Intensity _Intensity = Intensity.Undefined;
@@ -98,13 +97,13 @@ namespace BioscoopReserveringsapplicatie
             List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
             WriteTitle();
             ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
-            _Intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack, PrintEditedList).Create();
+            _Intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack, () => Start(_returnToIntensity)).Create();
         }
 
         private static void AskForExperienceTimeLength()
         {
             List<int> intList = Enumerable.Range(1, 100).ToList();
-            SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1, () => Start(_returnToMovie), PrintEditedList, false, "Wat is de [tijdsduur]? (in minuten): ");
+            SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ");
             _timeInInt = selection.Create();
             while (!experiencesLogic.ValidateExperienceTimeLength(_timeInInt))
             {
@@ -127,7 +126,7 @@ namespace BioscoopReserveringsapplicatie
             }
             WriteTitle();
             ColorConsole.WriteColorLine("Welke [film] wilt u toevoegen?", Globals.ColorInputcClarification);
-            _selectedMovieId = new SelectionMenuUtil2<int>(movieOptions, 15, WhatToDoWhenGoBack, PrintEditedList).Create();
+            _selectedMovieId = new SelectionMenuUtil2<int>(movieOptions, 15, () => Start(_returnToName), () => Start(_returnToMovie)).Create();
             Console.Clear();
         }
 
