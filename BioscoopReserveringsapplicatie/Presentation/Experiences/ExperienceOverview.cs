@@ -14,7 +14,8 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle experiences", () => ShowAllExperiences()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-                SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Kies een van de volgende experience overzichten: \n", Globals.TitleColor));
+            ColorConsole.WriteColorLine("Kies een van de volgende experience overzichten: \n", Globals.TitleColor);
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void ShowExperienceDetails(int experienceId)
@@ -27,14 +28,23 @@ namespace BioscoopReserveringsapplicatie
 
         private static int ShowExperiences(List<ExperiencesModel> experiences)
         {
+            Console.Clear();
             List<Option<int>> options = new List<Option<int>>();
 
             foreach (ExperiencesModel experience in experiences)
             {
                 options.Add(new Option<int>(experience.Id, experience.Name));
             }
-
-            int experienceId = SelectionMenuUtil.Create(options, 21, Print, () => { Console.Clear(); Start(); });
+            ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
+            int experienceId = new SelectionMenuUtil2<int>(options,
+                () =>
+                {
+                    Start();
+                }, 
+                () => 
+                {
+                    ShowExperiences(experiences);
+                }).Create();
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;
@@ -44,7 +54,7 @@ namespace BioscoopReserveringsapplicatie
         {
             List<ExperiencesModel> archivedExperiences = ExperiencesLogic.GetAllArchivedExperiences();
 
-            if(archivedExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen gearchiveerde experiences gevonden.");
+            if (archivedExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen gearchiveerde experiences gevonden.");
             else ShowExperiences(archivedExperiences);
         }
 
@@ -53,7 +63,7 @@ namespace BioscoopReserveringsapplicatie
             List<ExperiencesModel> activeExperiences = ExperiencesLogic.GetAllActiveExperiences();
 
             if (activeExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen actieve experiences gevonden.");
-            else  ShowExperiences(activeExperiences);
+            else ShowExperiences(activeExperiences);
         }
 
         private static void ShowAllExperiences()
@@ -72,11 +82,6 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Terug naar experience overzicht...");
             Thread.Sleep(1500);
             Start();
-        }
-
-        private static void Print()
-        {
-            Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:");
         }
     }
 }

@@ -129,7 +129,9 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            SelectionMenuUtil.Create(options, print);
+            ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", Globals.ErrorColor);
+            new SelectionMenuUtil2<string>(options).Create();
             return WantToLeave;
         }
 
@@ -143,6 +145,7 @@ namespace BioscoopReserveringsapplicatie
                                 Thread.Sleep(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
+                                Console.Clear();
                             }
                         ),
                         new Option<string>("Nee", () => {
@@ -153,7 +156,9 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            SelectionMenuUtil.Create(options, print, false);
+            ColorConsole.WriteColorLine("\n----------------------------------------------------------------", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", ConsoleColor.Red);
+            new SelectionMenuUtil2<string>(options, false).Create();
             return WantToLeave;
         }
         private static void print()

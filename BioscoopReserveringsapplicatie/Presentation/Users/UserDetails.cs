@@ -4,19 +4,14 @@ namespace BioscoopReserveringsapplicatie
     {
         public static void Start()
         {
+            Console.Clear();
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Profielgegevens bewerken",() => UserDetailsEdit.Start()),
                 new Option<string>("Terug", () => UserMenu.Start())
             };
-            SelectionMenuUtil.Create(options, () => UserInfo());
-        }
-
-        private static void UserInfo()
-        {
             if (UserLogic.CurrentUser != null)
             {
-                Console.Clear();
                 ColorConsole.WriteColorLine("Profielgegevens", ConsoleColor.Cyan);
                 ColorConsole.WriteColorLine($"[Naam: ]{UserLogic.CurrentUser.FullName}", ConsoleColor.Cyan);
                 ColorConsole.WriteColorLine($"[Email: ]{UserLogic.CurrentUser.EmailAddress}\n", ConsoleColor.Cyan);
@@ -25,6 +20,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Kijkwijzer: ]{UserLogic.CurrentUser.AgeCategory.GetDisplayName()}", ConsoleColor.Green);
                 ColorConsole.WriteColorLine($"[Intensiteit: ]{UserLogic.CurrentUser.Intensity}\n", ConsoleColor.Green);
             }
+            new SelectionMenuUtil2<string>(options).Create();
         }
     }
 }

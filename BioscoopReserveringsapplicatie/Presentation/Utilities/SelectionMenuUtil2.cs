@@ -11,8 +11,18 @@
         private int AmountOptionsAbove = 0;
         private bool HasOptionsAbove { get => AmountOptionsAbove > 0 && moreOptionsThanVisibility; }
         private bool HasOptionsBelow { get => AllOptions.Count - MaxVisibility != AmountOptionsAbove && moreOptionsThanVisibility; }
-        private int HalfOfMaxVisibility = 0;
-        private int MaxVisibility = 0;
+        private int HalfOfMaxVisibility { get => Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero)); }
+        private int _maxVisibility = 0;
+        private int MaxVisibility
+        {
+            get => _maxVisibility; 
+            set
+            {
+                if (value < 0) _maxVisibility = 9;
+                else if (value > 29) _maxVisibility = 9;
+                else _maxVisibility = (value % 2 == 0) ? (value + 1) : value;
+            }
+        }
 
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
@@ -28,7 +38,7 @@
         private bool TextBeforeInputShownVisible = false;
 
         private bool VisibleSelectedArrows;
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -36,10 +46,22 @@
             moreOptionsThanVisibility = AllOptions.Count > maxVisibility;
             Index = 0;
             VisibleIndex = 0;
+            if ((escapeAction != null && escapeActionWhenNotEscaping == null)
+                || (escapeAction == null && escapeActionWhenNotEscaping != null))
+            {
+                CanBeEscaped = false;
+                EscapeAction = () => { };
+                EscapeActionWhenNotEscaping = () => { };
+            }
+            else
+            {
+                CanBeEscaped = canBeEscaped;
+                EscapeAction = escapeAction;
+                EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
+            }
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
             EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
-            HalfOfMaxVisibility = Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero));
             VisibleSelectedArrows = visibleSelectedArrows;
             if (textBeforeInputShown != default)
             {
@@ -48,27 +70,8 @@
             }
         }
 
-        public SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
-        {
-            // When you give a list of T, it will be converted to a list of Options.
-            List<Option<T>> optionList = ConvertToOption(options);
-            MaxVisibility = maxVisibility;
-            AllOptions = optionList;
-            OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility);
-            moreOptionsThanVisibility = AllOptions.Count > maxVisibility;
-            Index = 0;
-            VisibleIndex = 0;
-            CanBeEscaped = canBeEscaped;
-            EscapeAction = escapeAction;
-            EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
-            HalfOfMaxVisibility = Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero));
-            VisibleSelectedArrows = visibleSelectedArrows;
-            if (textBeforeInputShown != default)
-            {
-                TextBeforeInputShown = textBeforeInputShown;
-                TextBeforeInputShownVisible = true;
-            }
-        }
+        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) {}
 
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
@@ -76,11 +79,20 @@
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility)
+            : this(options, maxVisibility, false) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, string textBeforeInputShown = default)
+            : this(options, maxVisibility, false, null, null, true, textBeforeInputShown) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, bool visibleSelectedArrows, string textBeforeInputShown)
+            : this(options, maxVisibility, false, null, null, visibleSelectedArrows, textBeforeInputShown) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false)
             : this(options, 9, canBeEscaped) { }
@@ -88,10 +100,10 @@
         public SelectionMenuUtil2(List<Option<T>> options, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, false, null, null, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
         public SelectionMenuUtil2(List<T> options, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
@@ -99,16 +111,20 @@
 
         public SelectionMenuUtil2(List<T> options)
             : this(options, 9, false) { }
+        public SelectionMenuUtil2(List<T> options, int maxVisibility)
+            : this(options, maxVisibility, false) { }
 
         public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false)
             : this(options, 9, canBeEscaped) { }
 
-        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
 
         public T Create()
         {
+            Index = 0;
+            VisibleIndex = 0;
             Top = Console.GetCursorPosition().Top;
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
@@ -175,7 +191,7 @@
                 {
                     strintToPrintForArrowUp = "   ";
                 }
-                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowUp += " ";
+                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
                 while (strintToPrintForArrowUp.Length < MaxSelectionMenu + 3) strintToPrintForArrowUp += " ";
                 Console.WriteLine(strintToPrintForArrowUp);
@@ -192,7 +208,7 @@
                 Console.WriteLine(strintToPrintForArrowDown);
             }
             foreach (Option<T> option in Options)
-            {
+            {     
                 if (Options.IndexOf(option) == (MaxVisibility / 2) && TextBeforeInputShownVisible)
                 {
                     ColorConsole.WriteColor(TextBeforeInputShown, Globals.ColorInputcClarification);
@@ -206,7 +222,6 @@
                     if (VisibleSelectedArrows) strintToPrint += $">> {option.Name} <<";
                     else strintToPrint += $"{option.Name}";
                     while (strintToPrint.Length < MaxSelectionMenu + 3) strintToPrint += " ";
-
                     ColorConsole.WriteColorLine($"{strintToPrint}", ConsoleColor.Blue);
                 }
                 else
@@ -227,7 +242,7 @@
                 {
                     strintToPrintForArrowDown = "   ";
                 }
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
+                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);

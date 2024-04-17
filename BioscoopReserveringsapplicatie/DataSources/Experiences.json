@@ -1,11 +1,11 @@
 [
-  {
-    "id": 1,
-    "name": "Experience 1",
-    "filmId": 1,
-    "intensity": "Low",
-    "timeLength": 20,
-    "archived": false
+   {
+     "id": 1,
+     "name": "Experience 1",
+     "filmId": 1,
+     "intensity": "Low",
+     "timeLength": 20,
+     "archived": false
   },
   {
     "id": 2,
