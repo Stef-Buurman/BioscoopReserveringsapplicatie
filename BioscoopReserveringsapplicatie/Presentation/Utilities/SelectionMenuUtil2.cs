@@ -13,8 +13,9 @@
         private bool HasOptionsBelow { get => AllOptions.Count - MaxVisibility != AmountOptionsAbove && moreOptionsThanVisibility; }
         private int HalfOfMaxVisibility { get => Convert.ToInt32(Math.Round((double)MaxVisibility / 2, MidpointRounding.AwayFromZero)); }
         private int _maxVisibility = 0;
-        private int MaxVisibility { 
-            get => _maxVisibility; 
+        private int MaxVisibility
+        {
+            get => _maxVisibility;
             set
             {
                 if (value < 0) _maxVisibility = 9;
@@ -68,14 +69,8 @@
                 TextBeforeInputShownVisible = true;
             }
         }
-            if (textBeforeInputShown != default)
-            {
-                TextBeforeInputShown = textBeforeInputShown;
-                TextBeforeInputShownVisible = true;
-        }
-        }
 
-        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown)
         {
             // When you give a list of T, it will be converted to a list of Options.
