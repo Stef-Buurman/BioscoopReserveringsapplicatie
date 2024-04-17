@@ -3,7 +3,6 @@ namespace BioscoopReserveringsapplicatie
     static class ExperienceOverview
     {
         private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
-        private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public static void Start()
         {
@@ -115,12 +114,6 @@ namespace BioscoopReserveringsapplicatie
             Start();
         }
 
-        // private static void Print()
-        // {
-        //     Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:\n");
-        //     Console.WriteLine("Experience Naam   Genres                 Leeftijdscategorie  Intensiteit  Gearchiveerd");
-        //     Console.WriteLine("----------------  ---------------------  ------------------  -----------  ------------");
-        // }
         private static void Print()
         {
             // Defineer de kolom koppen voor de tabel
