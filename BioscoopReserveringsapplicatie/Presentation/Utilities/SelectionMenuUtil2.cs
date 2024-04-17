@@ -71,26 +71,7 @@
         }
 
         private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
-            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown)
-        {
-            // When you give a list of T, it will be converted to a list of Options.
-            //List<Option<T>> optionList = ConvertToOption(options);
-            //MaxVisibility = maxVisibility;
-            //AllOptions = optionList;
-            //OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility);
-            //moreOptionsThanVisibility = AllOptions.Count > maxVisibility;
-            //Index = 0;
-            //VisibleIndex = 0;
-            //CanBeEscaped = canBeEscaped;
-            //EscapeAction = escapeAction;
-            //EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
-            //VisibleSelectedArrows = visibleSelectedArrows;
-            //if (textBeforeInputShown != default)
-            //{
-            //    TextBeforeInputShown = textBeforeInputShown;
-            //    TextBeforeInputShownVisible = true;
-            //}
-        }
+            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) {}
 
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
