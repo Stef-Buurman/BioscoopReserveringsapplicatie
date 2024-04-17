@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
             new SelectionMenuUtil2<string>(options).Create();
         }
 
-        public static List<Genre> SelectGenres()
+        public static void SelectGenres()
         {
             List<Genre> Genres = Globals.GetAllEnumIncludeUndefined<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
@@ -100,10 +100,9 @@ namespace BioscoopReserveringsapplicatie
                 }
                 firstTime = false;
             }
-            return _selectedGenres;
         }
 
-        public static AgeCategory SelectAgeCategory()
+        public static void SelectAgeCategory()
         {
             PrintEditedList();
             List<AgeCategory> AgeCatagories = Globals.GetAllEnumIncludeUndefined<AgeCategory>();
@@ -134,10 +133,9 @@ namespace BioscoopReserveringsapplicatie
                 _ageCategory = selectionMenu.Create();
             }
             if (_ageCategory == AgeCategory.Undefined) _AgeCategoryNotFilledIn = true;
-            return _ageCategory;
         }
 
-        public static Intensity SelectIntensity()
+        public static void SelectIntensity()
         {
             PrintEditedList();
             List<Intensity> Intensities = Globals.GetAllEnumIncludeUndefined<Intensity>();
@@ -167,10 +165,9 @@ namespace BioscoopReserveringsapplicatie
                 _intensity = SelectionMenu.Create();
             }
             if (_intensity == Intensity.Undefined) _IntensityNotFilledIn = true;
-            return _intensity;
         }
 
-        public static Language SelectLanguage()
+        public static void SelectLanguage()
         {
             PrintEditedList();
             List<Language> Intensities = Globals.GetAllEnumIncludeUndefined<Language>();
@@ -201,7 +198,6 @@ namespace BioscoopReserveringsapplicatie
                 _language = selectionMenu.Create();
             }
             if (_language == Language.Undefined) _LanguageNotFilledIn = true;
-            return _language;
         }
 
         private static void PrintEditedList()
