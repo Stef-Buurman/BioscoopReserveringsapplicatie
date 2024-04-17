@@ -203,7 +203,7 @@
                 {
                     strintToPrintForArrowUp = "   ";
                 }
-                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowUp += " ";
+                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
                 while (strintToPrintForArrowUp.Length < MaxSelectionMenu + 3) strintToPrintForArrowUp += " ";
                 Console.WriteLine(strintToPrintForArrowUp);
@@ -234,7 +234,6 @@
                     if (VisibleSelectedArrows) strintToPrint += $">> {option.Name} <<";
                     else strintToPrint += $"{option.Name}";
                     while (strintToPrint.Length < MaxSelectionMenu + 3) strintToPrint += " ";
-
                     ColorConsole.WriteColorLine($"{strintToPrint}", ConsoleColor.Blue);
                 }
                 else
@@ -255,7 +254,7 @@
                 {
                     strintToPrintForArrowDown = "   ";
                 }
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
+                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);
