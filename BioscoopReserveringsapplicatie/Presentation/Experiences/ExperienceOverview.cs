@@ -114,14 +114,9 @@ namespace BioscoopReserveringsapplicatie
             Start();
         }
 
-        // private static void Print()
-        // {
-        //     Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:\n");
-        //     Console.WriteLine("Experience Naam   Genres                 Leeftijdscategorie  Intensiteit  Gearchiveerd");
-        //     Console.WriteLine("----------------  ---------------------  ------------------  -----------  ------------");
-        // }
         private static void Print()
         {
+            // Defineer de kolom koppen voor de tabel
             List<string> columnHeaders = new List<string>
             {
                 "Experience Naam  ",

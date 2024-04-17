@@ -258,7 +258,6 @@
                 {
                     Console.CursorVisible = true;
                     AllOptions[Index].SelectFunction();
-                    AllOptions[Index].SelectFunction();
                     return AllOptions[Index].Value;
                 }
 
