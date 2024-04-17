@@ -161,10 +161,20 @@ namespace BioscoopReserveringsapplicatie
             PrintEditingMovie();
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
 
-            List<AgeCategory> AgeGenres = Globals.GetAllEnum<AgeCategory>();
-            List<string> EnumDescription = AgeGenres.Select(o => o.GetDisplayName()).ToList();
-            string selectedDescription = new SelectionMenuUtil2<string>(EnumDescription, () => { newGenres = new List<Genre>(); Start(movieId, _returnToGenres); }, () => Start(movieId, _returnToRating)).Create();
-            newRating = AgeGenres.First(o => o.GetDisplayName() == selectedDescription);
+            List<AgeCategory> AgeCatagories = Globals.GetAllEnum<AgeCategory>();
+            List<Option<AgeCategory>> options = new List<Option<AgeCategory>>();
+            foreach (AgeCategory option in AgeCatagories)
+            {
+                options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
+            }
+            newRating = new SelectionMenuUtil2<AgeCategory>(options, 
+                () => 
+                { 
+                    newGenres = new List<Genre>(); 
+                    Start(movieId, _returnToGenres); 
+                }, 
+                () => Start(movieId, _returnToRating), 
+                new Option<AgeCategory>(newRating)).Create();
         }
 
         private static void PrintEditingMovie()
