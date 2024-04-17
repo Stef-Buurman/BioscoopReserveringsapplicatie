@@ -8,8 +8,6 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             Console.Clear();
-            Print();
-
             movie = MoviesLogic.GetMovieById(movieId);
             List<Option<string>> options;
 
@@ -30,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
                 };
             }
-
+            Print();
             new SelectionMenuUtil2<string>(options).Create();
         }
 
