@@ -70,7 +70,7 @@ namespace BioscoopReserveringsapplicatie
         private static void AskForExperienceName()
         {
             PrintEditedList();
-            _newName = ReadLineUtil.EnterValue(
+            _newName = ReadLineUtil.EditValue(_newName,
                 () =>
                 {
                     WriteTitle();
@@ -79,7 +79,7 @@ namespace BioscoopReserveringsapplicatie
                 WhatToDoWhenGoBack);
             while (!experiencesLogic.ValidateExperienceName(_newName))
             {
-                _newName = ReadLineUtil.EnterValue(
+                _newName = ReadLineUtil.EditValue(_newName,
                 () =>
                 {
                     WriteTitle();
