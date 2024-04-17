@@ -48,9 +48,8 @@ namespace BioscoopReserveringsapplicatie
 
         public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, bool mask = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
         {
-            string input = "";
-            int originalPosX = Console.CursorLeft;
             Console.Clear();
+
             Action actionBeforeStart;
             if (isEscapable)
             {
@@ -66,7 +65,9 @@ namespace BioscoopReserveringsapplicatie
             }
             actionBeforeStart();
 
-            originalPosX = Console.CursorLeft;
+            int originalPosX = Console.CursorLeft;
+            string input = "";
+            int cursorPosition = 0;
 
             while (true)
             {
@@ -82,40 +83,47 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else if (key.Key == ConsoleKey.Backspace)
                 {
-                    if (input.Length > 0 && Console.CursorLeft > originalPosX)
+                    if (cursorPosition > 0)
                     {
-                        input = input.Substring(0, input.Length - 1);
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                        Console.Write(" ");
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        input = input.Remove(cursorPosition - 1, 1);
+                        cursorPosition--;
+                        Console.SetCursorPosition(originalPosX, Console.CursorTop);
+                        Console.Write(input + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                        Console.SetCursorPosition(originalPosX + cursorPosition, Console.CursorTop);
                     }
                 }
                 else if (key.Key == ConsoleKey.LeftArrow)
                 {
-                    if (Console.CursorLeft > originalPosX)
+                    if (cursorPosition > 0)
                     {
+                        cursorPosition--;
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     }
                 }
                 else if (key.Key == ConsoleKey.RightArrow)
                 {
-                    if (Console.CursorLeft < input.Length + originalPosX)
+                    if (cursorPosition < input.Length)
                     {
+                        cursorPosition++;
                         Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
                     }
-
                 }
                 else if (!char.IsControl(key.KeyChar) && mask == false)
                 {
-                    input += key.KeyChar;
-                    Console.Write(key.KeyChar);
+                    input = input.Insert(cursorPosition, key.KeyChar.ToString());
+                    cursorPosition++;
+                    Console.Write(key.KeyChar + input.Substring(cursorPosition));
+                    Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
                 }
                 else if (!char.IsControl(key.KeyChar) && mask == true)
                 {
-                    input += key.KeyChar;
-                    Console.Write("*");
+                    input = input.Insert(cursorPosition, key.KeyChar.ToString());
+                    cursorPosition++;
+                    Console.Write("*" + input.Substring(cursorPosition));
+                    Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
                 }
             }
+
             return input;
         }
 
