@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
         public void Correct_Promotion_Title_Validation(string title)
         {
             PromotionLogic promotionLogic = Initialize();
-            Assert.IsTrue(promotionLogic.ValidatePromotionTitle(title));
+            Assert.IsTrue(promotionLogic.ValidateTitle(title));
         }
 
         [DataRow("")]
@@ -38,9 +38,9 @@ namespace BioscoopReserveringsapplicatie
         {
             PromotionLogic promotionLogic = Initialize();
             PromotionModel promotion = new PromotionModel(1, title, "Description", false);
-            Assert.IsFalse(promotionLogic.ValidatePromotion(promotion));
+            Assert.IsFalse(promotionLogic.Validate(promotion));
             PromotionModel promotion2 = new PromotionModel(2, title, "Description", false);
-            Assert.IsFalse(promotionLogic.ValidatePromotion(promotion2));
+            Assert.IsFalse(promotionLogic.Validate(promotion2));
         }
 
         [DataRow("")]
@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
         public void Incorrect_Promotion_Title_Validation(string title)
         {
             PromotionLogic promotionLogic = Initialize();
-            Assert.IsFalse(promotionLogic.ValidatePromotionTitle(title));
+            Assert.IsFalse(promotionLogic.ValidateTitle(title));
         }
 
         // Description ------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ namespace BioscoopReserveringsapplicatie
         public void Correct_Promotion_Description_Validation(string description)
         {
             PromotionLogic promotionLogic = Initialize();
-            Assert.IsTrue(promotionLogic.ValidatePromotionDescription(description));
+            Assert.IsTrue(promotionLogic.ValidateDescription(description));
         }
 
         [DataRow("")]
@@ -70,9 +70,9 @@ namespace BioscoopReserveringsapplicatie
         {
             PromotionLogic promotionLogic = Initialize();
             PromotionModel promotion = new PromotionModel(1, "Title", description, false);
-            Assert.IsFalse(promotionLogic.ValidatePromotion(promotion));
+            Assert.IsFalse(promotionLogic.Validate(promotion));
             PromotionModel promotion2 = new PromotionModel(2, "Title", description, false);
-            Assert.IsFalse(promotionLogic.ValidatePromotion(promotion2));
+            Assert.IsFalse(promotionLogic.Validate(promotion2));
         }
 
         [DataRow("")]
@@ -81,7 +81,7 @@ namespace BioscoopReserveringsapplicatie
         public void Incorrect_Promotion_Description_Validation(string description)
         {
             PromotionLogic promotionLogic = Initialize();
-            Assert.IsFalse(promotionLogic.ValidatePromotionDescription(description));
+            Assert.IsFalse(promotionLogic.ValidateDescription(description));
         }
 
         // Status ------------------------------------------------------------------------------------------------------------------

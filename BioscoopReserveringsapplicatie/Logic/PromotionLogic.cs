@@ -31,11 +31,11 @@ namespace BioscoopReserveringsapplicatie
         {
             GetAll();
 
-            if (ValidatePromotionTitle(title) && ValidatePromotionDescription(description))
+            if (ValidateTitle(title) && ValidateDescription(description))
             {
                 PromotionModel promotion = new PromotionModel(IdGenerator.GetNextId(_promotions), title, description, false);
 
-                if (this.ValidatePromotion(promotion))
+                if (this.Validate(promotion))
                 {
                     UpdateList(promotion);
                     return true;
@@ -67,20 +67,20 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        public bool ValidatePromotion(PromotionModel promotion)
+        public bool Validate(PromotionModel promotion)
         {
             if (promotion == null) return false;
-            else if (!ValidatePromotionTitle(promotion.Title)) return false;
-            else if (!ValidatePromotionDescription(promotion.Description)) return false;
+            else if (!ValidateTitle(promotion.Title)) return false;
+            else if (!ValidateDescription(promotion.Description)) return false;
             return true;
         }
 
-        public bool ValidatePromotionTitle(string title)
+        public bool ValidateTitle(string title)
         {
             return !string.IsNullOrWhiteSpace(title);
         }
 
-        public bool ValidatePromotionDescription(string description)
+        public bool ValidateDescription(string description)
         {
             return !string.IsNullOrWhiteSpace(description);
         }
