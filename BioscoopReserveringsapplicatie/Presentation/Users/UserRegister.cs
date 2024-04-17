@@ -68,7 +68,7 @@ namespace BioscoopReserveringsapplicatie
                     ColorConsole.WriteColorLine("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
                 }
                 ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start
+            }, LandingPage.Start, true
             );
 
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
