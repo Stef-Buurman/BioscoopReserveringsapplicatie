@@ -9,15 +9,21 @@ namespace BioscoopReserveringsapplicatie
         //You could edit this to show different menus depending on the user's role
         public static void Start()
         {
+            if (UserLogic.CurrentUser != null)
+            {
+                UserLogic.Logout();
+            }
+
             Console.Clear();
+
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Inloggen", () => UserLogin.Start()),
                 new Option<string>("Registreren", () => UserRegister.Start()),
                 new Option<string>("Applicatie sluiten", () => Environment.Exit(0)),
             };
-            SelectionMenuUtil.Create(options, () => Print());
-
+            Print();
+            string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()
