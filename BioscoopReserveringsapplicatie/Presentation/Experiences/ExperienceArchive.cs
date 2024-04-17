@@ -11,6 +11,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Ja", () => {
                     ExperienceLogic.ArchiveExperience(experienceId);
+                    Console.Clear();
+                    ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gearchiveerd!", Globals.SuccessColor);
+                    Thread.Sleep(4000);
                     ExperienceDetails.Start(experienceId);
                 }),
                 new Option<string>("Nee", () => {
