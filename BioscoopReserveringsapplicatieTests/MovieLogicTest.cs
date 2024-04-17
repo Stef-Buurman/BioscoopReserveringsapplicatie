@@ -128,6 +128,67 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsFalse(moviesLogic.ValidateMovieAgeCategory(ageCategory));
         }
 
+        // Edit ------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Movie_Edit_Success()
+        {
+            MoviesLogic moviesLogic = Initialize();
+            List<Genre> genresToAdd = new List<Genre> { Genre.Horror, Genre.Crime };
+
+            moviesLogic.EditMovie(1, "NewTitle", "NewDescription", genresToAdd, AgeCategory.AGE_16);
+            Assert.AreEqual("NewTitle", moviesLogic.GetMovieById(1).Title);
+            Assert.AreEqual("NewDescription", moviesLogic.GetMovieById(1).Description);
+            Assert.AreEqual(genresToAdd, moviesLogic.GetMovieById(1).Genres);
+            Assert.AreEqual(AgeCategory.AGE_16, moviesLogic.GetMovieById(1).AgeCategory);
+        }
+
+        [TestMethod]
+        public void Incorrect_Movie_Edit_With_Invalid_Movie_Title()
+        {
+            MoviesLogic moviesLogic = Initialize();
+            moviesLogic.EditMovie(1, "", "NewDescription", new List<Genre> { Genre.Horror, Genre.Crime }, AgeCategory.AGE_16);
+            Assert.AreNotEqual("", moviesLogic.GetMovieById(1).Title);
+            Assert.AreNotEqual("NewDescription", moviesLogic.GetMovieById(1).Description);
+            Assert.AreNotEqual(new List<Genre> { Genre.Horror, Genre.Crime }, moviesLogic.GetMovieById(1).Genres);
+            Assert.AreNotEqual(AgeCategory.AGE_16, moviesLogic.GetMovieById(1).AgeCategory);
+        }
+
+        [TestMethod]
+        public void Incorrect_Movie_Edit_With_Invalid_Movie_Description()
+        {
+            MoviesLogic moviesLogic = Initialize();
+            moviesLogic.EditMovie(1, "NewTitle", "", new List<Genre> { Genre.Horror, Genre.Crime }, AgeCategory.AGE_16);
+            Assert.AreNotEqual("NewTitle", moviesLogic.GetMovieById(1).Title);
+            Assert.AreNotEqual("", moviesLogic.GetMovieById(1).Description);
+            Assert.AreNotEqual(new List<Genre> { Genre.Horror, Genre.Crime }, moviesLogic.GetMovieById(1).Genres);
+            Assert.AreNotEqual(AgeCategory.AGE_16, moviesLogic.GetMovieById(1).AgeCategory);
+        }
+
+        [TestMethod]
+        public void Incorrect_Movie_Edit_With_Invalid_Movie_Genres()
+        {
+            MoviesLogic moviesLogic = Initialize();
+            List<Genre> genresToAdd = new List<Genre> { Genre.Horror, Genre.Crime, (Genre)909 };
+
+            moviesLogic.EditMovie(1, "NewTitle", "NewDescription", genresToAdd, AgeCategory.AGE_16);
+            Assert.AreNotEqual("NewTitle", moviesLogic.GetMovieById(1).Title);
+            Assert.AreNotEqual("NewDescription", moviesLogic.GetMovieById(1).Description);
+            Assert.AreNotEqual(genresToAdd, moviesLogic.GetMovieById(1).Genres);
+            Assert.AreNotEqual(AgeCategory.AGE_16, moviesLogic.GetMovieById(1).AgeCategory);
+        }
+
+        [TestMethod]
+        public void Incorrect_Movie_Edit_With_Invalid_Movie_AgeCategory()
+        {
+            MoviesLogic moviesLogic = Initialize();
+            moviesLogic.EditMovie(1, "NewTitle", "NewDescription", new List<Genre> { Genre.Horror, Genre.Crime }, (AgeCategory)909);
+            Assert.AreNotEqual("NewTitle", moviesLogic.GetMovieById(1).Title);
+            Assert.AreNotEqual("NewDescription", moviesLogic.GetMovieById(1).Description);
+            Assert.AreNotEqual(new List<Genre> { Genre.Horror, Genre.Crime }, moviesLogic.GetMovieById(1).Genres);
+            Assert.AreNotEqual((AgeCategory)909, moviesLogic.GetMovieById(1).AgeCategory);
+        }
+
         // Archived ------------------------------------------------------------------------------------------------------------------
 
         [TestMethod]
