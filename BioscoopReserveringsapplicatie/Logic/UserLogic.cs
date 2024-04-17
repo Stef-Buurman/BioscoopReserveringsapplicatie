@@ -143,7 +143,7 @@
             return name != null && name.Trim() != "";
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
+        public bool addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
         {
             if (user != null)
             {
@@ -152,12 +152,15 @@
                 user.Intensity = intensity;
                 user.Language = language;
                 UpdateList(user);
+                return true;
             }
+            return false;
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
+        public bool addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
-            if (CurrentUser != null) addPreferencesToAccount(genres, ageCategory, intensity, language, CurrentUser);
+            if (CurrentUser != null) return addPreferencesToAccount(genres, ageCategory, intensity, language, CurrentUser);
+            return false;
         }
 
         public bool ValidateGenres(List<Genre> genres)
