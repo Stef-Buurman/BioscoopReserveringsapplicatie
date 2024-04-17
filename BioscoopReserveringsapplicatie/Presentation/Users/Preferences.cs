@@ -173,7 +173,6 @@ namespace BioscoopReserveringsapplicatie
         public static Language SelectLanguage()
         {
             PrintEditedList();
-            //List<Language> options = Globals.GetAllEnum<Language>();
             List<Language> Intensities = Globals.GetAllEnumIncludeUndefined<Language>();
             List<Option<Language>> options = new List<Option<Language>>();
             foreach (Language option in Intensities)
@@ -215,7 +214,7 @@ namespace BioscoopReserveringsapplicatie
                 || _LanguageNotFilledIn;
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("[Huidige Experience Details]", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Aangepaste voorkeuren]", Globals.ExperienceColor);
             }
             if (_selectedGenres.Count > 0)
             {

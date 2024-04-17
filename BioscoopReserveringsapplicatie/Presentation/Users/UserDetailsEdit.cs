@@ -124,7 +124,6 @@ namespace BioscoopReserveringsapplicatie
                 _newEmail = ReadLineUtil.EditValue(_newEmail,
                     () =>
                     {
-                        //ColorConsole.WriteColorLine($"Voer uw [naam] in: {_newName}", Globals.ColorInputcClarification);
                         PrintEditedList();
                         ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
                     },
