@@ -45,7 +45,7 @@ namespace BioscoopReserveringsapplicatie
 
                 if (returnTo == "" || returnTo == "time")
                 {
-                    experienceTime = SelectTime(experienceHour, experienceId);
+                    experienceTime = SelectMinute(experienceHour, experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
@@ -142,7 +142,7 @@ namespace BioscoopReserveringsapplicatie
             return experienceHour;
         }
 
-        private static string SelectTime(string experienceHour, int experienceId) 
+        private static string SelectMinute(string experienceHour, int experienceId) 
         {
             List<Option<string>> timeOptions = new List<Option<string>>();
 
