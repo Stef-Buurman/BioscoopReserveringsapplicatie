@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace BioscoopReserveringsapplicatie
 {
     public static class ScheduleExperince
@@ -13,37 +15,43 @@ namespace BioscoopReserveringsapplicatie
         private static string experienceHour = "";
         private static string experienceTime = "";
 
+        private static string _returnToLocation = "Location";
+        private static string _returnToRoom = "Room";
+        private static string _returnToDate = "Date";
+        private static string _returnToHour = "Hour";
+        private static string _returnToTime = "Time";
+
         public static void Start(int experienceId, string returnTo = "")
         {
             if(UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
             {
                 Console.Clear();
 
-                if(returnTo == "" || returnTo == "location")
+                if(returnTo == "" || returnTo == _returnToLocation)
                 {
                     locationId = SelectLocation(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
-                if(returnTo == "" || returnTo == "room")
+                if(returnTo == "" || returnTo == _returnToRoom)
                 {
                     roomId = SelectRoom(locationId, experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
-                if(returnTo == "" || returnTo == "date")
+                if(returnTo == "" || returnTo == _returnToDate)
                 {
                     experienceDate = SelectDate(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
-                if (returnTo == "" || returnTo == "hour")
+                if (returnTo == "" || returnTo == _returnToHour)
                 {
                     experienceHour = SelectHour(experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
-                if (returnTo == "" || returnTo == "time")
+                if (returnTo == "" || returnTo == _returnToTime)
                 {
                     experienceTime = SelectTime(experienceHour, experienceId);
                     if (returnTo != "") returnTo = "";
@@ -68,108 +76,165 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); ExperienceDetails.Start(experienceId);}),
                             };
-                            SelectionMenuUtil.Create(options, () => ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het inplannen. Probeer het opnieuw.\n", Globals.ErrorColor));
+
+                            Console.Clear();
+                            ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het inplannen. Probeer het opnieuw.\n", Globals.ErrorColor);
+                            new SelectionMenuUtil2<string>(options).Create();
                         }
                     }),
                     new Option<string>("Nee", () => ExperienceDetails.Start(experienceId))
                 };
-                SelectionMenuUtil.Create(options, () => PendingSchedule(experienceId, roomId, locationId, scheduledDateTime));
+
+                Console.Clear();
+                PendingSchedule(experienceId, roomId, locationId, scheduledDateTime);
+                new SelectionMenuUtil2<string>(options).Create();
             }
             else ColorConsole.WriteColorLine("User is geen admin!", ConsoleColor.DarkRed);
         }
 
-        private static void Header()
-        {
-            ColorConsole.WriteColorLine("[Experience inplannen]\n\n", Globals.TitleColor);
-        }
-
         private static int SelectLocation(int experienceId)
         {
+            Console.Clear();
+            Header(); 
+            CurrentSchedule(experienceId);
+            Console.WriteLine("Kies de locatie om deze experience op in te plannen.\n"); 
+
             List<Option<int>> locationOptions = new List<Option<int>>();
 
-                foreach (LocationModel location in locationLogic.GetAll())
-                {
-                    locationOptions.Add(new Option<int>(location.Id, location.Name));
-                }
+            foreach (LocationModel location in locationLogic.GetAll())
+            {
+                locationOptions.Add(new Option<int>(location.Id, location.Name));
+            }
 
-                int locationId = SelectionMenuUtil.Create(locationOptions, () => { Header(); Console.WriteLine("Kies de location om deze experience op in te plannen.\n"); }, () => ExperienceDetails.Start(experienceId));
-                return locationId;
+            int locationId = new SelectionMenuUtil2<int>(locationOptions,() => ExperienceDetails.Start(experienceId), () => Start(experienceId, _returnToLocation)).Create();
+            return locationId;
         }
 
         private static int SelectRoom(int locationId, int experienceId)
         {
+            Console.Clear();
+            Header();
+            CurrentSchedule(experienceId);
+            Console.WriteLine("Kies de zaal om deze experience op in te plannen.\n");
+
             List<Option<int>> roomOptions = new List<Option<int>>();
 
-                foreach (RoomModel room in roomLogic.GetByLocationId(locationId))
-                {
-                    roomOptions.Add(new Option<int>(room.Id, $"Zaal: {room.RoomNumber}"));
-                }
+            foreach (RoomModel room in roomLogic.GetByLocationId(locationId))
+            {
+                roomOptions.Add(new Option<int>(room.Id, $"Zaal: {room.RoomNumber}"));
+            }
 
-                int roomId = SelectionMenuUtil.Create(roomOptions, () => { Header(); Console.WriteLine("Kies de zaal om deze experience op in te plannen.\n"); }, () => Start(experienceId, "location"));
-                return roomId;
+            int roomId = new SelectionMenuUtil2<int>(roomOptions,() => Start(experienceId, _returnToLocation), () => Start(experienceId, _returnToRoom)).Create();
+            return roomId;
         }
 
         private static string SelectDate(int experienceId)
         {
+            Console.Clear();
+            Header();
+            CurrentSchedule(experienceId);
+            Console.WriteLine("Kies een datum om deze experience op in te plannen.\n");
+
             List<Option<string>> dateOptions = new List<Option<string>>();
 
-                for (int i = 1; i < 15; i++)
-                {
-                    dateOptions.Add(new Option<string>(DateTime.Today.AddDays(i).ToString("dd-MM-yyyy")));
-                }
+            for (int i = 1; i < 15; i++)
+            {
+                dateOptions.Add(new Option<string>(DateTime.Today.AddDays(i).ToString("dd-MM-yyyy")));
+            }
                 
-                string experienceDate = SelectionMenuUtil.Create(dateOptions, () => { Header(); Console.WriteLine("Kies een datum om deze experience op in te plannen.\n"); }, () => Start(experienceId, "room"));
-                return experienceDate;
+            string experienceDate = new SelectionMenuUtil2<string>(dateOptions,() => Start(experienceId, _returnToRoom), () => Start(experienceId, _returnToDate)).Create();
+            return experienceDate;
         }
 
         private static string SelectHour(int experienceId)
         {
+            Console.Clear();
+            Header();
+            CurrentSchedule(experienceId);
+            Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n");
+
             List<Option<string>> hourOptions = new List<Option<string>>();
 
             for (int i = 7; i <= 23; i++)
             {
                 if (i.ToString().Length == 1)
                 {
-                    hourOptions.Add(new Option<string>($"0{i}"));
+                    hourOptions.Add(new Option<string>($"0{i}:00"));
                 }
                 else
                 {
-                    hourOptions.Add(new Option<string>($"{i}"));
+                    hourOptions.Add(new Option<string>($"{i}:00"));
                 }
             }
 
-            string experienceHour = SelectionMenuUtil.Create(hourOptions, () => { Header(); Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n"); }, () => Start(experienceId, "date"));
-            return experienceHour;
+            string experienceHour = new SelectionMenuUtil2<string>(hourOptions, 1, () => Start(experienceId, _returnToDate), () => Start(experienceId, _returnToHour), false).Create();
+            string[] splitExperienceHour = experienceHour.Split(":");
+            return splitExperienceHour[0];
         }
 
         private static string SelectTime(string experienceHour, int experienceId) 
         {
+            Console.Clear();
+            Header();
+            CurrentSchedule(experienceId);
+            Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n");
+
+
             List<Option<string>> timeOptions = new List<Option<string>>();
 
             for (int i = 0; i <= 55; i = i + 5)
             {
                 if (i.ToString().Length == 1)
                 {
-                    timeOptions.Add(new Option<string>($"{experienceHour}:0{i}"));
+                    timeOptions.Add(new Option<string>($"0{i}"));
                 }
                 else
                 {
-                    timeOptions.Add(new Option<string>($"{experienceHour}:{i}"));
+                    timeOptions.Add(new Option<string>($"{i}"));
                 }
             }
 
-            string experienceTime = SelectionMenuUtil.Create(timeOptions, () => { Header(); Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n"); }, () => Start(experienceId, "hour"));
+            string experienceMinutes = new SelectionMenuUtil2<string>(timeOptions, 1, () => Start(experienceId, _returnToHour), () => Start(experienceId, _returnToTime), false, $"{experienceHour}:").Create();
+            experienceTime = $"{experienceHour}:{experienceMinutes}";
             return experienceTime;
         }
 
-        private static void PendingSchedule(int experienceId, int roomId, int locationId, string scheduledDateTime)
+         private static void Header()
         {
+            ColorConsole.WriteColorLine("[Experience inplannen]\n\n", Globals.TitleColor);
+        }
+        
+        private static void CurrentSchedule(int experienceId)
+        {
+            ColorConsole.WriteColorLine("Huidige inplanning experience", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
+
+            if(locationId != 0)
+            {
+                ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
+            }
+            if(roomId != 0)
+            {
+                ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
+            }
+            if(experienceDate != "")
+            {
+                ColorConsole.WriteColorLine($"[Datum: ]{experienceDate}\n", ConsoleColor.Green);
+            }
+        }
+
+        private static void PendingSchedule(int experienceId, int roomId, int locationId , string scheduledDateTime)
+        {
+            DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTime);
+            string formattedTime = dateTime.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength).ToString("HH:mm");
+            
             Console.Clear();
             ColorConsole.WriteColorLine("Gegevens ingeplande experience", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId)?.RoomNumber}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Datum en tijd: ]{scheduledDateTime}\n", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Datum: ]{experienceDate}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Tijd: ]{experienceTime} T/M {formattedTime}\n", ConsoleColor.Green);
             ColorConsole.WriteColorLine("Weet je zeker dat je de experience wilt inplannen ?", ConsoleColor.Red);
         }
     }
