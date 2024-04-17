@@ -2,7 +2,8 @@
 {
     public class SelectionMenuUtil2<T>
     {
-        private static int MaxSelectionMenu = 0;
+        private int MaxSelectionMenu = 0;
+
         private int Index = 0;
         private int VisibleIndex = 0;
 
@@ -239,7 +240,6 @@
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     Console.CursorVisible = true;
-                    AllOptions[Index].SelectFunction();
                     AllOptions[Index].SelectFunction();
                     return AllOptions[Index].Value;
                 }
