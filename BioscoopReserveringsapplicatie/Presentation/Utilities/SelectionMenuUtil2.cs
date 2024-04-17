@@ -122,6 +122,8 @@
 
         public T Create()
         {
+            Index = 0;
+            VisibleIndex = 0;
             Top = Console.GetCursorPosition().Top;
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
