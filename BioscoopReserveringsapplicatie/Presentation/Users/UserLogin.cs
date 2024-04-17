@@ -19,7 +19,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
                 ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {email}", Globals.ColorInputcClarification);
                 ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start);
+            }, LandingPage.Start, true);
 
             if (_userLogic.CheckLogin(email, password) != null)
             {

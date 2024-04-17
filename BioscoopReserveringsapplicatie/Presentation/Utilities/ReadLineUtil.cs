@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
             return input;
         }
 
-        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, bool mask = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
         {
             string input = "";
             int originalPosX = Console.CursorLeft;
@@ -88,18 +88,23 @@ namespace BioscoopReserveringsapplicatie
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     }
                 }
-                else if (!char.IsControl(key.KeyChar))
+                else if (!char.IsControl(key.KeyChar) && mask == false)
                 {
                     input += key.KeyChar;
                     Console.Write(key.KeyChar);
+                }
+                else if (!char.IsControl(key.KeyChar) && mask == true)
+                {
+                    input += key.KeyChar;
+                    Console.Write("*");
                 }
             }
             return input;
         }
 
-        public static string EnterValue(bool isEscapable, Action actionBeforeStart, Action escapeAction = null)
+        public static string EnterValue(bool isEscapable, Action actionBeforeStart, Action escapeAction = null, bool mask = false)
         {
-            return EnterValue(actionBeforeStart, escapeAction, isEscapable);
+            return EnterValue(actionBeforeStart, escapeAction, isEscapable, mask);
         }
 
         public static bool EscapeKeyPressed(Action actionBeforeStart, Action escapeAction, string input, string type)
