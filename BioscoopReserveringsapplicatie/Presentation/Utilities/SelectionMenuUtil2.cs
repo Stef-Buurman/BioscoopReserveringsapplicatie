@@ -278,6 +278,8 @@
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
+
+
             }
             while (keyinfo.Key != ConsoleKey.X);
             Console.CursorVisible = true;
