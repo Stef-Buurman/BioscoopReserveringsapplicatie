@@ -36,8 +36,6 @@ namespace BioscoopReserveringsapplicatie
             return availableT;
         }
 
-        public static List<T> GetAllEnumIncludeUndefined<T>()
-            => new List<T>(GetAllEnum<T>()) { default(T) };
-        
+        public static List<T> GetAllEnumIncludeUndefined<T>() => new List<T> { default(T) }.Concat(GetAllEnum<T>()).ToList();
     }
 }
