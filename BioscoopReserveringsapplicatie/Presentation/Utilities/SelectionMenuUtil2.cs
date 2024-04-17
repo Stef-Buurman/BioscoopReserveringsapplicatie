@@ -26,6 +26,7 @@
 
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
+        private Option<T> SelectedOption;
 
         private int Top = 0;
 
@@ -38,7 +39,8 @@
         private bool TextBeforeInputShownVisible = false;
 
         private bool VisibleSelectedArrows;
-        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, 
+            bool visibleSelectedArrows = true, string textBeforeInputShown = default, Option<T> selectedOption = default)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -59,6 +61,7 @@
                 EscapeAction = escapeAction;
                 EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             }
+            SelectedOption = selectedOption;
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
             EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
@@ -70,8 +73,9 @@
             }
         }
 
-        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
-            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) {}
+        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, 
+            string textBeforeInputShown = default, Option<T> selectedOption = default) 
+            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, selectedOption) {}
 
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
@@ -81,6 +85,12 @@
 
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
 
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
@@ -111,6 +121,9 @@
 
         public SelectionMenuUtil2(List<T> options)
             : this(options, 9, false) { }
+
+        public SelectionMenuUtil2(List<T> options, Option<T> selectedOption)
+            : this(options, 9, false, null, null, true, default, selectedOption) { }
         public SelectionMenuUtil2(List<T> options, int maxVisibility)
             : this(options, maxVisibility, false) { }
 
@@ -130,7 +143,35 @@
             if (CanBeEscaped && EscapeAction == null) return default;
             Console.CursorVisible = false;
 
-            WriteMenu(OptionsToShow, OptionsToShow[Index]);
+            if (SelectedOption != null)
+            {
+                Index = AllOptions.IndexOf(AllOptions.Find(opt => opt.Equals(SelectedOption)));
+                if (Index == -1) Index = 0;
+                else if (Index < HalfOfMaxVisibility)
+                {
+                    VisibleIndex = Index;
+                    WriteMenu(OptionsToShow, OptionsToShow[Index]);
+                }
+                else if (Index > AllOptions.Count - HalfOfMaxVisibility)
+                {
+                    AmountOptionsAbove = AllOptions.Count - MaxVisibility;
+                    VisibleIndex = (Index + 1) - AmountOptionsAbove;
+                    OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
+                    WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
+                }
+                else if (Index >= HalfOfMaxVisibility)
+                {
+                    AmountOptionsAbove = Index - HalfOfMaxVisibility + 1;
+                    VisibleIndex = HalfOfMaxVisibility - 1;
+                    OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
+                    WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
+                }
+            }
+            else
+            {
+                WriteMenu(OptionsToShow, OptionsToShow[Index]);
+            }
+
             ConsoleKeyInfo keyinfo;
             do
             {
