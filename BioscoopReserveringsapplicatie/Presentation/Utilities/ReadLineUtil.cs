@@ -87,9 +87,6 @@ namespace BioscoopReserveringsapplicatie
                     {
                         input = input.Remove(cursorPosition - 1, 1);
                         cursorPosition--;
-                        Console.SetCursorPosition(originalPosX, Console.CursorTop);
-                        Console.Write(input + new string(' ', Console.WindowWidth - input.Length - originalPosX));
-                        Console.SetCursorPosition(originalPosX + cursorPosition, Console.CursorTop);
                     }
                 }
                 else if (key.Key == ConsoleKey.LeftArrow)
@@ -122,6 +119,13 @@ namespace BioscoopReserveringsapplicatie
                     Console.Write("*" + input.Substring(cursorPosition));
                     Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
                 }
+
+                Console.SetCursorPosition(originalPosX, Console.CursorTop);
+                if (mask)
+                    Console.Write(new string('*', input.Length) + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                else
+                    Console.Write(input + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                Console.SetCursorPosition(originalPosX + cursorPosition, Console.CursorTop);
             }
 
             return input;
