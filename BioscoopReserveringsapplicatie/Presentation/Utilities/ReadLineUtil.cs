@@ -66,6 +66,8 @@ namespace BioscoopReserveringsapplicatie
             }
             actionBeforeStart();
 
+            originalPosX = Console.CursorLeft;
+
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -87,6 +89,21 @@ namespace BioscoopReserveringsapplicatie
                         Console.Write(" ");
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     }
+                }
+                else if (key.Key == ConsoleKey.LeftArrow)
+                {
+                    if (Console.CursorLeft > originalPosX)
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
+                }
+                else if (key.Key == ConsoleKey.RightArrow)
+                {
+                    if (Console.CursorLeft < input.Length + originalPosX)
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                    }
+
                 }
                 else if (!char.IsControl(key.KeyChar) && mask == false)
                 {
