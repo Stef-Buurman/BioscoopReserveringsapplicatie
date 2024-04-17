@@ -68,7 +68,8 @@ namespace BioscoopReserveringsapplicatie
                             new SelectionMenuUtil2<string>(options).Create();
                         }
                 }),
-                new Option<string>("Nee", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
+                new Option<string>("Nee, pas de film verder aan", () => {Start(movie.Id, _returnToRating);}),
+                new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); MovieDetails.Start(movie.Id);})
             };
             new SelectionMenuUtil2<string>(options).Create();
         }
