@@ -53,7 +53,7 @@ namespace BioscoopReserveringsapplicatie
 
                 if (returnTo == "" || returnTo == _returnToTime)
                 {
-                    experienceTime = SelectTime(experienceHour, experienceId);
+                    experienceTime = SelectMinute(experienceHour, experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
@@ -172,7 +172,7 @@ namespace BioscoopReserveringsapplicatie
             return splitExperienceHour[0];
         }
 
-        private static string SelectTime(string experienceHour, int experienceId) 
+        private static string SelectMinute(string experienceHour, int experienceId) 
         {
             Console.Clear();
             Header();
