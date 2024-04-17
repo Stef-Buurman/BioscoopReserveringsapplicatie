@@ -112,6 +112,12 @@
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility)
             : this(options, maxVisibility, false) { }
 
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, string textBeforeInputShown = default)
+            : this(options, maxVisibility, false, null, null, true, textBeforeInputShown) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, bool visibleSelectedArrows, string textBeforeInputShown)
+            : this(options, maxVisibility, false, null, null, visibleSelectedArrows, textBeforeInputShown) { }
+
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false)
             : this(options, 9, canBeEscaped) { }
 
