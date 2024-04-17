@@ -4,6 +4,7 @@ namespace BioscoopReserveringsapplicatie
     {
         public static void Start()
         {
+            Console.Clear();
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Profielgegevens bewerken",() => UserDetailsEdit.Start()),
@@ -11,7 +12,6 @@ namespace BioscoopReserveringsapplicatie
             };
             if (UserLogic.CurrentUser != null)
             {
-                Console.Clear();
                 ColorConsole.WriteColorLine("Profielgegevens", ConsoleColor.Cyan);
                 ColorConsole.WriteColorLine($"[Naam: ]{UserLogic.CurrentUser.FullName}", ConsoleColor.Cyan);
                 ColorConsole.WriteColorLine($"[Email: ]{UserLogic.CurrentUser.EmailAddress}\n", ConsoleColor.Cyan);
