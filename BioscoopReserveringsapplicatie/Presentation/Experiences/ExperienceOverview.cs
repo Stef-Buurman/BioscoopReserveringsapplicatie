@@ -28,14 +28,23 @@ namespace BioscoopReserveringsapplicatie
 
         private static int ShowExperiences(List<ExperiencesModel> experiences)
         {
+            Console.Clear();
             List<Option<int>> options = new List<Option<int>>();
 
             foreach (ExperiencesModel experience in experiences)
             {
                 options.Add(new Option<int>(experience.Id, experience.Name));
             }
-            Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:");
-            int experienceId = new SelectionMenuUtil2<int>(options).Create();
+            ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
+            int experienceId = new SelectionMenuUtil2<int>(options,
+                () =>
+                {
+                    Start();
+                }, 
+                () => 
+                {
+                    ShowExperiences(experiences);
+                }).Create();
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;
