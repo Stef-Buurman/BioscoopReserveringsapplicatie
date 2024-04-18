@@ -141,7 +141,7 @@
         public bool HasScheduledExperience(int id)
         {
             List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTime > DateTime.Now && s.ScheduledDateTime < DateTime.Now.AddDays(7));
+            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTime > DateTime.Now && s.ScheduledDateTime.Date < DateTime.Today.AddDays(8));
         }
     }
 }
