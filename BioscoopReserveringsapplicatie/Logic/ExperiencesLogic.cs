@@ -66,8 +66,9 @@
                 bool genreMatch = currentUser.Genres.Count == 0 || movie.Genres.Intersect(currentUser.Genres).Any();
                 bool ageMatch = currentUser.AgeCategory == AgeCategory.Undefined || Convert.ToInt32(movie.AgeCategory) <= Convert.ToInt32(currentUser.AgeCategory);
                 bool intensityMatch = currentUser.Intensity == Intensity.Undefined || experience.Intensity == currentUser.Intensity;
+                bool hasScheduldedExperience = HasScheduledExperience(experience.Id);
 
-                if (genreMatch && ageMatch && intensityMatch)
+                if (genreMatch && ageMatch && intensityMatch && hasScheduldedExperience)
                 {
                     experiences.Add(experience);
                 }
@@ -135,6 +136,12 @@
         {
             _experiences = ExperiencesAccess.LoadAll();
             return _experiences.FindAll(e => !e.Archived);
+        }
+
+        public bool HasScheduledExperience(int id)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTime > DateTime.Now && s.ScheduledDateTime < DateTime.Now.AddDays(7));
         }
     }
 }
