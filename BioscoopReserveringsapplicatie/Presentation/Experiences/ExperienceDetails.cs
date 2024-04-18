@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
 
             var options = new List<Option<string>>
             {
-                new Option<string>("Koop tickets"),
+                new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
@@ -40,7 +40,7 @@ namespace BioscoopReserveringsapplicatie
         {
             experience = ExperienceLogic.GetById(experienceId);
 
-            List<Option<string>> options; 
+            List<Option<string>> options;
 
             movie = MoviesLogic.GetMovieById(experience.FilmId);
 
@@ -69,7 +69,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            if (experience != null) 
+            if (experience != null)
             {
                 ColorConsole.WriteColorLine("Experience details", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Naam experience: ]{experience.Name}", Globals.ExperienceColor);
@@ -81,7 +81,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", movie.Genres)}", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Film kijkwijzer: ]{movie.AgeCategory.GetDisplayName()}\n\n", Globals.MovieColor);
                 Console.WriteLine("Wat wil je doen?");
-            }   
+            }
         }
     }
 }
