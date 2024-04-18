@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    public static class ScheduleExperince
+    public static class ScheduleExperience
     {
         private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
         private static LocationLogic locationLogic = new LocationLogic();
