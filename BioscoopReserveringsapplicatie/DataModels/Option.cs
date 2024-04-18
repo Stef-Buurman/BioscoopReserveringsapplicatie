@@ -1,6 +1,6 @@
 ﻿namespace BioscoopReserveringsapplicatie
 {
-    public class Option<T>
+    public class Option<T> : IEquatable<Option<T>>
     {
         public T Value { get; }
         public string Name { get; }
@@ -30,6 +30,11 @@
         public void Select()
         {
             Selected?.Invoke();
+        }
+
+        public bool Equals(Option<T> other)
+        {
+            return Value.Equals(other.Value);
         }
     }
 }

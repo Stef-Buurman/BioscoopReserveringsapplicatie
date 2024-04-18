@@ -217,7 +217,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 _AgeCategoryNotFilledIn = false;
                 Start(_returnToAgeCategory);
-            });
+            }, new Option<AgeCategory>(_newAgeCategory));
             _newAgeCategory = selectionMenu.Create();
 
             while (!_userLogic.ValidateAgeCategory(_newAgeCategory))
@@ -254,7 +254,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 _IntensityNotFilledIn = false;
                 Start(_returnToIntensity);
-            });
+            }, new Option<Intensity>(_newIntensity));
             _newIntensity = SelectionMenu.Create();
             while (!_userLogic.ValidateIntensity(_newIntensity))
             {
@@ -289,7 +289,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 _LanguageNotFilledIn = false;
                 Start(_returnToLanguage);
-            });
+            }, new Option<Language>(_language));
             ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?) \n", Globals.ColorInputcClarification);
             _language = selectionMenu.Create();
 
