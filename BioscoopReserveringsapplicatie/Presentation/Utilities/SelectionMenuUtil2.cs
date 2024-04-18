@@ -3,7 +3,6 @@
     public class SelectionMenuUtil2<T>
     {
         private static int MaxSelectionMenu = 0;
-
         private int Index = 0;
         private int VisibleIndex = 0;
 
@@ -38,11 +37,11 @@
         private bool TextBeforeInputShownVisible = false;
 
         private bool HasCustomKeyAction = false;
-        private Action? CustomKeyAction;
-        private ConsoleKey? CustomKey;
+        private List<KeyAction> CustomKeyActions;
+        private List<ConsoleKey> KeysInUse;
 
         private bool VisibleSelectedArrows;
-        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool hasCustomKeyAction = false, ConsoleKey customKey = ConsoleKey.NoName, Action customKeyAction = null)
+        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool hasCustomKeyAction = false, List<KeyAction> customKeyActions = null)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -72,17 +71,17 @@
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
             }
-            if(hasCustomKeyAction && customKey != ConsoleKey.NoName && customKeyAction != null)
+
+            KeysInUse = new List<ConsoleKey>();
+            if (hasCustomKeyAction && customKeyActions != null && customKeyActions.Count > 0)
             {
-                HasCustomKeyAction = hasCustomKeyAction;
-                CustomKey = customKey;
-                CustomKeyAction = customKeyAction;
+                HasCustomKeyAction = true;
+                CustomKeyActions = customKeyActions;
             }
             else
             {
                 HasCustomKeyAction = false;
-                CustomKey = ConsoleKey.NoName;
-                CustomKeyAction = () => { };
+                CustomKeyActions = new List<KeyAction>();
             }
         }
 
@@ -95,7 +94,7 @@
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool hasCustomKeyAction = false, List<KeyAction> customKeyActions = null) 
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
         public SelectionMenuUtil2(List<Option<T>> options)
@@ -154,16 +153,19 @@
                 // When the user presses the down arrow, the selected option will move down
                 if (keyinfo.Key == ConsoleKey.DownArrow)
                 {
+                    KeysInUse.Add(ConsoleKey.DownArrow);
                     KeyDown();
                 }
                 // When the user presses the up arrow, this will be executed.
                 if (keyinfo.Key == ConsoleKey.UpArrow)
                 {
+                    KeysInUse.Add(ConsoleKey.UpArrow);
                     KeyUp();
                 }
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
+                    KeysInUse.Add(ConsoleKey.Enter);
                     Console.CursorVisible = true;
                     AllOptions[Index].Select();
                     return AllOptions[Index].Value;
@@ -171,6 +173,7 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
+                    KeysInUse.Add(ConsoleKey.Escape);
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
