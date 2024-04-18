@@ -61,7 +61,10 @@
                 EscapeAction = escapeAction;
                 EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             }
-            SelectedOption = selectedOption;
+            if (selectedOption != default && AllOptions.Contains(selectedOption))
+            {
+                SelectedOption = selectedOption;
+            }
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
             EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
@@ -90,6 +93,9 @@
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
+
+        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
 
         public SelectionMenuUtil2(List<Option<T>> options)
@@ -133,6 +139,8 @@
         public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
+        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, Option<T> selectedOption = default)
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, selectedOption) { }
 
         public T Create()
         {
