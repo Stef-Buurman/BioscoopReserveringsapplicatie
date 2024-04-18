@@ -27,6 +27,7 @@
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
         private Option<T> SelectedOption;
+        private List<Option<T>> SelectedOptions;
 
         private int Top = 0;
 
@@ -293,13 +294,11 @@
                 {
                     KeyDown();
                 }
-
                 // When the user presses the up arrow, this will be executed.
                 if (keyinfo.Key == ConsoleKey.UpArrow)
                 {
                     KeyUp();
                 }
-
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
