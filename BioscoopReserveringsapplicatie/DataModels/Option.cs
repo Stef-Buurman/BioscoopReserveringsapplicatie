@@ -5,8 +5,7 @@
         public T Value { get; }
         public string Name { get; }
         public Action Selected { get; }
-
-        public bool IsSelected { get; }
+        public bool IsSelected { get; private set; }
 
         public Option(T value, string name, Action selected) : this(value, name)
         {
@@ -27,7 +26,9 @@
             Value = name;
         }
 
-        public void Select()
+        public void InvertSelecttion() => IsSelected = !IsSelected;
+
+        public void SelectFunction()
         {
             Selected?.Invoke();
         }
