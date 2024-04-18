@@ -26,6 +26,7 @@
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
         private Option<T> SelectedOption;
+        private List<Option<T>> SelectedOptions;
 
         private int Top = 0;
 
@@ -237,7 +238,83 @@
                 {
                     Console.CursorVisible = true;
                     AllOptions[Index].SelectFunction();
+                    AllOptions[Index].SelectFunction();
                     return AllOptions[Index].Value;
+                }
+
+                if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
+                {
+                    //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
+                    ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
+                }
+            }
+            while (keyinfo.Key != ConsoleKey.X);
+            Console.CursorVisible = true;
+            return default;
+        }
+
+        public List<T> CreateMultiSelect()
+        {
+            Index = 0;
+            VisibleIndex = 0;
+            Top = Console.GetCursorPosition().Top;
+            if (AllOptions.Count == 0) return default;
+            if (CanBeEscaped && EscapeAction == null) return default;
+            if (!IsMultiSelect) return default;
+            Console.CursorVisible = false;
+
+            //if (HighLightedOptions != null)
+            //{
+            //    Index = AllOptions.IndexOf(AllOptions.Find(opt => opt.Equals(SelectedOption)));
+            //    if (Index == -1) Index = 0;
+            //    else if (Index < HalfOfMaxVisibility)
+            //    {
+            //        VisibleIndex = Index;
+            //        WriteMenu(OptionsToShow, OptionsToShow[Index]);
+            //    }
+            //    else if (Index > AllOptions.Count - HalfOfMaxVisibility)
+            //    {
+            //        AmountOptionsAbove = AllOptions.Count - MaxVisibility;
+            //        VisibleIndex = (Index + 1) - AmountOptionsAbove;
+            //        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
+            //        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
+            //    }
+            //    else if (Index >= HalfOfMaxVisibility)
+            //    {
+            //        AmountOptionsAbove = Index - HalfOfMaxVisibility + 1;
+            //        VisibleIndex = HalfOfMaxVisibility - 1;
+            //        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
+            //        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
+            //    }
+            //}
+            //else
+            //{
+                WriteMenu(OptionsToShow, OptionsToShow[Index]);
+            //}
+
+            ConsoleKeyInfo keyinfo;
+            do
+            {
+                keyinfo = Console.ReadKey(true);
+                // When the user presses the down arrow, the selected option will move down
+                if (keyinfo.Key == ConsoleKey.DownArrow)
+                {
+                    KeyDown();
+                }
+                // When the user presses the up arrow, this will be executed.
+                if (keyinfo.Key == ConsoleKey.UpArrow)
+                {
+                    KeyUp();
+                }
+                // When the user presses the enter key, the selected option will be executed
+                if (keyinfo.Key == ConsoleKey.Enter)
+                {
+                    Console.CursorVisible = true;
+                    return AllOptions.Where(x => x.IsSelected).Select(x => x.Value).ToList();
+                }
+                if (keyinfo.Key == ConsoleKey.Spacebar)
+                {
+                    AllOptions[Index].InvertSelecttion();
                 }
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
