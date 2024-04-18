@@ -40,7 +40,7 @@ namespace BioscoopReserveringsapplicatie
                 "Gearchiveerd"
             };
 
-            int[] columnWidths = CalculateColumnWidths(columnHeaders, experiences);
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, experiences);
 
             foreach (ExperiencesModel experience in experiences)
             {
@@ -57,7 +57,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     genres = genres.Substring(0, 25) + "...";
                 }
-                string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) +"} {1,-" + (columnWidths[1] + 1)+ "} {2,-" + (columnWidths[2] + 1) +"} {3,-" + (columnWidths[3] + 1) +"} {4,-" + columnWidths[4] + "}",
+                string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1)+"} {1,-" + (columnWidths[1] + 1)+ "} {2,-" + (columnWidths[2] + 1) +"} {3,-" + (columnWidths[3] + 1) +"} {4,-" + columnWidths[4] + "}",
                 experienceName,
                 genres,
                 movie.AgeCategory.GetDisplayName(),
@@ -66,6 +66,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
+            Print();
             int experienceId = new SelectionMenuUtil2<int>(options,
                 () =>
                 {
@@ -127,10 +128,9 @@ namespace BioscoopReserveringsapplicatie
             };
 
             List<ExperiencesModel> allExperiences = ExperiencesLogic.GetExperiences();
-            // Bereken de breedte voor elke kolom op basis van de headers en experiences
-            int[] columnWidths = CalculateColumnWidths(columnHeaders, allExperiences);
+            // Bereken de breedte voor elke kolom op basis van de koptekst en experiences
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences);
 
-            Console.WriteLine("Dit zijn alle experiences die momenteel beschikbaar zijn:\n");
             // Print de kop van de tabel
             Console.Write("".PadRight(2));
             for (int i = 0; i < columnHeaders.Count; i++)
@@ -147,47 +147,6 @@ namespace BioscoopReserveringsapplicatie
                 if (i < columnHeaders.Count - 1) Console.Write("  ");
             }
             Console.WriteLine();
-        }
-
-        private static int[] CalculateColumnWidths(List<string> columnHeaders, List<ExperiencesModel> experiences)
-        {
-            int[] columnWidths = new int[columnHeaders.Count];
-
-            // Loop door elke header om de breedte te initialiseren op basis van de lengte van de header
-            foreach (string header in columnHeaders)
-            {
-                int index = columnHeaders.IndexOf(header);
-                columnWidths[index] = header.Length;
-            }
-
-            // loop door elke experience om de breedte te updaten als de data langer is
-            foreach (ExperiencesModel experience in experiences)
-            {
-                MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
-
-                string[] experienceInfo = {
-                    experience.Name,
-                    string.Join(",", movie.Genres),
-                    movie.AgeCategory.ToString(),
-                    movie.AgeCategory.GetDisplayName(),
-                    experience.Archived ? "Ja" : "Nee"
-                };
-
-                // Update de kolombreedte als de data langer is dan de huidige breedte
-                for (int i = 0; i < experienceInfo.Length; i++)
-                {
-                    int infoLength = experienceInfo[i].Length;
-                    if (infoLength > 30)
-                    {
-                        columnWidths[i] = 30;
-                    }
-                    else if (infoLength > columnWidths[i])
-                    {
-                        columnWidths[i] = infoLength;
-                    }
-                }
-            }
-            return columnWidths;
         }
     }
 }
