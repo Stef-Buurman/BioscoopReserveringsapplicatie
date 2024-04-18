@@ -126,6 +126,52 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
 
+        [TestMethod]
+        public void Correct_Old_Password()
+        {
+            UserLogic userLogic = Initialize();
+            userLogic.Login("Henk@henk.henk", "testtest");
+            Assert.IsTrue(userLogic.ValidateOldPassword("testtest"));
+        }
+
+        [TestMethod]
+        public void Incorrect_Old_Password()
+        {
+            UserLogic userLogic = Initialize();
+            userLogic.Login("Henk@henk.henk", "testtest");
+            Assert.IsFalse(userLogic.ValidateOldPassword("NietHenkZijnWachtwoord"));
+        }
+
+        [TestMethod]
+        public void Correct_Password_Validation()
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsTrue(userLogic.ValidatePassword("SuperGoedWachtwoord"));
+        }
+
+        [TestMethod]
+        public void Incorrect_Password_Validation()
+        {
+            UserLogic userLogic = Initialize();
+            Assert.IsFalse(userLogic.ValidatePassword("Henk"));
+        }
+
+        [TestMethod]
+        public void Correct_Password_Change()
+        {
+            UserLogic userLogic = Initialize();
+            userLogic.Login("Henk@henk.henk", "testtest");
+            Assert.IsTrue(userLogic.EditPassword("NieuwWachtwoord"));
+        }
+
+        [TestMethod]
+        public void Incorrect_Password_Change()
+        {
+            UserLogic userLogic = Initialize();
+            userLogic.Login("Henk@henk.henk", "testtest");
+            Assert.IsFalse(userLogic.EditPassword("1"));
+        }
+
         // -------------------------------------------------------------------------------------------------------------------------------
         // AddPreferences ----------------------------------------------------------------------------------------------------------------
         // -------------------------------------------------------------------------------------------------------------------------------
