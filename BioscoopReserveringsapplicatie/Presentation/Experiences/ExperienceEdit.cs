@@ -121,7 +121,10 @@ namespace BioscoopReserveringsapplicatie
             }
             ColorConsole.WriteColorLine("Kies uw [film]: ", Globals.ColorInputcClarification);
             int top = Console.GetCursorPosition().Top;
-            _selectedMovieId = new SelectionMenuUtil2<int>(MovieOptions, () => Start(_experienceId, _returnToName), () => Start(_experienceId, _returnToMovie)).Create();
+            _selectedMovieId = new SelectionMenuUtil2<int>(MovieOptions, 
+                () => Start(_experienceId, _returnToName), 
+                () => Start(_experienceId, _returnToMovie),
+                new Option<int>(_selectedMovieId)).Create();
             while (!ExperiencesLogic.ValidateMovieId(_selectedMovieId))
             {
                 Console.SetCursorPosition(0, top);
@@ -137,7 +140,10 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("\nSelecteer de intensiteit van de experience", Globals.TitleColor);
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
             int top = Console.GetCursorPosition().Top;
-            _newIntensity = new SelectionMenuUtil2<Intensity>(options, () => Start(_experienceId, _returnToMovie), () => Start(_experienceId, _returnToIntensity)).Create();
+            _newIntensity = new SelectionMenuUtil2<Intensity>(options, 
+                () => Start(_experienceId, _returnToMovie), 
+                () => Start(_experienceId, _returnToIntensity),
+                new Option<Intensity>(_newIntensity)).Create();
             while (!ExperiencesLogic.ValidateExperienceIntensity(_newIntensity))
             {
                 Console.SetCursorPosition(0, top);
@@ -151,7 +157,11 @@ namespace BioscoopReserveringsapplicatie
             PrintEditedList();
             ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)\n", Globals.TitleColor);
             List<int> intList = Enumerable.Range(1, 100).ToList();
-            SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1, () => Start(_experienceId, _returnToMovie), () => Start(_experienceId, _returnToLength), false, "Voer de [lengte] van de experience in (in minuten): ");
+            SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1, 
+                () => Start(_experienceId, _returnToMovie), 
+                () => Start(_experienceId, _returnToLength), 
+                false, "Voer de [lengte] van de experience in (in minuten): ",
+                new Option<int>(_timeInInt));
             _timeInInt = selection.Create();
             while (!ExperiencesLogic.ValidateExperienceTimeLength(_timeInInt))
             {
