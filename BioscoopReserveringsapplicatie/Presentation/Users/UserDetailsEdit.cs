@@ -330,5 +330,52 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
             }
         }
+        public static void ChangePassword()
+        {
+            bool validOldPassword = false;
+            while (!validOldPassword)
+            {
+                string oldPassword = ReadLineUtil.EnterValue(true,() =>
+                {
+                    ColorConsole.WriteColor("Voer uw [oude wachtwoord] in: ", Globals.ColorInputcClarification);
+                }, UserDetails.Start,true);
+                validOldPassword = _userLogic.ValidateOldPassword(oldPassword);
+            }
+            string newPassword = "";
+            bool validNewPassword = false;
+            while (!validNewPassword)
+            {
+                newPassword = ReadLineUtil.EnterValue(true,() =>
+                {
+                    ColorConsole.WriteColor("Voer uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
+                }, UserDetails.Start,true);
+                validNewPassword = _userLogic.ValidatePassword(newPassword);
+            }
+
+            bool validConfirmPassword = false;
+            while (!validConfirmPassword)
+            {
+                string confirmPassword = ReadLineUtil.EnterValue(true,() =>
+                {
+                    ColorConsole.WriteColor("Bevestig uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
+                }, UserDetails.Start,true);
+                validConfirmPassword = newPassword == confirmPassword;
+                if (!validConfirmPassword)
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
+                    Thread.Sleep(2000);
+                }
+            }
+
+            if (_userLogic != null)
+            {
+                _userLogic.EditPassword(newPassword);
+            }
+            Console.Clear();
+            ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
+            Thread.Sleep(4000);
+            UserDetails.Start();
+        }
     }
 }
