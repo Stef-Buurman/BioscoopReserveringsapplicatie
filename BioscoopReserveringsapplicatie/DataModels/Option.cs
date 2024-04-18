@@ -34,7 +34,7 @@
 
         public bool Equals(Option<T> other)
         {
-            return Value.Equals(other.Value) && Name.Equals(other.Name);
+            return Value.Equals(other.Value);
         }
     }
 }
