@@ -200,12 +200,23 @@
             return schedules.Find(s => s.ExperienceId == experienceId && s.LocationId == location && s.ScheduledDateTimeStart == dateTime && s.RoomId == room).Id;
         }
 
+        public bool HasCurrentUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
+        {
+            List<ReservationModel> reservations = ReservationAccess.LoadAll();
+            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+        }
 
-        // public DateTime GetEndTimeForScheduledExperience(int scheduleId)
-        // {
-        //     List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-        //     ScheduleModel schedule = schedules.Find(s => s.Id == scheduleId);
-        //     return schedule.ScheduledDateTime.AddMinutes(GetById(schedule.ExperienceId).TimeLength);
-        // }
+        public List<ScheduleModel> GetScheduledExperiencesById(int id)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            return schedules.FindAll(s => s.ExperienceId == id);
+        }
+
+        public DateTime GetEndTimeForScheduledExperience(int scheduleId)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            ScheduleModel schedule = schedules.Find(s => s.Id == scheduleId);
+            return schedule.ScheduledDateTime.AddMinutes(GetById(schedule.ExperienceId).TimeLength);
+        }
     }
 }
