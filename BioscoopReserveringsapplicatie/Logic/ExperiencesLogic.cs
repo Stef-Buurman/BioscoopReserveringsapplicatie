@@ -155,5 +155,18 @@
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
             return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart > DateTime.Now && s.ScheduledDateTimeStart.Date < DateTime.Today.AddDays(8));
         }
+
+        public List<ScheduleModel> GetScheduledExperiencesById(int id)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            return schedules.FindAll(s => s.ExperienceId == id);
+        }
+
+        public DateTime GetEndTimeForScheduledExperience(int scheduleId)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            ScheduleModel schedule = schedules.Find(s => s.Id == scheduleId);
+            return schedule.ScheduledDateTime.AddMinutes(GetById(schedule.ExperienceId).TimeLength);
+        }
     }
 }
