@@ -256,17 +256,50 @@
             return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
         }
 
-        public List<ScheduleModel> GetScheduledExperiencesById(int id)
+        public List<LocationModel> GetLocationsForScheduledExperienceById(int id)
         {
             List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id);
+            List<LocationModel> locations = new List<LocationModel>();
+
+            foreach (ScheduleModel schedule in schedules)
+            {
+                if (schedule.ExperienceId == id)
+                {
+                    LocationModel location = new LocationLogic().GetById(schedule.LocationId);
+                    if (location != null && !locations.Any(loc => loc.Id == location.Id))
+                    {
+                        locations.Add(location);
+                    }
+                }
+            }
+
+            return locations;
         }
 
-        public DateTime GetEndTimeForScheduledExperience(int scheduleId)
+        public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int? locationId)
         {
             List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            ScheduleModel schedule = schedules.Find(s => s.Id == scheduleId);
-            return schedule.ScheduledDateTime.AddMinutes(GetById(schedule.ExperienceId).TimeLength);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
         }
+
+        public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int? locationId, DateTime? date)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTime.Date == date);
+        }
+
+        public ScheduleModel GetRoomForScheduledExperience(int id, int? locationId, DateTime? date, TimeSpan? time)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            return schedules.Find(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTime.Date == date && s.ScheduledDateTime.TimeOfDay == time);
+        }
+
+
+        // public DateTime GetEndTimeForScheduledExperience(int scheduleId)
+        // {
+        //     List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+        //     ScheduleModel schedule = schedules.Find(s => s.Id == scheduleId);
+        //     return schedule.ScheduledDateTime.AddMinutes(GetById(schedule.ExperienceId).TimeLength);
+        // }
     }
 }
