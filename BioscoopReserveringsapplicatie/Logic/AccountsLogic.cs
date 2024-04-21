@@ -46,9 +46,55 @@ class AccountsLogic
 
     public void RegisterNewUser(string name, string email, string password)
     {
-        
-        AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name);
-        UpdateList(newAccount);
+        bool validated = false;
+        string errorMessage = "";
+
+        if (name == "")
+        {
+            errorMessage += "Naam mag niet leeg zijn!\n";
+        }
+        else if (email == "")
+        {
+            errorMessage += "Email mag niet leeg zijn!\n";
+        }
+        else if (_accounts.Exists(i => i.EmailAddress == email))
+        {
+            errorMessage += "Email is al in gebruik!\n";
+        }
+        else if (email.Length < 6)
+        {
+            errorMessage += "Email moet minimaal 6 karakters bevatten!\n";
+        }
+        else if (!email.Contains("@"))
+        {
+            errorMessage += "Email moet een @ bevatten!\n";
+        }
+        else if (!email.Contains("."))
+        {
+            errorMessage += "Email moet een . bevatten!\n";
+        }
+        else if (password == "")
+        {
+            errorMessage += "Wachtwoord mag niet leeg zijn\n";
+        }
+        else if (password.Length < 5)
+        {
+            errorMessage += "Wachtwoord moet minimaal 5 karakters bevatten!\n";
+        }
+        else
+        {
+            validated = true;
+        }
+
+        if (validated)
+        {
+            AccountModel newAccount = new AccountModel(_accounts.Count + 1, email, password, name);
+            UpdateList(newAccount);
+        }
+        else
+        {
+            UserRegister.Start(errorMessage);
+        }
     }
 
     public AccountModel? CheckLogin(string email, string password)
