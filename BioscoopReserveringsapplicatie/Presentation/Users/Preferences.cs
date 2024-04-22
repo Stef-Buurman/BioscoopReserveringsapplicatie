@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System;
+
 namespace BioscoopReserveringsapplicatie
 {
     public static class Preferences
@@ -30,10 +33,26 @@ namespace BioscoopReserveringsapplicatie
 
             if (_user == null) _user = user;
 
-            if ((returnTo == "" || returnTo == _returnToGenres) && !_GenresNotFilledIn) SelectGenres();
-            if ((returnTo == "" || returnTo == _returnToAgeCategory) && !_AgeCategoryNotFilledIn) SelectAgeCategory();
-            if ((returnTo == "" || returnTo == _returnToIntensity) && !_IntensityNotFilledIn) SelectIntensity();
-            if ((returnTo == "" || returnTo == _returnToLanguage) && !_LanguageNotFilledIn) SelectLanguage();
+            if ((returnTo == "" || returnTo == _returnToGenres) && !_GenresNotFilledIn)
+            { 
+                SelectGenres();
+                returnTo = "";
+            }
+            if ((returnTo == "" || returnTo == _returnToAgeCategory) && !_AgeCategoryNotFilledIn)
+            {
+                SelectAgeCategory();
+                returnTo = "";
+            }
+            if ((returnTo == "" || returnTo == _returnToIntensity) && !_IntensityNotFilledIn)
+            {
+                SelectIntensity();
+                returnTo = "";
+            }
+            if ((returnTo == "" || returnTo == _returnToLanguage) && !_LanguageNotFilledIn)
+            {
+                SelectLanguage();
+                returnTo = "";
+            }
 
             List<Option<string>> options = new List<Option<string>>
                 {
@@ -50,56 +69,20 @@ namespace BioscoopReserveringsapplicatie
 
         public static void SelectGenres()
         {
-            List<Genre> Genres = Globals.GetAllEnumIncludeUndefined<Genre>();
+            List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
-            bool firstTime = true;
-            while (_selectedGenres.Count < Genres.Count - 1)
+            List<Option<Genre>> selectedtGenres = new List<Option<Genre>>();
+
+            foreach (Genre option in Genres)
             {
-                PrintEditedList();
-                Genre genre;
-                ColorConsole.WriteColorLine("Welkom op de voorkeur pagina", Globals.TitleColor);
-                ColorConsole.WriteColorLine("Hier kunt u uw voorkeuren selecteren.\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification);
-
-                availableGenres.Clear();
-                foreach (Genre option in Genres)
+                if (_selectedGenres.Contains(option))
                 {
-                    if (_selectedGenres.Contains(option))  continue;
-                    if (option == Genre.Undefined)
-                    {
-                        if (!firstTime)
-                            availableGenres.Add(new Option<Genre>(option, _StopFillingIn));
-                        else
-                            availableGenres.Add(new Option<Genre>(option, _NotFilledIn));
-                    }
-                    else
-                        availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
+                    selectedtGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
-                genre = new SelectionMenuUtil2<Genre>(availableGenres, 9).Create();
-
-                if (genre == Genre.Undefined)
-                {
-                    if (_selectedGenres.Count > 0)
-                    {
-                        _GenresNotFilledIn = false;
-                    }
-                    else
-                    {
-                        _GenresNotFilledIn = true;
-                    }
-                    break;
-                }
-                Option<Genre>? GenreIsInAvailable = availableGenres.Find(x => x.Value == genre);
-                if (genre != default && GenreIsInAvailable != null)
-                {
-                    _selectedGenres.Add(genre);
-                }
-                else
-                {
-                    ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
-                }
-                firstTime = false;
+                availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
+
+            _selectedGenres = new SelectionMenuUtil2<Genre>(availableGenres, selectedtGenres).CreateMultiSelect();
         }
 
         public static void SelectAgeCategory()
@@ -237,7 +220,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_language != Language.Undefined)
             {
-                ColorConsole.WriteColorLine($"[Taal (Language):] {_language.GetDisplayName()} minuten", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Taal (Language):] {_language.GetDisplayName()}", Globals.ExperienceColor);
             }
             else if (_LanguageNotFilledIn)
             {
