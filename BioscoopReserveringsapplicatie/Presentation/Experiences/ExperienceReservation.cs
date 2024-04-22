@@ -101,9 +101,33 @@ namespace BioscoopReserveringsapplicatie
 
                     if (UserLogic.CurrentUser != null)
                     {
-                        if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
+                        if (!ExperienceLogic.HasCurrentUserAlreadyReservatedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                         {
-                            Console.WriteLine("Reservering bevestigd");
+                            if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
+                            {
+                                Console.WriteLine("Reservering bevestigd");
+
+                                Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
+
+                                Console.ReadKey();
+
+                                ExperienceDetails.Start(experienceId);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Reservering mislukt");
+
+                                Console.WriteLine("Druk op een toets om terug te gaan naar de experience details om het opnieuw te proberen.");
+
+                                Console.ReadKey();
+
+                                ExperienceDetails.Start(experienceId);
+
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Je hebt al voor deze experience gereserveerd");
 
                             Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
 
@@ -111,6 +135,7 @@ namespace BioscoopReserveringsapplicatie
 
                             ExperienceDetails.Start(experienceId);
                         }
+
                     }
                 }));
                 options2.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, date)));
