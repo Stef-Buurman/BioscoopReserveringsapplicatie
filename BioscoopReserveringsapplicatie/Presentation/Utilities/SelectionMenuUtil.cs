@@ -113,7 +113,7 @@
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     Console.CursorVisible = true;
-                    options[index].Select();
+                    options[index].SelectFunction();
                     return options[index].Value;
                 }
 

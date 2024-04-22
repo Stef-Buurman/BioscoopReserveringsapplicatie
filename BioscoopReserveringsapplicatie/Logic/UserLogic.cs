@@ -167,12 +167,6 @@
         {
             List<Genre> CorrectGenre = Globals.GetAllEnum<Genre>();
 
-            if (genres.Count > 3)
-            {
-                Console.WriteLine("U kunt maximaal 3 genres selecteren.");
-                return false;
-            }
-
             if (genres.Distinct().Count() != genres.Count)
             {
                 Console.WriteLine("U mag niet een genre meerdere keren selecteren.");
