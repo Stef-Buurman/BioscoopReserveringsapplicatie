@@ -338,7 +338,7 @@ namespace BioscoopReserveringsapplicatie
                 || _newName != "" || _newEmail != "";
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("[Huidige Experience Details]", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Huidige Account Details]", Globals.ExperienceColor);
             }
             if (_newName != "")
             {
