@@ -57,7 +57,7 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Experience inplannen", () => ScheduleExperince.Start(experienceId)),
+                    new Option<string>("Experience inplannen", () => ScheduleExperience.Start(experienceId)),
                     new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
