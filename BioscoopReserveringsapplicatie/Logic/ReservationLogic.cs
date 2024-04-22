@@ -46,16 +46,6 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
-        // public bool ValidateTitle(string title)
-        // {
-        //     return !string.IsNullOrWhiteSpace(title);
-        // }
-
-        // public bool ValidateDescription(string description)
-        // {
-        //     return !string.IsNullOrWhiteSpace(description);
-        // }
-
         public void UpdateList(ReservationModel reservation)
         {
             //Find if there is already an model with the same id
