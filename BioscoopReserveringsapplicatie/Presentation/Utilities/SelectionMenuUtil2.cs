@@ -105,18 +105,6 @@
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
             }
-            if(hasCustomKeyAction && customKey != ConsoleKey.NoName && customKeyAction != null)
-            {
-                HasCustomKeyAction = hasCustomKeyAction;
-                CustomKey = customKey;
-                CustomKeyAction = customKeyAction;
-            }
-            else
-            {
-                HasCustomKeyAction = false;
-                CustomKey = ConsoleKey.NoName;
-                CustomKeyAction = () => { };
-            }
         }
 
         private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null,
