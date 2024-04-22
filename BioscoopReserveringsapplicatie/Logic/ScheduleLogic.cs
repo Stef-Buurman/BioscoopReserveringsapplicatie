@@ -5,6 +5,8 @@ namespace BioscoopReserveringsapplicatie
 {
     class ScheduleLogic
     {
+        private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
+
         private List<ScheduleModel> _Schedules;
 
         public ScheduleLogic() => _Schedules = ScheduleAccess.LoadAll();
@@ -23,19 +25,18 @@ namespace BioscoopReserveringsapplicatie
         {
             if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
             {
-                if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTime))
+                if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
                 {
+                    DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
+
                     GetAll();
 
-                    ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTime);
+                    ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTimeStart, dateTimeEnd);
 
                     UpdateList(schedule);
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                else return false;
             }
             else return false;
         }

@@ -16,16 +16,20 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("roomId")]
         public int RoomId { get; set; }
 
-        [JsonPropertyName("scheduledDateTime")]
-        public DateTime ScheduledDateTime { get; set; }
+        [JsonPropertyName("scheduledDateTimeStart")]
+        public DateTime ScheduledDateTimeStart { get; set; }
 
-        public ScheduleModel(int id, int experienceId, int locationId, int roomId, DateTime scheduledDateTime)
+        [JsonPropertyName("scheduledDateTimeEnd")]
+        public DateTime ScheduledDateTimeEnd { get; set; }
+
+        public ScheduleModel(int id, int experienceId, int locationId, int roomId, DateTime scheduledDateTimeStart, DateTime scheduledDateTimeEnd)
         {
             Id = id;
             ExperienceId = experienceId;
             LocationId = locationId;
             RoomId = roomId;
-            ScheduledDateTime = scheduledDateTime;
+            ScheduledDateTimeStart = scheduledDateTimeStart;
+            ScheduledDateTimeEnd =  scheduledDateTimeEnd;
         }
     }
 }
