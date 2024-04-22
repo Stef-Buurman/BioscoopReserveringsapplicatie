@@ -71,18 +71,18 @@ namespace BioscoopReserveringsapplicatie
         {
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
-            List<Option<Genre>> selectedtGenres = new List<Option<Genre>>();
+            List<Option<Genre>> selectedGenres = new List<Option<Genre>>();
 
             foreach (Genre option in Genres)
             {
                 if (_selectedGenres.Contains(option))
                 {
-                    selectedtGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
+                    selectedGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            _selectedGenres = new SelectionMenuUtil2<Genre>(availableGenres, selectedtGenres).CreateMultiSelect();
+            _selectedGenres = new SelectionMenuUtil2<Genre>(availableGenres, selectedGenres).CreateMultiSelect();
         }
 
         public static void SelectAgeCategory()

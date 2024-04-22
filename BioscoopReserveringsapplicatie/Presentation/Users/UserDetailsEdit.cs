@@ -41,18 +41,18 @@ namespace BioscoopReserveringsapplicatie
                 UserName();
                 returnTo = "";
             }
-            if (returnTo == "" || returnTo == _returnToEmail) 
-            { 
+            if (returnTo == "" || returnTo == _returnToEmail)
+            {
                 UserEmail();
                 returnTo = "";
             }
-            if ((returnTo == "" || returnTo == _returnToGenres) && !_GenresNotFilledIn) 
-            { 
+            if ((returnTo == "" || returnTo == _returnToGenres) && !_GenresNotFilledIn)
+            {
                 SelectGenres();
                 returnTo = "";
             }
             if ((returnTo == "" || returnTo == _returnToAgeCategory) && !_AgeCategoryNotFilledIn)
-            { 
+            {
                 SelectAgeCategory();
                 returnTo = "";
             }
@@ -139,13 +139,13 @@ namespace BioscoopReserveringsapplicatie
             PrintEditedList();
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
-            List<Option<Genre>> selectedtGenres = new List<Option<Genre>>();
+            List<Option<Genre>> selectedGenres = new List<Option<Genre>>();
 
             foreach (Genre option in Genres)
             {
                 if (_newGenres.Contains(option))
                 {
-                    selectedtGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
+                    selectedGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
@@ -160,62 +160,7 @@ namespace BioscoopReserveringsapplicatie
                     {
                         _GenresNotFilledIn = false;
                         Start(_returnToGenres);
-                    }, "Kies uw favoriete [genre]: ", selectedtGenres).CreateMultiSelect();
-            //bool firstTime = true;
-            //while (_newGenres.Count < Genres.Count - 1)
-            //{
-            //    PrintEditedList();
-            //    //ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification);
-
-            //    availableGenres.Clear();
-            //    foreach (Genre option in Genres)
-            //    {
-            //        if (_newGenres.Contains(option)) continue;
-            //        if (option == Genre.Undefined)
-            //        {
-            //            if (_newGenres.Count != 0)
-            //                availableGenres.Add(new Option<Genre>(option, _StopFillingIn));
-            //            else
-            //                availableGenres.Add(new Option<Genre>(option, _NotFilledIn));
-            //        }
-            //        else
-            //            availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
-            //    }
-            //    Genre genre = new SelectionMenuUtil2<Genre>(availableGenres, 9,
-            //        () =>
-            //        {
-            //            _GenresNotFilledIn = false;
-            //            Start(_returnToEmail);
-            //        },
-            //        () =>
-            //        {
-            //            _GenresNotFilledIn = false;
-            //            Start(_returnToGenres);
-            //        }, true, "Kies uw favoriete [genre]: ").Create();
-
-            //    if (genre == Genre.Undefined)
-            //    {
-            //        if (_newGenres.Count > 0)
-            //        {
-            //            _GenresNotFilledIn = false;
-            //        }
-            //        else
-            //        {
-            //            _GenresNotFilledIn = true;
-            //        }
-            //        break;
-            //    }
-            //    Option<Genre>? GenreIsInAvailable = availableGenres.Find(x => x.Value == genre);
-            //    if (genre != default && GenreIsInAvailable != null)
-            //    {
-            //        _newGenres.Add(genre);
-            //    }
-            //    else
-            //    {
-            //        ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
-            //    }
-            //    firstTime = false;
-            //}
+                    }, "Kies uw favoriete [genre]: ", selectedGenres).CreateMultiSelect();
         }
 
         public static void SelectAgeCategory()
