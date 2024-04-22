@@ -239,6 +239,11 @@
             return schedules.Find(s => s.ExperienceId == experienceId && s.LocationId == location && s.ScheduledDateTime == dateTime && s.RoomId == room).Id;
         }
 
+        public bool HasCurrentUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
+        {
+            List<ReservationModel> reservations = ReservationAccess.LoadAll();
+            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+        }
 
         // public DateTime GetEndTimeForScheduledExperience(int scheduleId)
         // {
