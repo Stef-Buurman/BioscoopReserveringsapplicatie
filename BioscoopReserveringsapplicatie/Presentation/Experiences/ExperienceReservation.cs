@@ -5,6 +5,7 @@ namespace BioscoopReserveringsapplicatie
         private static ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
         private static LocationLogic LocationLogic = new LocationLogic();
         private static ReservationLogic ReservationLogic = new ReservationLogic();
+        private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
 
         public static void Start(int experienceId, int? location = null, DateTime? date = null, TimeSpan? time = null, int? room = null)
         {
@@ -14,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (location == null)
                 {
-                    List<LocationModel> locations = ExperienceLogic.GetLocationsForScheduledExperienceById(experienceId);
+                    List<LocationModel> locations = LocationLogic.GetLocationsForScheduledExperienceById(experienceId);
 
                     Print();
 
@@ -33,7 +34,7 @@ namespace BioscoopReserveringsapplicatie
 
                 if (date == null)
                 {
-                    List<ScheduleModel> schedules = ExperienceLogic.GetScheduledExperienceDatesForLocationById(experienceId, location);
+                    List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceDatesForLocationById(experienceId, location);
 
                     schedules.Sort((x, y) => x.ScheduledDateTime.CompareTo(y.ScheduledDateTime));
 
@@ -56,7 +57,7 @@ namespace BioscoopReserveringsapplicatie
 
                 if (time == null)
                 {
-                    List<ScheduleModel> schedules = ExperienceLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, date);
+                    List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, date);
 
                     schedules.Sort((x, y) => x.ScheduledDateTime.CompareTo(y.ScheduledDateTime));
 
@@ -82,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Print();
 
-                    ScheduleModel scheduledExperience = ExperienceLogic.GetRoomForScheduledExperience(experienceId, location, date, time);
+                    ScheduleModel scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, date, time);
 
                     room = scheduledExperience.RoomId;
                 }
@@ -95,11 +96,11 @@ namespace BioscoopReserveringsapplicatie
                 {
                     DateTime dateTime = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hours, time.Value.Minutes, time.Value.Seconds);
 
-                    int scheduleId = ExperienceLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
+                    int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
 
                     if (UserLogic.CurrentUser != null)
                     {
-                        if (!ExperienceLogic.HasCurrentUserAlreadyReservatedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
+                        if (!ReservationLogic.HasUserAlreadyReservatedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                         {
                             if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
                             {
@@ -149,7 +150,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Experience: " + ExperienceLogic.GetById(experienceId).Name);
             Console.WriteLine("Locatie: " + LocationLogic.GetById((int)location).Name);
             Console.WriteLine("Datum: " + date.Value.ToString("dd-MM-yyyy"));
-            Console.WriteLine("Tijd: " + time.Value);
+            Console.WriteLine("Tijd: " + time.Value.ToString("HH:mm"));
             Console.WriteLine("Zaal: " + room.Value);
 
             Console.WriteLine();
