@@ -1,4 +1,3 @@
-using System.Dynamic;
 using System.Globalization;
 
 namespace BioscoopReserveringsapplicatie
@@ -6,6 +5,8 @@ namespace BioscoopReserveringsapplicatie
     class ScheduleLogic
     {
         private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
+        private static LocationLogic locationLogic = new LocationLogic();
+        private static RoomLogic roomLogic = new RoomLogic();
 
         private List<ScheduleModel> _Schedules;
 
@@ -39,6 +40,34 @@ namespace BioscoopReserveringsapplicatie
                 else return false;
             }
             else return false;
+        }
+
+        public bool TimeSlotOpenOnRoom(int experienceId, int locationId, int roomId,  string scheduledDateTime, out string error)
+        {
+          
+            if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
+            {
+                DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
+
+                List<ScheduleModel> bookedSlots = GetByRoomId(roomId);
+                foreach (ScheduleModel bookedSlot in bookedSlots)
+                {
+                    if (bookedSlot.ScheduledDateTimeStart >= dateTimeStart && bookedSlot.ScheduledDateTimeStart <= dateTimeEnd ||
+                        bookedSlot.ScheduledDateTimeEnd >= dateTimeStart && bookedSlot.ScheduledDateTimeEnd <= dateTimeEnd)
+                    {
+                        error = $"Er is al een experience ingepland op {dateTimeStart.ToString("dd-MM-yyyy")} in {locationLogic.GetById(locationId).Name} Zaal: {roomLogic.GetById(roomId).RoomNumber} van {bookedSlot.ScheduledDateTimeStart.ToString("HH:mm")} T/M {bookedSlot.ScheduledDateTimeEnd.ToString("HH:mm")}";
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                error = "Tijd format niet correct!";
+                return false;
+            }
+
+            error = "";
+            return true;
         }
 
         public void UpdateList(ScheduleModel schedule)
