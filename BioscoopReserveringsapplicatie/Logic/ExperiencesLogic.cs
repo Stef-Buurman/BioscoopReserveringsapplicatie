@@ -149,5 +149,11 @@
             _experiences = _DataAccess.LoadAll();
             return _experiences.FindAll(e => !e.Archived);
         }
+
+        public bool HasScheduledExperience(int id)
+        {
+            List<ScheduleModel> schedules = _DataAccess.LoadAll();
+            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart > DateTime.Now && s.ScheduledDateTimeStart.Date < DateTime.Today.AddDays(8));
+        }
     }
 }
