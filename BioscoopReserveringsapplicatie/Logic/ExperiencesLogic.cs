@@ -4,6 +4,7 @@
     {
         private List<ExperiencesModel> _experiences;
         private static MoviesLogic MoviesLogic = new MoviesLogic();
+        private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
 
         public ExperiencesLogic()
         {
@@ -66,7 +67,7 @@
                 bool genreMatch = currentUser.Genres.Count == 0 || movie.Genres.Intersect(currentUser.Genres).Any();
                 bool ageMatch = currentUser.AgeCategory == AgeCategory.Undefined || Convert.ToInt32(movie.AgeCategory) <= Convert.ToInt32(currentUser.AgeCategory);
                 bool intensityMatch = currentUser.Intensity == Intensity.Undefined || experience.Intensity == currentUser.Intensity;
-                bool hasScheduldedExperience = HasScheduledExperience(experience.Id);
+                bool hasScheduldedExperience = ScheduleLogic.HasScheduledExperience(experience.Id);
 
                 if (genreMatch && ageMatch && intensityMatch && hasScheduldedExperience)
                 {
@@ -136,62 +137,6 @@
         {
             _experiences = ExperiencesAccess.LoadAll();
             return _experiences.FindAll(e => !e.Archived);
-        }
-
-        public bool HasScheduledExperience(int id)
-        {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTime > DateTime.Now && s.ScheduledDateTime.Date < DateTime.Today.AddDays(8));
-        }
-
-        public List<LocationModel> GetLocationsForScheduledExperienceById(int id)
-        {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            List<LocationModel> locations = new List<LocationModel>();
-
-            foreach (ScheduleModel schedule in schedules)
-            {
-                if (schedule.ExperienceId == id)
-                {
-                    LocationModel location = new LocationLogic().GetById(schedule.LocationId);
-                    if (location != null && !locations.Any(loc => loc.Id == location.Id))
-                    {
-                        locations.Add(location);
-                    }
-                }
-            }
-
-            return locations;
-        }
-
-        public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int? locationId)
-        {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
-        }
-
-        public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int? locationId, DateTime? date)
-        {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTime.Date == date);
-        }
-
-        public ScheduleModel GetRoomForScheduledExperience(int id, int? locationId, DateTime? date, TimeSpan? time)
-        {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.Find(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTime.Date == date && s.ScheduledDateTime.TimeOfDay == time);
-        }
-
-        public int GetRelatedScheduledExperience(int experienceId, int? location, DateTime dateTime, int? room)
-        {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-            return schedules.Find(s => s.ExperienceId == experienceId && s.LocationId == location && s.ScheduledDateTime == dateTime && s.RoomId == room).Id;
-        }
-
-        public bool HasCurrentUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
-        {
-            List<ReservationModel> reservations = ReservationAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
         }
     }
 }
