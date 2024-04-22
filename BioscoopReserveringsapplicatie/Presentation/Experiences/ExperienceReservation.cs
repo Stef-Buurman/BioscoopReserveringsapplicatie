@@ -97,15 +97,20 @@ namespace BioscoopReserveringsapplicatie
                 {
                     DateTime dateTime = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hours, time.Value.Minutes, time.Value.Seconds);
 
-                    if (ReservationLogic.Complete(experienceId, location, dateTime, room, UserLogic.CurrentUser.Id))
+                    int scheduleId = ExperienceLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
+
+                    if (UserLogic.CurrentUser != null)
                     {
-                        Console.WriteLine("Reservering bevestigd");
+                        if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
+                        {
+                            Console.WriteLine("Reservering bevestigd");
 
-                        Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
+                            Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
 
-                        Console.ReadKey();
+                            Console.ReadKey();
 
-                        ExperienceDetails.Start(experienceId);
+                            ExperienceDetails.Start(experienceId);
+                        }
                     }
                 }));
                 options2.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, date)));
