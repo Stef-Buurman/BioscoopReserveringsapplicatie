@@ -140,6 +140,9 @@
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility)
             : this(options, maxVisibility, false) { }
 
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, string textBeforeInputShown)
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, false, textBeforeInputShown, null, true) { }
+
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, string textBeforeInputShown = default)
             : this(options, maxVisibility, false, null, null, true, textBeforeInputShown) { }
 
@@ -347,7 +350,10 @@
                     strintToPrintForArrowUp = "   ";
                 }
                 // To override the text shown, there must be enough spaces to override the text.
-                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowUp += " ";
+                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length 
+                    - (TextBeforeInputShownVisible ? 2 : 0) 
+                    + (VisibleSelectedArrows ? 3 : 0) 
+                    + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowUp.Length < MaxSelectionMenu + 3) strintToPrintForArrowUp += " ";
@@ -378,7 +384,10 @@
                     strintToPrintForArrowDown = "   ";
                 }
                 // To override the text shown, there must be enough spaces to override the text.
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowDown += " ";
+                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length 
+                    - (TextBeforeInputShownVisible ? 2 : 0) 
+                    + (VisibleSelectedArrows ? 3 : 0) 
+                    + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
