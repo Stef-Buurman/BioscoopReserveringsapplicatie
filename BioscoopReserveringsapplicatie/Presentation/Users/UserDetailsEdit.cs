@@ -72,7 +72,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    if(_userLogic.Edit(UserLogic.CurrentUser.Id, _newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
+                    if(_userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                         Thread.Sleep(2000);
