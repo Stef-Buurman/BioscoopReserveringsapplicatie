@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class ExperienceOverview
     {
         private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
         private static Func<ExperiencesModel, string[]> experienceDataExtractor = ExtractExperienceData;
 
         public static void Start()
@@ -45,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
 
             foreach (ExperiencesModel experience in experiences)
             {
-                MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
+                MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
 
                 string experienceName = experience.Name;
                 if (experienceName.Length > 25)
@@ -147,7 +148,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static string[] ExtractExperienceData(ExperiencesModel experience)
         {
-            MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
+            MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
 
             string[] experienceInfo = {
                 experience.Name,
