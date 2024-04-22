@@ -82,8 +82,6 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Print();
 
-                    // Console.WriteLine("Room selecteren");
-
                     ScheduleModel scheduledExperience = ExperienceLogic.GetRoomForScheduledExperience(experienceId, location, date, time);
 
                     room = scheduledExperience.RoomId;
