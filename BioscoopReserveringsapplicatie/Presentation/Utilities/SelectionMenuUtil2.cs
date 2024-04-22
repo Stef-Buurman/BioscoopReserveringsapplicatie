@@ -78,9 +78,6 @@
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool hasCustomKeyAction = false, List<KeyAction> customKeyActions = null) 
-            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
-
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
 
@@ -137,19 +134,16 @@
                 // When the user presses the down arrow, the selected option will move down
                 if (keyinfo.Key == ConsoleKey.DownArrow)
                 {
-                    KeysInUse.Add(ConsoleKey.DownArrow);
                     KeyDown();
                 }
                 // When the user presses the up arrow, this will be executed.
                 if (keyinfo.Key == ConsoleKey.UpArrow)
                 {
-                    KeysInUse.Add(ConsoleKey.UpArrow);
                     KeyUp();
                 }
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    KeysInUse.Add(ConsoleKey.Enter);
                     Console.CursorVisible = true;
                     AllOptions[Index].Select();
                     return AllOptions[Index].Value;
@@ -157,12 +151,9 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    KeysInUse.Add(ConsoleKey.Escape);
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
-
-
             }
             while (keyinfo.Key != ConsoleKey.X);
             Console.CursorVisible = true;
