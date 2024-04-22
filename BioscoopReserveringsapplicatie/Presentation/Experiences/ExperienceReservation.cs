@@ -7,7 +7,7 @@ namespace BioscoopReserveringsapplicatie
         private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
 
-        public static void Start(int experienceId, int? location = null, DateTime? date = null, TimeSpan? time = null, int? room = null)
+        public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0)
         {
             Console.Clear();
 
@@ -17,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
 
                 Console.WriteLine("Naam experience: " + ExperienceLogic.GetById(experienceId).Name);
 
-                if (location == null)
+                if (location == 0)
                 {
                     List<LocationModel> locations = LocationLogic.GetLocationsForScheduledExperienceById(experienceId);
 
@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
                     Console.WriteLine("Locatie: " + LocationLogic.GetById((int)location).Name);
                 }
 
-                if (date == null)
+                if (dateTime == null)
                 {
                     List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceDatesForLocationById(experienceId, location);
 
@@ -60,12 +60,12 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Datum: " + date.Value.ToString("dd-MM-yyyy"));
+                    Console.WriteLine("Datum: " + dateTime.Value.ToString("dd-MM-yyyy"));
                 }
 
-                if (time == null)
+                if (dateTime.Value.TimeOfDay == TimeSpan.Zero)
                 {
-                    List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, date);
+                    List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, dateTime.Value.Date);
 
                     schedules.Sort((x, y) => x.ScheduledDateTime.CompareTo(y.ScheduledDateTime));
 
@@ -75,9 +75,9 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        if (schedule.ScheduledDateTime.Date == date)
+                        if (schedule.ScheduledDateTime.Date == dateTime.Value.Date)
                         {
-                            options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTime.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, date, schedule.ScheduledDateTime.TimeOfDay)));
+                            options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTime.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTime)));
                         }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location)));
@@ -86,29 +86,27 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Tijd: " + TimeSpan.Parse(time.ToString()).ToString(@"hh\:mm") + " - " + TimeSpan.FromMinutes(time.Value.TotalMinutes + ExperienceLogic.GetById(experienceId).TimeLength).ToString(@"hh\:mm"));
+                    Console.WriteLine("Tijd: " + dateTime.Value.ToString("HH:mm"));
                 }
 
-                if (room == null)
+                if (room == 0)
                 {
-                    ScheduleModel scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, date, time);
+                    ScheduleModel scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, dateTime);
 
                     room = scheduledExperience.RoomId;
 
-                    Console.WriteLine("Zaal: " + room.Value);
+                    Console.WriteLine("Zaal: " + room);
                 }
 
-                var options2 = new List<Option<int>>
+                var optionsConfirm = new List<Option<int>>
                 {
                     new Option<int>(0, "Bevestig reservering", () =>
                         {
-                            DateTime dateTime = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hours, time.Value.Minutes, time.Value.Seconds);
-
                             int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
 
                             if (UserLogic.CurrentUser != null)
                             {
-                                if (!ReservationLogic.HasUserAlreadyReservatedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
+                                if (!ReservationLogic.HasUserAlreadyReservedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                                 {
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
                                     {
@@ -129,7 +127,6 @@ namespace BioscoopReserveringsapplicatie
                                         Console.ReadKey();
 
                                         ExperienceDetails.Start(experienceId);
-
                                     }
                                 }
                                 else
@@ -147,13 +144,13 @@ namespace BioscoopReserveringsapplicatie
 
                             }
                         }),
-                    new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, date))
+                    new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date))
                 };
 
                 Console.WriteLine("\nReservering bevestigen");
                 Console.WriteLine("Is de reservering correct?\n");
 
-                new SelectionMenuUtil2<int>(options2).Create();
+                new SelectionMenuUtil2<int>(optionsConfirm).Create();
             }
         }
     }
