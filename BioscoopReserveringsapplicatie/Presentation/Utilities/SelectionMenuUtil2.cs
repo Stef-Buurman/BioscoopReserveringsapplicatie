@@ -2,7 +2,7 @@
 {
     public class SelectionMenuUtil2<T>
     {
-        private static int MaxSelectionMenu = 0;
+        private int MaxSelectionMenu = 0;
 
         private int Index = 0;
         private int VisibleIndex = 0;
@@ -15,7 +15,7 @@
         private int _maxVisibility = 0;
         private int MaxVisibility
         {
-            get => _maxVisibility; 
+            get => _maxVisibility;
             set
             {
                 if (value < 0) _maxVisibility = 9;
@@ -27,7 +27,6 @@
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
         private Option<T> SelectedOption;
-        private List<Option<T>> SelectedOptions;
 
         private int Top = 0;
 
@@ -41,12 +40,12 @@
         private bool VisibleSelectedArrows;
 
         private bool IsMultiSelect = false;
-        private List<Option<T>> HighLightedOptions = new List<Option<T>>();
-        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, 
-            Action escapeAction = null, Action escapeActionWhenNotEscaping = null, 
-            bool visibleSelectedArrows = true, string textBeforeInputShown = default, 
+        private List<Option<T>> SelectedOptions = new List<Option<T>>();
+        private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false,
+            Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
+            bool visibleSelectedArrows = true, string textBeforeInputShown = default,
             Option<T> selectedOption = default, bool isMultiSelect = false,
-            List<Option<T>> highLightedOptions = null)
+            List<Option<T>> selectedOptions = null)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -54,6 +53,7 @@
             moreOptionsThanVisibility = AllOptions.Count > maxVisibility;
             Index = 0;
             VisibleIndex = 0;
+
             if ((escapeAction != null && escapeActionWhenNotEscaping == null)
                 || (escapeAction == null && escapeActionWhenNotEscaping != null))
             {
@@ -67,25 +67,37 @@
                 EscapeAction = escapeAction;
                 EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             }
+
             if (isMultiSelect)
             {
                 IsMultiSelect = isMultiSelect;
-                if(highLightedOptions != null && highLightedOptions.Count > 0)
+                VisibleSelectedArrows = false;
+                if (selectedOptions != null && selectedOptions.Count > 0)
                 {
-                    HighLightedOptions.AddRange(highLightedOptions);
+                    foreach (Option<T> HighLightedOption in selectedOptions)
+                    {
+                        Option<T>? option = AllOptions.Find(opt => opt.Equals(HighLightedOption));
+                        if (option != null)
+                        {
+                            option.InvertSelecttion();
+                            SelectedOptions.Add(option);
+                        }
+                    }
                 }
             }
             else
             {
+                VisibleSelectedArrows = visibleSelectedArrows;
                 if (selectedOption != default && AllOptions.Contains(selectedOption))
                 {
                     SelectedOption = selectedOption;
                 }
             }
+
             CanBeEscaped = canBeEscaped;
             EscapeAction = escapeAction;
             EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
-            VisibleSelectedArrows = visibleSelectedArrows;
+
             if (textBeforeInputShown != default)
             {
                 TextBeforeInputShown = textBeforeInputShown;
@@ -93,9 +105,10 @@
             }
         }
 
-        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, 
-            string textBeforeInputShown = default, Option<T> selectedOption = default) 
-            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, selectedOption) {}
+        private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null,
+            Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default,
+            Option<T> selectedOption = default, bool isMultiSelect = false, List<Option<T>> selectedOptions = null)
+            : this(ConvertToOption(options), maxVisibility, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, selectedOption, isMultiSelect, selectedOptions) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
@@ -103,8 +116,11 @@
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, string textBeforeInputShown, List<Option<T>> selectedOptions)
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, false, textBeforeInputShown, null, true, selectedOptions) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
@@ -117,6 +133,9 @@
 
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, List<Option<T>> selectedOptions)
+            : this(options, 9, false, null, null, true, default, null, true, selectedOptions) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility)
             : this(options, maxVisibility, false) { }
@@ -133,10 +152,10 @@
         public SelectionMenuUtil2(List<Option<T>> options, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, false, null, null, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+        public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
         public SelectionMenuUtil2(List<T> options, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
@@ -144,6 +163,9 @@
 
         public SelectionMenuUtil2(List<T> options)
             : this(options, 9, false) { }
+
+        public SelectionMenuUtil2(List<T> options, List<Option<T>> selectedOptions)
+            : this(options, 9, false, null, null, true, default, null, true, selectedOptions) { }
 
         public SelectionMenuUtil2(List<T> options, Option<T> selectedOption)
             : this(options, 9, false, null, null, true, default, selectedOption) { }
@@ -153,7 +175,7 @@
         public SelectionMenuUtil2(List<T> options, bool canBeEscaped = false)
             : this(options, 9, canBeEscaped) { }
 
-        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
+        public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
         public SelectionMenuUtil2(List<T> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, Option<T> selectedOption = default)
@@ -240,34 +262,7 @@
             if (!IsMultiSelect) return default;
             Console.CursorVisible = false;
 
-            //if (HighLightedOptions != null)
-            //{
-            //    Index = AllOptions.IndexOf(AllOptions.Find(opt => opt.Equals(SelectedOption)));
-            //    if (Index == -1) Index = 0;
-            //    else if (Index < HalfOfMaxVisibility)
-            //    {
-            //        VisibleIndex = Index;
-            //        WriteMenu(OptionsToShow, OptionsToShow[Index]);
-            //    }
-            //    else if (Index > AllOptions.Count - HalfOfMaxVisibility)
-            //    {
-            //        AmountOptionsAbove = AllOptions.Count - MaxVisibility;
-            //        VisibleIndex = (Index + 1) - AmountOptionsAbove;
-            //        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
-            //        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
-            //    }
-            //    else if (Index >= HalfOfMaxVisibility)
-            //    {
-            //        AmountOptionsAbove = Index - HalfOfMaxVisibility + 1;
-            //        VisibleIndex = HalfOfMaxVisibility - 1;
-            //        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
-            //        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
-            //    }
-            //}
-            //else
-            //{
-                WriteMenu(OptionsToShow, OptionsToShow[Index]);
-            //}
+            WriteMenu(OptionsToShow, OptionsToShow[Index]);
 
             ConsoleKeyInfo keyinfo;
             do
@@ -278,34 +273,48 @@
                 {
                     KeyDown();
                 }
+
                 // When the user presses the up arrow, this will be executed.
                 if (keyinfo.Key == ConsoleKey.UpArrow)
                 {
                     KeyUp();
                 }
+
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     Console.CursorVisible = true;
-                    return AllOptions.Where(x => x.IsSelected).Select(x => x.Value).ToList();
+                    return AllOptions.FindAll(x => x.IsSelected).ConvertAll(x => x.Value);
                 }
+
                 if (keyinfo.Key == ConsoleKey.Spacebar)
                 {
                     AllOptions[Index].InvertSelecttion();
+                    if (Index < HalfOfMaxVisibility)
+                    {
+                        WriteMenu(OptionsToShow, OptionsToShow[Index]);
+                    }
+                    else if (Index >= AllOptions.Count - HalfOfMaxVisibility)
+                    {
+                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
+                    }
+                    else if (Index >= HalfOfMaxVisibility)
+                    {
+                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
+                    }
                 }
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);
             Console.CursorVisible = true;
-            return default;
+            return new List<T>();
         }
 
-        public void WriteMenu<T>(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        private void SetCursorPosition(string textToShowEscapability)
         {
             if (CanBeEscaped && !EscapabilityVisible)
             {
@@ -321,6 +330,11 @@
             {
                 Console.SetCursorPosition(0, Top);
             }
+        }
+
+        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        {
+            SetCursorPosition(textToShowEscapability);
 
             int maxOptionsLength = Options.Max(x => x.Name.Length);
             if (MaxSelectionMenu < maxOptionsLength) MaxSelectionMenu = maxOptionsLength;
@@ -332,8 +346,10 @@
                 {
                     strintToPrintForArrowUp = "   ";
                 }
+                // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
+                // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowUp.Length < MaxSelectionMenu + 3) strintToPrintForArrowUp += " ";
                 Console.WriteLine(strintToPrintForArrowUp);
             }
@@ -344,38 +360,16 @@
                 {
                     strintToPrintForArrowDown = "   ";
                 }
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
+
+                //while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
+                // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);
             }
-            foreach (Option<T> option in Options)
-            {     
-                if (Options.IndexOf(option) == (MaxVisibility / 2) && TextBeforeInputShownVisible)
-                {
-                    ColorConsole.WriteColor(TextBeforeInputShown, Globals.ColorInputcClarification);
-                }
-                if (option == selectedOption)
-                {
-                    // This will print the selected option in blue
-                    string strintToPrint = "";
-                    if (Console.GetCursorPosition().Left == 0)
-                        while (strintToPrint.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrint += " ";
-                    if (VisibleSelectedArrows) strintToPrint += $">> {option.Name} <<";
-                    else strintToPrint += $"{option.Name}";
-                    while (strintToPrint.Length < MaxSelectionMenu + 3) strintToPrint += " ";
-                    ColorConsole.WriteColorLine($"{strintToPrint}", ConsoleColor.Blue);
-                }
-                else
-                {
-                    string strintToPrint = "";
-                    if (Console.GetCursorPosition().Left == 0)
-                        while (strintToPrint.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrint += " ";
-                    if (VisibleSelectedArrows) strintToPrint += $"   {option.Name}";
-                    else strintToPrint += $"{option.Name}";
-                    while (strintToPrint.Length < MaxSelectionMenu + 6) strintToPrint += " ";
-                    Console.WriteLine($"{strintToPrint}");
-                }
-            }
+
+            if (IsMultiSelect) WriteMultiSelectOptions(Options, selectedOption);
+            else WriteOptions(Options, selectedOption);
+
             if (HasOptionsBelow)
             {
                 string strintToPrintForArrowDown = "";
@@ -383,8 +377,10 @@
                 {
                     strintToPrintForArrowDown = "   ";
                 }
+                // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0) + (VisibleSelectedArrows ? 3 : 0)) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
+                // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);
             }
@@ -395,7 +391,8 @@
                 {
                     strintToPrintForArrowDown = "   ";
                 }
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
+                //while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
+                // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);
             }
@@ -405,8 +402,74 @@
                 if (MaxSelectionMenu < strintToPrint.Length) MaxSelectionMenu = strintToPrint.Length;
                 foreach (char character in strintToPrint) Console.Write(" ");
                 ColorConsole.WriteLineInfo($"\n{strintToPrint}");
-                string x = "";
-                foreach (char character in strintToPrint) Console.Write(" ");
+            }
+        }
+
+        public void WriteOptions(List<Option<T>> Options, Option<T> selectedOption)
+        {
+            foreach (Option<T> option in Options)
+            {
+                // When the selected option is in the middle of the visible Options and the TextBeforeInputShownVisible is true the TextBeforeInputShown will be shown.
+                if (Options.IndexOf(option) == (MaxVisibility / 2) && TextBeforeInputShownVisible)
+                {
+                    ColorConsole.WriteColor(TextBeforeInputShown, Globals.ColorInputcClarification);
+                }
+                if (option == selectedOption)
+                {
+                    // This will print the selected option in blue
+                    string strintToPrint = "";
+                    if (Console.GetCursorPosition().Left == 0)
+                        // To override the text shown, there must be enough spaces to override the text.
+                        while (strintToPrint.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrint += " ";
+
+                    if (VisibleSelectedArrows) strintToPrint += $">> {option.Name} <<";
+                    else strintToPrint += $"{option.Name}";
+                    // To override the text shown, there must be enough spaces to override the text.
+                    while (strintToPrint.Length < MaxSelectionMenu + 3) strintToPrint += " ";
+
+                    ColorConsole.WriteColorLine($"{strintToPrint}", ConsoleColor.Blue);
+                }
+                else
+                {
+                    string strintToPrint = "";
+                    if (Console.GetCursorPosition().Left == 0)
+                        // To override the text shown, there must be enough spaces to override the text.
+                        while (strintToPrint.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrint += " ";
+                    if (VisibleSelectedArrows) strintToPrint += $"   {option.Name}";
+                    else strintToPrint += $"{option.Name}";
+                    // To override the text shown, there must be enough spaces to override the text.
+                    while (strintToPrint.Length < MaxSelectionMenu + 6) strintToPrint += " ";
+
+                    Console.WriteLine($"{strintToPrint}");
+                }
+            }
+        }
+
+        public void WriteMultiSelectOptions(List<Option<T>> Options, Option<T> selectedOption)
+        {
+            foreach (Option<T> option in Options)
+            {
+                // When the selected option is in the middle of the visible Options and the TextBeforeInputShownVisible is true the TextBeforeInputShown will be shown.
+                if (Options.IndexOf(option) == (MaxVisibility / 2) && TextBeforeInputShownVisible)
+                {
+                    ColorConsole.WriteColor(TextBeforeInputShown, Globals.ColorInputcClarification);
+                }
+                string strintToPrint = "";
+                if (Console.GetCursorPosition().Left == 0)
+                    // To override the text shown, there must be enough spaces to override the text.
+                    while (strintToPrint.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrint += " ";
+                // When at the higlighted option, the |X| will be blue and the option name will be yellow.
+                if (option.IsSelected && option == selectedOption) strintToPrint += $"[{ConsoleColor.Blue}]|X|[/] [{ConsoleColor.Yellow}]>{option.Name}[/]";
+                // When the option is selected, the |X| will be blue.
+                else if (option.IsSelected) strintToPrint += $"[{ConsoleColor.Blue}]|X|  {option.Name}[/]";
+                // When the option is higlighted, the option name will be yellow.
+                else if (option == selectedOption) strintToPrint += $"[{ConsoleColor.Yellow}]| | >{option.Name}[/]";
+                // When the option is not selected or higlighted, the option will be printen normally.
+                else strintToPrint += $"| |  {option.Name}";
+                // To override the text shown, there must be enough spaces to override the text.
+                while (strintToPrint.Length < MaxSelectionMenu + 6) strintToPrint += " ";
+                
+                ColorConsole.WriteColorLine($"{strintToPrint}");
             }
         }
 
@@ -432,6 +495,7 @@
             }
             return optionsToShow;
         }
+
         private void KeyUp()
         {
             //When the option where the user wants to go to is higher than 0, so inside the possible Options, this will be executed.
