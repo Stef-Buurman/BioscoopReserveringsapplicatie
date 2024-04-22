@@ -186,19 +186,16 @@
                 // When the user presses the down arrow, the selected option will move down
                 if (keyinfo.Key == ConsoleKey.DownArrow)
                 {
-                    KeysInUse.Add(ConsoleKey.DownArrow);
                     KeyDown();
                 }
                 // When the user presses the up arrow, this will be executed.
                 if (keyinfo.Key == ConsoleKey.UpArrow)
                 {
-                    KeysInUse.Add(ConsoleKey.UpArrow);
                     KeyUp();
                 }
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    KeysInUse.Add(ConsoleKey.Enter);
                     Console.CursorVisible = true;
                     AllOptions[Index].Select();
                     return AllOptions[Index].Value;
@@ -206,12 +203,9 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    KeysInUse.Add(ConsoleKey.Escape);
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
-
-
             }
             while (keyinfo.Key != ConsoleKey.X);
             Console.CursorVisible = true;
