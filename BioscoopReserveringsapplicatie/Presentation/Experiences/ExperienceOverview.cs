@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class ExperienceOverview
     {
         private static ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
+        private static Func<ExperiencesModel, string[]> experienceDataExtractor = ExtractExperienceData;
 
         public static void Start()
         {
@@ -34,13 +35,13 @@ namespace BioscoopReserveringsapplicatie
             List<string> columnHeaders = new List<string>
             {
                 "Experience Naam  ",
-                "Genres ",
+                "Genres",
                 "Leeftijdscategorie",
                 "Intensiteit",
                 "Gearchiveerd"
             };
 
-            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, experiences);
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, experiences, experienceDataExtractor);
 
             foreach (ExperiencesModel experience in experiences)
             {
@@ -57,12 +58,8 @@ namespace BioscoopReserveringsapplicatie
                 {
                     genres = genres.Substring(0, 25) + "...";
                 }
-                string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1)+"} {1,-" + (columnWidths[1] + 1)+ "} {2,-" + (columnWidths[2] + 1) +"} {3,-" + (columnWidths[3] + 1) +"} {4,-" + columnWidths[4] + "}",
-                experienceName,
-                genres,
-                movie.AgeCategory.GetDisplayName(),
-                experience.Intensity,
-                experience.Archived ? "Ja" : "Nee");
+                string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) + "} {1,-" + (columnWidths[1] + 1) + "} {2,-" + (columnWidths[2] + 1) +"} {3,-" + (columnWidths[3] + 1) +"} {4,-" + columnWidths[4] + "}",
+                experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity, experience.Archived ? "Ja" : "Nee");
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
@@ -117,7 +114,6 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            // Defineer de kolom koppen voor de tabel
             List<string> columnHeaders = new List<string>
             {
                 "Experience Naam  ",
@@ -129,10 +125,10 @@ namespace BioscoopReserveringsapplicatie
 
             List<ExperiencesModel> allExperiences = ExperiencesLogic.GetExperiences();
             // Bereken de breedte voor elke kolom op basis van de koptekst en experiences
-            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences);
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences, experienceDataExtractor);
 
             // Print de kop van de tabel
-            Console.Write("".PadRight(2));
+            Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
             {
                 Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 2));
@@ -140,13 +136,27 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine();
 
             // Print de "----"-lijn tussen de kop en de data
-            Console.Write("".PadRight(2));
+            Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
             {
                 Console.Write(new string('-', columnWidths[i]));
                 if (i < columnHeaders.Count - 1) Console.Write("  ");
             }
             Console.WriteLine();
+        }
+
+        private static string[] ExtractExperienceData(ExperiencesModel experience)
+        {
+            MovieModel movie = ExperiencesLogic.GetMovieById(experience.FilmId);
+
+            string[] experienceInfo = {
+                experience.Name,
+                string.Join(",", movie.Genres),
+                movie.AgeCategory.GetDisplayName(),
+                experience.Intensity.GetDisplayName(),
+                experience.Archived ? "Ja" : "Nee"
+            };
+            return experienceInfo;
         }
     }
 }
