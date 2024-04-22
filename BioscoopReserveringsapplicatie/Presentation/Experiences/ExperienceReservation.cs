@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine("Experience reserveren\n", Globals.ExperienceColor);
 
-                Console.WriteLine("Naam experience: " + ExperienceLogic.GetById(experienceId).Name);
+                ColorConsole.WriteColorLine("[Naam experience:] " + ExperienceLogic.GetById(experienceId).Name, Globals.ExperienceColor);
 
                 if (location == 0)
                 {
@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Locatie: " + LocationLogic.GetById((int)location).Name);
+                    ColorConsole.WriteColorLine("[Locatie:] " + LocationLogic.GetById((int)location).Name, Globals.ExperienceColor);
                 }
 
                 if (dateTime == null)
@@ -60,7 +60,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Datum: " + dateTime.Value.ToString("dd-MM-yyyy"));
+                    ColorConsole.WriteColorLine("[Datum:] " + dateTime.Value.ToString("dd-MM-yyyy"), Globals.ExperienceColor);
                 }
 
                 if (dateTime.Value.TimeOfDay == TimeSpan.Zero)
@@ -86,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    Console.WriteLine("Tijd: " + dateTime.Value.ToString("HH:mm"));
+                    ColorConsole.WriteColorLine("[Tijd:] " + dateTime.Value.ToString("HH:mm"), Globals.ExperienceColor);
                 }
 
                 if (room == 0)
@@ -95,7 +95,7 @@ namespace BioscoopReserveringsapplicatie
 
                     room = scheduledExperience.RoomId;
 
-                    Console.WriteLine("Zaal: " + room);
+                    ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
                 }
 
                 var optionsConfirm = new List<Option<int>>
@@ -104,15 +104,15 @@ namespace BioscoopReserveringsapplicatie
                         {
                             int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
 
-                            if (UserLogic.CurrentUser != null)
+                            if (UserLogic.CurrentUser != null && scheduleId != 0)
                             {
                                 if (!ReservationLogic.HasUserAlreadyReservedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                                 {
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
                                     {
-                                        Console.WriteLine("\nReservering bevestigd");
+                                        ColorConsole.WriteColorLine("\nReservering bevestigd", Globals.SuccessColor);
 
-                                        Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
+                                        ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar de experience details", Globals.ColorInputcClarification);
 
                                         Console.ReadKey();
 
@@ -120,9 +120,9 @@ namespace BioscoopReserveringsapplicatie
                                     }
                                     else
                                     {
-                                        Console.WriteLine("\nReservering mislukt");
+                                        ColorConsole.WriteColorLine("\nReservering mislukt", Globals.ErrorColor);
 
-                                        Console.WriteLine("Druk op een toets om terug te gaan naar de experience details om het opnieuw te proberen.");
+                                        ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar de experience details om het opnieuw te proberen.", Globals.ColorInputcClarification);
 
                                         Console.ReadKey();
 
@@ -131,11 +131,11 @@ namespace BioscoopReserveringsapplicatie
                                 }
                                 else
                                 {
-                                    Console.WriteLine("\nReservering mislukt");
+                                    ColorConsole.WriteColorLine("\nReservering mislukt", Globals.ErrorColor);
 
-                                    Console.WriteLine("Je hebt voor deze experience al gereserveerd");
+                                    Console.WriteLine("Je hebt al voor deze experience gereserveerd");
 
-                                    Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
+                                    ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar de experience details", Globals.ColorInputcClarification);
 
                                     Console.ReadKey();
 
@@ -147,7 +147,7 @@ namespace BioscoopReserveringsapplicatie
                     new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date))
                 };
 
-                Console.WriteLine("\nReservering bevestigen");
+                ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
                 Console.WriteLine("Is de reservering correct?\n");
 
                 new SelectionMenuUtil2<int>(optionsConfirm).Create();
