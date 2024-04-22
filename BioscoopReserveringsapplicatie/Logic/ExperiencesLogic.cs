@@ -244,12 +244,5 @@
             List<ReservationModel> reservations = ReservationAccess.LoadAll();
             return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
         }
-
-        // public DateTime GetEndTimeForScheduledExperience(int scheduleId)
-        // {
-        //     List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
-        //     ScheduleModel schedule = schedules.Find(s => s.Id == scheduleId);
-        //     return schedule.ScheduledDateTime.AddMinutes(GetById(schedule.ExperienceId).TimeLength);
-        // }
     }
 }
