@@ -20,6 +20,10 @@ namespace BioscoopReserveringsapplicatie
         {
             movie = MoviesLogic.GetMovieById(movieId);
             actionWhenEscapePressed = () => MovieDetails.Start(movieId);
+            if (newTitle == "") newTitle = movie.Title;
+            if (newDescription == "") newDescription = movie.Description;
+            if (newGenres.Count == 0) newGenres = movie.Genres;
+            if (newRating == AgeCategory.Undefined) newRating = movie.AgeCategory;
 
             Console.Clear();
 
@@ -79,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             PrintEditingMovie();
             
-            newTitle = ReadLineUtil.EditValue(movie.Title, () =>
+            newTitle = ReadLineUtil.EditValue(newTitle, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
                 ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
@@ -89,7 +93,7 @@ namespace BioscoopReserveringsapplicatie
 
             while (string.IsNullOrEmpty(newTitle))
             {
-                newTitle = ReadLineUtil.EditValue(movie.Title, () =>
+                newTitle = ReadLineUtil.EditValue(newTitle, () =>
                 {
                     ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
                     ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
@@ -105,7 +109,7 @@ namespace BioscoopReserveringsapplicatie
             PrintEditingMovie();
 
             Console.Write("Voer de film beschrijving in: ");
-            newDescription = ReadLineUtil.EditValue(movie.Description, () =>
+            newDescription = ReadLineUtil.EditValue(newDescription, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
                 ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
@@ -116,7 +120,7 @@ namespace BioscoopReserveringsapplicatie
             while (string.IsNullOrEmpty(newDescription))
             {
                 Console.Write("Voer de film beschrijving in: ");
-                newDescription = ReadLineUtil.EditValue(movie.Description, () =>
+                newDescription = ReadLineUtil.EditValue(newDescription, () =>
                 {
                     ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
                     ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
@@ -124,35 +128,29 @@ namespace BioscoopReserveringsapplicatie
                 () => Start(movieId, _returnToTitle),
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
             }
-
-            newGenres = new List<Genre>();
         }
 
         private static void SelectMovieGenres(int movieId)
         {
-            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
-            while (newGenres.Count < 3)
+            Console.Clear();
+            PrintEditingMovie();
+            List<Genre> Genres = Globals.GetAllEnum<Genre>();
+            List<Option<Genre>> availableGenres = new List<Option<Genre>>();
+            List<Option<Genre>> selectedGenres = new List<Option<Genre>>();
+
+            foreach (Genre option in Genres)
             {
-                Genre genre;
-
-                Console.Clear();
-                PrintEditingMovie();
-                ColorConsole.WriteColorLine("Kies film genres", Globals.TitleColor);
-                ColorConsole.WriteColorLine("U kunt maximaal 3 verschillende genres kiezen.\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification);
-
-                genre = new SelectionMenuUtil2<Genre>(availableGenres, () => Start(movieId, _returnToDescription), () => Start(movieId, _returnToGenres)).Create();
-
-                if (genre != default && availableGenres.Contains(genre))
+                if (newGenres.Contains(option))
                 {
-                    availableGenres.Remove(genre);
-                    newGenres.Add(genre);
+                    selectedGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
-                else
-                {
-                    ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
-                }
+                availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
+
+            newGenres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+                    () => { Start(movieId, _returnToDescription); },
+                    () => { Start(movieId, _returnToGenres); }, 
+                    "Welke [genre(s)] hoort/horen bij deze film: ", selectedGenres).CreateMultiSelect();
         }
 
         private static void SelectMovieRating(int movieId)
@@ -169,8 +167,7 @@ namespace BioscoopReserveringsapplicatie
             }
             newRating = new SelectionMenuUtil2<AgeCategory>(options, 
                 () => 
-                { 
-                    newGenres = new List<Genre>(); 
+                {
                     Start(movieId, _returnToGenres); 
                 }, 
                 () => Start(movieId, _returnToRating), 
