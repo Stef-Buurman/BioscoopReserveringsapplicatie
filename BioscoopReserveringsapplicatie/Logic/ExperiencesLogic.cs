@@ -194,6 +194,12 @@
             return schedules.Find(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTime.Date == date && s.ScheduledDateTime.TimeOfDay == time);
         }
 
+        public int GetRelatedScheduledExperience(int experienceId, int? location, DateTime dateTime, int? room)
+        {
+            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            return schedules.Find(s => s.ExperienceId == experienceId && s.LocationId == location && s.ScheduledDateTime == dateTime && s.RoomId == room).Id;
+        }
+
 
         // public DateTime GetEndTimeForScheduledExperience(int scheduleId)
         // {
