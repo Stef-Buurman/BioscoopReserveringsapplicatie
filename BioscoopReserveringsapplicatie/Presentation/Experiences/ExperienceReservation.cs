@@ -4,6 +4,7 @@ namespace BioscoopReserveringsapplicatie
     {
         private static ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
         private static LocationLogic LocationLogic = new LocationLogic();
+        private static ReservationLogic ReservationLogic = new ReservationLogic();
 
         public static void Start(int experienceId, int? location = null, DateTime? date = null, TimeSpan? time = null, int? room = null)
         {
@@ -79,7 +80,9 @@ namespace BioscoopReserveringsapplicatie
 
                 if (room == null)
                 {
-                    Console.WriteLine("Room selecteren");
+                    Print();
+
+                    // Console.WriteLine("Room selecteren");
 
                     ScheduleModel scheduledExperience = ExperienceLogic.GetRoomForScheduledExperience(experienceId, location, date, time);
 
@@ -90,7 +93,21 @@ namespace BioscoopReserveringsapplicatie
 
                 var options2 = new List<Option<int>>();
 
-                options2.Add(new Option<int>(0, "Bevestig reservering", () => ExperienceReservation.Complete(experienceId, location, date, time, room)));
+                options2.Add(new Option<int>(0, "Bevestig reservering", () =>
+                {
+                    DateTime dateTime = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hours, time.Value.Minutes, time.Value.Seconds);
+
+                    if (ReservationLogic.Complete(experienceId, location, dateTime, room, UserLogic.CurrentUser.Id))
+                    {
+                        Console.WriteLine("Reservering bevestigd");
+
+                        Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
+
+                        Console.ReadKey();
+
+                        ExperienceDetails.Start(experienceId);
+                    }
+                }));
                 options2.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, date)));
 
                 new SelectionMenuUtil2<int>(options2).Create();
@@ -99,10 +116,6 @@ namespace BioscoopReserveringsapplicatie
 
         private static void ReservationOverview(int experienceId, int? location, DateTime? date, TimeSpan? time, int? room)
         {
-            Console.Clear();
-
-            // Print();
-
             Console.WriteLine("Reserveringsoverzicht");
 
             Console.WriteLine("Experience: " + ExperienceLogic.GetById(experienceId).Name);
@@ -112,19 +125,6 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Zaal: " + room.Value);
 
             Console.WriteLine();
-        }
-
-        private static void Complete(int experienceId, int? location, DateTime? date, TimeSpan? time, int? room)
-        {
-            // Logic to confirm/save reservation
-
-            Console.WriteLine("Reservering bevestigd");
-
-            Console.WriteLine("Druk op een toets om terug te gaan naar de experience details");
-
-            Console.ReadKey();
-
-            ExperienceDetails.Start(experienceId);
         }
 
         private static void Print()
