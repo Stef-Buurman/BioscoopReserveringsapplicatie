@@ -367,7 +367,6 @@
                     strintToPrintForArrowDown = "   ";
                 }
 
-                //while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);
@@ -400,7 +399,6 @@
                 {
                     strintToPrintForArrowDown = "   ";
                 }
-                //while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrintForArrowDown += " ";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
                 Console.WriteLine(strintToPrintForArrowDown);
