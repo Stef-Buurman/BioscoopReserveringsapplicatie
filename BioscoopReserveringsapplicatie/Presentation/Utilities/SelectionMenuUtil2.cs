@@ -136,6 +136,15 @@
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default) 
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
+        public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
+            : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
+
+        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
+
+        public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
+            
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
 
