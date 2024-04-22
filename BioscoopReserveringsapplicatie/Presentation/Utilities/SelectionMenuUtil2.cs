@@ -26,7 +26,6 @@
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
         private Option<T> SelectedOption;
-        private List<Option<T>> SelectedOptions;
 
         private int Top = 0;
 
@@ -263,34 +262,7 @@
             if (!IsMultiSelect) return default;
             Console.CursorVisible = false;
 
-            //if (HighLightedOptions != null)
-            //{
-            //    Index = AllOptions.IndexOf(AllOptions.Find(opt => opt.Equals(SelectedOption)));
-            //    if (Index == -1) Index = 0;
-            //    else if (Index < HalfOfMaxVisibility)
-            //    {
-            //        VisibleIndex = Index;
-            //        WriteMenu(OptionsToShow, OptionsToShow[Index]);
-            //    }
-            //    else if (Index > AllOptions.Count - HalfOfMaxVisibility)
-            //    {
-            //        AmountOptionsAbove = AllOptions.Count - MaxVisibility;
-            //        VisibleIndex = (Index + 1) - AmountOptionsAbove;
-            //        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
-            //        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
-            //    }
-            //    else if (Index >= HalfOfMaxVisibility)
-            //    {
-            //        AmountOptionsAbove = Index - HalfOfMaxVisibility + 1;
-            //        VisibleIndex = HalfOfMaxVisibility - 1;
-            //        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
-            //        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
-            //    }
-            //}
-            //else
-            //{
-                WriteMenu(OptionsToShow, OptionsToShow[Index]);
-            //}
+            WriteMenu(OptionsToShow, OptionsToShow[Index]);
 
             ConsoleKeyInfo keyinfo;
             do
@@ -301,31 +273,45 @@
                 {
                     KeyDown();
                 }
+
                 // When the user presses the up arrow, this will be executed.
                 if (keyinfo.Key == ConsoleKey.UpArrow)
                 {
                     KeyUp();
                 }
+
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     Console.CursorVisible = true;
-                    return AllOptions.Where(x => x.IsSelected).Select(x => x.Value).ToList();
+                    return AllOptions.FindAll(x => x.IsSelected).ConvertAll(x => x.Value);
                 }
+
                 if (keyinfo.Key == ConsoleKey.Spacebar)
                 {
                     AllOptions[Index].InvertSelecttion();
+                    if (Index < HalfOfMaxVisibility)
+                    {
+                        WriteMenu(OptionsToShow, OptionsToShow[Index]);
+                    }
+                    else if (Index >= AllOptions.Count - HalfOfMaxVisibility)
+                    {
+                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
+                    }
+                    else if (Index >= HalfOfMaxVisibility)
+                    {
+                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
+                    }
                 }
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);
             Console.CursorVisible = true;
-            return default;
+            return new List<T>();
         }
 
         public List<T> CreateMultiSelect()
