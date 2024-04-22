@@ -21,13 +21,13 @@ namespace BioscoopReserveringsapplicatie
             return _reservations.Find(s => s.Id == id);
         }
 
-        public bool Complete(int experienceId, int? locationId, DateTime? datetime, int? roomId, int userId)
+        public bool Complete(int scheduleId, int userId)
         {
             GetAll();
 
-            if (experienceId != 0 && locationId != null && datetime != null && roomId != null)
+            if (scheduleId != 0 && userId != 0)
             {
-                ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), experienceId, locationId, datetime, roomId, userId);
+                ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId);
 
                 if (this.Validate(reservation))
                 {
