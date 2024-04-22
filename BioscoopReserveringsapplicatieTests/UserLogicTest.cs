@@ -325,21 +325,14 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Edit_Validation()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsTrue(userLogic.Edit(6, "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
-        }
-
-        [TestMethod]
-        public void Incorrect_Id_Edit_validation()
-        {
-            UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.Edit(999999999, "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsTrue(userLogic.Edit( "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
         }
 
         [TestMethod]
         public void Incorrect_Name_Edit_validation()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.Edit(6, "   ", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "   ", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
         }
 
         [DataRow("")]
@@ -350,14 +343,14 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Email_Edit_validation(string email)
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.Edit(6, "Tim van Eert", "   ", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "Tim van Eert", "   ", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
         }
 
         [TestMethod]
         public void Incorrect_Genre_Edit_validation()
         {
             UserLogic userLogic = Initialize();
-            Assert.IsFalse(userLogic.Edit(6, "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "Tim van Eert", "tim@mail.com", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6));
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------
