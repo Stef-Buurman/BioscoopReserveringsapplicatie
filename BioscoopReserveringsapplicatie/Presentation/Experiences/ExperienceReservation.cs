@@ -150,7 +150,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Experience: " + ExperienceLogic.GetById(experienceId).Name);
             Console.WriteLine("Locatie: " + LocationLogic.GetById((int)location).Name);
             Console.WriteLine("Datum: " + date.Value.ToString("dd-MM-yyyy"));
-            Console.WriteLine("Tijd: " + time.Value.ToString("HH:mm"));
+            Console.WriteLine("Tijd: " + time.Value);
             Console.WriteLine("Zaal: " + room.Value);
 
             Console.WriteLine();
