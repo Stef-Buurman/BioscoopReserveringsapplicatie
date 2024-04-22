@@ -111,29 +111,20 @@ namespace BioscoopReserveringsapplicatie
 
         private static void SelectMovieGenres()
         {
-            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
-            while (genres.Count < 3)
+            Console.Clear();
+            PrintAddingMovie();
+            List<Genre> Genres = Globals.GetAllEnum<Genre>();
+            List<Option<Genre>> availableGenres = new List<Option<Genre>>();
+
+            foreach (Genre option in Genres)
             {
-                Genre genre;
-
-                Console.Clear();
-                PrintAddingMovie();
-                ColorConsole.WriteColorLine("Kies film genres", Globals.TitleColor);
-                ColorConsole.WriteColorLine("U kunt maximaal 3 verschillende genres kiezen.\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification);
-
-                genre = new SelectionMenuUtil2<Genre>(availableGenres,() => Start(_returnToDescription), () => Start(_returnToGenres)).Create();
-
-                if (genre != default && availableGenres.Contains(genre))
-                {
-                    availableGenres.Remove(genre);
-                    genres.Add(genre);
-                }
-                else
-                {
-                    ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
-                }
+                availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
+
+            genres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+                    () => { Start(_returnToDescription); },
+                    () => { Start(_returnToGenres);},
+                    "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect();
         }
 
         private static void SelectMovieRating()
@@ -163,7 +154,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine($"[Beschrijving Film:] {description}", Globals.MovieColor);
             }
-            if(genres.Count >= 1)
+            if(genres != null && genres.Count >= 1)
             {
                 ColorConsole.WriteColorLine($"[Genres Film:] {string.Join(", ", genres)}", Globals.MovieColor);
             }
