@@ -220,10 +220,9 @@
             Thread.Sleep(2000);
         }
 
-        public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public bool Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
-            UserModel? user = GetById(id);
-            if (user != null)
+            if (CurrentUser != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
@@ -234,15 +233,15 @@
                 }
                 else
                 {
-                    user.FullName = newName;
+                    CurrentUser.FullName = newName;
                     newEmail = newEmail.ToLower();
-                    user.EmailAddress = newEmail;
-                    user.Genres = newGenres;
-                    user.Intensity = newIntensity;
-                    user.AgeCategory = newAgeCategory;
+                    CurrentUser.EmailAddress = newEmail;
+                    CurrentUser.Genres = newGenres;
+                    CurrentUser.Intensity = newIntensity;
+                    CurrentUser.AgeCategory = newAgeCategory;
 
-                    UpdateList(user);
-                    CurrentUser = user;
+                    UpdateList(CurrentUser);
+                    CurrentUser = CurrentUser;
                     return true;
                 }
             }
