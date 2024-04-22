@@ -194,7 +194,7 @@
             {
                 Index = AllOptions.IndexOf(AllOptions.Find(opt => opt.Equals(SelectedOption)));
                 if (Index == -1) Index = 0;
-                else if (Index < HalfOfMaxVisibility)
+                else if (Index < HalfOfMaxVisibility || AllOptions.Count < MaxVisibility)
                 {
                     VisibleIndex = Index;
                     WriteMenu(OptionsToShow, OptionsToShow[Index]);
