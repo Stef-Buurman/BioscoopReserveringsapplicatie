@@ -38,10 +38,6 @@
         private string TextBeforeInputShown = "";
         private bool TextBeforeInputShownVisible = false;
 
-        private bool HasCustomKeyAction = false;
-        private Action? CustomKeyAction;
-        private ConsoleKey? CustomKey;
-
         private bool VisibleSelectedArrows;
         private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, 
             bool visibleSelectedArrows = true, string textBeforeInputShown = default, Option<T> selectedOption = default)
@@ -77,18 +73,6 @@
             {
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
-            }
-            if(hasCustomKeyAction && customKey != ConsoleKey.NoName && customKeyAction != null)
-            {
-                HasCustomKeyAction = hasCustomKeyAction;
-                CustomKey = customKey;
-                CustomKeyAction = customKeyAction;
-            }
-            else
-            {
-                HasCustomKeyAction = false;
-                CustomKey = ConsoleKey.NoName;
-                CustomKeyAction = () => { };
             }
         }
 
