@@ -69,7 +69,7 @@ namespace BioscoopReserveringsapplicatie
 
         public List<LocationModel> GetLocationsForScheduledExperienceById(int id)
         {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            List<ScheduleModel> schedules = SheduleLogic.GetAll();
             List<LocationModel> locations = new List<LocationModel>();
 
             foreach (ScheduleModel schedule in schedules)
