@@ -3,12 +3,22 @@ namespace BioscoopReserveringsapplicatie
     class LocationLogic
     {
         private List<LocationModel> _Locations;
+        private IDataAccess<LocationModel> _DataAccess = new DataAccess<LocationModel>();
+        private ScheduleLogic SheduleLogic;
+        public LocationLogic(IDataAccess<LocationModel> dataAccess = null, IDataAccess<ScheduleModel> sheduleAccess = null)
+        {
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<LocationModel>();
 
-        public LocationLogic() => _Locations = LocationAccess.LoadAll();
+            if (sheduleAccess != null) SheduleLogic = new ScheduleLogic(sheduleAccess);
+            else SheduleLogic = new ScheduleLogic();
 
-        public List<LocationModel> GetAll() => _Locations = LocationAccess.LoadAll();
+            _Locations = _DataAccess.LoadAll();
+        }
 
-        public LocationModel? GetById(int id) => LocationAccess.LoadAll().Find(i => i.Id == id);
+        public List<LocationModel> GetAll() => _Locations = _DataAccess.LoadAll();
+
+        public LocationModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
         public void Add(string name)
         {
@@ -34,12 +44,12 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _Locations.Add(location);
             }
-            LocationAccess.WriteAll(_Locations);
+            _DataAccess.WriteAll(_Locations);
         }
 
         public List<LocationModel> GetLocationsForScheduledExperienceById(int id)
         {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            List<ScheduleModel> schedules = SheduleLogic.GetAll();
             List<LocationModel> locations = new List<LocationModel>();
 
             foreach (ScheduleModel schedule in schedules)

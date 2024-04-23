@@ -3,15 +3,18 @@ namespace BioscoopReserveringsapplicatie
     public class MoviesLogic
     {
         private List<MovieModel> _Movies;
-
-        public MoviesLogic()
+        private IDataAccess<MovieModel> _DataAccess = new DataAccess<MovieModel>();
+        public MoviesLogic(IDataAccess<MovieModel> dataAccess = null)
         {
-            _Movies = MoviesAccess.LoadAll();
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<MovieModel>();
+
+            _Movies = _DataAccess.LoadAll();
         }
 
         public List<MovieModel> GetAllMovies()
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies;
         }
 
@@ -107,12 +110,12 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _Movies.Add(movie);
             }
-            MoviesAccess.WriteAll(_Movies);
+            _DataAccess.WriteAll(_Movies);
         }
 
         public MovieModel GetMovieById(int id)
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies.Find(i => i.Id == id);
         }
 
@@ -132,13 +135,13 @@ namespace BioscoopReserveringsapplicatie
 
         public List<MovieModel> GetAllArchivedMovies()
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies.FindAll(m => m.Archived);
         }
 
         public List<MovieModel> GetAllActiveMovies()
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies.FindAll(m => !m.Archived);
         }
     }
