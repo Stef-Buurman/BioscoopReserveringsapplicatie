@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class MovieOverview
     {
         static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static Func<MovieModel, string[]> movieDataExtractor = ExtractMovieData;
 
         public static void Start()
         {
@@ -30,16 +31,48 @@ namespace BioscoopReserveringsapplicatie
         private static void ShowMovies(List<MovieModel> movies)
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:", Globals.TitleColor);
+            List<Option<int>> options = new List<Option<int>>();
 
-            List<Option<string>> options = new List<Option<string>>();
+            List<string> columnHeaders = new List<string>
+            {
+                "Film Naam",
+                "Genres",
+                "Kijkwijzer",
+                "Gearchiveerd"
+            };
+
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, movies, movieDataExtractor);
 
             foreach (MovieModel movie in movies)
             {
-                options.Add(new Option<string>(movie.Title, () => ShowMovieDetails(movie.Id)));
-            }
+                string movieTitle = movie.Title;
+                if (movieTitle.Length > 25)
+                {
+                    movieTitle = movieTitle.Substring(0, 25) + "...";
+                }
 
-            new SelectionMenuUtil2<string>(options, () => AdminMenu.Start(), () => ShowMovies(movies)).Create();
+                string genres = string.Join(",", movie.Genres);
+                if (genres.Length > 25)
+                {
+                    genres = genres.Substring(0, 25) + "...";
+                }
+                string movieInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) +"} {3,-" + columnWidths[3] +"}",
+                movieTitle, genres, movie.AgeCategory.GetDisplayName(), movie.Archived ? "Ja" : "Nee");
+                options.Add(new Option<int>(movie.Id, movieInfo));
+            }
+            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:", Globals.TitleColor);
+            Print();
+            int movieId = new SelectionMenuUtil2<int>(options,
+                () =>
+                {
+                    AdminMenu.Start();
+                }, 
+                () => 
+                {
+                    ShowMovies(movies);
+                }).Create();
+            Console.Clear();
+            ShowMovieDetails(movieId);
         }
 
         private static void ShowAllArchivedMovies()
@@ -74,6 +107,45 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Terug naar movie overzicht...");
             Thread.Sleep(1500);
             Start();
+        }
+
+        private static void Print()
+        {
+            List<string> columnHeaders = new List<string>
+            {
+                "Film Naam",
+                "Genres",
+                "Kijkwijzer",
+                "Gearchiveerd"
+            };
+
+            List<MovieModel> allMovies = MoviesLogic.GetAllMovies();
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allMovies, movieDataExtractor);
+
+            Console.Write("".PadRight(3));
+            for (int i = 0; i < columnHeaders.Count; i++)
+            {
+                Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 3));
+            }
+            Console.WriteLine();
+
+            Console.Write("".PadRight(3));
+            for (int i = 0; i < columnHeaders.Count; i++)
+            {
+                Console.Write("".PadRight(columnWidths[i], '-').PadRight(columnWidths[i] + 3));
+            }
+            Console.WriteLine();
+        }
+
+        private static string[] ExtractMovieData(MovieModel movie)
+        {
+            string[] movieInfo = {
+                movie.Title,
+                string.Join(",", movie.Genres),
+                movie.AgeCategory.GetDisplayName(),
+                movie.Archived ? "Ja" : "Nee"
+            };
+            return movieInfo;
         }
     }
 }
