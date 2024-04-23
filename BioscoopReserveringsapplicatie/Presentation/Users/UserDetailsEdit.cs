@@ -72,7 +72,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    if(_userLogic.Edit(UserLogic.CurrentUser.Id, _newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
+                    if(_userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                         Thread.Sleep(2000);
@@ -329,6 +329,66 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
             }
+        }
+        public static void ChangePassword()
+        {
+            bool validOldPassword = false;
+            while (!validOldPassword)
+            {
+                string oldPassword = ReadLineUtil.EnterValue(true, () =>
+                {
+                    ColorConsole.WriteColor("Voer uw [oude wachtwoord] in: ", Globals.ColorInputcClarification);
+                }, UserDetails.Start, true);
+                validOldPassword = _userLogic.ValidateOldPassword(oldPassword);
+
+                if (!validOldPassword)
+                {
+                    ColorConsole.WriteColorLine("Oud wachtwoord is onjuist.", Globals.ErrorColor);
+                }
+            }
+            string newPassword = "";
+            bool validNewPassword = false;
+            while (!validNewPassword)
+            {
+                newPassword = ReadLineUtil.EnterValue(true, () =>
+                {
+                    ColorConsole.WriteColor("Voer uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
+                }, UserDetails.Start, true);
+                validNewPassword = _userLogic.ValidatePassword(newPassword);
+
+                if (!validNewPassword)
+                {
+                    if (newPassword.Length < 5)
+                    {
+                        ColorConsole.WriteColorLine("Wachtwoord moet minimaal 5 tekens bevatten.", Globals.ErrorColor);
+                    }
+                }
+            }
+
+            bool validConfirmPassword = false;
+            while (!validConfirmPassword)
+            {
+                string confirmPassword = ReadLineUtil.EnterValue(true, () =>
+                {
+                    ColorConsole.WriteColor("Bevestig uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
+                }, UserDetails.Start, true);
+                validConfirmPassword = newPassword == confirmPassword;
+                if (!validConfirmPassword)
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
+                    Thread.Sleep(2000);
+                }
+            }
+
+            if (_userLogic != null)
+            {
+                _userLogic.EditPassword(newPassword);
+            }
+            Console.Clear();
+            ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
+            Thread.Sleep(4000);
+            UserDetails.Start();
         }
     }
 }

@@ -68,10 +68,7 @@
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
                 email = "";
             }
-            if (password == "")
-            {
-                errorMessage += $"{RegisterNewUserErrorMessages.PasswordEmpty}\n";
-            }
+
             if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
@@ -220,10 +217,9 @@
             Thread.Sleep(2000);
         }
 
-        public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public bool Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
-            UserModel? user = GetById(id);
-            if (user != null)
+            if (CurrentUser != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
@@ -234,15 +230,15 @@
                 }
                 else
                 {
-                    user.FullName = newName;
+                    CurrentUser.FullName = newName;
                     newEmail = newEmail.ToLower();
-                    user.EmailAddress = newEmail;
-                    user.Genres = newGenres;
-                    user.Intensity = newIntensity;
-                    user.AgeCategory = newAgeCategory;
+                    CurrentUser.EmailAddress = newEmail;
+                    CurrentUser.Genres = newGenres;
+                    CurrentUser.Intensity = newIntensity;
+                    CurrentUser.AgeCategory = newAgeCategory;
 
-                    UpdateList(user);
-                    CurrentUser = user;
+                    UpdateList(CurrentUser);
+                    CurrentUser = CurrentUser;
                     return true;
                 }
             }
@@ -252,6 +248,39 @@
                 Thread.Sleep(3000);
                 return false;
             }
+        }
+
+        public bool ValidatePassword(string password)
+        {
+            if (password.Length < 5)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool EditPassword(string newPassword)
+        {
+            if (CurrentUser != null && ValidatePassword(newPassword))
+            {
+                CurrentUser.Password = newPassword;
+                UpdateList(CurrentUser);
+                return true;
+            }
+            return false;
+        }
+
+        public bool ValidateOldPassword(string oldPassword)
+        {
+            if (CurrentUser != null)
+            {
+                if (oldPassword == CurrentUser.Password)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
