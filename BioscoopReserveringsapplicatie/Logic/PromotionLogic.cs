@@ -3,27 +3,30 @@ namespace BioscoopReserveringsapplicatie
     public class PromotionLogic
     {
         private List<PromotionModel> _promotions = new();
-
-        public PromotionLogic()
+        private IDataAccess<PromotionModel> _DataAccess = new DataAccess<PromotionModel>();
+        public PromotionLogic(IDataAccess<PromotionModel> dataAccess = null)
         {
-            _promotions = PromotionAccess.LoadAll();
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<PromotionModel>();
+
+            _promotions = _DataAccess.LoadAll();
         }
 
         public List<PromotionModel> GetAll()
         {
-            _promotions = PromotionAccess.LoadAll();
+            _promotions = _DataAccess.LoadAll();
             return _promotions;
         }
 
         public PromotionModel? GetById(int id)
         {
-            _promotions = PromotionAccess.LoadAll();
+            _promotions = _DataAccess.LoadAll();
             return _promotions.Find(s => s.Id == id);
         }
 
         public PromotionModel? GetByStatus(bool status)
         {
-            _promotions = PromotionAccess.LoadAll();
+            _promotions = _DataAccess.LoadAll();
             return _promotions.Find(s => s.Status == status);
         }
 
@@ -100,7 +103,7 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _promotions.Add(promotion);
             }
-            PromotionAccess.WriteAll(_promotions);
+            _DataAccess.WriteAll(_promotions);
         }
     }
 }

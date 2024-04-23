@@ -16,8 +16,7 @@ namespace BioscoopReserveringsapplicatie
             promotionRepositoryMock.LoadAll().Returns(promotions);
             promotionRepositoryMock.WriteAll(Arg.Any<List<PromotionModel>>());
 
-            PromotionAccess.NewDataAccess(promotionRepositoryMock);
-            return new PromotionLogic();
+            return new PromotionLogic(promotionRepositoryMock);
         }
 
         // Title ------------------------------------------------------------------------------------------------------------------

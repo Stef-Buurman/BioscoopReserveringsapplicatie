@@ -9,12 +9,13 @@
         //private set, so this can only be set by the class itself
         static public UserModel? CurrentUser { get; private set; }
 
-        public UserLogic()
+        private IDataAccess<UserModel> _DataAccess = new DataAccess<UserModel>();
+        public UserLogic(IDataAccess<UserModel> dataAccess = null)
         {
-            //if (userAccess != null) UserAccess = userAccess;
-            //else UserAccess = new UserAccess();
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<UserModel>();
 
-            _accounts = UserAccess.LoadAll();
+            _accounts = _DataAccess.LoadAll();
         }
 
 
@@ -33,8 +34,8 @@
                 //add new model
                 _accounts.Add(acc);
             }
-            UserAccess.WriteAll(_accounts);
-            _accounts = UserAccess.LoadAll();
+            _DataAccess.WriteAll(_accounts);
+            _accounts = _DataAccess.LoadAll();
         }
 
         public UserModel? GetById(int id)
@@ -88,7 +89,7 @@
             {
                 newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
-                _accounts = UserAccess.LoadAll();
+                _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
