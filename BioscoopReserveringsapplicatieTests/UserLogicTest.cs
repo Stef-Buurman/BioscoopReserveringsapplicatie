@@ -21,8 +21,7 @@ namespace BioscoopReserveringsapplicatieTests
             userRepositoryMock.LoadAll().Returns(users);
             userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
 
-            UserAccess.NewDataAccess(userRepositoryMock);
-            return new UserLogic();
+            return new UserLogic(userRepositoryMock);
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------

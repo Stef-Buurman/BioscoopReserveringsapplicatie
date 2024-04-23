@@ -16,8 +16,7 @@ namespace BioscoopReserveringsapplicatieTests
             movieRepositoryMock.LoadAll().Returns(movies);
             movieRepositoryMock.WriteAll(Arg.Any<List<MovieModel>>());
 
-            MoviesAccess.NewDataAccess(movieRepositoryMock);
-            return new MoviesLogic();
+            return new MoviesLogic(movieRepositoryMock);
         }
 
         // Title ------------------------------------------------------------------------------------------------------------------
