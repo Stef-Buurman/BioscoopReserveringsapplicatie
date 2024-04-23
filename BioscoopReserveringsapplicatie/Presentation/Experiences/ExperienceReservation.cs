@@ -42,9 +42,9 @@ namespace BioscoopReserveringsapplicatie
                 {
                     List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceDatesForLocationById(experienceId, location);
 
-                    schedules.Sort((x, y) => x.ScheduledDateTime.CompareTo(y.ScheduledDateTime));
+                    schedules.Sort((x, y) => x.ScheduledDateTimeStart.CompareTo(y.ScheduledDateTimeStart));
 
-                    schedules = schedules.DistinctBy(s => s.ScheduledDateTime.Date).ToList();
+                    schedules = schedules.DistinctBy(s => s.ScheduledDateTimeStart.Date).ToList();
 
                     ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [datums]:", Globals.ColorInputcClarification);
 
@@ -52,7 +52,7 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTime.Date.ToString("dd-MM-yyyy"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTime.Date)));
+                        options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId)));
 
@@ -67,7 +67,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     List<ScheduleModel> schedules = ScheduleLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, dateTime.Value.Date);
 
-                    schedules.Sort((x, y) => x.ScheduledDateTime.CompareTo(y.ScheduledDateTime));
+                    schedules.Sort((x, y) => x.ScheduledDateTimeStart.CompareTo(y.ScheduledDateTimeStart));
 
                     ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [tijden]:", Globals.ColorInputcClarification);
 
@@ -75,9 +75,9 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        if (schedule.ScheduledDateTime.Date == dateTime.Value.Date)
+                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date)
                         {
-                            options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTime.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTime)));
+                            options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart)));
                         }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location)));
