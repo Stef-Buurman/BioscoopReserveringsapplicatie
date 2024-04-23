@@ -9,7 +9,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int experienceId)
         {
             Console.Clear();
-            ExperiencesModel experience = ExperienceLogic.GetById(experienceId);
+            ExperienceModel experience = ExperienceLogic.GetById(experienceId);
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
