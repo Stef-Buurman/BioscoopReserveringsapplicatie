@@ -68,10 +68,7 @@
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
                 email = "";
             }
-            if (password == "")
-            {
-                errorMessage += $"{RegisterNewUserErrorMessages.PasswordEmpty}\n";
-            }
+
             if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
@@ -256,23 +253,15 @@
         public bool ValidatePassword(string password)
         {
             if (password.Length < 5)
-            {  
-                ColorConsole.WriteColorLine("Wachtwoord moet minimaal 5 tekens bevatten.", Globals.ErrorColor);
-                Thread.Sleep(3000);
-                return false;
-            }
-            if (password == "")
             {
-                ColorConsole.WriteColorLine("Wachtwoord mag niet leeg zijn.", Globals.ErrorColor);
-                Thread.Sleep(3000);
                 return false;
             }
+
             return true;
         }
 
         public bool EditPassword(string newPassword)
         {
-
             if (CurrentUser != null && ValidatePassword(newPassword))
             {
                 CurrentUser.Password = newPassword;
@@ -283,8 +272,7 @@
         }
 
         public bool ValidateOldPassword(string oldPassword)
-        { 
-            
+        {
             if (CurrentUser != null)
             {
                 if (oldPassword == CurrentUser.Password)
@@ -292,8 +280,6 @@
                     return true;
                 }
             }
-            ColorConsole.WriteColorLine("Oud wachtwoord is onjuist.", Globals.ErrorColor);
-            Thread.Sleep(3000);
             return false;
         }
     }
