@@ -2,23 +2,34 @@
 {
     public class ExperiencesLogic
     {
-        private List<ExperiencesModel> _experiences;
+        private List<ExperienceModel> _experiences;
+        private IDataAccess<ExperienceModel> _DataAccess = new DataAccess<ExperienceModel>();
+        private static MoviesLogic MoviesLogic;
+        private static ScheduleLogic ScheduleLogic;
 
-        private static MoviesLogic MoviesLogic = new MoviesLogic();
-        private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
-
-        public ExperiencesLogic()
+        public ExperiencesLogic(IDataAccess<ExperienceModel> experienceAccess = null,
+            IDataAccess<MovieModel> movieAccess = null,
+            IDataAccess<ScheduleModel> scheduleAccess = null)
         {
-            _experiences = ExperiencesAccess.LoadAll();
+            if (experienceAccess != null) _DataAccess = experienceAccess;
+            else _DataAccess = new DataAccess<ExperienceModel>();
+
+            if (movieAccess != null) MoviesLogic = new MoviesLogic(movieAccess);
+            else MoviesLogic = new MoviesLogic();
+
+            if (scheduleAccess != null) ScheduleLogic = new ScheduleLogic(scheduleAccess);
+            else ScheduleLogic = new ScheduleLogic();
+
+            _experiences = _DataAccess.LoadAll();
         }
 
-        public ExperiencesModel GetById(int id)
+        public ExperienceModel GetById(int id)
         {
-            _experiences = ExperiencesAccess.LoadAll();
+            _experiences = _DataAccess.LoadAll();
             return _experiences.Find(i => i.Id == id);
         }
 
-        public bool ValidateExperience(ExperiencesModel experience)
+        public bool ValidateExperience(ExperienceModel experience)
         {
             if (experience == null) return false;
             else if (!ValidateExperienceName(experience.Name)) return false;
@@ -33,7 +44,7 @@
         public bool ValidateMovieId(int filmId) => MoviesLogic.GetMovieById(filmId) == null ? false : true;
         public bool ValidateExperienceArchive(bool archived) => true;
 
-        public bool AddExperience(ExperiencesModel experience)
+        public bool AddExperience(ExperienceModel experience)
         {
             if (experience == null || !this.ValidateExperience(experience))
             {
@@ -41,23 +52,23 @@
             }
             if (this.GetById(experience.Id) == null) experience.Id = IdGenerator.GetNextId(_experiences);
             _experiences.Add(experience);
-            ExperiencesAccess.WriteAll(_experiences);
+            _DataAccess.WriteAll(_experiences);
             return true;
         }
 
-        public List<ExperiencesModel> GetExperiences()
+        public List<ExperienceModel> GetExperiences()
         {
-            _experiences = ExperiencesAccess.LoadAll();
+            _experiences = _DataAccess.LoadAll();
             return _experiences;
         }
 
-        public List<ExperiencesModel> GetExperiencesByUserPreferences(UserModel currentUser)
+        public List<ExperienceModel> GetExperiencesByUserPreferences(UserModel currentUser)
         {
             GetExperiences();
 
-            List<ExperiencesModel> experiences = new List<ExperiencesModel>();
+            List<ExperienceModel> experiences = new List<ExperienceModel>();
 
-            foreach (ExperiencesModel experience in _experiences)
+            foreach (ExperienceModel experience in _experiences)
             {
                 if (experience.Archived) continue;
 
@@ -83,7 +94,7 @@
 
             if (ValidateExperienceName(name) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
             {
-                ExperiencesModel experience = GetById(id);
+                ExperienceModel experience = GetById(id);
                 experience.Name = name;
                 experience.Intensity = intensity;
                 experience.FilmId = filmId;
@@ -95,7 +106,7 @@
 
             return false;
         }
-        public void UpdateList(ExperiencesModel experience)
+        public void UpdateList(ExperienceModel experience)
         {
             //Find if there is already an model with the same id
             int index = _experiences.FindIndex(s => s.Id == experience.Id);
@@ -110,16 +121,16 @@
                 //add new model
                 _experiences.Add(experience);
             }
-            ExperiencesAccess.WriteAll(_experiences);
+            _DataAccess.WriteAll(_experiences);
         }
 
         public void ArchiveExperience(int id)
         {
-            ExperiencesModel experience = GetById(id);
+            ExperienceModel experience = GetById(id);
             if (experience != null)
             {
                 experience.Archived = true;
-                ExperiencesAccess.WriteAll(_experiences);
+                _DataAccess.WriteAll(_experiences);
             }
             else
             {
@@ -127,15 +138,15 @@
             }
         }
 
-        public List<ExperiencesModel> GetAllArchivedExperiences()
+        public List<ExperienceModel> GetAllArchivedExperiences()
         {
-            _experiences = ExperiencesAccess.LoadAll();
+            _experiences = _DataAccess.LoadAll();
             return _experiences.FindAll(e => e.Archived);
         }
 
-        public List<ExperiencesModel> GetAllActiveExperiences()
+        public List<ExperienceModel> GetAllActiveExperiences()
         {
-            _experiences = ExperiencesAccess.LoadAll();
+            _experiences = _DataAccess.LoadAll();
             return _experiences.FindAll(e => !e.Archived);
         }
 

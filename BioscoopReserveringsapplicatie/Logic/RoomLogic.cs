@@ -3,14 +3,20 @@ namespace BioscoopReserveringsapplicatie
     class RoomLogic
     {
         private List<RoomModel> _Rooms;
+        private IDataAccess<RoomModel> _DataAccess = new DataAccess<RoomModel>();
+        public RoomLogic(IDataAccess<RoomModel> dataAccess = null)
+        {
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<RoomModel>();
 
-        public RoomLogic() => _Rooms = RoomAccess.LoadAll();
+            _Rooms = _DataAccess.LoadAll();
+        }
         
-        public List<RoomModel> GetAll() => _Rooms = RoomAccess.LoadAll();
+        public List<RoomModel> GetAll() => _Rooms = _DataAccess.LoadAll();
 
-        public RoomModel? GetById(int id) => RoomAccess.LoadAll().Find(i => i.Id == id);
+        public RoomModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
-        public List<RoomModel> GetByLocationId(int id) => RoomAccess.LoadAll().FindAll(i => i.LocationId == id);
+        public List<RoomModel> GetByLocationId(int id) => _DataAccess.LoadAll().FindAll(i => i.LocationId == id);
 
         public void Add(int locationId, int roomNumber, int capacity)
         {
@@ -36,7 +42,7 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _Rooms.Add(room);
             }
-            RoomAccess.WriteAll(_Rooms);
+            _DataAccess.WriteAll(_Rooms);
         }
     }
 }

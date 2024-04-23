@@ -9,18 +9,24 @@ namespace BioscoopReserveringsapplicatie
         private static RoomLogic roomLogic = new RoomLogic();
 
         private List<ScheduleModel> _Schedules;
+        private IDataAccess<ScheduleModel> _DataAccess = new DataAccess<ScheduleModel>();
+        public ScheduleLogic(IDataAccess<ScheduleModel> dataAccess = null)
+        {
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<ScheduleModel>();
 
-        public ScheduleLogic() => _Schedules = ScheduleAccess.LoadAll();
+            _Schedules = _DataAccess.LoadAll();
+        }
 
-        public List<ScheduleModel> GetAll() => _Schedules = ScheduleAccess.LoadAll();
+        public List<ScheduleModel> GetAll() => _Schedules = _DataAccess.LoadAll();
 
-        public ScheduleModel? GetById(int id) => ScheduleAccess.LoadAll().Find(i => i.Id == id);
+        public ScheduleModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
-        public List<ScheduleModel> GetByLocationId(int id) => ScheduleAccess.LoadAll().FindAll(i => i.LocationId == id);
+        public List<ScheduleModel> GetByLocationId(int id) => _DataAccess.LoadAll().FindAll(i => i.LocationId == id);
 
-        public List<ScheduleModel> GetByRoomId(int id) => ScheduleAccess.LoadAll().FindAll(i => i.RoomId == id);
+        public List<ScheduleModel> GetByRoomId(int id) => _DataAccess.LoadAll().FindAll(i => i.RoomId == id);
 
-        public List<ScheduleModel> GetByExperienceId(int id) => ScheduleAccess.LoadAll().FindAll(i => i.ExperienceId == id);
+        public List<ScheduleModel> GetByExperienceId(int id) => _DataAccess.LoadAll().FindAll(i => i.ExperienceId == id);
 
         public bool Add(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
@@ -85,12 +91,12 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _Schedules.Add(schedule);
             }
-            ScheduleAccess.WriteAll(_Schedules);
+            _DataAccess.WriteAll(_Schedules);
         }
 
         public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int locationId)
         {
-            List<ScheduleModel> schedules = ScheduleAccess.LoadAll();
+            List<ScheduleModel> schedules = _DataAccess.LoadAll();
             return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
         }
 

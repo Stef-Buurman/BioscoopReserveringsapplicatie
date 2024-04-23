@@ -3,21 +3,24 @@ namespace BioscoopReserveringsapplicatie
     public class ReservationLogic
     {
         private List<ReservationModel> _reservations = new();
-
-        public ReservationLogic()
+        private IDataAccess<ReservationModel> _DataAccess = new DataAccess<ReservationModel>();
+        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
         {
-            _reservations = ReservationAccess.LoadAll();
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<ReservationModel>();
+
+            _reservations = _DataAccess.LoadAll();
         }
 
         public List<ReservationModel> GetAll()
         {
-            _reservations = ReservationAccess.LoadAll();
+            _reservations = _DataAccess.LoadAll();
             return _reservations;
         }
 
         public ReservationModel? GetById(int id)
         {
-            _reservations = ReservationAccess.LoadAll();
+            _reservations = _DataAccess.LoadAll();
             return _reservations.Find(s => s.Id == id);
         }
 
@@ -61,12 +64,12 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _reservations.Add(reservation);
             }
-            ReservationAccess.WriteAll(_reservations);
+            _DataAccess.WriteAll(_reservations);
         }
 
         public bool HasUserAlreadyReservedScheduledExperience(int scheduleId, int userId)
         {
-            List<ReservationModel> reservations = ReservationAccess.LoadAll();
+            List<ReservationModel> reservations = _DataAccess.LoadAll();
             return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
         }
     }
