@@ -317,68 +317,6 @@
             return new List<T>();
         }
 
-        public List<T> CreateMultiSelect()
-        {
-            Index = 0;
-            VisibleIndex = 0;
-            Top = Console.GetCursorPosition().Top;
-            if (AllOptions.Count == 0) return default;
-            if (CanBeEscaped && EscapeAction == null) return default;
-            if (!IsMultiSelect) return default;
-            Console.CursorVisible = false;
-
-            WriteMenu(OptionsToShow, OptionsToShow[Index]);
-
-            ConsoleKeyInfo keyinfo;
-            do
-            {
-                keyinfo = Console.ReadKey(true);
-                // When the user presses the down arrow, the selected option will move down
-                if (keyinfo.Key == ConsoleKey.DownArrow)
-                {
-                    KeyDown();
-                }
-
-                // When the user presses the up arrow, this will be executed.
-                if (keyinfo.Key == ConsoleKey.UpArrow)
-                {
-                    KeyUp();
-                }
-
-                // When the user presses the enter key, the selected option will be executed
-                if (keyinfo.Key == ConsoleKey.Enter)
-                {
-                    Console.CursorVisible = true;
-                    return AllOptions.FindAll(x => x.IsSelected).ConvertAll(x => x.Value);
-                }
-
-                if (keyinfo.Key == ConsoleKey.Spacebar)
-                {
-                    AllOptions[Index].InvertSelecttion();
-                    if (Index < HalfOfMaxVisibility)
-                    {
-                        WriteMenu(OptionsToShow, OptionsToShow[Index]);
-                    }
-                    else if (Index >= AllOptions.Count - HalfOfMaxVisibility)
-                    {
-                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
-                    }
-                    else if (Index >= HalfOfMaxVisibility)
-                    {
-                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
-                    }
-                }
-
-                if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
-                {
-                    ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
-                }
-            }
-            while (keyinfo.Key != ConsoleKey.X);
-            Console.CursorVisible = true;
-            return new List<T>();
-        }
-
         private void SetCursorPosition(string textToShowEscapability)
         {
             if (CanBeEscaped && !EscapabilityVisible)
