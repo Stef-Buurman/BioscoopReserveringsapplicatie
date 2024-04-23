@@ -3,7 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class ExperienceDetails
     {
         static private ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
-        private static ExperiencesModel? experience;
+        private static ExperienceModel? experience;
         static private MoviesLogic MoviesLogic = new MoviesLogic();
         private static MovieModel? movie;
 

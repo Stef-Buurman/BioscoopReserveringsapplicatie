@@ -6,7 +6,7 @@ namespace BioscoopReserveringsapplicatie
         static public ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
         static public MoviesLogic MoviesLogic = new MoviesLogic();
         private static Action actionWhenEscapePressed = ExperienceOverview.Start;
-        private static ExperiencesModel _experience;
+        private static ExperienceModel _experience;
         private static string _newName = "";
         private static int _selectedMovieId = 0;
         private static Intensity _newIntensity = Intensity.Undefined;

@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            ExperiencesModel newExperience = new ExperiencesModel(_newName, _selectedMovieId, _Intensity, _timeInInt, archived: false);
+            ExperienceModel newExperience = new ExperienceModel(_newName, _selectedMovieId, _Intensity, _timeInInt, archived: false);
             if (experiencesLogic.AddExperience(newExperience))
             {
                 List<Option<string>> options = new List<Option<string>>

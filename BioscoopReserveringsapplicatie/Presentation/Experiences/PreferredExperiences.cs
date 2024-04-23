@@ -21,9 +21,9 @@ namespace BioscoopReserveringsapplicatie
             }
 
             List<Option<int>> options = new List<Option<int>>();
-            List<ExperiencesModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser);
+            List<ExperienceModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser);
 
-            foreach (ExperiencesModel experience in experiences)
+            foreach (ExperienceModel experience in experiences)
             {
                 options.Add(new Option<int>(experience.Id, experience.Name));
             }
