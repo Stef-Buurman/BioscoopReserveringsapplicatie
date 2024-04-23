@@ -4,7 +4,18 @@ namespace BioscoopReserveringsapplicatie
 {
     public class DataAccess<T> : IDataAccess<T>
     {
-        private readonly string Filename;
+        private string Filename
+        {
+            get
+            {
+                string modelName = typeof(T).Name;
+                if (modelName.EndsWith("Model"))
+                {
+                    return modelName.Substring(0, modelName.Length - 5) + ".json";
+                }
+                return modelName;
+            }
+        }
         private string Path
         {
             get => System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
