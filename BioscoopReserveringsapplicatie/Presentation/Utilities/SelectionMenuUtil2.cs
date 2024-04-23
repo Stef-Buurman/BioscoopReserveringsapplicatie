@@ -38,6 +38,7 @@
         private string TextBeforeInputShown = "";
         private bool TextBeforeInputShownVisible = false;
         private bool VisibleSelectedArrows;
+        private bool ShowEscapeabilityText;
 
         private bool IsMultiSelect = false;
         private List<Option<T>> SelectedOptions = new List<Option<T>>();
@@ -45,7 +46,7 @@
             Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
             bool visibleSelectedArrows = true, string textBeforeInputShown = default,
             Option<T> selectedOption = default, bool isMultiSelect = false,
-            List<Option<T>> selectedOptions = null)
+            List<Option<T>> selectedOptions = null, bool showEscapeabilityText = true)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -54,6 +55,7 @@
             Index = 0;
             VisibleIndex = 0;
 
+            ShowEscapeabilityText = showEscapeabilityText;
             if ((escapeAction != null && escapeActionWhenNotEscaping == null)
                 || (escapeAction == null && escapeActionWhenNotEscaping != null))
             {
@@ -113,8 +115,8 @@
         public SelectionMenuUtil2(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
-            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
+        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true)
+            : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
@@ -319,7 +321,7 @@
 
         private void SetCursorPosition(string textToShowEscapability)
         {
-            if (CanBeEscaped && !EscapabilityVisible)
+            if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
                 ColorConsole.WriteLineInfo(textToShowEscapability + "\n");
                 Console.SetCursorPosition(0, Top + 2);
