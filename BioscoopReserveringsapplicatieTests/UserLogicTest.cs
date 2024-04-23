@@ -113,7 +113,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
             Assert.IsFalse(results.IsValid);
-            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordEmpty));
+            Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
 
         [TestMethod]
