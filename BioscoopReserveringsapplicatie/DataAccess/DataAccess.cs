@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 
 namespace BioscoopReserveringsapplicatie
 {
@@ -9,11 +10,16 @@ namespace BioscoopReserveringsapplicatie
             get
             {
                 string modelName = typeof(T).Name;
+                string fileName = "";
                 if (modelName.EndsWith("Model"))
                 {
-                    return modelName.Substring(0, modelName.Length - 5) + ".json";
+                    fileName = modelName.Substring(0, modelName.Length - 5);
                 }
-                return modelName;
+                else
+                {
+                    fileName = modelName;
+                }
+                return fileName + ".json";
             }
         }
         private string Path
