@@ -2,5 +2,9 @@
   {
     "id": 1,
     "name": "Rotterdam"
+  },
+  {
+    "id": 2,
+    "name": "Rotterdam Zuid"
   }
 ]
