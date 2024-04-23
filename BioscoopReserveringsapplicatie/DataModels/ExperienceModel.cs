@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    public class ExperiencesModel : IID
+    public class ExperienceModel : IID
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("archived")]
         public bool Archived { get; set; }
 
-        public ExperiencesModel(int id, string name, int FilmId, Intensity intensity, int timeLength, bool archived)
+        public ExperienceModel(int id, string name, int FilmId, Intensity intensity, int timeLength, bool archived)
         {
             this.Id = id;
             this.Name = name;
@@ -32,10 +32,10 @@ namespace BioscoopReserveringsapplicatie
             this.TimeLength = timeLength;
             this.Archived = archived;
         }
-        public ExperiencesModel(string name, int FilmId, Intensity intensity, int timeLength, bool archived) : this(0, name, FilmId, intensity, timeLength, archived)
+        public ExperienceModel(string name, int FilmId, Intensity intensity, int timeLength, bool archived) : this(0, name, FilmId, intensity, timeLength, archived)
         { }
 
-        public ExperiencesModel() : this(0, "", 0, default, 0, false)
+        public ExperienceModel() : this(0, "", 0, default, 0, false)
         { }
     }
 }
