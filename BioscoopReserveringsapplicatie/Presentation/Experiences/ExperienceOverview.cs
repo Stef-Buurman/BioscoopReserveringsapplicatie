@@ -63,17 +63,18 @@ namespace BioscoopReserveringsapplicatie
                 experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity, experience.Archived ? "Ja" : "Nee");
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
+            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
             ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
             Print();
             int experienceId = new SelectionMenuUtil2<int>(options,
                 () =>
                 {
                     Start();
-                }, 
-                () => 
+                },
+                () =>
                 {
                     ShowExperiences(experiences);
-                }).Create();
+                }, showEscapeabilityText:false).Create();
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;
