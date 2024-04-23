@@ -61,7 +61,8 @@ namespace BioscoopReserveringsapplicatie
                 movieTitle, genres, movie.AgeCategory.GetDisplayName(), movie.Archived ? "Ja" : "Nee");
                 options.Add(new Option<int>(movie.Id, movieInfo));
             }
-            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:", Globals.TitleColor);
+            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:\n", Globals.TitleColor);
             Print();
             int movieId = new SelectionMenuUtil2<int>(options,
                 () =>
@@ -71,7 +72,7 @@ namespace BioscoopReserveringsapplicatie
                 () => 
                 {
                     ShowMovies(movies);
-                }).Create();
+                }, showEscapeabilityText:false).Create();
             Console.Clear();
             ShowMovieDetails(movieId);
         }
