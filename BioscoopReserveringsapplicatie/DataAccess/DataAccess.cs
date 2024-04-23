@@ -9,7 +9,6 @@ namespace BioscoopReserveringsapplicatie
         {
             get => System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
         }
-        public DataAccess(string filename) => Filename = filename;
         public List<T> LoadAll()
         {
             string json = File.ReadAllText(Path);
