@@ -353,7 +353,7 @@
                 }
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length 
-                    - (TextBeforeInputShownVisible ? 2 : 0) 
+                    - (TextBeforeInputShownVisible && IsMultiSelect ? 2 : 0) 
                     + (VisibleSelectedArrows ? 3 : 0) 
                     + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
@@ -386,7 +386,7 @@
                 }
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length 
-                    - (TextBeforeInputShownVisible ? 2 : 0) 
+                    - (TextBeforeInputShownVisible && IsMultiSelect ? 2 : 0) 
                     + (VisibleSelectedArrows ? 3 : 0) 
                     + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
