@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class MovieEdit
     {
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
         private static Action actionWhenEscapePressed = MovieOverview.Start;
         private static MovieModel? movie = null;
 

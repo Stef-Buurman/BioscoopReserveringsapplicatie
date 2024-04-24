@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class AddMovie
     {
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
         private static Action actionWhenEscapePressed = AdminMenu.Start;
 
         private static string title = "";
