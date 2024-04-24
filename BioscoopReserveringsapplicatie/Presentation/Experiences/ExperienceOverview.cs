@@ -116,6 +116,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
+            // Defineer de kolom koppen voor de tabel
             List<string> columnHeaders = new List<string>
             {
                 "Experience Naam  ",

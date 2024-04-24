@@ -20,6 +20,8 @@ namespace BioscoopReserveringsapplicatie
                 return 0;
             }
 
+            Console.Clear();
+
             List<Option<int>> options = new List<Option<int>>();
             List<ExperienceModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser);
 

@@ -72,5 +72,11 @@ namespace BioscoopReserveringsapplicatie
             List<ReservationModel> reservations = _DataAccess.LoadAll();
             return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
         }
+
+        public bool HasUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
+        {
+            List<ReservationModel> reservations = _DataAccess.LoadAll();
+            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+        }
     }
 }
