@@ -73,7 +73,7 @@ namespace BioscoopReserveringsapplicatie
                         new SelectionMenuUtil2<string>(errorOptions).Create();
                     }
                 }),
-                new Option<string>("Nee, pas de film verder aan", () => { Start(_experience.Id, _returnToLength); }),
+                new Option<string>("Nee, pas de experience verder aan", () => { Start(_experience.Id, _returnToLength); }),
                 new Option<string>("Nee, stop met aanpassen", () => { Console.Clear(); ExperienceDetails.Start(_experience.Id); })
             };
             ColorConsole.WriteColorLine("Dit zijn de nieuwe experience details:", Globals.ExperienceColor);
