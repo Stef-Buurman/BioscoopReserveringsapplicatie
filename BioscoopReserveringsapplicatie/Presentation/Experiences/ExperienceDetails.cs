@@ -49,6 +49,7 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Experience dearchiveren", () => ExperienceArchive.Start(experienceId, false)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
@@ -56,9 +57,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
                     new Option<string>("Experience inplannen", () => ScheduleExperience.Start(experienceId)),
-                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId)),
+                    new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId, true)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
@@ -73,6 +74,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine("Experience details", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Naam experience: ]{experience.Name}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Beschrijving experience: ]{experience.Description}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Intensiteit experience: ]{experience.Intensity}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Tijdsduur experience: ]{experience.TimeLength} minuten\n", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"Film details", Globals.MovieColor);
