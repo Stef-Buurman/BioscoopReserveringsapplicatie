@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class UserRegister
     {
-        static private UserLogic userLogic = new UserLogic();
+        private static UserLogic userLogic = new UserLogic();
 
         public static void Start(string? errorMessage = null, UserModel? user = null)
         {

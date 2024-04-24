@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class UserLogin
     {
-        static private UserLogic _userLogic = new UserLogic();
+        private static UserLogic _userLogic = new UserLogic();
 
         public static void Start()
         {

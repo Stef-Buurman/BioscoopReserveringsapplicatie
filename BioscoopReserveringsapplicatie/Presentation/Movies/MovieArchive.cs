@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class MovieArchive
     {
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MoviesLogic MoviesLogic = new MoviesLogic();
 
         public static void Start(int movieId)
         {
