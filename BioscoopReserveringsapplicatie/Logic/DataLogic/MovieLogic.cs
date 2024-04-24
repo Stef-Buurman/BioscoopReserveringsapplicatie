@@ -1,10 +1,10 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class MoviesLogic
+    public class MovieLogic
     {
         private List<MovieModel> _Movies;
         private IDataAccess<MovieModel> _DataAccess = new DataAccess<MovieModel>();
-        public MoviesLogic(IDataAccess<MovieModel> dataAccess = null)
+        public MovieLogic(IDataAccess<MovieModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<MovieModel>();

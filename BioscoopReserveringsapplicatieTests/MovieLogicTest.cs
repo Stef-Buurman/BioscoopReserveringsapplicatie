@@ -5,7 +5,7 @@ namespace BioscoopReserveringsapplicatieTests
     [TestClass]
     public class MovieLogicTest
     {
-        MoviesLogic moviesLogic;
+        MovieLogic moviesLogic;
 
         [TestInitialize]
         public void Initialize()
@@ -19,7 +19,7 @@ namespace BioscoopReserveringsapplicatieTests
             movieRepositoryMock.LoadAll().Returns(movies);
             movieRepositoryMock.WriteAll(Arg.Any<List<MovieModel>>());
 
-            moviesLogic = new MoviesLogic(movieRepositoryMock);
+            moviesLogic = new MovieLogic(movieRepositoryMock);
         }
 
         // Title ------------------------------------------------------------------------------------------------------------------

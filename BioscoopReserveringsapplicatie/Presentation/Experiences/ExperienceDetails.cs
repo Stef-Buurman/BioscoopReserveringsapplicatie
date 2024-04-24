@@ -2,9 +2,9 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceDetails
     {
-        private static ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
+        private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
         private static ExperienceModel? experience;
-        private static MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MovieLogic MoviesLogic = new MovieLogic();
         private static MovieModel? movie;
 
         public static void Start(int experienceId)

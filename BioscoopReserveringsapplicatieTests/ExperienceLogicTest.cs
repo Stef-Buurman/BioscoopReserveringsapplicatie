@@ -5,7 +5,7 @@ namespace BioscoopReserveringsapplicatieTests
     [TestClass]
     public class ExperienceTest
     {
-        ExperiencesLogic experiencesLogic;
+        ExperienceLogic experiencesLogic;
 
         [TestInitialize]
         public void Initialize()
@@ -19,7 +19,7 @@ namespace BioscoopReserveringsapplicatieTests
             experienceRepositoryMock.LoadAll().Returns(experiences);
             experienceRepositoryMock.WriteAll(Arg.Any<List<ExperienceModel>>());
 
-            experiencesLogic = new ExperiencesLogic(experienceRepositoryMock);
+            experiencesLogic = new ExperienceLogic(experienceRepositoryMock);
         }
 
         // Name ------------------------------------------------------------------------------------------------------------------
