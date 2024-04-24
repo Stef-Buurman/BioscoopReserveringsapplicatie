@@ -251,9 +251,9 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("Gegevens ingeplande experience", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Datum: ]{scheduleDate}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Tijd: ]{scheduleTime} T/M {formattedTime}\n", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
             ColorConsole.WriteColorLine("Weet je zeker dat je de experience wilt inplannen ?", ConsoleColor.Red);
         }
     }

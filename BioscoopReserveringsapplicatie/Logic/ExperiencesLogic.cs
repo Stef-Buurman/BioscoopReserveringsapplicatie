@@ -33,11 +33,13 @@
         {
             if (experience == null) return false;
             else if (!ValidateExperienceName(experience.Name)) return false;
+            else if (!ValidateExperienceDescription(experience.Description)) return false;
             else if (!ValidateExperienceIntensity(experience.Intensity)) return false;
             else if (!ValidateExperienceTimeLength(experience.TimeLength)) return false;
             return true;
         }
         public bool ValidateExperienceName(string name) => (name == null || name == "") ? false : true;
+        public bool ValidateExperienceDescription(string description) => !string.IsNullOrEmpty(description);
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
@@ -88,14 +90,14 @@
             }
             return experiences;
         }
-        public bool EditExperience(int id, string name, Intensity intensity, int timeLength, int filmId)
+
+        public bool EditExperience(int id, string name, string description, Intensity intensity, int timeLength, int filmId)
         {
-
-
-            if (ValidateExperienceName(name) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
+            if (ValidateExperienceName(name) && ValidateExperienceDescription(description) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
             {
                 ExperienceModel experience = GetById(id);
                 experience.Name = name;
+                experience.Description = description;
                 experience.Intensity = intensity;
                 experience.FilmId = filmId;
                 experience.TimeLength = timeLength;
@@ -106,6 +108,7 @@
 
             return false;
         }
+
         public void UpdateList(ExperienceModel experience)
         {
             //Find if there is already an model with the same id
@@ -124,12 +127,26 @@
             _DataAccess.WriteAll(_experiences);
         }
 
-        public void ArchiveExperience(int id)
+        public void Archive(int id)
         {
             ExperienceModel experience = GetById(id);
             if (experience != null)
             {
                 experience.Archived = true;
+                _DataAccess.WriteAll(_experiences);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void Unarchive(int id)
+        {
+            ExperienceModel experience = GetById(id);
+            if (experience != null)
+            {
+                experience.Archived = false;
                 _DataAccess.WriteAll(_experiences);
             }
             else
