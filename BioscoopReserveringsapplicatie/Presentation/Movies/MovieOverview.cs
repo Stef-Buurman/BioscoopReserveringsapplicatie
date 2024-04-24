@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class MovieOverview
     {
-        private static MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MovieLogic MoviesLogic = new MovieLogic();
         private static Func<MovieModel, string[]> movieDataExtractor = ExtractMovieData;
 
         public static void Start()

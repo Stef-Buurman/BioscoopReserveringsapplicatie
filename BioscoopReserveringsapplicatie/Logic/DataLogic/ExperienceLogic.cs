@@ -1,21 +1,21 @@
 ﻿namespace BioscoopReserveringsapplicatie
 {
-    public class ExperiencesLogic
+    public class ExperienceLogic
     {
         private List<ExperienceModel> _experiences;
         private IDataAccess<ExperienceModel> _DataAccess = new DataAccess<ExperienceModel>();
-        private static MoviesLogic MoviesLogic;
+        private static MovieLogic MoviesLogic;
         private static ScheduleLogic ScheduleLogic;
 
-        public ExperiencesLogic(IDataAccess<ExperienceModel> experienceAccess = null,
+        public ExperienceLogic(IDataAccess<ExperienceModel> experienceAccess = null,
             IDataAccess<MovieModel> movieAccess = null,
             IDataAccess<ScheduleModel> scheduleAccess = null)
         {
             if (experienceAccess != null) _DataAccess = experienceAccess;
             else _DataAccess = new DataAccess<ExperienceModel>();
 
-            if (movieAccess != null) MoviesLogic = new MoviesLogic(movieAccess);
-            else MoviesLogic = new MoviesLogic();
+            if (movieAccess != null) MoviesLogic = new MovieLogic(movieAccess);
+            else MoviesLogic = new MovieLogic();
 
             if (scheduleAccess != null) ScheduleLogic = new ScheduleLogic(scheduleAccess);
             else ScheduleLogic = new ScheduleLogic();

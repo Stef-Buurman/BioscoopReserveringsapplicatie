@@ -4,7 +4,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceArchive
     {
-        private static ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
+        private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
 
         public static void Start(int experienceId, bool archive)
         {

@@ -2,8 +2,8 @@ namespace BioscoopReserveringsapplicatie
 {
     static class PreferredExperiences
     {
-        private static ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
-        private static MoviesLogic MoviesLogic = new MoviesLogic();
+        private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
+        private static MovieLogic MoviesLogic = new MovieLogic();
         private static Func<ExperienceModel, string[]> experienceDataExtractor = ExtractExperienceData;
 
         public static void Start()

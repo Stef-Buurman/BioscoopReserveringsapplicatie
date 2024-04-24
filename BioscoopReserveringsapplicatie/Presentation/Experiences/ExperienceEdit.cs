@@ -3,8 +3,8 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceEdit
     {
-        static public ExperiencesLogic ExperiencesLogic = new ExperiencesLogic();
-        static public MoviesLogic MoviesLogic = new MoviesLogic();
+        static public ExperienceLogic ExperiencesLogic = new ExperienceLogic();
+        static public MovieLogic MoviesLogic = new MovieLogic();
         private static Action actionWhenEscapePressed = ExperienceOverview.Start;
         private static ExperienceModel _experience;
         private static string _newName = "";

@@ -4,7 +4,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ScheduleExperience
     {
-        private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
+        private static ExperienceLogic experiencesLogic = new ExperienceLogic();
         private static LocationLogic locationLogic = new LocationLogic();
         private static RoomLogic roomLogic = new RoomLogic();
         private static ScheduleLogic scheduleLogic = new ScheduleLogic();

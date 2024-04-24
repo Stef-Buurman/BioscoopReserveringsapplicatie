@@ -3,8 +3,8 @@ namespace BioscoopReserveringsapplicatie
 {
     static class AddExperience
     {
-        private static ExperiencesLogic experiencesLogic = new ExperiencesLogic();
-        private static MoviesLogic MoviesLogic = new MoviesLogic();
+        private static ExperienceLogic experiencesLogic = new ExperienceLogic();
+        private static MovieLogic MoviesLogic = new MovieLogic();
         private static string _newName = "";
         private static string _newDescription = "";
         private static int _selectedMovieId = 0;
