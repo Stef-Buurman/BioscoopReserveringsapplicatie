@@ -11,6 +11,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> options = new List<Option<string>>
             {
+                new Option<string>("Film toevoegen", () => AddMovie.Start()),
                 new Option<string>("Alle active films", () => ShowAllActiveMovies()),
                 new Option<string>("Alle gearchiveerde films", () => ShowAllArchivedMovies()),
                 new Option<string>("Alle films", () => ShowAllMovies()),

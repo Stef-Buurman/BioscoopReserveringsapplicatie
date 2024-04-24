@@ -11,6 +11,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             List<Option<string>> options = new List<Option<string>>
             {
+                new Option<string>("Experience toevoegen", () => AddExperience.Start()),
                 new Option<string>("Alle active experiences", () => ShowAllActiveExperiences()),
                 new Option<string>("Alle gearchiveerde experiences", () => ShowAllArchivedExperiences()),
                 new Option<string>("Alle experiences", () => ShowAllExperiences()),
