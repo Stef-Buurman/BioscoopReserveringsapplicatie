@@ -1,11 +1,14 @@
 using NSubstitute;
 
-namespace BioscoopReserveringsapplicatie
+namespace BioscoopReserveringsapplicatieTests
 {
     [TestClass]
     public class PromotionLogicTest
     {
-        public PromotionLogic Initialize()
+        PromotionLogic promotionLogic;
+
+        [TestInitialize]
+        public void Initialize()
         {
             var promotionRepositoryMock = Substitute.For<IDataAccess<PromotionModel>>();
             List<PromotionModel> promotions = new List<PromotionModel>() {
@@ -16,7 +19,7 @@ namespace BioscoopReserveringsapplicatie
             promotionRepositoryMock.LoadAll().Returns(promotions);
             promotionRepositoryMock.WriteAll(Arg.Any<List<PromotionModel>>());
 
-            return new PromotionLogic(promotionRepositoryMock);
+            promotionLogic = new PromotionLogic(promotionRepositoryMock);
         }
 
         // Title ------------------------------------------------------------------------------------------------------------------
@@ -26,7 +29,6 @@ namespace BioscoopReserveringsapplicatie
         [DataTestMethod]
         public void Correct_Promotion_Title_Validation(string title)
         {
-            PromotionLogic promotionLogic = Initialize();
             Assert.IsTrue(promotionLogic.ValidateTitle(title));
         }
 
@@ -35,7 +37,6 @@ namespace BioscoopReserveringsapplicatie
         [TestMethod]
         public void Incorrect_Promotion_Title_Validation_With_Promotion(string title)
         {
-            PromotionLogic promotionLogic = Initialize();
             PromotionModel promotion = new PromotionModel(1, title, "Description", false);
             Assert.IsFalse(promotionLogic.Validate(promotion));
             PromotionModel promotion2 = new PromotionModel(2, title, "Description", false);
@@ -47,7 +48,6 @@ namespace BioscoopReserveringsapplicatie
         [DataTestMethod]
         public void Incorrect_Promotion_Title_Validation(string title)
         {
-            PromotionLogic promotionLogic = Initialize();
             Assert.IsFalse(promotionLogic.ValidateTitle(title));
         }
 
@@ -58,7 +58,6 @@ namespace BioscoopReserveringsapplicatie
         [DataTestMethod]
         public void Correct_Promotion_Description_Validation(string description)
         {
-            PromotionLogic promotionLogic = Initialize();
             Assert.IsTrue(promotionLogic.ValidateDescription(description));
         }
 
@@ -67,7 +66,6 @@ namespace BioscoopReserveringsapplicatie
         [DataTestMethod]
         public void Incorrect_Promotion_Description_Validation_With_Promotion(string description)
         {
-            PromotionLogic promotionLogic = Initialize();
             PromotionModel promotion = new PromotionModel(1, "Title", description, false);
             Assert.IsFalse(promotionLogic.Validate(promotion));
             PromotionModel promotion2 = new PromotionModel(2, "Title", description, false);
@@ -79,7 +77,6 @@ namespace BioscoopReserveringsapplicatie
         [DataTestMethod]
         public void Incorrect_Promotion_Description_Validation(string description)
         {
-            PromotionLogic promotionLogic = Initialize();
             Assert.IsFalse(promotionLogic.ValidateDescription(description));
         }
 
@@ -88,7 +85,6 @@ namespace BioscoopReserveringsapplicatie
         [TestMethod]
         public void Correct_Promotion_Status_Validation_Activate()
         {
-            PromotionLogic promotionLogic = Initialize();
             promotionLogic.Activate(1);
             Assert.IsTrue(promotionLogic.GetById(1).Status);
         }
@@ -96,7 +92,6 @@ namespace BioscoopReserveringsapplicatie
         [TestMethod]
         public void Correct_Promotion_Status_Validation_Deactivate()
         {
-            PromotionLogic promotionLogic = Initialize();
             promotionLogic.Deactivate(2);
             Assert.IsFalse(promotionLogic.GetById(2).Status);
         }

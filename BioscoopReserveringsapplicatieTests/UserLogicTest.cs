@@ -5,7 +5,10 @@ namespace BioscoopReserveringsapplicatieTests
     [TestClass]
     public class UserLogicTest
     {
-        public UserLogic Initialize()
+        UserLogic userLogic;
+
+        [TestInitialize]
+        public void Initialize()
         {
             var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
             List<UserModel> users = new List<UserModel>() {
@@ -21,7 +24,7 @@ namespace BioscoopReserveringsapplicatieTests
             userRepositoryMock.LoadAll().Returns(users);
             userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
 
-            return new UserLogic(userRepositoryMock);
+            userLogic = new UserLogic(userRepositoryMock);
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------
@@ -31,7 +34,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_GetUser_By_Id()
         {
-            UserLogic userLogic = Initialize();
             UserModel userName = userLogic.GetById(1);
             Assert.IsNotNull(userName);
         }
@@ -39,7 +41,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_GetUser_By_Id()
         {
-            UserLogic userLogic = Initialize();
             UserModel userName = userLogic.GetById(999);
             Assert.IsNull(userName);
         }
@@ -61,7 +62,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Name_Is_Empty()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser("", this.CorrectEmail, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.NameEmpty));
@@ -72,7 +72,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Is_Empty()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, "", this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailEmpty));
@@ -81,7 +80,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Not_Enough_Characters()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailCharsCount, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
@@ -90,7 +88,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_No_At_Sign()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoAtSign, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
@@ -99,7 +96,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_No_Dot()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoDot, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
@@ -110,7 +106,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Password_Is_Empty()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
@@ -119,7 +114,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Password_Has_Too_Few_Characters()
         {
-            UserLogic userLogic = Initialize();
             RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, this.IncorrectPasswordCharsCount);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
@@ -128,7 +122,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Old_Password()
         {
-            UserLogic userLogic = Initialize();
             userLogic.Login("Henk@henk.henk", "testtest");
             Assert.IsTrue(userLogic.ValidateOldPassword("testtest"));
         }
@@ -136,7 +129,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Old_Password()
         {
-            UserLogic userLogic = Initialize();
             userLogic.Login("Henk@henk.henk", "testtest");
             Assert.IsFalse(userLogic.ValidateOldPassword("NietHenkZijnWachtwoord"));
         }
@@ -144,21 +136,18 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Password_Validation()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.ValidatePassword("SuperGoedWachtwoord"));
         }
 
         [TestMethod]
         public void Incorrect_Length_Password__Too_Short_Validation()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.ValidatePassword("Henk"));
         }
 
         [TestMethod]
         public void Correct_Password_Change()
         {
-            UserLogic userLogic = Initialize();
             userLogic.Login("Henk@henk.henk", "testtest");
             Assert.IsTrue(userLogic.EditPassword("NieuwWachtwoord"));
         }
@@ -166,7 +155,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Length_Password_Too_Short_Change()
         {
-            UserLogic userLogic = Initialize();
             userLogic.Login("Henk@henk.henk", "testtest");
             Assert.IsFalse(userLogic.EditPassword("1"));
         }
@@ -179,8 +167,6 @@ namespace BioscoopReserveringsapplicatieTests
 
         public UserModel Initialize_Preferences_For_User()
         {
-            UserLogic userLogic = Initialize();
-
             var x = userLogic.Login("Henk@henk.henk", "testtest");
             Assert.IsTrue(x);
             userLogic.addPreferencesToAccount(TestGenres, AgeCategory.AGE_6, Intensity.Low, Language.Nederlands);
@@ -274,14 +260,12 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Login_Validation_NoAdmin()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.Login("Henk@henk.henk", "testtest"));
         }
 
         [TestMethod]
         public void Correct_Login_Validation_Admin()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.Login("Petra@Petra.Petra", "testtest"));
         }
 
@@ -290,14 +274,12 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Login_Validation_NoAdmin_WrongPassword()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.Login("Tim@Tim.Tim", "testtest"));
         }
 
         [TestMethod]
         public void Incorrect_Login_Validation_NoAdmin_WrongEmail()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.Login("DitIsGewoonEenHeelAnderEmail@Adress.nl", "testtest"));
         }
 
@@ -306,14 +288,12 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Login_Validation_Admin_WrongPassword()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.Login("Pieter@Pieter.Pieter", "lalalalalalalalalala"));
         }
 
         [TestMethod]
         public void Incorrect_Login_Validation_Admin_WrongEmail()
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.Login("DitIsGewoonEenHeelAnderEmail@Adress.nl", "PieterPassword"));
         }
 
@@ -324,7 +304,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Edit_Validation()
         {
-            UserLogic userLogic = Initialize();
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
             Assert.IsTrue(userLogic.Edit( "Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
@@ -333,7 +312,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Name_Edit_validation()
         {
-            UserLogic userLogic = Initialize();
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
             Assert.IsFalse(userLogic.Edit( "   ", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
@@ -346,7 +324,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Email_Edit_validation(string email)
         {
-            UserLogic userLogic = Initialize();
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
             Assert.IsFalse(userLogic.Edit( "Tim van Eert", "   ", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
@@ -355,7 +332,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Genre_Edit_validation()
         {
-            UserLogic userLogic = Initialize();
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
             Assert.IsFalse(userLogic.Edit("Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6));
@@ -372,7 +348,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Name_Validation(string name)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.ValidateName(name));
         }
 
@@ -382,7 +357,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Name_Validation(string name)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.ValidateName(name));
         }
 
@@ -393,7 +367,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Email_Validation(string email)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.ValidateEmail(email));
         }
 
@@ -404,7 +377,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Email_Validation(string email)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.ValidateEmail(email));
         }
 
@@ -420,7 +392,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_AgeCategory_Validation(AgeCategory age)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.ValidateAgeCategory(age));
         }
 
@@ -429,7 +400,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_AgeCategory_Validation(AgeCategory age)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.ValidateAgeCategory(age));
         }
 
@@ -441,7 +411,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Intensity_Validation(Intensity value)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.ValidateIntensity(value));
         }
 
@@ -450,7 +419,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Intensity_Validation(Intensity value)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.ValidateIntensity(value));
         }
 
@@ -461,7 +429,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Language_Validation(Language value)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsTrue(userLogic.ValidateLanguage(value));
         }
 
@@ -470,7 +437,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Language_Validation(Language value)
         {
-            UserLogic userLogic = Initialize();
             Assert.IsFalse(userLogic.ValidateLanguage(value));
         }
     }

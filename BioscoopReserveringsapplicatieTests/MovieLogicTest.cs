@@ -5,7 +5,10 @@ namespace BioscoopReserveringsapplicatieTests
     [TestClass]
     public class MovieLogicTest
     {
-        public MoviesLogic Initialize()
+        MoviesLogic moviesLogic;
+
+        [TestInitialize]
+        public void Initialize()
         {
             var movieRepositoryMock = Substitute.For<IDataAccess<MovieModel>>();
             List<MovieModel> movies = new List<MovieModel>() {
@@ -16,7 +19,7 @@ namespace BioscoopReserveringsapplicatieTests
             movieRepositoryMock.LoadAll().Returns(movies);
             movieRepositoryMock.WriteAll(Arg.Any<List<MovieModel>>());
 
-            return new MoviesLogic(movieRepositoryMock);
+            moviesLogic = new MoviesLogic(movieRepositoryMock);
         }
 
         // Title ------------------------------------------------------------------------------------------------------------------
@@ -26,7 +29,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Movie_Title_Validation(string title)
         {
-            MoviesLogic moviesLogic = Initialize();
             Assert.IsTrue(moviesLogic.ValidateMovieTitle(title));
         }
 
@@ -35,7 +37,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Movie_Title_Validation_With_Movie(string title)
         {
-            MoviesLogic moviesLogic = Initialize();
             MovieModel movie = new MovieModel(1, title, "Description", new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
             Assert.IsFalse(moviesLogic.ValidateMovie(movie));
             MovieModel movie2 = new MovieModel(2, title, "Description", new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
@@ -47,7 +48,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Movie_Title_Validation_With_Title(string title)
         {
-            MoviesLogic moviesLogic = Initialize();
             Assert.IsFalse(moviesLogic.ValidateMovieTitle(title));
         }
 
@@ -58,7 +58,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Movie_Description_Validation(string description)
         {
-            MoviesLogic moviesLogic = Initialize();
             Assert.IsTrue(moviesLogic.ValidateMovieDescription(description));
         }
 
@@ -67,7 +66,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Movie_Description_Validation_With_Movie(string description)
         {
-            MoviesLogic moviesLogic = Initialize();
             MovieModel movie = new MovieModel(1, "Title", description, new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
             Assert.IsFalse(moviesLogic.ValidateMovie(movie));
             MovieModel movie2 = new MovieModel(2, "Title", description, new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
@@ -79,7 +77,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Movie_Description_Validation_With_Description(string description)
         {
-            MoviesLogic moviesLogic = Initialize();
             Assert.IsFalse(moviesLogic.ValidateMovieDescription(description));
         }
 
@@ -91,7 +88,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Movie_Genres_Validation_With_Genres(Genre genre1, Genre genre2, Genre genre3)
         {
-            MoviesLogic moviesLogic = Initialize();
             List<Genre> genresList = new List<Genre> { genre1, genre2, genre3 };
             Assert.IsTrue(moviesLogic.ValidateMovieGenres(genresList));
         }
@@ -101,7 +97,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Movie_Genres_Validation_With_Genres(Genre genre)
         {
-            MoviesLogic moviesLogic = Initialize();
             List<Genre> genresList = new List<Genre> { genre };
             Assert.IsFalse(moviesLogic.ValidateMovieGenres(genresList));
         }
@@ -114,7 +109,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Correct_Movie_AgeCategory_Validation_With_AgeCategory(AgeCategory ageCategory)
         {
-            MoviesLogic moviesLogic = Initialize();
             Assert.IsTrue(moviesLogic.ValidateMovieAgeCategory(ageCategory));
         }
 
@@ -123,7 +117,6 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Movie_AgeCategory_Validation_With_AgeCategory(AgeCategory ageCategory)
         {
-            MoviesLogic moviesLogic = Initialize();
             Assert.IsFalse(moviesLogic.ValidateMovieAgeCategory(ageCategory));
         }
 
@@ -132,7 +125,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Movie_Edit_Success()
         {
-            MoviesLogic moviesLogic = Initialize();
             List<Genre> genresToAdd = new List<Genre> { Genre.Horror, Genre.Crime };
 
             moviesLogic.EditMovie(1, "NewTitle", "NewDescription", genresToAdd, AgeCategory.AGE_16);
@@ -145,7 +137,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Movie_Edit_With_Invalid_Movie_Title()
         {
-            MoviesLogic moviesLogic = Initialize();
             moviesLogic.EditMovie(1, "", "NewDescription", new List<Genre> { Genre.Horror, Genre.Crime }, AgeCategory.AGE_16);
             Assert.AreNotEqual("", moviesLogic.GetMovieById(1).Title);
             Assert.AreNotEqual("NewDescription", moviesLogic.GetMovieById(1).Description);
@@ -156,7 +147,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Movie_Edit_With_Invalid_Movie_Description()
         {
-            MoviesLogic moviesLogic = Initialize();
             moviesLogic.EditMovie(1, "NewTitle", "", new List<Genre> { Genre.Horror, Genre.Crime }, AgeCategory.AGE_16);
             Assert.AreNotEqual("NewTitle", moviesLogic.GetMovieById(1).Title);
             Assert.AreNotEqual("", moviesLogic.GetMovieById(1).Description);
@@ -167,7 +157,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Movie_Edit_With_Invalid_Movie_Genres()
         {
-            MoviesLogic moviesLogic = Initialize();
             List<Genre> genresToAdd = new List<Genre> { Genre.Horror, Genre.Crime, (Genre)909 };
 
             moviesLogic.EditMovie(1, "NewTitle", "NewDescription", genresToAdd, AgeCategory.AGE_16);
@@ -180,7 +169,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Movie_Edit_With_Invalid_Movie_AgeCategory()
         {
-            MoviesLogic moviesLogic = Initialize();
             moviesLogic.EditMovie(1, "NewTitle", "NewDescription", new List<Genre> { Genre.Horror, Genre.Crime }, (AgeCategory)909);
             Assert.AreNotEqual("NewTitle", moviesLogic.GetMovieById(1).Title);
             Assert.AreNotEqual("NewDescription", moviesLogic.GetMovieById(1).Description);
@@ -193,7 +181,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Movie_Archive_Success()
         {
-            MoviesLogic moviesLogic = Initialize();
             moviesLogic.Archive(1);
             Assert.IsTrue(moviesLogic.GetMovieById(1).Archived);
         }
@@ -201,7 +188,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Movie_AlreadyArchived_Still_Archived()
         {
-            MoviesLogic moviesLogic = Initialize();
             moviesLogic.Archive(2);
             Assert.IsTrue(moviesLogic.GetMovieById(2).Archived);
         }
