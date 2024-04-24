@@ -12,12 +12,12 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Experience toevoegen", () => AddExperience.Start()),
-                new Option<string>("Alle active experiences", () => ShowAllActiveExperiences()),
-                new Option<string>("Alle gearchiveerde experiences", () => ShowAllArchivedExperiences()),
-                new Option<string>("Alle experiences", () => ShowAllExperiences()),
+                new Option<string>("Alle actieve experiences bekijken", () => ShowAllActiveExperiences()),
+                new Option<string>("Alle gearchiveerde experiences bekijken", () => ShowAllArchivedExperiences()),
+                new Option<string>("Alle experiences bekijken", () => ShowAllExperiences()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-            ColorConsole.WriteColorLine("Kies een van de volgende experience overzichten: \n", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Kies een van de volgende experience opties: \n", Globals.TitleColor);
             new SelectionMenuUtil2<string>(options).Create();
         }
 
@@ -60,7 +60,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     genres = genres.Substring(0, 25) + "...";
                 }
-                string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) + "} {1,-" + (columnWidths[1] + 1) + "} {2,-" + (columnWidths[2] + 1) +"} {3,-" + (columnWidths[3] + 1) +"} {4,-" + columnWidths[4] + "}",
+                string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) + "} {1,-" + (columnWidths[1] + 1) + "} {2,-" + (columnWidths[2] + 1) + "} {3,-" + (columnWidths[3] + 1) + "} {4,-" + columnWidths[4] + "}",
                 experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity, experience.Archived ? "Ja" : "Nee");
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
@@ -75,7 +75,7 @@ namespace BioscoopReserveringsapplicatie
                 () =>
                 {
                     ShowExperiences(experiences);
-                }, showEscapeabilityText:false).Create();
+                }, showEscapeabilityText: false).Create();
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;
