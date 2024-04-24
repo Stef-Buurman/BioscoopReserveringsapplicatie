@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 "Film Naam",
                 "Genres",
-                "Kijkwijzer",
+                "Leeftijdscategorie",
                 "Gearchiveerd"
             };
 
@@ -117,7 +117,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 "Film Naam",
                 "Genres",
-                "Kijkwijzer",
+                "Leeftijdscategorie",
                 "Gearchiveerd"
             };
 
