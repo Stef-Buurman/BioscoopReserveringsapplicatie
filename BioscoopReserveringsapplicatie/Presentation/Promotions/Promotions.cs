@@ -12,7 +12,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Promoties bekijken", () => PromotionOverview.Start()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-            ColorConsole.WriteColorLine("Kies wat je wilt doen: \n", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Kies een categorie: \n", Globals.TitleColor);
             string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
         }
     }

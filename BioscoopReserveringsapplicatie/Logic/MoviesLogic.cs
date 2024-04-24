@@ -133,6 +133,20 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
+        public void Unarchive(int id)
+        {
+            MovieModel movie = GetMovieById(id);
+            if (movie != null)
+            {
+                movie.Archived = false;
+                UpdateList(movie);
+            }
+            else
+            {
+                return;
+            }
+        }
+
         public List<MovieModel> GetAllArchivedMovies()
         {
             _Movies = _DataAccess.LoadAll();

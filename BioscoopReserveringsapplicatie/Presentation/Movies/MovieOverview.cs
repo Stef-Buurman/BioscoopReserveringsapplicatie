@@ -7,14 +7,14 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("Kies een categorie om te bekijken: \n", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Kies een categorie: \n", Globals.TitleColor);
 
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Film toevoegen", () => AddMovie.Start()),
-                new Option<string>("Alle active films", () => ShowAllActiveMovies()),
-                new Option<string>("Alle gearchiveerde films", () => ShowAllArchivedMovies()),
-                new Option<string>("Alle films", () => ShowAllMovies()),
+                new Option<string>("Alle actieve films bekijken", () => ShowAllActiveMovies()),
+                new Option<string>("Alle gearchiveerde films bekijken", () => ShowAllArchivedMovies()),
+                new Option<string>("Alle films bekijken", () => ShowAllMovies()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
             new SelectionMenuUtil2<string>(options).Create();
