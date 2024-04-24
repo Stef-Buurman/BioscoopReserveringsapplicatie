@@ -24,7 +24,6 @@ namespace BioscoopReserveringsapplicatie
         private static bool _LanguageNotFilledIn = false;
 
         private static readonly string _NotFilledIn = "Niet aanpassen";
-        private static readonly string _StopFillingIn = "Stop met toevoegen";
 
         public static void Start(string returnTo = "")
         {
@@ -72,6 +71,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
+                    NotFilledInToFalse();
                     if(_userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
@@ -88,11 +88,26 @@ namespace BioscoopReserveringsapplicatie
                         new SelectionMenuUtil2<string>(options).Create();
                     }
                 }),
-                new Option<string>("Nee, pas mijn gegevens aan", ()=>{ _LanguageNotFilledIn = false; Start(_returnToLanguage); }),
-                new Option<string>("Nee, terug naar mijn details", () => {UserDetails.Start();})
+                new Option<string>("Nee, pas mijn gegevens aan", 
+                ()=>{
+                    NotFilledInToFalse();
+                    Start(_returnToLanguage);
+                }),
+                new Option<string>("Nee, terug naar mijn details", 
+                () => {
+                    NotFilledInToFalse();
+                    UserDetails.Start();
+                })
             };
             new SelectionMenuUtil2<string>(options).Create();
+        }
 
+        private static void NotFilledInToFalse()
+        {
+            _GenresNotFilledIn = false;
+            _AgeCategoryNotFilledIn = false;
+            _IntensityNotFilledIn = false;
+            _LanguageNotFilledIn = false;
         }
 
         private static void UserName()
