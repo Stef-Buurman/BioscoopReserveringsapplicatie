@@ -16,7 +16,7 @@ namespace BioscoopReserveringsapplicatie
                 List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    ExperienceLogic.ArchiveExperience(experienceId);
+                    ExperienceLogic.Archive(experienceId);
                     Console.Clear();
                     ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gearchiveerd!", Globals.SuccessColor);
                     Thread.Sleep(4000);
@@ -39,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
                 List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    ExperienceLogic.UnarchiveExperience(experienceId);
+                    ExperienceLogic.Unarchive(experienceId);
                     Console.Clear();
                     ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gedearchiveerd!", Globals.SuccessColor);
                     Thread.Sleep(4000);

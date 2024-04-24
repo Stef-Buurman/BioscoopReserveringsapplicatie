@@ -127,7 +127,7 @@
             _DataAccess.WriteAll(_experiences);
         }
 
-        public void ArchiveExperience(int id)
+        public void Archive(int id)
         {
             ExperienceModel experience = GetById(id);
             if (experience != null)
@@ -141,7 +141,7 @@
             }
         }
 
-        public void UnarchiveExperience(int id)
+        public void Unarchive(int id)
         {
             ExperienceModel experience = GetById(id);
             if (experience != null)
