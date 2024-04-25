@@ -9,12 +9,13 @@
         //private set, so this can only be set by the class itself
         static public UserModel? CurrentUser { get; private set; }
 
-        public UserLogic()
+        private IDataAccess<UserModel> _DataAccess = new DataAccess<UserModel>();
+        public UserLogic(IDataAccess<UserModel> dataAccess = null)
         {
-            //if (userAccess != null) UserAccess = userAccess;
-            //else UserAccess = new UserAccess();
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<UserModel>();
 
-            _accounts = UserAccess.LoadAll();
+            _accounts = _DataAccess.LoadAll();
         }
 
 
@@ -33,8 +34,8 @@
                 //add new model
                 _accounts.Add(acc);
             }
-            UserAccess.WriteAll(_accounts);
-            _accounts = UserAccess.LoadAll();
+            _DataAccess.WriteAll(_accounts);
+            _accounts = _DataAccess.LoadAll();
         }
 
         public UserModel? GetById(int id)
@@ -67,10 +68,7 @@
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
                 email = "";
             }
-            if (password == "")
-            {
-                errorMessage += $"{RegisterNewUserErrorMessages.PasswordEmpty}\n";
-            }
+
             if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
@@ -88,7 +86,7 @@
             {
                 newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
                 UpdateList(newAccount);
-                _accounts = UserAccess.LoadAll();
+                _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
@@ -143,7 +141,7 @@
             return name != null && name.Trim() != "";
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
+        public bool addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, UserModel user)
         {
             if (user != null)
             {
@@ -152,23 +150,20 @@
                 user.Intensity = intensity;
                 user.Language = language;
                 UpdateList(user);
+                return true;
             }
+            return false;
         }
 
-        public void addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
+        public bool addPreferencesToAccount(List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
         {
-            if (CurrentUser != null) addPreferencesToAccount(genres, ageCategory, intensity, language, CurrentUser);
+            if (CurrentUser != null) return addPreferencesToAccount(genres, ageCategory, intensity, language, CurrentUser);
+            return false;
         }
 
         public bool ValidateGenres(List<Genre> genres)
         {
             List<Genre> CorrectGenre = Globals.GetAllEnum<Genre>();
-
-            if (genres.Count > 3)
-            {
-                Console.WriteLine("U kunt maximaal 3 genres selecteren.");
-                return false;
-            }
 
             if (genres.Distinct().Count() != genres.Count)
             {
@@ -218,14 +213,13 @@
         public static void Logout()
         {
             CurrentUser = null;
-            ColorConsole.WriteColorLine("U bent uitgelogd.", Globals.SuccessColor);
+            ColorConsole.WriteColorLine("\nU bent uitgelogd.", Globals.SuccessColor);
             Thread.Sleep(2000);
         }
 
-        public bool Edit(int id, string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public bool Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
-            UserModel? user = GetById(id);
-            if (user != null)
+            if (CurrentUser != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
@@ -236,15 +230,15 @@
                 }
                 else
                 {
-                    user.FullName = newName;
+                    CurrentUser.FullName = newName;
                     newEmail = newEmail.ToLower();
-                    user.EmailAddress = newEmail;
-                    user.Genres = newGenres;
-                    user.Intensity = newIntensity;
-                    user.AgeCategory = newAgeCategory;
+                    CurrentUser.EmailAddress = newEmail;
+                    CurrentUser.Genres = newGenres;
+                    CurrentUser.Intensity = newIntensity;
+                    CurrentUser.AgeCategory = newAgeCategory;
 
-                    UpdateList(user);
-                    CurrentUser = user;
+                    UpdateList(CurrentUser);
+                    CurrentUser = CurrentUser;
                     return true;
                 }
             }
@@ -254,6 +248,39 @@
                 Thread.Sleep(3000);
                 return false;
             }
+        }
+
+        public bool ValidatePassword(string password)
+        {
+            if (password.Length < 5)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool EditPassword(string newPassword)
+        {
+            if (CurrentUser != null && ValidatePassword(newPassword))
+            {
+                CurrentUser.Password = newPassword;
+                UpdateList(CurrentUser);
+                return true;
+            }
+            return false;
+        }
+
+        public bool ValidateOldPassword(string oldPassword)
+        {
+            if (CurrentUser != null)
+            {
+                if (oldPassword == CurrentUser.Password)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

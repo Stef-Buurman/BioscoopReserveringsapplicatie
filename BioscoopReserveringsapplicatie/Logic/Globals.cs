@@ -16,12 +16,13 @@ namespace BioscoopReserveringsapplicatie
             }
             return System.IO.Path.Combine(directory?.ToString() ?? "", Assembly.GetCallingAssembly().GetName().Name ?? "");
         }
-      
+
         public static readonly ConsoleColor TitleColor = ConsoleColor.Magenta;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
         public static readonly ConsoleColor ColorEditInput = ConsoleColor.Yellow;
         public static readonly ConsoleColor ExperienceColor = ConsoleColor.Cyan;
         public static readonly ConsoleColor MovieColor = ConsoleColor.Green;
+        public static readonly ConsoleColor PromotionColor = ConsoleColor.DarkYellow;
         public static readonly ConsoleColor ErrorColor = ConsoleColor.DarkRed;
         public static readonly ConsoleColor SuccessColor = ConsoleColor.DarkGreen;
 
@@ -34,5 +35,7 @@ namespace BioscoopReserveringsapplicatie
             }
             return availableT;
         }
+
+        public static List<T> GetAllEnumIncludeUndefined<T>() => new List<T> { default(T) }.Concat(GetAllEnum<T>()).ToList();
     }
 }

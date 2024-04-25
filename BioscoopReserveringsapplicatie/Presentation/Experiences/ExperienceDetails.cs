@@ -2,13 +2,14 @@ namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceDetails
     {
-        static private ExperiencesLogic ExperienceLogic = new ExperiencesLogic();
-        private static ExperiencesModel? experience;
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
+        private static ExperienceModel? experience;
+        private static MovieLogic MoviesLogic = new MovieLogic();
         private static MovieModel? movie;
 
         public static void Start(int experienceId)
         {
+            Console.Clear();
             if (UserLogic.CurrentUser != null && !UserLogic.CurrentUser.IsAdmin)
             {
                 UserPreview(experienceId);
@@ -27,18 +28,19 @@ namespace BioscoopReserveringsapplicatie
 
             var options = new List<Option<string>>
             {
-                new Option<string>("Koop tickets"),
+                new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
                 new Option<string>("Terug", () => PreferredExperiences.Start()),
             };
 
-            SelectionMenuUtil.Create(options, Print);
+            Print();
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void AdminPreview(int experienceId)
         {
             experience = ExperienceLogic.GetById(experienceId);
 
-            List<Option<string>> options; 
+            List<Option<string>> options;
 
             movie = MoviesLogic.GetMovieById(experience.FilmId);
 
@@ -47,6 +49,7 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
+                    new Option<string>("Experience dearchiveren", () => ExperienceArchive.Start(experienceId, false)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
@@ -54,22 +57,24 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
+                    new Option<string>("Experience inplannen", () => ScheduleExperience.Start(experienceId)),
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Experience inplannen", () => ScheduleExperince.Start(experienceId)),
-                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId)),
+                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId, true)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
 
-            SelectionMenuUtil.Create(options, Print);
+            Print();
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()
         {
-            if (experience != null) 
+            if (experience != null)
             {
                 ColorConsole.WriteColorLine("Experience details", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Naam experience: ]{experience.Name}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Beschrijving experience: ]{experience.Description}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Intensiteit experience: ]{experience.Intensity}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Tijdsduur experience: ]{experience.TimeLength} minuten\n", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"Film details", Globals.MovieColor);
@@ -78,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", movie.Genres)}", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Film kijkwijzer: ]{movie.AgeCategory.GetDisplayName()}\n\n", Globals.MovieColor);
                 Console.WriteLine("Wat wil je doen?");
-            }   
+            }
         }
     }
 }

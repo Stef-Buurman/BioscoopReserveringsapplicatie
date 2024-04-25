@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    class RoomModel : IID
+    public class RoomModel : IID
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

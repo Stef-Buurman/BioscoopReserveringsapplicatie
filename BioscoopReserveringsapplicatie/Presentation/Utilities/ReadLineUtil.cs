@@ -2,19 +2,22 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ReadLineUtil
     {
-        public static string EditValue(string defaultValue, Action actionBeforeStartGotten, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public static string EditValue(string defaultValue, Action actionBeforeStartGotten, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n", bool mask = false)
         {
-            string input = defaultValue;
-            int originalPosX = Console.CursorLeft;
             Console.Clear();
+
             Action actionBeforeStart = () =>
             {
                 ColorConsole.WriteLineInfo(textToShowEscapability);
                 actionBeforeStartGotten();
             };
             actionBeforeStart();
-            ColorConsole.WriteColor($"[{defaultValue}]", Globals.ColorEditInput);
 
+            int originalPosX = Console.CursorLeft;
+            string input = defaultValue;
+            int cursorPosition = 0 + defaultValue.Length;
+
+            ColorConsole.WriteColor(input, Globals.ColorEditInput);
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -29,28 +32,57 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else if (key.Key == ConsoleKey.Backspace)
                 {
-                    if (input.Length > 0 && Console.CursorLeft > originalPosX)
+                    if (cursorPosition > 0)
                     {
-                        input = input.Substring(0, input.Length - 1);
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                        Console.Write(" ");
+                        input = input.Remove(cursorPosition - 1, 1);
+                        cursorPosition--;
+                    }
+                }
+                else if (key.Key == ConsoleKey.LeftArrow)
+                {
+                    if (cursorPosition > 0)
+                    {
+                        cursorPosition--;
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     }
                 }
-                else if (!char.IsControl(key.KeyChar))
+                else if (key.Key == ConsoleKey.RightArrow)
                 {
-                    input += key.KeyChar;
-                    ColorConsole.WriteColor($"[{key.KeyChar}]", Globals.ColorEditInput);
+                    if (cursorPosition < input.Length)
+                    {
+                        cursorPosition++;
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                    }
                 }
+                else if (!char.IsControl(key.KeyChar) && mask == false)
+                {
+                    input = input.Insert(cursorPosition, key.KeyChar.ToString());
+                    cursorPosition++;
+                    Console.Write(key.KeyChar + input.Substring(cursorPosition));
+                    Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
+                }
+                else if (!char.IsControl(key.KeyChar) && mask == true)
+                {
+                    input = input.Insert(cursorPosition, key.KeyChar.ToString());
+                    cursorPosition++;
+                    Console.Write("*" + input.Substring(cursorPosition));
+                    Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
+                }
+
+                Console.SetCursorPosition(originalPosX, Console.CursorTop);
+                if (mask)
+                    Console.Write(new string('*', input.Length) + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                else
+                    ColorConsole.WriteColor(input + new string(' ', Console.WindowWidth - input.Length - originalPosX), Globals.ColorEditInput);
+                Console.SetCursorPosition(originalPosX + cursorPosition, Console.CursorTop);
             }
             return input;
         }
 
-        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public static string EnterValue(Action actionBeforeStartGotten, Action escapeAction, bool isEscapable = true, bool mask = false, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
         {
-            string input = "";
-            int originalPosX = Console.CursorLeft;
             Console.Clear();
+
             Action actionBeforeStart;
             if (isEscapable)
             {
@@ -66,6 +98,10 @@ namespace BioscoopReserveringsapplicatie
             }
             actionBeforeStart();
 
+            int originalPosX = Console.CursorLeft;
+            string input = "";
+            int cursorPosition = 0;
+
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -80,26 +116,57 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else if (key.Key == ConsoleKey.Backspace)
                 {
-                    if (input.Length > 0 && Console.CursorLeft > originalPosX)
+                    if (cursorPosition > 0)
                     {
-                        input = input.Substring(0, input.Length - 1);
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                        Console.Write(" ");
+                        input = input.Remove(cursorPosition - 1, 1);
+                        cursorPosition--;
+                    }
+                }
+                else if (key.Key == ConsoleKey.LeftArrow)
+                {
+                    if (cursorPosition > 0)
+                    {
+                        cursorPosition--;
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     }
                 }
-                else if (!char.IsControl(key.KeyChar))
+                else if (key.Key == ConsoleKey.RightArrow)
                 {
-                    input += key.KeyChar;
-                    Console.Write(key.KeyChar);
+                    if (cursorPosition < input.Length)
+                    {
+                        cursorPosition++;
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                    }
                 }
+                else if (!char.IsControl(key.KeyChar) && mask == false)
+                {
+                    input = input.Insert(cursorPosition, key.KeyChar.ToString());
+                    cursorPosition++;
+                    Console.Write(key.KeyChar + input.Substring(cursorPosition));
+                    Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
+                }
+                else if (!char.IsControl(key.KeyChar) && mask == true)
+                {
+                    input = input.Insert(cursorPosition, key.KeyChar.ToString());
+                    cursorPosition++;
+                    Console.Write("*" + input.Substring(cursorPosition));
+                    Console.SetCursorPosition(Console.CursorLeft - (input.Length - cursorPosition), Console.CursorTop);
+                }
+
+                Console.SetCursorPosition(originalPosX, Console.CursorTop);
+                if (mask)
+                    Console.Write(new string('*', input.Length) + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                else
+                    Console.Write(input + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                Console.SetCursorPosition(originalPosX + cursorPosition, Console.CursorTop);
             }
+
             return input;
         }
 
-        public static string EnterValue(bool isEscapable, Action actionBeforeStart, Action escapeAction = null)
+        public static string EnterValue(bool isEscapable, Action actionBeforeStart, Action escapeAction = null, bool mask = false)
         {
-            return EnterValue(actionBeforeStart, escapeAction, isEscapable);
+            return EnterValue(actionBeforeStart, escapeAction, isEscapable, mask);
         }
 
         public static bool EscapeKeyPressed(Action actionBeforeStart, Action escapeAction, string input, string type)
@@ -129,7 +196,9 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            SelectionMenuUtil.Create(options, print);
+            ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", Globals.ErrorColor);
+            new SelectionMenuUtil2<string>(options).Create();
             return WantToLeave;
         }
 
@@ -143,6 +212,7 @@ namespace BioscoopReserveringsapplicatie
                                 Thread.Sleep(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
+                                Console.Clear();
                             }
                         ),
                         new Option<string>("Nee", () => {
@@ -153,7 +223,9 @@ namespace BioscoopReserveringsapplicatie
                             }
                         ),
                     };
-            SelectionMenuUtil.Create(options, print, false);
+            ColorConsole.WriteColorLine("\n----------------------------------------------------------------", ConsoleColor.Red);
+            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", ConsoleColor.Red);
+            new SelectionMenuUtil2<string>(options, false).Create();
             return WantToLeave;
         }
         private static void print()

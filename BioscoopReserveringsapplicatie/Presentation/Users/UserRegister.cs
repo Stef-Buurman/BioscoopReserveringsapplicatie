@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class UserRegister
     {
-        static private UserLogic userLogic = new UserLogic();
+        private static UserLogic userLogic = new UserLogic();
 
         public static void Start(string? errorMessage = null, UserModel? user = null)
         {
@@ -68,7 +68,7 @@ namespace BioscoopReserveringsapplicatie
                     ColorConsole.WriteColorLine("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
                 }
                 ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start
+            }, LandingPage.Start, true
             );
 
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
@@ -80,7 +80,7 @@ namespace BioscoopReserveringsapplicatie
             else
             {
                 Preferences.Start(registrationResult.User);
-                ColorConsole.WriteColorLine("U bent geregistreerd.", Globals.SuccessColor);
+                ColorConsole.WriteColorLine("\nU bent geregistreerd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
                 UserLogin.Start();
             }

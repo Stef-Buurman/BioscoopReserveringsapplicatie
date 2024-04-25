@@ -2,17 +2,88 @@ namespace BioscoopReserveringsapplicatie
 {
     static class MovieEdit
     {
-        static private MoviesLogic MoviesLogic = new MoviesLogic();
+        private static MovieLogic MoviesLogic = new MovieLogic();
         private static Action actionWhenEscapePressed = MovieOverview.Start;
+        private static MovieModel? movie = null;
 
-        public static void Start(int movieId)
+        private static string newTitle = "";
+        private static string newDescription = "";
+        private static List<Genre> newGenres = new List<Genre>();
+        private static AgeCategory newRating = AgeCategory.Undefined;
+
+        private static string _returnToTitle = "Title";
+        private static string _returnToDescription = "Description";
+        private static string _returnToGenres = "Genres";
+        private static string _returnToRating = "Rating";
+
+        public static void Start(int movieId, string returnTo = "")
         {
+            movie = MoviesLogic.GetMovieById(movieId);
             actionWhenEscapePressed = () => MovieDetails.Start(movieId);
+            if (newTitle == "") newTitle = movie.Title;
+            if (newDescription == "") newDescription = movie.Description;
+            if (newGenres.Count == 0) newGenres = movie.Genres;
+            if (newRating == AgeCategory.Undefined) newRating = movie.AgeCategory;
+
             Console.Clear();
 
-            MovieModel movie = MoviesLogic.GetMovieById(movieId);
+            if(returnTo == "" || returnTo == _returnToTitle)
+            {
+                MovieName();
+                returnTo = "";
+            }
 
-            string newTitle = ReadLineUtil.EditValue(movie.Title, () =>
+            if(returnTo == "" || returnTo == _returnToDescription)
+            {
+                MovieDescription(movieId);
+                returnTo = "";
+            }
+
+            if(returnTo == "" || returnTo == _returnToGenres)
+            {
+                SelectMovieGenres(movieId);
+                returnTo = "";
+            }
+
+            if(returnTo == "" || returnTo == _returnToRating)
+            {
+                SelectMovieRating(movieId);
+                returnTo = "";
+            }
+            
+            
+            Console.Clear();
+            Print(movie.Title, newTitle, newDescription, newGenres, newRating);
+
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                    if (MoviesLogic.EditMovie(movieId, newTitle, newDescription, newGenres, newRating))
+                        {
+                            MovieDetails.Start(movieId);
+                        }
+                        else
+                        {
+                            List<Option<string>> options = new List<Option<string>>
+                            {
+                                new Option<string>("Terug", () => {Console.Clear(); MovieDetails.Start(movieId);}),
+                            };
+                            Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de film. Probeer het opnieuw.\n");
+                            new SelectionMenuUtil2<string>(options).Create();
+                        }
+                }),
+                new Option<string>("Nee, pas de film verder aan", () => {Start(movie.Id, _returnToRating);}),
+                new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); MovieDetails.Start(movie.Id);})
+            };
+            new SelectionMenuUtil2<string>(options).Create();
+        }
+
+        private static void MovieName()
+        {
+            Console.Clear();
+            PrintEditingMovie();
+            
+            newTitle = ReadLineUtil.EditValue(newTitle, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
                 ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
@@ -20,75 +91,108 @@ namespace BioscoopReserveringsapplicatie
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
+            while (string.IsNullOrEmpty(newTitle))
+            {
+                newTitle = ReadLineUtil.EditValue(newTitle, () =>
+                {
+                    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+                    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
+                },
+                actionWhenEscapePressed,
+                "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                }
+        }
+
+        private static void MovieDescription(int movieId)
+        {
+            Console.Clear();
+            PrintEditingMovie();
+
             Console.Write("Voer de film beschrijving in: ");
-            string newDescription = ReadLineUtil.EditValue(movie.Description, () =>
+            newDescription = ReadLineUtil.EditValue(newDescription, () =>
             {
                 ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Voer de film [titel] in: {newTitle}", Globals.ColorInputcClarification);
                 ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             }, 
-            actionWhenEscapePressed,
+            () => Start(movieId, _returnToTitle),
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
-            List<Genre> genres = new List<Genre>();
-            List<Genre> availableGenres = Globals.GetAllEnum<Genre>();
-            bool firstTime = true;
-            while (genres.Count < 3)
+            while (string.IsNullOrEmpty(newDescription))
             {
-                Genre genre;
-                if (firstTime)
+                Console.Write("Voer de film beschrijving in: ");
+                newDescription = ReadLineUtil.EditValue(newDescription, () =>
                 {
-                    genre = SelectionMenuUtil.Create(availableGenres, () =>
-                    {
-                        ColorConsole.WriteColorLine("Voer film genre in", Globals.TitleColor);
-                        ColorConsole.WriteColorLine("U kunt maximaal 3 verschillende genres kiezen.\n", Globals.TitleColor);
-                        ColorConsole.WriteColorLine("Kies een [genre]: \n", Globals.ColorInputcClarification);
-                    }, actionWhenEscapePressed
-                    );
-                }
-                else
-                {
-                    genre = SelectionMenuUtil.Create(availableGenres, () => ColorConsole.WriteColorLine("Kies uw favoriete [genre]: \n", Globals.ColorInputcClarification), actionWhenEscapePressed);
-                }
+                    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+                    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
+                }, 
+                () => Start(movieId, _returnToTitle),
+                "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+            }
+        }
 
-                if (genre != default && availableGenres.Contains(genre))
+        private static void SelectMovieGenres(int movieId)
+        {
+            Console.Clear();
+            PrintEditingMovie();
+            List<Genre> Genres = Globals.GetAllEnum<Genre>();
+            List<Option<Genre>> availableGenres = new List<Option<Genre>>();
+            List<Option<Genre>> selectedGenres = new List<Option<Genre>>();
+
+            foreach (Genre option in Genres)
+            {
+                if (newGenres.Contains(option))
                 {
-                    availableGenres.Remove(genre);
-                    genres.Add(genre);
+                    selectedGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
-                else
-                {
-                    ColorConsole.WriteColorLine("Error. Probeer het opnieuw.", Globals.ErrorColor);
-                }
-                firstTime = false;
+                availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
+            newGenres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+                    () => { Start(movieId, _returnToDescription); },
+                    () => { Start(movieId, _returnToGenres); }, 
+                    "Welke [genre(s)] hoort/horen bij deze film: ", selectedGenres).CreateMultiSelect();
+        }
 
-            List<AgeCategory> AgeGenres = Globals.GetAllEnum<AgeCategory>();
-            List<string> EnumDescription = AgeGenres.Select(o => o.GetDisplayName()).ToList();
-            string selectedDescription = SelectionMenuUtil.Create(EnumDescription, () => ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification),actionWhenEscapePressed);
-            AgeCategory newRating = AgeGenres.First(o => o.GetDisplayName() == selectedDescription);
+        private static void SelectMovieRating(int movieId)
+        {
+            Console.Clear();
+            PrintEditingMovie();
+            ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
 
-
-            List<Option<string>> options = new List<Option<string>>
+            List<AgeCategory> AgeCatagories = Globals.GetAllEnum<AgeCategory>();
+            List<Option<AgeCategory>> options = new List<Option<AgeCategory>>();
+            foreach (AgeCategory option in AgeCatagories)
             {
-                new Option<string>("Ja", () => {
-                    if (MoviesLogic.EditMovie(movie.Id, newTitle, newDescription, genres, newRating))
-                        {
-                            MovieDetails.Start(movie.Id);
-                        }
-                        else
-                        {
-                            List<Option<string>> options = new List<Option<string>>
-                            {
-                                new Option<string>("Terug", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
-                            };
-                            SelectionMenuUtil.Create(options, () => Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de film. Probeer het opnieuw.\n"));
-                        }
-                }),
-                new Option<string>("Nee", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
-            };
-            SelectionMenuUtil.Create(options, () => Print(movie.Title, newTitle, newDescription, genres, newRating));
+                options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
+            }
+            newRating = new SelectionMenuUtil2<AgeCategory>(options, 
+                () => 
+                {
+                    Start(movieId, _returnToGenres); 
+                }, 
+                () => Start(movieId, _returnToRating), 
+                new Option<AgeCategory>(newRating)).Create();
+        }
+
+        private static void PrintEditingMovie()
+        {
+            if(newTitle != "")
+            {
+                ColorConsole.WriteColorLine("[Aangepaste Film Details]", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Naam Film:] {newTitle}", Globals.MovieColor);
+            }
+            if(newDescription != "")
+            {
+                ColorConsole.WriteColorLine($"[Beschrijving Film:] {newDescription}", Globals.MovieColor);
+            }
+            if(newGenres.Count >= 1)
+            {
+                ColorConsole.WriteColorLine($"[Genres Film:] {string.Join(", ", newGenres)}", Globals.MovieColor);
+            }
+            if(newRating != AgeCategory.Undefined)
+            {  
+                ColorConsole.WriteColorLine($"[Beschrijving Film:] {newRating.GetDisplayName()}", Globals.MovieColor);
+            }
         }
 
         private static void Print(string currentTitle, string newTitle, string description, List<Genre> genres, AgeCategory rating)

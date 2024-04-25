@@ -1,15 +1,31 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 
 namespace BioscoopReserveringsapplicatie
 {
     public class DataAccess<T> : IDataAccess<T>
     {
-        private readonly string Filename;
+        private string Filename
+        {
+            get
+            {
+                string modelName = typeof(T).Name;
+                string fileName = "";
+                if (modelName.EndsWith("Model"))
+                {
+                    fileName = modelName.Substring(0, modelName.Length - 5);
+                }
+                else
+                {
+                    fileName = modelName;
+                }
+                return fileName + ".json";
+            }
+        }
         private string Path
         {
             get => System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
         }
-        public DataAccess(string filename) => Filename = filename;
         public List<T> LoadAll()
         {
             string json = File.ReadAllText(Path);

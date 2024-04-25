@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "scheduleId": 5,
+    "userId": 2
+  },
+  {
+    "id": 2,
+    "scheduleId": 7,
+    "userId": 2
+  },
+  {
+    "id": 3,
+    "scheduleId": 8,
+    "userId": 2
+  },
+  {
+    "id": 4,
+    "scheduleId": 6,
+    "userId": 2
+  }
+]

@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     static class UserLogin
     {
-        static private UserLogic _userLogic = new UserLogic();
+        private static UserLogic _userLogic = new UserLogic();
 
         public static void Start()
         {
@@ -19,11 +19,11 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
                 ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {email}", Globals.ColorInputcClarification);
                 ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start);
+            }, LandingPage.Start, true);
 
             if (_userLogic.CheckLogin(email, password) != null)
             {
-                ColorConsole.WriteColorLine("U bent ingelogd.", Globals.SuccessColor);
+                ColorConsole.WriteColorLine("\nU bent ingelogd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
 
                 if (UserLogic.CurrentUser.IsAdmin)

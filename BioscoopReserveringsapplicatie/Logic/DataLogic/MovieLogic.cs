@@ -1,17 +1,20 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class MoviesLogic
+    public class MovieLogic
     {
         private List<MovieModel> _Movies;
-
-        public MoviesLogic()
+        private IDataAccess<MovieModel> _DataAccess = new DataAccess<MovieModel>();
+        public MovieLogic(IDataAccess<MovieModel> dataAccess = null)
         {
-            _Movies = MoviesAccess.LoadAll();
+            if (dataAccess != null) _DataAccess = dataAccess;
+            else _DataAccess = new DataAccess<MovieModel>();
+
+            _Movies = _DataAccess.LoadAll();
         }
 
         public List<MovieModel> GetAllMovies()
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies;
         }
 
@@ -107,12 +110,12 @@ namespace BioscoopReserveringsapplicatie
                 //add new model
                 _Movies.Add(movie);
             }
-            MoviesAccess.WriteAll(_Movies);
+            _DataAccess.WriteAll(_Movies);
         }
 
         public MovieModel GetMovieById(int id)
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies.Find(i => i.Id == id);
         }
 
@@ -130,15 +133,29 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
+        public void Unarchive(int id)
+        {
+            MovieModel movie = GetMovieById(id);
+            if (movie != null)
+            {
+                movie.Archived = false;
+                UpdateList(movie);
+            }
+            else
+            {
+                return;
+            }
+        }
+
         public List<MovieModel> GetAllArchivedMovies()
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies.FindAll(m => m.Archived);
         }
 
         public List<MovieModel> GetAllActiveMovies()
         {
-            _Movies = MoviesAccess.LoadAll();
+            _Movies = _DataAccess.LoadAll();
             return _Movies.FindAll(m => !m.Archived);
         }
     }
