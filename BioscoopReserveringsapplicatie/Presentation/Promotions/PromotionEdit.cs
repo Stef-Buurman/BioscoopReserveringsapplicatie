@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace BioscoopReserveringsapplicatie
 {
     public static class PromotionEdit
