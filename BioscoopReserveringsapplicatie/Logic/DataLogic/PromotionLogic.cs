@@ -1,9 +1,9 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class PromotionLogic
+    public class PromotionLogic : ILogic<PromotionModel>
     {
         private List<PromotionModel> _promotions = new();
-        private IDataAccess<PromotionModel> _DataAccess = new DataAccess<PromotionModel>();
+        public IDataAccess<PromotionModel> _DataAccess { get; }
         public PromotionLogic(IDataAccess<PromotionModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -30,22 +30,24 @@ namespace BioscoopReserveringsapplicatie
             return _promotions.Find(s => s.Status == status);
         }
 
-        public bool Add(string title, string description)
+        public int GetNextId() => IdGenerator.GetNextId(_promotions);
+
+        public bool Add(PromotionModel promotion)
         {
             GetAll();
 
-            if (ValidateTitle(title) && ValidateDescription(description))
+            if (!Validate(promotion))
             {
-                PromotionModel promotion = new PromotionModel(IdGenerator.GetNextId(_promotions), title, description, false);
-
-                if (this.Validate(promotion))
-                {
-                    UpdateList(promotion);
-                    return true;
-                }
+                return false;
             }
+            UpdateList(promotion);
+            return true;
+        }
 
-            return false;
+        public bool Edit(PromotionModel promotion)
+        {
+            // This will be done in the near future
+            return true;
         }
 
         public void Activate(int id)

@@ -73,7 +73,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     
                     new Option<string>("Ja", () => {
-                        if(scheduleLogic.Add(experienceId, roomId, locationId, scheduledDateTime))
+                        if(scheduleLogic.Add(scheduleLogic.CreateSchedule(experienceId, roomId, locationId, scheduledDateTime)))
                         {
                             Console.Clear();
                             ColorConsole.WriteColorLine("Experience is ingepland!", Globals.SuccessColor);

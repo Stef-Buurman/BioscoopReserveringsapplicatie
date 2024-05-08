@@ -1,9 +1,9 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class ReservationLogic
+    public class ReservationLogic : ILogic<ReservationModel>
     {
         private List<ReservationModel> _reservations = new();
-        private IDataAccess<ReservationModel> _DataAccess = new DataAccess<ReservationModel>();
+        public IDataAccess<ReservationModel> _DataAccess { get; }
         public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -11,6 +11,8 @@ namespace BioscoopReserveringsapplicatie
 
             _reservations = _DataAccess.LoadAll();
         }
+
+        public int GetNextId() => IdGenerator.GetNextId(_reservations);
 
         public List<ReservationModel> GetAll()
         {
@@ -31,15 +33,27 @@ namespace BioscoopReserveringsapplicatie
             if (scheduleId != 0 && userId != 0)
             {
                 ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId);
-
-                if (this.Validate(reservation))
-                {
-                    UpdateList(reservation);
-                    return true;
-                }
+                return Add(reservation);
             }
 
             return false;
+        }
+
+        public bool Add(ReservationModel reservation)
+        {
+            if (!Validate(reservation))
+            {
+                return false;
+            }
+
+            UpdateList(reservation);
+            return true;
+        }
+
+        public bool Edit(ReservationModel reservation)
+        {
+            // This will be done in the near future
+            return true;
         }
 
         public bool Validate(ReservationModel reservation)

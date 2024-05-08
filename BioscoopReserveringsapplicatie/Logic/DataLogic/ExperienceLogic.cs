@@ -1,9 +1,9 @@
 ﻿namespace BioscoopReserveringsapplicatie
 {
-    public class ExperienceLogic
+    public class ExperienceLogic : ILogic<ExperienceModel>
     {
         private List<ExperienceModel> _experiences;
-        private IDataAccess<ExperienceModel> _DataAccess = new DataAccess<ExperienceModel>();
+        public IDataAccess<ExperienceModel> _DataAccess { get; }
         private static MovieLogic MoviesLogic;
         private static ScheduleLogic ScheduleLogic;
 
@@ -23,13 +23,15 @@
             _experiences = _DataAccess.LoadAll();
         }
 
+        public int GetNextId() => IdGenerator.GetNextId(_experiences);
+
         public ExperienceModel GetById(int id)
         {
             _experiences = _DataAccess.LoadAll();
             return _experiences.Find(i => i.Id == id);
         }
 
-        public bool ValidateExperience(ExperienceModel experience)
+        public bool Validate(ExperienceModel experience)
         {
             if (experience == null) return false;
             else if (!ValidateExperienceName(experience.Name)) return false;
@@ -43,12 +45,12 @@
         public bool ValidateExperienceTimeLength(int timeLength) => timeLength < 0 ? false : true;
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
-        public bool ValidateMovieId(int filmId) => MoviesLogic.GetMovieById(filmId) == null ? false : true;
+        public bool ValidateMovieId(int filmId) => MoviesLogic.GetById(filmId) == null ? false : true;
         public bool ValidateExperienceArchive(bool archived) => true;
 
-        public bool AddExperience(ExperienceModel experience)
+        public bool Add(ExperienceModel experience)
         {
-            if (experience == null || !this.ValidateExperience(experience))
+            if (!Validate(experience))
             {
                 return false;
             }
@@ -58,7 +60,7 @@
             return true;
         }
 
-        public List<ExperienceModel> GetExperiences()
+        public List<ExperienceModel> GetAll()
         {
             _experiences = _DataAccess.LoadAll();
             return _experiences;
@@ -66,7 +68,7 @@
 
         public List<ExperienceModel> GetExperiencesByUserPreferences(UserModel currentUser)
         {
-            GetExperiences();
+            GetAll();
 
             List<ExperienceModel> experiences = new List<ExperienceModel>();
 
@@ -74,7 +76,7 @@
             {
                 if (experience.Archived) continue;
 
-                MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+                MovieModel movie = MoviesLogic.GetById(experience.FilmId);
 
                 if (movie == null) continue;
 
@@ -91,7 +93,17 @@
             return experiences;
         }
 
-        public bool EditExperience(int id, string name, string description, Intensity intensity, int timeLength, int filmId)
+        public bool Edit(ExperienceModel experience)
+        {
+            if (!Validate(experience) || this.GetById(experience.Id) == null)
+            {
+                return false;
+            }
+            UpdateList(experience);
+            return true;
+        }
+
+        public bool Edit(int id, string name, string description, Intensity intensity, int timeLength, int filmId)
         {
             if (ValidateExperienceName(name) && ValidateExperienceDescription(description) && ValidateExperienceIntensity(intensity) && ValidateExperienceTimeLength(timeLength) && ValidateMovieId(filmId))
             {

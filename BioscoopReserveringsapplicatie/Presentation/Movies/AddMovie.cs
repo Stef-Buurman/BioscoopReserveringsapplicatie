@@ -44,7 +44,7 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            if (MoviesLogic.AddMovie(title, description, genres, rating))
+            if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, false)))
             {
                 Console.Clear();
                 Print();

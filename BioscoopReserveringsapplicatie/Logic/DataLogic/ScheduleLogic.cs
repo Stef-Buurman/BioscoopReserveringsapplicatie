@@ -2,14 +2,14 @@ using System.Globalization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    class ScheduleLogic
+    public class ScheduleLogic : ILogic<ScheduleModel>
     {
         private static ExperienceLogic experiencesLogic = new ExperienceLogic();
         private static LocationLogic locationLogic = new LocationLogic();
         private static RoomLogic roomLogic = new RoomLogic();
 
         private List<ScheduleModel> _Schedules;
-        private IDataAccess<ScheduleModel> _DataAccess = new DataAccess<ScheduleModel>();
+        public IDataAccess<ScheduleModel> _DataAccess { get; }
         public ScheduleLogic(IDataAccess<ScheduleModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -17,6 +17,8 @@ namespace BioscoopReserveringsapplicatie
 
             _Schedules = _DataAccess.LoadAll();
         }
+
+        public int GetNextId() => IdGenerator.GetNextId(_Schedules);
 
         public List<ScheduleModel> GetAll() => _Schedules = _DataAccess.LoadAll();
 
@@ -28,24 +30,52 @@ namespace BioscoopReserveringsapplicatie
 
         public List<ScheduleModel> GetByExperienceId(int id) => _DataAccess.LoadAll().FindAll(i => i.ExperienceId == id);
 
-        public bool Add(int experienceId, int roomId, int locationId, string scheduledDateTime)
+        public ScheduleModel CreateSchedule(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
             if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
             {
                 if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
                 {
                     DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
-
-                    GetAll();
-
                     ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTimeStart, dateTimeEnd);
-
-                    UpdateList(schedule);
-                    return true;
+                    return schedule;
                 }
-                else return false;
             }
-            else return false;
+            return null;
+        }
+
+        public bool Validate(ScheduleModel schedule) => schedule != null;
+
+        public bool Add(ScheduleModel schedule)
+        {
+            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            {
+                GetAll();
+                
+                if (!Validate(schedule))
+                {
+                    return false;
+                }
+
+                UpdateList(schedule);
+                return true;
+            }
+            return false;
+        }
+
+        public bool Edit(ScheduleModel schedule)
+        {
+            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            {
+                if (!Validate(schedule))
+                {
+                    return false;
+                }
+
+                UpdateList(schedule);
+                return true;
+            }
+            return false;
         }
 
         public bool TimeSlotOpenOnRoom(int experienceId, int locationId, int roomId,  string scheduledDateTime, out string error)

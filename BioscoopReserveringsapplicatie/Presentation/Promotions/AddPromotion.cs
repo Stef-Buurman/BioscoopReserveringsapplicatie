@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            if (promotionLogic.Add(title, description))
+            if (promotionLogic.Add(new PromotionModel(promotionLogic.GetNextId(), title, description, false)))
             {
                 List<Option<string>> options = new List<Option<string>>
                 {

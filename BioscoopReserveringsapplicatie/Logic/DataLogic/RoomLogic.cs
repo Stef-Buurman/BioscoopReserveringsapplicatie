@@ -1,9 +1,9 @@
 namespace BioscoopReserveringsapplicatie
 {
-    class RoomLogic
+    public class RoomLogic : ILogic<RoomModel>
     {
         private List<RoomModel> _Rooms;
-        private IDataAccess<RoomModel> _DataAccess = new DataAccess<RoomModel>();
+        public IDataAccess<RoomModel> _DataAccess { get; }
         public RoomLogic(IDataAccess<RoomModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -11,20 +11,40 @@ namespace BioscoopReserveringsapplicatie
 
             _Rooms = _DataAccess.LoadAll();
         }
-        
+
+        public int GetNextId() => IdGenerator.GetNextId(_Rooms);
+
         public List<RoomModel> GetAll() => _Rooms = _DataAccess.LoadAll();
 
         public RoomModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
         public List<RoomModel> GetByLocationId(int id) => _DataAccess.LoadAll().FindAll(i => i.LocationId == id);
 
-        public void Add(int locationId, int roomNumber, int capacity)
+        public bool Validate(RoomModel room)
         {
-                GetAll();
+            return room != null;
+        }
 
-                RoomModel room = new RoomModel(IdGenerator.GetNextId(_Rooms), locationId, roomNumber, capacity);
+        public bool Add(RoomModel room)
+        {
+            GetAll();
+            if (!Validate(room))
+            {
+                return false;
+            }
+            UpdateList(room);
+            return true;
+        }
 
-                UpdateList(room);
+        public bool Edit(RoomModel room)
+        {
+            if (!Validate(room))
+            {
+                return false;
+            }
+
+            UpdateList(room);
+            return true;
         }
 
         public void UpdateList(RoomModel room)

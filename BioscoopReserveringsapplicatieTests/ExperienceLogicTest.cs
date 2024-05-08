@@ -36,9 +36,9 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Experience_Name_Validation_With_Experience()
         {
             ExperienceModel experience = new ExperienceModel("", "", 0, Intensity.Low, 0, false);
-            Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
+            Assert.IsFalse(experiencesLogic.Validate(experience));
             ExperienceModel experience2 = new ExperienceModel(null, null, 0, Intensity.Low, 0, false);
-            Assert.IsFalse(experiencesLogic.ValidateExperience(experience2));
+            Assert.IsFalse(experiencesLogic.Validate(experience2));
         }
 
         [DataRow("")]
@@ -53,9 +53,9 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Experience_Intensity_With_Experience()
         {
             ExperienceModel experience = new ExperienceModel("test1", "test1", 0, (Intensity)909, 10, false);
-            Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
+            Assert.IsFalse(experiencesLogic.Validate(experience));
             ExperienceModel experience2 = new ExperienceModel("test1", "test1", 0, (Intensity)1002, 10, false);
-            Assert.IsFalse(experiencesLogic.ValidateExperience(experience2));
+            Assert.IsFalse(experiencesLogic.Validate(experience2));
         }
 
         // Intensity ------------------------------------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Experience_TimeLength_Validation_With_Experience()
         {
             ExperienceModel experience = new ExperienceModel("test1", "test1", 0, Intensity.Low, -10, false);
-            Assert.IsFalse(experiencesLogic.ValidateExperience(experience));
+            Assert.IsFalse(experiencesLogic.Validate(experience));
         }
 
         [DataRow(-6)]
@@ -114,13 +114,13 @@ namespace BioscoopReserveringsapplicatieTests
         public void CorrectExperience()
         {
             ExperienceModel experience = new ExperienceModel("test1", "test1", 0, Intensity.High, 10, false);
-            Assert.IsTrue(experiencesLogic.ValidateExperience(experience));
+            Assert.IsTrue(experiencesLogic.Validate(experience));
         }
 
         [TestMethod]
         public void Incorrect_Experience_Null()
         {
-            Assert.IsFalse(experiencesLogic.ValidateExperience(null));
+            Assert.IsFalse(experiencesLogic.Validate(null));
         }
 
         // Archive ----------------------------------------------------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class MovieLogic
+    public class MovieLogic : ILogic<MovieModel>
     {
         private List<MovieModel> _Movies;
-        private IDataAccess<MovieModel> _DataAccess = new DataAccess<MovieModel>();
+        public IDataAccess<MovieModel> _DataAccess { get; }
         public MovieLogic(IDataAccess<MovieModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -12,35 +12,43 @@ namespace BioscoopReserveringsapplicatie
             _Movies = _DataAccess.LoadAll();
         }
 
-        public List<MovieModel> GetAllMovies()
+        public int GetNextId() => IdGenerator.GetNextId(_Movies);
+
+        public List<MovieModel> GetAll()
         {
             _Movies = _DataAccess.LoadAll();
             return _Movies;
         }
 
-        public bool AddMovie(string title, string description, List<Genre> genres, AgeCategory rating)
+        public bool Add(MovieModel movie)
         {
-            GetAllMovies();
+            GetAll();
 
-            if (ValidateMovieTitle(title) && ValidateMovieDescription(description) && ValidateMovieGenres(genres) && ValidateMovieAgeCategory(rating))
+            if (!Validate(movie))
             {
-                MovieModel movie = new MovieModel(IdGenerator.GetNextId(_Movies), title, description, genres, rating, false);
-
-                if (this.ValidateMovie(movie))
-                {
-                    UpdateList(movie);
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            UpdateList(movie);
+            return true;
         }
 
-        public bool EditMovie(int id, string title, string description, List<Genre> genres, AgeCategory rating)
+        public bool Edit(MovieModel movie)
+        {
+            if (!Validate(movie))
+            {
+                return false;
+            }
+
+            UpdateList(movie);
+            return true;
+        }
+
+        public bool Edit(int id, string title, string description, List<Genre> genres, AgeCategory rating)
         {
             if (ValidateMovieTitle(title) && ValidateMovieDescription(description) && ValidateMovieGenres(genres) && ValidateMovieAgeCategory(rating) && id != 0)
             {
-                MovieModel movie = GetMovieById(id);
+                MovieModel movie = GetById(id);
                 movie.Title = title;
                 movie.Description = description;
                 movie.Genres = genres;
@@ -53,7 +61,7 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
-        public bool ValidateMovie(MovieModel movie)
+        public bool Validate(MovieModel movie)
         {
             if (movie == null) return false;
             else if (!ValidateMovieTitle(movie.Title)) return false;
@@ -113,7 +121,7 @@ namespace BioscoopReserveringsapplicatie
             _DataAccess.WriteAll(_Movies);
         }
 
-        public MovieModel GetMovieById(int id)
+        public MovieModel GetById(int id)
         {
             _Movies = _DataAccess.LoadAll();
             return _Movies.Find(i => i.Id == id);
@@ -121,7 +129,7 @@ namespace BioscoopReserveringsapplicatie
 
         public void Archive(int id)
         {
-            MovieModel movie = GetMovieById(id);
+            MovieModel movie = GetById(id);
             if (movie != null)
             {
                 movie.Archived = true;
@@ -135,7 +143,7 @@ namespace BioscoopReserveringsapplicatie
 
         public void Unarchive(int id)
         {
-            MovieModel movie = GetMovieById(id);
+            MovieModel movie = GetById(id);
             if (movie != null)
             {
                 movie.Archived = false;
