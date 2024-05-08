@@ -27,8 +27,6 @@ namespace BioscoopReserveringsapplicatie
                         return (T)enumValue;
                     }
                 }
-
-                throw new JsonException($"Invalid enum value: {enumValueString}");
             }
             return default(T);
         }
