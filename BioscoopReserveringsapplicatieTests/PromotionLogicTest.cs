@@ -95,5 +95,39 @@ namespace BioscoopReserveringsapplicatieTests
             promotionLogic.Deactivate(2);
             Assert.IsFalse(promotionLogic.GetById(2).Status);
         }
+
+        // Edit ------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Promotion_Edit()
+        {
+            promotionLogic.Edit(new PromotionModel(1, "Title", "Description", false));
+            Assert.AreEqual("Title", promotionLogic.GetById(1).Title);
+            Assert.AreEqual("Description", promotionLogic.GetById(1).Description);
+        }
+
+        [TestMethod]
+        public void Incorrect_Promotion_Edit()
+        {
+            promotionLogic.Edit(new PromotionModel(1, "", "", false));
+            Assert.AreNotEqual("NeTitle", promotionLogic.GetById(1).Title);
+            Assert.AreNotEqual("NewDescription", promotionLogic.GetById(1).Description);
+        }
+
+        [TestMethod]
+        public void Incorrect_Promotion_Edit_With_Invalid_Title()
+        {
+            promotionLogic.Edit(new PromotionModel(1, "", "Description", false));
+            Assert.AreNotEqual("Title", promotionLogic.GetById(1).Title);
+            Assert.AreNotEqual("Description", promotionLogic.GetById(1).Description);
+        }
+
+        [TestMethod]
+        public void Incorrect_Promotion_Edit_With_Invalid_Description()
+        {
+            promotionLogic.Edit(new PromotionModel(1, "Title", "", false));
+            Assert.AreNotEqual("Title", promotionLogic.GetById(1).Title);
+            Assert.AreNotEqual("Description", promotionLogic.GetById(1).Description);
+        }
     }
 }
