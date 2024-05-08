@@ -24,7 +24,7 @@ namespace BioscoopReserveringsapplicatie
         {
             experience = ExperienceLogic.GetById(experienceId);
 
-            movie = MoviesLogic.GetMovieById(experience.FilmId);
+            movie = MoviesLogic.GetById(experience.FilmId);
 
             var options = new List<Option<string>>
             {
@@ -42,7 +42,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> options;
 
-            movie = MoviesLogic.GetMovieById(experience.FilmId);
+            movie = MoviesLogic.GetById(experience.FilmId);
 
             if (experience.Archived)
             {

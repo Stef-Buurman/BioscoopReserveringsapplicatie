@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
             }
 
             ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt, archived: false);
-            if (experiencesLogic.AddExperience(newExperience))
+            if (experiencesLogic.Add(newExperience))
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
@@ -144,7 +144,7 @@ namespace BioscoopReserveringsapplicatie
         private static void AskForMovie()
         {
             PrintEditedList();
-            List<MovieModel> movies = MoviesLogic.GetAllMovies();
+            List<MovieModel> movies = MoviesLogic.GetAll();
             List<Option<int>> movieOptions = new List<Option<int>>();
             foreach (MovieModel movie in movies)
             {
@@ -167,7 +167,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("\nDe details van de experience zijn:", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience naam:] {name}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience beschrijving:] {description}", Globals.ExperienceColor);
-            ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {MoviesLogic.GetMovieById(filmId).Title}", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {MoviesLogic.GetById(filmId).Title}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {intensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience lengte (minuten):] {timeLength}\n", Globals.ExperienceColor);
         }
@@ -186,7 +186,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_selectedMovieId != 0)
             {
-                ColorConsole.WriteColorLine($"[Film titel:] {MoviesLogic.GetMovieById(_selectedMovieId).Title}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Film titel:] {MoviesLogic.GetById(_selectedMovieId).Title}", Globals.ExperienceColor);
             }
             if (_Intensity != Intensity.Undefined)
             {

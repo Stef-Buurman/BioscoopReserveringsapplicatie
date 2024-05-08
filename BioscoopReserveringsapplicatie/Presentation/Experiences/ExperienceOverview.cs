@@ -47,7 +47,7 @@ namespace BioscoopReserveringsapplicatie
 
             foreach (ExperienceModel experience in experiences)
             {
-                MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+                MovieModel movie = MoviesLogic.GetById(experience.FilmId);
 
                 string experienceName = experience.Name;
                 if (experienceName.Length > 25)
@@ -99,7 +99,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void ShowAllExperiences()
         {
-            List<ExperienceModel> allExperiences = ExperiencesLogic.GetExperiences();
+            List<ExperienceModel> allExperiences = ExperiencesLogic.GetAll();
 
             if (allExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen experiences gevonden.");
             else ShowExperiences(allExperiences);
@@ -127,7 +127,7 @@ namespace BioscoopReserveringsapplicatie
                 "Gearchiveerd"
             };
 
-            List<ExperienceModel> allExperiences = ExperiencesLogic.GetExperiences();
+            List<ExperienceModel> allExperiences = ExperiencesLogic.GetAll();
             // Bereken de breedte voor elke kolom op basis van de koptekst en experiences
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences, experienceDataExtractor);
 
@@ -151,7 +151,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static string[] ExtractExperienceData(ExperienceModel experience)
         {
-            MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+            MovieModel movie = MoviesLogic.GetById(experience.FilmId);
 
             string[] experienceInfo = {
                 experience.Name,
