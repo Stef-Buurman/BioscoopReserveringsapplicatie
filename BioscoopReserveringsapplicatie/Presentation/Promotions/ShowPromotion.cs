@@ -1,39 +1,43 @@
-using System.Drawing;
-
 namespace BioscoopReserveringsapplicatie
 {
     public class ShowPromotion
     {
+        private static UserLogic userLogic = new UserLogic();
+        private static PromotionLogic promotionLogic = new PromotionLogic();
+        private static PromotionModel? activePromotion = promotionLogic.GetActivePromotion();
         public static void Start()
         {
             Console.Clear();
-            PromotionLogic promotionLogic = new PromotionLogic();
-            PromotionModel? activePromotion = promotionLogic.GetActivePromotion();
-
             if (activePromotion != null)
             {
-                ColorConsole.WriteColorLine("***************************************************", Globals.PromotionColor);
-                ColorConsole.WriteColorLine("*                      ACTIE                      *", Globals.PromotionColor);
-                ColorConsole.WriteColorLine("***************************************************", Globals.PromotionColor);
-                Console.ResetColor();
+                bool shownRecently = promotionLogic.IsPromotionShownRecently(activePromotion.Id);
 
-                ColorConsole.WriteColorLine($"[Titel:] {activePromotion.Title}", Globals.PromotionColor);
-                ColorConsole.WriteColorLine($"[Beschrijving:] {activePromotion.Description}", Globals.PromotionColor);
-
-                // ColorConsole.WriteColorLine("*************************", Globals.PromotionColor);
-                Console.WriteLine();
-
-                List<Option<string>> options = new List<Option<string>>
+                if (!shownRecently)
                 {
-                    new Option<string>("Volgende", () => UserMenu.Start()),
-                };
+                    promotionLogic.UpdatePromotionShown(activePromotion.Id);
+                    userLogic.UpdateList(UserLogic.CurrentUser);
+                    DisplayPromotion(activePromotion);
+                }
+            }
+            UserMenu.Start();
+        }
 
-                new SelectionMenuUtil2<string>(options).Create();
-            }
-            else
+        private static void DisplayPromotion(PromotionModel promotion)
+        {
+            ColorConsole.WriteColorLine("***************************************************", Globals.PromotionColor);
+            ColorConsole.WriteColorLine("*                      ACTIE                      *", Globals.PromotionColor);
+            ColorConsole.WriteColorLine("***************************************************", Globals.PromotionColor);
+            ColorConsole.WriteColorLine($"[Titel:] {promotion.Title}", Globals.PromotionColor);
+            Console.WriteLine();
+            ColorConsole.WriteColorLine($"[Beschrijving:] {promotion.Description}", Globals.PromotionColor);
+            Console.WriteLine();
+
+            List<Option<string>> options = new List<Option<string>>
             {
-                UserMenu.Start();
-            }
+                new Option<string>("Sluiten", () => UserMenu.Start()),
+            };
+
+            new SelectionMenuUtil2<string>(options).Create();
         }
     }
 }

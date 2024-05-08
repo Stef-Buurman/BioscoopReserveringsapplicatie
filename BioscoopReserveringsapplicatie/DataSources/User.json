@@ -8,7 +8,8 @@
     "genres": null,
     "ageCategory": "Undefined",
     "intensity": "Undefined",
-    "language": "Undefined"
+    "language": "Undefined",
+    "promotionsSeen": null
   },
   {
     "id": 2,
@@ -23,6 +24,10 @@
     ],
     "ageCategory": "AGE_18",
     "intensity": "Undefined",
-    "language": "Nederlands"
+    "language": "Nederlands",
+    "promotionsSeen": {
+      "2": "2024-05-08T14:53:46.7919921+02:00",
+      "1": "2024-05-08T14:54:29.9316905+02:00"
+    }
   }
 ]
