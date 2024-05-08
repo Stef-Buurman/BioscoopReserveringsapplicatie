@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace BioscoopReserveringsapplicatie
@@ -16,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("filmId")]
         public int FilmId { get; set; }
 
-        [JsonConverter(typeof(IntensityConverter))]
+        [JsonConverter(typeof(EnumConverter<Intensity>))]
         [JsonPropertyName("intensity")]
         public Intensity Intensity { get; set; }
 

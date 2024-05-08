@@ -6,7 +6,7 @@
     "password": "admin",
     "fullName": "Admin",
     "genres": null,
-    "ageCategory": 0,
+    "ageCategory": "Undefined",
     "intensity": "Undefined",
     "language": "Undefined"
   },
@@ -21,7 +21,7 @@
       "Komedie",
       "Actie"
     ],
-    "ageCategory": 18,
+    "ageCategory": "AGE_18",
     "intensity": "Undefined",
     "language": "Nederlands"
   }

@@ -8,7 +8,7 @@
       "Komedie",
       "Actie"
     ],
-    "ageCategory": 14,
+    "ageCategory": "AGE_14",
     "archived": false
   },
   {
@@ -20,7 +20,7 @@
       "Drama",
       "Romance"
     ],
-    "ageCategory": 16,
+    "ageCategory": "AGE_16",
     "archived": false
   },
   {
@@ -32,7 +32,7 @@
       "War",
       "Actie"
     ],
-    "ageCategory": 18,
+    "ageCategory": "AGE_18",
     "archived": true
   }
 ]
