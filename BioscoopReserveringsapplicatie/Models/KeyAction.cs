@@ -1,6 +1,6 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class KeyAction : IEquatable<KeyAction>
+    public class KeyAction
     {
         public ConsoleKey Key { get; }
         public Action Action { get; }
@@ -10,7 +10,5 @@ namespace BioscoopReserveringsapplicatie
             Key = key;
             Action = action;
         }
-
-        public bool Equals(KeyAction other) => Key == other.Key;
     }
 }
