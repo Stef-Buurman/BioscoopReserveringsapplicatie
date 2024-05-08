@@ -13,11 +13,11 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonConverter(typeof(GenreListConverter))]
+        [JsonConverter(typeof(EnumListConverter<Genre>))]
         [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
 
-        [JsonConverter(typeof(AgeCategoryConverter))]
+        [JsonConverter(typeof(EnumConverter<AgeCategory>))]
         [JsonPropertyName("ageCategory")]
         public AgeCategory AgeCategory { get; set; }
 
