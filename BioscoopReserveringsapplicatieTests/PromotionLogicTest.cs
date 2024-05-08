@@ -101,37 +101,34 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Promotion_Edit()
         {
-            promotionLogic.Edit(new PromotionModel(1, "Title", "Description", false));
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "Description", false)));
             Assert.AreEqual("Title", promotionLogic.GetById(1).Title);
             Assert.AreEqual("Description", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "Description", false)));
+
         }
 
         [TestMethod]
         public void Incorrect_Promotion_Edit()
         {
-            promotionLogic.Edit(new PromotionModel(1, "", "", false));
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "", "", false)));
             Assert.AreNotEqual("", promotionLogic.GetById(1).Title);
             Assert.AreNotEqual("", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "", "", false)));
         }
 
         [TestMethod]
         public void Incorrect_Promotion_Edit_With_Invalid_Title()
         {
-            promotionLogic.Edit(new PromotionModel(1, "", "Description", false));
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "", "Description", false)));
             Assert.AreNotEqual("", promotionLogic.GetById(1).Title);
             Assert.AreNotEqual("Description", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "", "Description", false)));
         }
 
         [TestMethod]
         public void Incorrect_Promotion_Edit_With_Invalid_Description()
         {
-            promotionLogic.Edit(new PromotionModel(1, "Title", "", false));
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "", false)));
             Assert.AreNotEqual("Title", promotionLogic.GetById(1).Title);
             Assert.AreNotEqual("", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "", false)));
         }
     }
 }
