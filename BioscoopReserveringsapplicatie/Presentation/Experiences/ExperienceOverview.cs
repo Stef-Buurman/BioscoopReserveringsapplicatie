@@ -9,16 +9,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
-            List<Option<string>> options = new List<Option<string>>
-            {
-                new Option<string>("Experience toevoegen", () => AddExperience.Start()),
-                new Option<string>("Alle actieve experiences bekijken", () => ShowAllActiveExperiences()),
-                new Option<string>("Alle gearchiveerde experiences bekijken", () => ShowAllArchivedExperiences()),
-                new Option<string>("Alle experiences bekijken", () => ShowAllExperiences()),
-                new Option<string>("Terug", () => AdminMenu.Start()),
-            };
-            ColorConsole.WriteColorLine("Kies een categorie: \n", Globals.TitleColor);
-            new SelectionMenuUtil2<string>(options).Create();
+            ShowAllExperiences();
         }
 
         private static void ShowExperienceDetails(int experienceId)
@@ -65,17 +56,29 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel beschikbaar zijn:", Globals.TitleColor);
+            ColorConsole.WriteLineInfo("Klik op T om een experience toetevoegen.");
+            ColorConsole.WriteLineInfo("Klik op 1 om alle experiences te tonen.");
+            ColorConsole.WriteLineInfo("Klik op 2 om alle active experiences te tonen.");
+            ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde experiences te tonen.\n");
             Print();
             int experienceId = new SelectionMenuUtil2<int>(options,
                 () =>
                 {
-                    Start();
+                    AdminMenu.Start();
                 },
                 () =>
                 {
                     ShowExperiences(experiences);
-                }, showEscapeabilityText: false).Create();
+                },
+                new List<KeyAction>()
+                {
+                    new KeyAction(ConsoleKey.T, () => AddExperience.Start()),
+                    new KeyAction(ConsoleKey.D1, () => ShowAllExperiences()),
+                    new KeyAction(ConsoleKey.D2, () => ShowAllActiveExperiences()),
+                    new KeyAction(ConsoleKey.D3, () => ShowAllArchivedExperiences()),
+                }
+                ,
+                showEscapeabilityText: false).Create();
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;
