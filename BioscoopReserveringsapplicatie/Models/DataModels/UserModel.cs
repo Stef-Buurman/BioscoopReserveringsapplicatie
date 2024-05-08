@@ -35,8 +35,11 @@ namespace BioscoopReserveringsapplicatie
         [JsonConverter(typeof(LanguageConverter))]
         [JsonPropertyName("language")]
         public Language Language { get; set; }
+ 
+        [JsonPropertyName("promotionsSeen")]
+        public Dictionary<int, DateTime> PromotionsSeen { get; set; }
 
-        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
+        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, Dictionary<int, DateTime> promotionsSeen)
         {
             Id = id;
             IsAdmin = isAdmin;
@@ -47,6 +50,7 @@ namespace BioscoopReserveringsapplicatie
             AgeCategory = ageCategory;
             Intensity = intensity;
             Language = language;
+            PromotionsSeen = promotionsSeen;
         }
     }
 }
