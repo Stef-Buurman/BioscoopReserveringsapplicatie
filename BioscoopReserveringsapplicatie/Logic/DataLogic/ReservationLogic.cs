@@ -26,6 +26,12 @@ namespace BioscoopReserveringsapplicatie
             return _reservations.Find(s => s.Id == id);
         }
 
+        public List<ReservationModel> GetByUserId(int userId)
+        {
+            _reservations = _DataAccess.LoadAll();
+            return _reservations.FindAll(s => s.UserId == userId);
+        }
+
         public bool Complete(int scheduleId, int userId)
         {
             GetAll();
