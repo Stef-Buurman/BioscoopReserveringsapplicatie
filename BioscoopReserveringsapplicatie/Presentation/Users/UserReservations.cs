@@ -76,7 +76,7 @@ namespace BioscoopReserveringsapplicatie
                     reservationLocation = reservationLocation.Substring(0, 25) + "...";
                 }
 
-                string reservationInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + columnWidths[3] + "} {4,-" + columnWidths[4] + "}",
+                string reservationInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + (columnWidths[3] + 2) + "} {4,-" + columnWidths[4] + "}",
                 reservationTitle, reservationLocation, room.RoomNumber.ToString(), schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm"), schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm"));
                 options.Add(new Option<int>(reservation.Id, reservationInfo));
             }
