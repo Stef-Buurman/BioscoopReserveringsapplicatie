@@ -3,12 +3,12 @@
     "id": 1,
     "title": "Tijdelijke actie",
     "description": "Bij alle reserveringen van Barbie en Oppenheimer nu een tijdelijke Barbenheimer deal!",
-    "status": 2
+    "status": "Archived"
   },
   {
     "id": 2,
     "title": "Gratis Popcorn \u0026 Frisdrank",
     "description": "Geen filmavond is compleet zonder popcorn en een verfrissend drankje! Ontvang een gratis portie popcorn en frisdrank bij aankoop van een bioscoopkaartje.",
-    "status": 0
+    "status": "Inactive"
   }
 ]
