@@ -24,7 +24,7 @@ namespace BioscoopReserveringsapplicatie
             return _promotions.Find(s => s.Id == id);
         }
 
-        public PromotionModel? GetByStatus(bool status)
+        public PromotionModel? GetByStatus(Status status)
         {
             _promotions = _DataAccess.LoadAll();
             return _promotions.Find(s => s.Status == status);
@@ -60,7 +60,7 @@ namespace BioscoopReserveringsapplicatie
 
             if (promotion != null)
             {
-                promotion.Status = true;
+                promotion.Status = Status.Active;
                 UpdateList(promotion);
             }
         }
@@ -71,7 +71,29 @@ namespace BioscoopReserveringsapplicatie
 
             if (promotion != null)
             {
-                promotion.Status = false;
+                promotion.Status = Status.Inactive;
+                UpdateList(promotion);
+            }
+        }
+
+        public void Archive(int id)
+        {
+            PromotionModel? promotion = GetById(id);
+
+            if (promotion != null)
+            {
+                promotion.Status = Status.Archived;
+                UpdateList(promotion);
+            }
+        }
+
+        public void Unarchive(int id)
+        {
+            PromotionModel? promotion = GetById(id);
+
+            if (promotion != null)
+            {
+                promotion.Status = Status.Inactive;
                 UpdateList(promotion);
             }
         }

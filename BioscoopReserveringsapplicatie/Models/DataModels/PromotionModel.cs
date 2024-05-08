@@ -13,10 +13,11 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
+        [JsonConverter(typeof(EnumConverter<Status>))]
         [JsonPropertyName("status")]
-        public bool Status { get; set; }
+        public Status Status { get; set; }
 
-        public PromotionModel(int id, string title, string description, bool status)
+        public PromotionModel(int id, string title, string description, Status status)
         {
             Id = id;
             Title = title;
