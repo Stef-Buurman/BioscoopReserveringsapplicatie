@@ -104,7 +104,7 @@ namespace BioscoopReserveringsapplicatieTests
             promotionLogic.Edit(new PromotionModel(1, "Title", "Description", false));
             Assert.AreEqual("Title", promotionLogic.GetById(1).Title);
             Assert.AreEqual("Description", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.GetById(1).Status);
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "Description", false)));
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace BioscoopReserveringsapplicatieTests
             promotionLogic.Edit(new PromotionModel(1, "", "", false));
             Assert.AreNotEqual("", promotionLogic.GetById(1).Title);
             Assert.AreNotEqual("", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.GetById(1).Status);
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "", "", false)));
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace BioscoopReserveringsapplicatieTests
             promotionLogic.Edit(new PromotionModel(1, "", "Description", false));
             Assert.AreNotEqual("", promotionLogic.GetById(1).Title);
             Assert.AreNotEqual("Description", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.GetById(1).Status);
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "", "Description", false)));
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace BioscoopReserveringsapplicatieTests
             promotionLogic.Edit(new PromotionModel(1, "Title", "", false));
             Assert.AreNotEqual("Title", promotionLogic.GetById(1).Title);
             Assert.AreNotEqual("", promotionLogic.GetById(1).Description);
-            Assert.IsFalse(promotionLogic.GetById(1).Status);
+            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "", false)));
         }
     }
 }
