@@ -107,5 +107,10 @@ namespace BioscoopReserveringsapplicatie
             }
             _DataAccess.WriteAll(_promotions);
         }
+        public PromotionModel? GetActivePromotion()
+        {
+            _promotions = _DataAccess.LoadAll();
+            return _promotions.Find(s => s.Status == true);
+        }
     }
 }
