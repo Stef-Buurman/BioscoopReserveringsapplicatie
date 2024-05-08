@@ -13,16 +13,15 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            Console.WriteLine("Dit zijn jouw reserveringen:");
-
             List<ReservationModel> reservations = reservationLogic.GetByUserId(UserLogic.CurrentUser.Id);
 
             if (reservations.Count == 0)
             {
-                Console.WriteLine("Je hebt nog geen reserveringen gemaakt.");
-                Console.WriteLine("Druk op een toets om terug te gaan.");
+                ColorConsole.WriteColorLine("Je hebt nog geen reserveringen geplaatst.", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar mijn account", Globals.ColorInputcClarification);
+
                 Console.ReadKey();
-                UserMenu.Start();
+                UserDetails.Start();
             }
             else
             {
@@ -80,9 +79,12 @@ namespace BioscoopReserveringsapplicatie
                 reservationTitle, reservationLocation, room.RoomNumber.ToString(), schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm"), schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm"));
                 options.Add(new Option<int>(reservation.Id, reservationInfo));
             }
+
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteColorLine("Dit zijn alle reserveringen die momenteel beschikbaar zijn:\n", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Dit zijn jouw reserveringen:\n", Globals.TitleColor);
+
             Print();
+
             int reservationId = new SelectionMenuUtil2<int>(options,
                 () =>
                 {
@@ -92,7 +94,9 @@ namespace BioscoopReserveringsapplicatie
                 {
                     ShowReservations(reservations);
                 }, showEscapeabilityText: false).Create();
+
             Console.Clear();
+
             ShowReservationDetails(reservationId);
         }
 
