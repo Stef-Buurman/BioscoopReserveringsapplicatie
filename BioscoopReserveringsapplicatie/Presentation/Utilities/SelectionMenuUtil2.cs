@@ -74,6 +74,7 @@
             else
             {
                 CanBeEscaped = canBeEscaped;
+                KeysInUse.Add(ConsoleKey.Escape);
                 EscapeAction = escapeAction;
                 EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             }
@@ -81,6 +82,7 @@
             if (isMultiSelect)
             {
                 IsMultiSelect = isMultiSelect;
+                KeysInUse.Add(ConsoleKey.Spacebar);
                 VisibleSelectedArrows = false;
                 if (selectedOptions != null && selectedOptions.Count > 0)
                 {
@@ -113,13 +115,15 @@
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
             }
-
-            HasKeyAction = hasKeyAction;
-            KeyActions = keyActions;
-            if (additionalKeysInUse != null){
-                foreach (ConsoleKey key in additionalKeysInUse)
-                {
-                    KeysInUse.Add(key);
+            if (hasKeyAction && keyActions != null)
+            {
+                HasKeyAction = hasKeyAction;
+                KeyActions = keyActions;
+                if (additionalKeysInUse != null){
+                    foreach (ConsoleKey key in additionalKeysInUse)
+                    {
+                        KeysInUse.Add(key);
+                    }
                 }
             }
         }
@@ -270,6 +274,15 @@
                 {
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
+                }
+
+                foreach (KeyAction keyAction in KeyActions)
+                {
+                    if (!KeysInUse.Contains(keyAction.Key))
+                    {
+                        KeysInUse.Add(keyAction.Key);
+                        if(keyinfo.Key == keyAction.Key) keyAction.Action();
+                    }
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);
