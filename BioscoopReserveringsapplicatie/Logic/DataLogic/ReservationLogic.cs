@@ -26,6 +26,12 @@ namespace BioscoopReserveringsapplicatie
             return _reservations.Find(s => s.Id == id);
         }
 
+        public List<ReservationModel> GetByUserId(int userId)
+        {
+            _reservations = _DataAccess.LoadAll();
+            return _reservations.FindAll(s => s.UserId == userId);
+        }
+
         public bool Complete(int scheduleId, int userId)
         {
             GetAll();
@@ -53,6 +59,15 @@ namespace BioscoopReserveringsapplicatie
         public bool Edit(ReservationModel reservation)
         {
             // This will be done in the near future
+            return true;
+        }
+
+        public bool Cancel(ReservationModel reservation)
+        {
+            if (reservation == null) return false;
+
+            reservation.IsCanceled = true;
+            UpdateList(reservation);
             return true;
         }
 
