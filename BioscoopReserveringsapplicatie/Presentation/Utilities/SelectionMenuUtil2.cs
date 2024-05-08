@@ -138,6 +138,8 @@
 
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText) { }
+        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, List<KeyAction> keyActions, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true, bool hasKeyAction = true)
+        : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText, hasKeyAction, keyActions) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
