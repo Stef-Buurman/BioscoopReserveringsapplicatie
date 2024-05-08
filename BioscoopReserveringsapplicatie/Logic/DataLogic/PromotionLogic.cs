@@ -60,16 +60,11 @@ namespace BioscoopReserveringsapplicatie
 
             if (promotion != null)
             {
-                List<PromotionModel> promotionsCopy = new List<PromotionModel>(_promotions);
+                PromotionModel? activePromo = _promotions.Find(promo => promo.Status == Status.Active);
 
-                foreach (PromotionModel promo in promotionsCopy)
-                {
-                    if (promo.Id != promotion.Id)
-                    {
-                        promo.Status = Status.Inactive;
-                        UpdateList(promo);
-                    }
-                }
+                if (activePromo != null)
+                    activePromo.Status = Status.Inactive;
+
                 promotion.Status = Status.Active;
                 UpdateList(promotion);
             }
