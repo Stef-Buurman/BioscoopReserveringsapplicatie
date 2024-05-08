@@ -62,6 +62,15 @@ namespace BioscoopReserveringsapplicatie
             return true;
         }
 
+        public bool Cancel(ReservationModel reservation)
+        {
+            if (reservation == null) return false;
+
+            reservation.IsCanceled = true;
+            UpdateList(reservation);
+            return true;
+        }
+
         public bool Validate(ReservationModel reservation)
         {
             if (reservation == null) return false;

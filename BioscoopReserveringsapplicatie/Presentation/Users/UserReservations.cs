@@ -48,7 +48,8 @@ namespace BioscoopReserveringsapplicatie
                 "Locatie",
                 "Zaalnummer",
                 "Starttijd",
-                "Eindtijd"
+                "Eindtijd",
+                "Status"
             };
 
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, reservations, reservationDataExtractor);
@@ -75,8 +76,8 @@ namespace BioscoopReserveringsapplicatie
                     reservationLocation = reservationLocation.Substring(0, 25) + "...";
                 }
 
-                string reservationInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + (columnWidths[3] + 2) + "} {4,-" + columnWidths[4] + "}",
-                reservationTitle, reservationLocation, room.RoomNumber.ToString(), schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm"), schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm"));
+                string reservationInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + (columnWidths[3] + 2) + "} {4,-" + (columnWidths[4] + 2) + "} {5,-" + columnWidths[5] + "}",
+                reservationTitle, reservationLocation, room.RoomNumber.ToString(), schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm"), schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm"), reservation.IsCanceled ? "Geannuleerd" : "Actief");
                 options.Add(new Option<int>(reservation.Id, reservationInfo));
             }
 
@@ -108,7 +109,8 @@ namespace BioscoopReserveringsapplicatie
                 "Locatie",
                 "Zaalnummer",
                 "Starttijd",
-                "Eindtijd"
+                "Eindtijd",
+                "Status"
             };
 
             List<ReservationModel> allReservations = reservationLogic.GetByUserId(UserLogic.CurrentUser.Id);
@@ -146,7 +148,8 @@ namespace BioscoopReserveringsapplicatie
                 location.Name,
                 room.RoomNumber.ToString(),
                 schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm"),
-                schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm")
+                schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm"),
+                reservation.IsCanceled ? "Geannuleerd" : "Actief"
             };
             return reservationInfo;
         }

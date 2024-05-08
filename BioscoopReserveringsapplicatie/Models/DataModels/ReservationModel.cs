@@ -13,11 +13,15 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("userId")]
         public int UserId { get; set; }
 
-        public ReservationModel(int id, int scheduleId, int userId)
+        [JsonPropertyName("isCanceled")]
+        public bool IsCanceled { get; set; }
+
+        public ReservationModel(int id, int scheduleId, int userId, bool isCanceled = false)
         {
             Id = id;
             ScheduleId = scheduleId;
             UserId = userId;
+            IsCanceled = isCanceled;
         }
     }
 }

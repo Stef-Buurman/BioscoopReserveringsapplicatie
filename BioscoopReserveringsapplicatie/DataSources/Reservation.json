@@ -2,21 +2,25 @@
   {
     "id": 1,
     "scheduleId": 1,
-    "userId": 2
+    "userId": 2,
+    "isCanceled": true
   },
   {
     "id": 2,
     "scheduleId": 2,
-    "userId": 2
+    "userId": 2,
+    "isCanceled": false
   },
   {
     "id": 3,
     "scheduleId": 3,
-    "userId": 2
+    "userId": 2,
+    "isCanceled": false
   },
   {
     "id": 4,
     "scheduleId": 4,
-    "userId": 2
+    "userId": 2,
+    "isCanceled": false
   }
 ]
