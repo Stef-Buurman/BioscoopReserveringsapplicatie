@@ -132,7 +132,10 @@
 
         public SelectionMenuUtil2(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
-            
+
+        public SelectionMenuUtil2(List<Option<T>> options, Option<T> selectedOption)
+            : this(options, 9, false, default, default, true, default, selectedOption) { }
+
         public SelectionMenuUtil2(List<Option<T>> options)
             : this(options, 9, false) { }
 
