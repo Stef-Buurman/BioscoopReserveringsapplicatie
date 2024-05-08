@@ -33,6 +33,12 @@ namespace BioscoopReserveringsapplicatie
             AgeCategory = ageCategory;
             Archived = archived;
         }
+        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory) : this(id, title, description, genres, ageCategory, false)
+        { }
+        public MovieModel(string title, string description, List<Genre> genres, AgeCategory ageCategory, bool archived) : this(0, title, description, genres, ageCategory, archived)
+        { }
+        public MovieModel() : this(0, "", "", default, default, false)
+        { }
     }
 }
 
