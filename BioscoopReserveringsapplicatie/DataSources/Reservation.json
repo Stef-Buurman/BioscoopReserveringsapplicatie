@@ -1,22 +1,22 @@
 [
   {
     "id": 1,
-    "scheduleId": 5,
+    "scheduleId": 1,
     "userId": 2
   },
   {
     "id": 2,
-    "scheduleId": 7,
+    "scheduleId": 2,
     "userId": 2
   },
   {
     "id": 3,
-    "scheduleId": 8,
+    "scheduleId": 3,
     "userId": 2
   },
   {
     "id": 4,
-    "scheduleId": 6,
+    "scheduleId": 4,
     "userId": 2
   }
 ]

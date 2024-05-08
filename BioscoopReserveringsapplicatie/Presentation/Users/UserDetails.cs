@@ -7,6 +7,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             List<Option<string>> options = new List<Option<string>>
             {
+                new Option<string>("Mijn reserveringen",() => UserReservations.Start()),
                 new Option<string>("Profielgegevens bewerken",() => UserDetailsEdit.Start()),
                 new Option<string>("Wachtwoord wijzigen", () => UserDetailsEdit.ChangePassword()),
                 new Option<string>("Terug", () => UserMenu.Start())

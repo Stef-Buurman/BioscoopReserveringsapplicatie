@@ -1,15 +1,17 @@
 [
-   {
-     "id": 1,
-     "name": "Experience 1",
-     "filmId": 1,
-     "intensity": "Low",
-     "timeLength": 20,
-     "archived": false
+  {
+    "id": 1,
+    "name": "Experience 1",
+    "description": "",
+    "filmId": 1,
+    "intensity": "Low",
+    "timeLength": 20,
+    "archived": false
   },
   {
     "id": 2,
     "name": "Experience 2",
+    "description": "",
     "filmId": 2,
     "intensity": "Medium",
     "timeLength": 20,
@@ -18,6 +20,7 @@
   {
     "id": 3,
     "name": "Experience 3",
+    "description": "",
     "filmId": 3,
     "intensity": "High",
     "timeLength": 20,
