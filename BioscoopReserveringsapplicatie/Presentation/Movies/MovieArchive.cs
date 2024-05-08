@@ -6,7 +6,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int movieId, bool archive)
         {
-            MovieModel movie = MoviesLogic.GetMovieById(movieId);
+            MovieModel movie = MoviesLogic.GetById(movieId);
             Console.Clear();
             Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory, archive);
 

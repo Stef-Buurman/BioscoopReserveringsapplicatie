@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int movieId, string returnTo = "")
         {
-            movie = MoviesLogic.GetMovieById(movieId);
+            movie = MoviesLogic.GetById(movieId);
             actionWhenEscapePressed = () => MovieDetails.Start(movieId);
             if (newTitle == "") newTitle = movie.Title;
             if (newDescription == "") newDescription = movie.Description;
@@ -58,7 +58,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    if (MoviesLogic.EditMovie(movieId, newTitle, newDescription, newGenres, newRating))
+                    if (MoviesLogic.Edit(new MovieModel(movieId, newTitle, newDescription, newGenres, newRating)))
                         {
                             MovieDetails.Start(movieId);
                         }

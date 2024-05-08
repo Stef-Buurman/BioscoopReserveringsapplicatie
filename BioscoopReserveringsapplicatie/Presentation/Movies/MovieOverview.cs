@@ -95,7 +95,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void ShowAllMovies()
         {
-            List<MovieModel> allMovies = MoviesLogic.GetAllMovies();
+            List<MovieModel> allMovies = MoviesLogic.GetAll();
 
             if (allMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen movies gevonden.");
             ShowMovies(allMovies);
@@ -121,7 +121,7 @@ namespace BioscoopReserveringsapplicatie
                 "Gearchiveerd"
             };
 
-            List<MovieModel> allMovies = MoviesLogic.GetAllMovies();
+            List<MovieModel> allMovies = MoviesLogic.GetAll();
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allMovies, movieDataExtractor);
 
             Console.Write("".PadRight(3));

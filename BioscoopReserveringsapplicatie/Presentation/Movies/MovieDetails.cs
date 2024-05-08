@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int movieId)
         {
             Console.Clear();
-            movie = MoviesLogic.GetMovieById(movieId);
+            movie = MoviesLogic.GetById(movieId);
             List<Option<string>> options;
 
             if (movie.Archived)
