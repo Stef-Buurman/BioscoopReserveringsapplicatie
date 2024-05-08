@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
             if (!Validate(promotion))
             {
                 return false;
-            }  
+            }
             UpdateList(promotion);
             return true;
         }
@@ -60,6 +60,17 @@ namespace BioscoopReserveringsapplicatie
 
             if (promotion != null)
             {
+                List<PromotionModel?> activePromo = _promotions.FindAll(promo => promo.Status == Status.Active);
+
+                if (activePromo != null)
+                {
+                    foreach (PromotionModel promo in activePromo)
+                    {
+                        promo.Status = Status.Inactive;
+                        UpdateList(promo);
+                    }
+                }
+
                 promotion.Status = Status.Active;
                 UpdateList(promotion);
             }
