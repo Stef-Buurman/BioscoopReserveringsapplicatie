@@ -7,26 +7,35 @@ namespace BioscoopReserveringsapplicatie
     {
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType != JsonTokenType.Number)
+            if (reader.TokenType == JsonTokenType.Number)
             {
-                throw new JsonException($"Unexpected token type: {reader.TokenType}");
-            }
+                int enumValue = reader.GetInt32();
 
-            int enumValue = reader.GetInt32();
+                if (Enum.IsDefined(typeof(T), enumValue))
+                {
+                    return (T)Enum.ToObject(typeof(T), enumValue);
+                }
+            }
+            else if (reader.TokenType == JsonTokenType.String)
+            {
+                string enumValueString = reader.GetString();
 
-            if (Enum.IsDefined(typeof(T), enumValue))
-            {
-                return (T)Enum.ToObject(typeof(T), enumValue);
+                foreach (var enumValue in Enum.GetValues(typeof(T)))
+                {
+                    if (string.Equals(enumValue.ToString(), enumValueString, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return (T)enumValue;
+                    }
+                }
+
+                throw new JsonException($"Invalid enum value: {enumValueString}");
             }
-            else
-            {
-                throw new JsonException($"Invalid enum value: {enumValue}");
-            }
+            return default(T);
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            writer.WriteNumberValue(Convert.ToInt32(value));
+            writer.WriteStringValue(value.ToString());
         }
     }
 }
