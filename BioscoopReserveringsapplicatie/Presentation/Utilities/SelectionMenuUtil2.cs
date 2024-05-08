@@ -42,11 +42,19 @@
 
         private bool IsMultiSelect = false;
         private List<Option<T>> SelectedOptions = new List<Option<T>>();
+
+        private bool HasKeyAction = false;
+        private List<KeyAction> KeyActions = new List<KeyAction>();
+        private List<ConsoleKey> KeysInUse = new List<ConsoleKey>(){
+            ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
+        };
+
         private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false,
             Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
             bool visibleSelectedArrows = true, string textBeforeInputShown = default,
             Option<T> selectedOption = default, bool isMultiSelect = false,
-            List<Option<T>> selectedOptions = null, bool showEscapeabilityText = true)
+            List<Option<T>> selectedOptions = null, bool showEscapeabilityText = true,
+            bool hasKeyAction = false, List<KeyAction> keyActions = null, List<ConsoleKey> additionalKeysInUse = null)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -104,6 +112,15 @@
             {
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
+            }
+
+            HasKeyAction = hasKeyAction;
+            KeyActions = keyActions;
+            if (additionalKeysInUse != null){
+                foreach (ConsoleKey key in additionalKeysInUse)
+                {
+                    KeysInUse.Add(key);
+                }
             }
         }
 
