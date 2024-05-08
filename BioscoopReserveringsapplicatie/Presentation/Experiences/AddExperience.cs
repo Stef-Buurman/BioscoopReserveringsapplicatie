@@ -125,6 +125,10 @@ namespace BioscoopReserveringsapplicatie
             PrintEditedList();
             List<Intensity> intensityenum = Globals.GetAllEnum<Intensity>();
             List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
+            foreach (Intensity intensity in intensityenum)
+            {
+                intensityOption.Add(new Option<Intensity>(intensity, intensity.ToString()));
+            }
             WriteTitle();
             ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
             _Intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack, () => Start(_returnToIntensity)).Create();
@@ -132,6 +136,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void AskForExperienceTimeLength()
         {
+            PrintEditedList();
             List<int> intList = Enumerable.Range(1, 100).ToList();
             SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ");
             _timeInInt = selection.Create();
