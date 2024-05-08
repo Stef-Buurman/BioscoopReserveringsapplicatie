@@ -46,7 +46,11 @@ namespace BioscoopReserveringsapplicatie
 
         public bool Edit(PromotionModel promotion)
         {
-            // This will be done in the near future
+            if (!Validate(promotion))
+            {
+                return false;
+            }  
+            UpdateList(promotion);
             return true;
         }
 
