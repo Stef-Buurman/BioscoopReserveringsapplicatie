@@ -51,12 +51,12 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 new Option<string>("Terug", () => {Console.Clear(); PromotionDetails.Start(promotionId);}),
                             };
-                            Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de film. Probeer het opnieuw.\n");
+                            Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de promotie. Probeer het opnieuw.\n");
                             new SelectionMenuUtil2<string>(options).Create();
                         }
                 }),
-                new Option<string>("Nee, pas de film verder aan", () => {Start(promotion.Id, _returnToDescription);}),
-                new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); MovieDetails.Start(promotion.Id);})
+                new Option<string>("Nee, pas de promotie verder aan", () => {Start(promotion.Id, _returnToDescription);}),
+                new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); PromotionDetails.Start(promotion.Id);})
             };
             new SelectionMenuUtil2<string>(options).Create();
         }
