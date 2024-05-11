@@ -148,7 +148,7 @@ namespace BioscoopReserveringsapplicatie
         public PromotionModel? GetActivePromotion()
         {
             _promotions = _DataAccess.LoadAll();
-            return _promotions.Find(s => s.Status == true);
+            return _promotions.Find(s => s.Status == Status.Active);
         }
 
         public bool IsPromotionShownRecently(int promotionId)
