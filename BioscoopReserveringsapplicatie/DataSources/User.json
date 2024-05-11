@@ -25,6 +25,7 @@
     "ageCategory": "AGE_18",
     "intensity": "Undefined",
     "language": "Nederlands",
-    "promotionsSeen": null
+    "promotionsSeen": {
+    }
   }
 ]
