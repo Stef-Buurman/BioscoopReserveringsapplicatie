@@ -25,9 +25,6 @@
     "ageCategory": 18,
     "intensity": "Undefined",
     "language": "Nederlands",
-    "promotionsSeen": {
-      "2": "2024-05-08T14:53:46.7919921+02:00",
-      "1": "2024-05-08T14:54:29.9316905+02:00"
-    }
+    "promotionsSeen": null
   }
 ]
