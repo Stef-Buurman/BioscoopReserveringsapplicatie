@@ -51,19 +51,23 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
             ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:\n", Globals.TitleColor);
 
+            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteLineInfo("Klik op T om een promotie toetevoegen.\n");
             Print();
-
             int promotionId = new SelectionMenuUtil2<int>(options,
-                () =>
-                {
-                    AdminMenu.Start();
-                },
-                () =>
-                {
-                    ShowPromotions(promotions);
-                }, showEscapeabilityText: false).Create();
+            () => 
+            {
+                AdminMenu.Start()
+            },
+            () => 
+            {
+                Start()
+            },
+            new List<KeyAction>(){ 
+                new KeyAction(ConsoleKey.T, () => AddPromotion.Start()) 
+            },
+            showEscapeabilityText: false).Create();
 
-            Console.Clear();
             ShowPromotionDetails(promotionId);
         }
 
