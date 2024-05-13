@@ -54,11 +54,11 @@ namespace BioscoopReserveringsapplicatie
             int promotionId = new SelectionMenuUtil2<int>(options,
             () => 
             {
-                AdminMenu.Start()
+                AdminMenu.Start();
             },
             () => 
             {
-                Start()
+                Start();
             },
             new List<KeyAction>(){ 
                 new KeyAction(ConsoleKey.T, () => AddPromotion.Start()) 
