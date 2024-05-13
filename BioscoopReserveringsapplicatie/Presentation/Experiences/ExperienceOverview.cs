@@ -56,7 +56,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteLineInfo("Klik op T om een experience toetevoegen.");
+            ColorConsole.WriteLineInfo("Klik op T om een experience toe te voegen.");
             ColorConsole.WriteLineInfo("Klik op 1 om alle experiences te tonen.");
             ColorConsole.WriteLineInfo("Klik op 2 om alle active experiences te tonen.");
             ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde experiences te tonen.\n");

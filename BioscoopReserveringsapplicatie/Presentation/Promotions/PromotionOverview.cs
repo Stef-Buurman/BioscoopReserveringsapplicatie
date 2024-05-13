@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(promotion.Id, promotionInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteLineInfo("Klik op T om een promotie toetevoegen.\n");
+            ColorConsole.WriteLineInfo("Klik op T om een promotie toe te voegen.\n");
             ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:\n", Globals.TitleColor);
             Print();
             int promotionId = new SelectionMenuUtil2<int>(options,
