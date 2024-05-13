@@ -152,7 +152,7 @@ namespace BioscoopReserveringsapplicatie
             {  
                 ColorConsole.WriteColorLine($"[Beschrijving Film:] {rating.GetDisplayName()}", Globals.MovieColor);
             }
-            if (title != "" || description != "" || genres != null && genres.Count >= 1 || rating != AgeCategory.Undefined)
+            if (title != "" || description != "" || (genres != null && genres.Count >= 1) || rating != AgeCategory.Undefined)
             {
                 ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
             }
