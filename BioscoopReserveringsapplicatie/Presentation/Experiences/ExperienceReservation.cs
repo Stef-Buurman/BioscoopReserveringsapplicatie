@@ -111,7 +111,8 @@ namespace BioscoopReserveringsapplicatie
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
                                     {
                                         ColorConsole.WriteColorLine("\nReservering bevestigd", Globals.SuccessColor);
-
+                                        PaymentSimulation.Start();
+                
                                         ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar de experience details", Globals.ColorInputcClarification);
 
                                         Console.ReadKey();
