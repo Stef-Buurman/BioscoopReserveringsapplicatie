@@ -99,44 +99,34 @@ namespace BioscoopReserveringsapplicatie
         public static void ExperienceName()
         {
             PrintEditedList();
-
-            _newName = ReadLineUtil.EditValue(_newName, () =>
-            {
-                PrintEditedList();
-                ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
-            }, actionWhenEscapePressed);
+            ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+            //ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
+            _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
             while (string.IsNullOrEmpty(_newName))
             {
-                _newName = ReadLineUtil.EditValue(_newName, () =>
-                {
-                    PrintEditedList();
-                    ColorConsole.WriteColorLine("\nNaam mag niet leeg zijn.", Globals.ErrorColor);
-                    ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
-                }, actionWhenEscapePressed);
+                Console.Clear();
+                PrintEditedList();
+                ColorConsole.WriteColorLine("\nNaam mag niet leeg zijn.", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+                //ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
+                _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
             }
         }
 
         public static void ExperienceDescription()
         {
             PrintEditedList();
-
-            _newDescription = ReadLineUtil.EditValue(_newDescription, () =>
-            {
-                PrintEditedList();
-                ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de experience [beschrijving] in: ", Globals.ColorInputcClarification);
-            }, () => Start(_experienceId, _returnToName));
+            ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+            //ColorConsole.WriteColor("Voer de experience [beschrijving] in: ", Globals.ColorInputcClarification);
+            _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
             while (string.IsNullOrEmpty(_newDescription))
             {
-                _newDescription = ReadLineUtil.EditValue(_newDescription, () =>
-                {
-                    PrintEditedList();
-                    ColorConsole.WriteColorLine("\nBeschrijving mag niet leeg zijn.", Globals.ErrorColor);
-                    ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de experience [beschrijving] in: ", Globals.ColorInputcClarification);
-                }, () => Start(_experienceId, _returnToName));
+                Console.Clear();
+                PrintEditedList();
+                ColorConsole.WriteColorLine("\nBeschrijving mag niet leeg zijn.", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+                //ColorConsole.WriteColor("Voer de experience [beschrijving] in: ", Globals.ColorInputcClarification);
+                _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
             }
         }
 
