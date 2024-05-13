@@ -84,14 +84,14 @@
 
             if (validated)
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, null);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
                 UpdateList(newAccount);
                 _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, null);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
             }
             return new RegistrationResult(validated, errorMessage, newAccount);
         }

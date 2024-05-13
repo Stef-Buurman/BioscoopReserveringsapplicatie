@@ -24,12 +24,15 @@ namespace BioscoopReserveringsapplicatie
 
         private static void DisplayPromotion(PromotionModel promotion)
         {
-            ColorConsole.WriteColorLine("***************************************************", Globals.PromotionColor);
-            ColorConsole.WriteColorLine("*                      ACTIE                      *", Globals.PromotionColor);
-            ColorConsole.WriteColorLine("***************************************************", Globals.PromotionColor);
-            ColorConsole.WriteColorLine($"[Titel:] {promotion.Title}", Globals.PromotionColor);
+            int titleLength = promotion.Title.Length;
+            int totalPadding = (80 - titleLength) / 2;
+            string titleLine = new string('*', 80);
+            string centeredTitle =  $"{new string(' ', totalPadding)}{promotion.Title}{new string(' ', totalPadding)}";
+            ColorConsole.WriteColorLine(titleLine, Globals.PromotionColor);
+            ColorConsole.WriteColorLine(centeredTitle, Globals.PromotionColor);
+            ColorConsole.WriteColorLine(titleLine, Globals.PromotionColor);
             Console.WriteLine();
-            ColorConsole.WriteColorLine($"[Beschrijving:] {promotion.Description}", Globals.PromotionColor);
+            ColorConsole.WriteColorLine($"{promotion.Description}", Globals.PromotionColor);
             Console.WriteLine();
 
             List<Option<string>> options = new List<Option<string>>
