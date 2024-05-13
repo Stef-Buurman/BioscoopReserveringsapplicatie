@@ -282,7 +282,6 @@
                 {
                     if (!KeysInUse.Contains(keyAction.Key))
                     {
-                        KeysInUse.Add(keyAction.Key);
                         if(keyinfo.Key == keyAction.Key) keyAction.Action();
                     }
                 }
