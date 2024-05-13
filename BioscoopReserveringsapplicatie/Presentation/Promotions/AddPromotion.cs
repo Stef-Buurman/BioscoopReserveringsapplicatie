@@ -45,21 +45,15 @@ namespace BioscoopReserveringsapplicatie
 
         private static string AskForPromotionName()
         {
-            return ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Vul de [titel] van de promotie in: ", Globals.ColorInputcClarification);
-            }, PromotionOverview.Start);
+            ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
+            return ReadLineUtil.EnterValue("Vul de [titel] van de promotie in: ", Promotions.Start);
         }
 
         private static string AskForPromotionDescription(string title)
         {
-            return ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Vul de [titel] van de promotie in: {title}", Globals.ColorInputcClarification);
-                ColorConsole.WriteColor("Vul de [beschrijving] van de promotie in: ", Globals.ColorInputcClarification);
-            }, () => Start("Name"));
+            //ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
+            //ColorConsole.WriteColorLine($"Vul de [titel] van de promotie in: {title}", Globals.ColorInputcClarification);
+            return ReadLineUtil.EnterValue("Vul de [beschrijving] van de promotie in: ", () => Start("Name"));
         }
 
         private static void Print(string title, string description, bool status)
