@@ -7,7 +7,11 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(string? errorMessage = null, UserModel? user = null)
         {
             Console.Clear();
-            PrintTitleAndErrorWhenExist(errorMessage);
+            ColorConsole.WriteColorLine("Registratiepagina\n", Globals.TitleColor);
+            if (errorMessage != null)
+            {
+                Console.WriteLine(errorMessage);
+            }
 
             string userName;
 
@@ -17,14 +21,10 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userName = ReadLineUtil.EnterValue(true, () =>
-                {
-                    PrintTitleAndErrorWhenExist(errorMessage);
-                    ColorConsole.WriteColor("Vul uw [naam] in: ", Globals.ColorInputcClarification);
-                }, LandingPage.Start);
+                userName = ReadLineUtil.EnterValue("Vul uw [naam] in: ", LandingPage.Start);
             }
 
-            string userEmail;
+            string userEmail = "";
 
             if (user != null && user.EmailAddress != "")
             {
@@ -32,44 +32,18 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userEmail = ReadLineUtil.EnterValue(true, () =>
-                {
-                    PrintTitleAndErrorWhenExist(errorMessage);
-                    if (userName != "")
-                    {
-                        ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
-                    }
-                    else
-                    {
-                        ColorConsole.WriteColorLine("Vul uw [naam] in: ", Globals.ColorInputcClarification);
-                    }
-                    ColorConsole.WriteColor("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
-                }, LandingPage.Start
-                );
+                if (errorMessage != null) ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
+                userEmail = ReadLineUtil.EnterValue("Vul uw [e-mail] in: ", LandingPage.Start, false, false);
+                errorMessage = null;
             }
 
-            string userPassword = ReadLineUtil.EnterValue(true, () =>
+            if (errorMessage != null)
             {
-                PrintTitleAndErrorWhenExist(errorMessage);
-                if (userName != "")
-                {
-                    ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
-                }
-                else
-                {
-                    ColorConsole.WriteColorLine("Vul uw [naam] in: ", Globals.ColorInputcClarification);
-                }
-                if (userEmail != "")
-                {
-                    ColorConsole.WriteColorLine($"Vul uw [e-mail] in: {userEmail}", Globals.ColorInputcClarification);
-                }
-                else
-                {
-                    ColorConsole.WriteColorLine("Vul uw [e-mail] in: ", Globals.ColorInputcClarification);
-                }
-                ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start, true
-            );
+                ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
+                ColorConsole.WriteColorLine($"Vul uw [e-mail] in: {userEmail}", Globals.ColorInputcClarification);
+            }
+
+            string userPassword = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);
 
             RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
 
@@ -83,15 +57,6 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("\nU bent geregistreerd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
                 UserLogin.Start();
-            }
-        }
-
-        private static void PrintTitleAndErrorWhenExist(string? errorMessage)
-        {
-            ColorConsole.WriteColorLine("Registratiepagina\n", Globals.TitleColor);
-            if (errorMessage != null)
-            {
-                Console.WriteLine(errorMessage);
             }
         }
     }
