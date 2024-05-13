@@ -10,7 +10,6 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("PayPal", () => {Console.Clear(); Simulation();}),
                 new Option<string>("Klarna", () => {Console.Clear(); Simulation();}),
                 new Option<string>("Apple Pay", () => {Console.Clear(); Simulation();}),
-                new Option<string>("Factuur", () => {Console.Clear(); Simulation();}),
                 new Option<string>("iDEAL", () => {Console.Clear(); Simulation();}),
             };
             ColorConsole.WriteColorLine($"Kies een [betalingsmethode]", ConsoleColor.Green);
