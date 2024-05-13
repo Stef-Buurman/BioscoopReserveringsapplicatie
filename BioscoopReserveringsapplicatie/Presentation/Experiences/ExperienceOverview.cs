@@ -76,9 +76,7 @@ namespace BioscoopReserveringsapplicatie
                     new KeyAction(ConsoleKey.D1, () => ShowAllExperiences()),
                     new KeyAction(ConsoleKey.D2, () => ShowAllActiveExperiences()),
                     new KeyAction(ConsoleKey.D3, () => ShowAllArchivedExperiences()),
-                }
-                ,
-                showEscapeabilityText: false).Create();
+                },showEscapeabilityText: false).Create();
             Console.Clear();
             ShowExperienceDetails(experienceId);
             return experienceId;

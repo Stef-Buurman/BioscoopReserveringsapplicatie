@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("Kies een categorie: \n", Globals.TitleColor);
+            ShowAllMovies();
 
             List<Option<string>> options = new List<Option<string>>
             {
@@ -62,7 +62,10 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(movie.Id, movieInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel beschikbaar zijn:\n", Globals.TitleColor);
+            ColorConsole.WriteLineInfo("Klik op T om een film toetevoegen.");
+            ColorConsole.WriteLineInfo("Klik op 1 om alle films te tonen.");
+            ColorConsole.WriteLineInfo("Klik op 2 om alle active films te tonen.");
+            ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde films te tonen.\n");
             Print();
             int movieId = new SelectionMenuUtil2<int>(options,
                 () =>
@@ -72,6 +75,13 @@ namespace BioscoopReserveringsapplicatie
                 () => 
                 {
                     ShowMovies(movies);
+                },
+                new List<KeyAction>()
+                {
+                    new KeyAction(ConsoleKey.T, () => AddMovie.Start()),
+                    new KeyAction(ConsoleKey.D1, () => ShowAllMovies()),
+                    new KeyAction(ConsoleKey.D2, () => ShowAllActiveMovies()),
+                    new KeyAction(ConsoleKey.D3, () => ShowAllArchivedMovies()),
                 }, showEscapeabilityText:false).Create();
             Console.Clear();
             ShowMovieDetails(movieId);
