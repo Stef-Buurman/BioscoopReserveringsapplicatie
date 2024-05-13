@@ -126,7 +126,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Promotion_Edit()
         {
-            Assert.IsFalse(promotionLogic.Edit(new PromotionModel(1, "Title", "Description", Status.Inactive)));
+            Assert.IsTrue(promotionLogic.Edit(new PromotionModel(1, "Title", "Description", Status.Inactive)));
             Assert.AreEqual("Title", promotionLogic.GetById(1).Title);
             Assert.AreEqual("Description", promotionLogic.GetById(1).Description);
 
