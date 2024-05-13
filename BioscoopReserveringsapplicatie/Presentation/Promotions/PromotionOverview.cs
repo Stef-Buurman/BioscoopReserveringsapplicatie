@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     public static class PromotionOverview
     {
         private static PromotionLogic promotionLogic = new PromotionLogic();
+        private static Func<PromotionModel, string[]> promotionDataExtractor = ExtractPromotionData;
 
         public static void Start()
         {
@@ -14,20 +15,56 @@ namespace BioscoopReserveringsapplicatie
             else ShowPromotions(promotions);
         }
 
-        private static int ShowPromotions(List<PromotionModel> promotions)
+        private static void ShowPromotions(List<PromotionModel> promotions)
         {
+            Console.Clear();
+
             List<Option<int>> options = new List<Option<int>>();
+
+            List<string> columnHeaders = new List<string>
+            {
+                "Naam promotie",
+                "Beschrijving",
+                "Status",
+            };
+
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, promotions, promotionDataExtractor);
 
             foreach (PromotionModel promotion in promotions)
             {
-                options.Add(new Option<int>(promotion.Id, promotion.Title));
+                string promotionTitle = promotion.Title;
+                if (promotionTitle.Length > 25)
+                {
+                    promotionTitle = promotionTitle.Substring(0, 25) + "...";
+                }
+
+                string promotionDescription = promotion.Description;
+                if (promotionDescription.Length > 25)
+                {
+                    promotionDescription = promotionDescription.Substring(0, 25) + "...";
+                }
+
+                string promotionInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "}", promotionTitle, promotionDescription, promotion.Status.GetDisplayName());
+                options.Add(new Option<int>(promotion.Id, promotionInfo));
             }
 
-            Print();
-            int promotionId = new SelectionMenuUtil2<int>(options, () => Promotions.Start(), () => Start()).Create();
+            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:\n", Globals.TitleColor);
 
+            Print();
+
+            int promotionId = new SelectionMenuUtil2<int>(options,
+                () =>
+                {
+                    AdminMenu.Start();
+                },
+                () =>
+                {
+                    ShowPromotions(promotions);
+                }, showEscapeabilityText: false).Create();
+
+            Console.Clear();
             ShowPromotionDetails(promotionId);
-            return promotionId;
         }
 
         private static void ShowPromotionDetails(int promotionId)
@@ -38,11 +75,6 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print()
-        {
-            ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:", Globals.TitleColor);
-        }
-
         private static void PrintWhenNoPromotionsFound(string message)
         {
             Console.WriteLine(message);
@@ -50,6 +82,44 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine("Terug naar promotie overzicht...");
             Thread.Sleep(1500);
             Start();
+        }
+
+        private static void Print()
+        {
+            List<string> columnHeaders = new List<string>
+            {
+                "Naam promotie",
+                "Beschrijving",
+                "Status",
+            };
+
+            List<PromotionModel> allPromotions = promotionLogic.GetAll();
+            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allPromotions, promotionDataExtractor);
+
+            Console.Write("".PadRight(3));
+            for (int i = 0; i < columnHeaders.Count; i++)
+            {
+                Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 3));
+            }
+            Console.WriteLine();
+
+            Console.Write("".PadRight(3));
+            for (int i = 0; i < columnHeaders.Count; i++)
+            {
+                Console.Write("".PadRight(columnWidths[i], '-').PadRight(columnWidths[i] + 3));
+            }
+            Console.WriteLine();
+        }
+
+        private static string[] ExtractPromotionData(PromotionModel promotion)
+        {
+            string[] promotionInfo = {
+                promotion.Title,
+                promotion.Description,
+                promotion.Status.GetDisplayName(),
+            };
+
+            return promotionInfo;
         }
     }
 }
