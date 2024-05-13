@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Name_Is_Empty()
         {
-            RegistrationResult results = userLogic.RegisterNewUser("", this.CorrectEmail, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser("", this.CorrectEmail, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.NameEmpty));
         }
@@ -72,7 +72,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Is_Empty()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, "", this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, "", this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailEmpty));
         }
@@ -80,7 +80,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Not_Enough_Characters()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailCharsCount, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailCharsCount, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
         }
@@ -88,7 +88,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_No_At_Sign()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoAtSign, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoAtSign, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
         }
@@ -96,7 +96,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_No_Dot()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoDot, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoDot, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
         }
@@ -106,7 +106,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Password_Is_Empty()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
@@ -114,7 +114,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Password_Has_Too_Few_Characters()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, this.IncorrectPasswordCharsCount);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, this.IncorrectPasswordCharsCount);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
