@@ -82,25 +82,31 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             PrintEditingMovie();
-            
-            newTitle = ReadLineUtil.EditValue(newTitle, () =>
-            {
-                ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-            },
+            ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+            string question = "Voer de film [titel] in: ";
+            //ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
+            newTitle = ReadLineUtil.EditValue(newTitle, question, 
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
+            //() =>
+            //{
+            //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+            //    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
+            //},
+
             while (string.IsNullOrEmpty(newTitle))
             {
-                newTitle = ReadLineUtil.EditValue(newTitle, () =>
-                {
-                    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-                },
+                newTitle = ReadLineUtil.EditValue(newTitle, question,
                 actionWhenEscapePressed,
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
                 }
+
+            //() =>
+            //{
+            //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+            //    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
+            //},
         }
 
         private static void MovieDescription(int movieId)
@@ -108,25 +114,30 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             PrintEditingMovie();
 
-            Console.Write("Voer de film beschrijving in: ");
-            newDescription = ReadLineUtil.EditValue(newDescription, () =>
-            {
-                ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-            }, 
+            ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+            //ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
+            string question = "Voer de film [beschrijving] in: ";
+            newDescription = ReadLineUtil.EditValue(newDescription, question, 
             () => Start(movieId, _returnToTitle),
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
+            //() =>
+            //{
+            //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+            //    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
+            //},
+
             while (string.IsNullOrEmpty(newDescription))
             {
-                Console.Write("Voer de film beschrijving in: ");
-                newDescription = ReadLineUtil.EditValue(newDescription, () =>
-                {
-                    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-                }, 
+                //Console.Write("Voer de film beschrijving in: ");
+                newDescription = ReadLineUtil.EditValue(newDescription, question, 
                 () => Start(movieId, _returnToTitle),
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                //() =>
+                //{
+                //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
+                //    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
+                //}, 
             }
         }
 

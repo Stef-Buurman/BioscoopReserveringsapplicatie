@@ -71,20 +71,16 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             PrintAddingMovie();
-            
-            title = ReadLineUtil.EnterValue(() =>
-            {
-                ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-            }, actionWhenEscapePressed);
+
+            ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
+            string question = "Voer de film [titel] in: ";
+            //ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
+
+            title = ReadLineUtil.EnterValue(question, actionWhenEscapePressed);
 
             while (string.IsNullOrEmpty(title))
             {
-                title = ReadLineUtil.EnterValue(() =>
-                {
-                    ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-                }, actionWhenEscapePressed);
+                title = ReadLineUtil.EnterValue(question, actionWhenEscapePressed);
             }
         }
 
@@ -92,20 +88,14 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             PrintAddingMovie();
-
-            description = ReadLineUtil.EnterValue(() =>
-            {
-                ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-            }, () => Start(_returnToTitle));
+            ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
+            string question = "Voer de film [beschrijving] in: ";
+            //ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
+            description = ReadLineUtil.EnterValue(question, () => Start(_returnToTitle));
 
             while (string.IsNullOrEmpty(description))
             {
-                description = ReadLineUtil.EnterValue(() =>
-                {
-                    ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-                }, () => Start(_returnToTitle));
+                description = ReadLineUtil.EnterValue(question, () => Start(_returnToTitle));
             }
         }
 
