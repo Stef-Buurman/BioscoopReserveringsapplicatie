@@ -81,11 +81,19 @@ namespace BioscoopReserveringsapplicatie
 
         private static void PrintWhenNoPromotionsFound(string message)
         {
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                   AddPromotion.Start();
+                }),
+                new Option<string>("Nee", () => {
+                    AdminMenu.Start();
+                }),
+            };
             Console.WriteLine(message);
-            Thread.Sleep(500);
-            Console.WriteLine("Terug naar promotie overzicht...");
-            Thread.Sleep(1500);
-            Start();
+            Console.WriteLine();
+            Console.WriteLine("Wil je een promotie aanmaken?");
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()

@@ -91,7 +91,7 @@ namespace BioscoopReserveringsapplicatie
         {
             List<MovieModel> archivedMovies = MoviesLogic.GetAllArchivedMovies();
 
-            if (archivedMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen gearchiveerde movies gevonden.");
+            if (archivedMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen gearchiveerde films gevonden.", "archived");
             ShowMovies(archivedMovies);
         }
 
@@ -99,7 +99,7 @@ namespace BioscoopReserveringsapplicatie
         {
             List<MovieModel> activeMovies = MoviesLogic.GetAllActiveMovies();
 
-            if (activeMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen actieve movies gevonden.");
+            if (activeMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen actieve films gevonden.", "active");
             ShowMovies(activeMovies);
         }
 
@@ -107,18 +107,37 @@ namespace BioscoopReserveringsapplicatie
         {
             List<MovieModel> allMovies = MoviesLogic.GetAll();
 
-            if (allMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen movies gevonden.");
+            if (allMovies.Count == 0) PrintWhenNoMoviesFound("Er zijn geen films gevonden.", "all");
             ShowMovies(allMovies);
         }
 
-        private static void PrintWhenNoMoviesFound(string whichMovies)
+        private static void PrintWhenNoMoviesFound(string notFoundMessage, string filterType)
         {
-            Console.Clear();
-            Console.WriteLine(whichMovies);
-            Thread.Sleep(500);
-            Console.WriteLine("Terug naar movie overzicht...");
-            Thread.Sleep(1500);
-            Start();
+            if(filterType == "all")
+            {
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Ja", () => {
+                       AddMovie.Start();
+                    }),
+                    new Option<string>("Nee", () => {
+                        AdminMenu.Start();
+                    }),
+                };
+                Console.WriteLine(notFoundMessage);
+                Console.WriteLine();
+                Console.WriteLine("Wil je een film aanmaken?");
+                new SelectionMenuUtil2<string>(options).Create();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine(notFoundMessage);
+                Thread.Sleep(500);
+                Console.WriteLine("Terug naar movie overzicht...");
+                Thread.Sleep(1500);
+                Start();
+            }
         }
 
         private static void Print()
