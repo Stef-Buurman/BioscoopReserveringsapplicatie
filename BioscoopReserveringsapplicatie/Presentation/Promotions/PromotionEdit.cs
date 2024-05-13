@@ -62,24 +62,29 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             PrintEditingPromotion();
-            
-            newTitle = ReadLineUtil.EditValue(newTitle, () =>
-            {
-                ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de promotie [titel] in: ", Globals.ColorInputcClarification);
-            },
+
+            ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
+            //ColorConsole.WriteColor("Voer de promotie [titel] in: ", Globals.ColorInputcClarification);
+            string question = "Voer de promotie [titel] in: ";
+            newTitle = ReadLineUtil.EditValue(newTitle, question, 
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+            //() =>
+            //{
+            //    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
+            //    ColorConsole.WriteColor("Voer de promotie [titel] in: ", Globals.ColorInputcClarification);
+            //},
 
             while (string.IsNullOrEmpty(newTitle))
             {
-                newTitle = ReadLineUtil.EditValue(newTitle, () =>
-                {
-                    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de Promotie [titel] in: ", Globals.ColorInputcClarification);
-                },
+                newTitle = ReadLineUtil.EditValue(newTitle, question, 
                 actionWhenEscapePressed,
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                //() =>
+                //{
+                //    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
+                //    ColorConsole.WriteColor("Voer de Promotie [titel] in: ", Globals.ColorInputcClarification);
+                //},
                 }
         }
         
@@ -87,26 +92,29 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             PrintEditingPromotion();
-
-            Console.Write("Voer de promotie beschrijving in: ");
-            newDescription = ReadLineUtil.EditValue(newDescription, () =>
-            {
-                ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
-            }, 
+            ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
+            //ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
+            string question = "Voer de promotie [beschrijving] in: ";
+            newDescription = ReadLineUtil.EditValue(newDescription, question, 
             () => Start(promotionId, _returnToTitle),
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
+            //() =>
+            //{
+            //    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
+            //    ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
+            //}, 
+
             while (string.IsNullOrEmpty(newDescription))
             {
-                Console.Write("Voer de promotie beschrijving in: ");
-                newDescription = ReadLineUtil.EditValue(newDescription, () =>
-                {
-                    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
-                }, 
+                newDescription = ReadLineUtil.EditValue(newDescription, question, 
                 () => Start(promotionId, _returnToTitle),
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                //() =>
+                //{
+                //    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
+                //    ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
+                //}, 
             }
         }
 
