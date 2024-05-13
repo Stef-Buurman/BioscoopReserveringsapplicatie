@@ -25,7 +25,6 @@ namespace BioscoopReserveringsapplicatie
         private static bool _LanguageNotFilledIn = false;
 
         private static readonly string _NotFilledIn = "Niet invullen";
-        private static readonly string _StopFillingIn = "Stop";
 
         public static void Start(UserModel user, string returnTo = "")
         {
@@ -69,6 +68,8 @@ namespace BioscoopReserveringsapplicatie
 
         public static void SelectGenres()
         {
+            PrintEditedList();
+            ColorConsole.WriteColorLine("Wat zijn uw lievelings [genres]: \n", Globals.ColorInputcClarification);
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
             List<Option<Genre>> selectedGenres = new List<Option<Genre>>();
@@ -193,7 +194,7 @@ namespace BioscoopReserveringsapplicatie
                 || _LanguageNotFilledIn;
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("[Aangepaste voorkeuren]", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Uw voorkeuren]", Globals.ExperienceColor);
             }
             if (_selectedGenres.Count > 0)
             {
