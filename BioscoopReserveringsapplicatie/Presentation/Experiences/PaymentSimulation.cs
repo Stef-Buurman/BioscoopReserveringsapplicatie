@@ -12,14 +12,10 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Apple Pay", () => {Console.Clear(); Simulation();}),
 
                 new Option<string>("Terug", () => {Console.Clear(); UserMenu.Start();})
-
-                
             };
             ColorConsole.WriteColorLine($"Kies een [betalingsmethode]", ConsoleColor.Green);
             string list = new SelectionMenuUtil2<string>(options).Create();
             Environment.Exit(0);
-            
-
         }
         public static void Simulation()
         {
@@ -39,14 +35,6 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
             Thread.Sleep(2000);
             Console.Clear();
-            
         }
     }
-
-
-
-
-
-
-
 }
