@@ -71,15 +71,15 @@ namespace BioscoopReserveringsapplicatie
             }, LandingPage.Start, true
             );
 
-            RegistrationResult registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
+            Result<UserModel> registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
 
             if (!registrationResult.IsValid)
             {
-                Start(registrationResult.ErrorMessage, registrationResult.User);
+                Start(registrationResult.ErrorMessage, registrationResult.Item);
             }
             else
             {
-                Preferences.Start(registrationResult.User);
+                Preferences.Start(registrationResult.Item);
                 ColorConsole.WriteColorLine("\nU bent geregistreerd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
                 UserLogin.Start();
