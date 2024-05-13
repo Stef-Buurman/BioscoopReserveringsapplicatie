@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => Promotions.Start())
+                    new Option<string>("Terug", () => PromotionOverview.Start())
                 };
 
                 ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n", Globals.ErrorColor);
@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
                 ColorConsole.WriteColor("Vul de [titel] van de promotie in: ", Globals.ColorInputcClarification);
-            }, Promotions.Start);
+            }, PromotionOverview.Start);
         }
 
         private static string AskForPromotionDescription(string title)

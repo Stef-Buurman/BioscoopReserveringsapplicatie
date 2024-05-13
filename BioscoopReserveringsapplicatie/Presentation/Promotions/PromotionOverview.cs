@@ -23,8 +23,13 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(promotion.Id, promotion.Title));
             }
 
+            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteLineInfo("Klik op T om een promotie toetevoegen.\n");
             Print();
-            int promotionId = new SelectionMenuUtil2<int>(options, () => Promotions.Start(), () => Start()).Create();
+            int promotionId = new SelectionMenuUtil2<int>(options,
+            () => AdminMenu.Start(), () => Start(),
+            new List<KeyAction>(){ new KeyAction(ConsoleKey.T, () => AddPromotion.Start()) },
+            showEscapeabilityText: false).Create();
 
             ShowPromotionDetails(promotionId);
             return promotionId;
