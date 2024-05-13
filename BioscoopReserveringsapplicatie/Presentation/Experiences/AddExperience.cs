@@ -77,46 +77,37 @@ namespace BioscoopReserveringsapplicatie
         private static void AskForExperienceName()
         {
             PrintEditedList();
-            _newName = ReadLineUtil.EditValue(_newName,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                WhatToDoWhenGoBack);
+            WriteTitle();
+
+            //ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
+            _newName = ReadLineUtil.EditValue(_newName, "Wat is de [naam] van de experience?: ", WhatToDoWhenGoBack);
+
             while (!experiencesLogic.ValidateExperienceName(_newName))
             {
-                _newName = ReadLineUtil.EditValue(_newName,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
-                    ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                WhatToDoWhenGoBack);
+                Console.Clear();
+                WriteTitle();
+                ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
+                //ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
+                _newName = ReadLineUtil.EditValue(_newName, "Wat is de [naam] van de experience?: ", WhatToDoWhenGoBack);
             }
         }
 
         private static void AskForExperienceDescription()
         {
-            PrintEditedList();
-            _newDescription = ReadLineUtil.EditValue(_newDescription,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                () => Start(_returnToName));
+            PrintEditedList(); 
+            WriteTitle();
+
+            //ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
+            _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
+
             while (!experiencesLogic.ValidateExperienceDescription(_newDescription))
             {
-                _newDescription = ReadLineUtil.EditValue(_newDescription,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
-                    ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                () => Start(_returnToName));
+                Console.Clear();
+                WriteTitle();
+                ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
+                //ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
+
+                _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
             }
         }
 
