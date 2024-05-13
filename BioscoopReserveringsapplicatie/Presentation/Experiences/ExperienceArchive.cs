@@ -14,18 +14,18 @@ namespace BioscoopReserveringsapplicatie
             if (archive)
             {
                 List<Option<string>> options = new List<Option<string>>
-            {
-                new Option<string>("Ja", () => {
-                    ExperienceLogic.Archive(experienceId);
-                    Console.Clear();
-                    ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gearchiveerd!", Globals.SuccessColor);
-                    Thread.Sleep(4000);
-                    ExperienceDetails.Start(experienceId);
-                }),
-                new Option<string>("Nee", () => {
-                    ExperienceDetails.Start(experienceId);
-                }),
-            };
+                {
+                    new Option<string>("Ja", () => {
+                        ExperienceLogic.Archive(experienceId);
+                        Console.Clear();
+                        ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gearchiveerd!", Globals.SuccessColor);
+                        Thread.Sleep(4000);
+                        ExperienceDetails.Start(experienceId);
+                    }),
+                    new Option<string>("Nee", () => {
+                        ExperienceDetails.Start(experienceId);
+                    }),
+                };
                 ColorConsole.WriteColorLine("De experience details zijn:", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Experience naam:] {experience.Name}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Experience beschrijving:] {experience.Description}", Globals.ExperienceColor);

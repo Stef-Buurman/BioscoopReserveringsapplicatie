@@ -86,15 +86,15 @@ namespace BioscoopReserveringsapplicatie
         {
             List<ExperienceModel> archivedExperiences = ExperiencesLogic.GetAllArchivedExperiences();
 
-            if (archivedExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen gearchiveerde experiences gevonden.");
-            else ShowExperiences(archivedExperiences);
+            if (archivedExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen gearchiveerde experiences gevonden.", "archived");
+            ShowExperiences(archivedExperiences);
         }
 
         private static void ShowAllActiveExperiences()
         {
             List<ExperienceModel> activeExperiences = ExperiencesLogic.GetAllActiveExperiences();
 
-            if (activeExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen actieve experiences gevonden.");
+            if (activeExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen actieve experiences gevonden.", "active");
             else ShowExperiences(activeExperiences);
         }
 
@@ -102,18 +102,37 @@ namespace BioscoopReserveringsapplicatie
         {
             List<ExperienceModel> allExperiences = ExperiencesLogic.GetAll();
 
-            if (allExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen experiences gevonden.");
+            if (allExperiences.Count == 0) PrintWhenNoExperiencesFound("Er zijn geen experiences gevonden.", "all");
             else ShowExperiences(allExperiences);
         }
 
-        private static void PrintWhenNoExperiencesFound(string whichExperiences)
+        private static void PrintWhenNoExperiencesFound(string notFoundMessage, String filterType)
         {
-            Console.Clear();
-            Console.WriteLine(whichExperiences);
-            Thread.Sleep(500);
-            Console.WriteLine("Terug naar experience overzicht...");
-            Thread.Sleep(1500);
-            Start();
+            if(filterType == "all")
+            {
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Ja", () => {
+                       AddExperience.Start();
+                    }),
+                    new Option<string>("Nee", () => {
+                        AdminMenu.Start();
+                    }),
+                };
+                Console.WriteLine(notFoundMessage);
+                Console.WriteLine();
+                Console.WriteLine("Wil je een experience aanmaken?");
+                new SelectionMenuUtil2<string>(options).Create();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine(notFoundMessage);
+                Thread.Sleep(500);
+                Console.WriteLine("Terug naar alle experience overzicht...");
+                Thread.Sleep(1500);
+                Start();
+            }
         }
 
         private static void Print()
