@@ -1,15 +1,15 @@
 ﻿namespace BioscoopReserveringsapplicatie
 {
-    public class RegistrationResult
+    public class Result<T>
     {
         public bool IsValid { get; set; }
         public string ErrorMessage { get; set; }
-        public UserModel User { get; set; }
-        public RegistrationResult(bool isValid, string errorMessage, UserModel user)
+        public T Item { get; set; }
+        public Result(bool isValid, string errorMessage, T item)
         {
             IsValid = isValid;
             ErrorMessage = errorMessage;
-            User = user;
+            Item = item;
         }
     }
 }

@@ -43,7 +43,7 @@
             return _accounts.Find(i => i.Id == id);
         }
 
-        public RegistrationResult RegisterNewUser(string name, string email, string password)
+        public Result<UserModel> RegisterNewUser(string name, string email, string password)
         {
             bool validated = false;
             string errorMessage = "";
@@ -93,7 +93,7 @@
             {
                 newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
             }
-            return new RegistrationResult(validated, errorMessage, newAccount);
+            return new Result<UserModel>(validated, errorMessage, newAccount);
         }
 
         public UserModel? CheckLogin(string email, string password)
