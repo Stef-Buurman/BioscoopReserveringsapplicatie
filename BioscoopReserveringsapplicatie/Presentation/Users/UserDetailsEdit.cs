@@ -117,12 +117,8 @@ namespace BioscoopReserveringsapplicatie
             while (!validName)
             {
                 Console.Clear();
-                _newName = ReadLineUtil.EditValue(_newName,
-                    () =>
-                    {
-                        PrintEditedList();
-                        ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
-                    },
+                //ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
+                _newName = ReadLineUtil.EditValue(_newName, "Voer uw [naam] in: ",
                     () => { UserDetails.Start(); },
                     "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                 );
@@ -136,12 +132,8 @@ namespace BioscoopReserveringsapplicatie
             while (!validEmail)
             {
                 Console.Clear();
-                _newEmail = ReadLineUtil.EditValue(_newEmail,
-                    () =>
-                    {
-                        PrintEditedList();
-                        ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
-                    },
+                //ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
+                _newEmail = ReadLineUtil.EditValue(_newEmail, "Voer uw [emailadres] in: ",
                     () => Start(_returnToName),
                     "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                 );
@@ -350,10 +342,7 @@ namespace BioscoopReserveringsapplicatie
             bool validOldPassword = false;
             while (!validOldPassword)
             {
-                string oldPassword = ReadLineUtil.EnterValue(true, () =>
-                {
-                    ColorConsole.WriteColor("Voer uw [oude wachtwoord] in: ", Globals.ColorInputcClarification);
-                }, UserDetails.Start, true);
+                string oldPassword = ReadLineUtil.EnterValue("Voer uw [oude wachtwoord] in: ", UserDetails.Start, true);
                 validOldPassword = _userLogic.ValidateOldPassword(oldPassword);
 
                 if (!validOldPassword)
@@ -365,10 +354,7 @@ namespace BioscoopReserveringsapplicatie
             bool validNewPassword = false;
             while (!validNewPassword)
             {
-                newPassword = ReadLineUtil.EnterValue(true, () =>
-                {
-                    ColorConsole.WriteColor("Voer uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
-                }, UserDetails.Start, true);
+                newPassword = ReadLineUtil.EnterValue("Voer uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
                 validNewPassword = _userLogic.ValidatePassword(newPassword);
 
                 if (!validNewPassword)
@@ -383,10 +369,7 @@ namespace BioscoopReserveringsapplicatie
             bool validConfirmPassword = false;
             while (!validConfirmPassword)
             {
-                string confirmPassword = ReadLineUtil.EnterValue(true, () =>
-                {
-                    ColorConsole.WriteColor("Bevestig uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
-                }, UserDetails.Start, true);
+                string confirmPassword = ReadLineUtil.EnterValue("Bevestig uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
                 validConfirmPassword = newPassword == confirmPassword;
                 if (!validConfirmPassword)
                 {

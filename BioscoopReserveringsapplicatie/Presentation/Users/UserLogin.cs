@@ -8,18 +8,19 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            string email = ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Vul uw [e-mailadres] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start);
-            Console.Write("Vul uw wachtwoord in: ");
-            string password = ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {email}", Globals.ColorInputcClarification);
-                ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start, true);
+            ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
+            //ColorConsole.WriteColor("Vul uw [e-mailadres] in: ", Globals.ColorInputcClarification);
+            string email = ReadLineUtil.EnterValue("Vul uw [e-mailadres] in: ", LandingPage.Start);
+
+
+            //Console.Write("Vul uw wachtwoord in: ");
+            string password = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);
+            //() =>
+            //{
+            //    ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
+            //    ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {email}", Globals.ColorInputcClarification);
+            //    ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
+            //}
 
             if (_userLogic.CheckLogin(email, password) != null)
             {
