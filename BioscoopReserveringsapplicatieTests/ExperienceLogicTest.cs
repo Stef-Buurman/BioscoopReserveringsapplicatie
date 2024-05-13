@@ -123,6 +123,48 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsFalse(experiencesLogic.Validate(null));
         }
 
+        // Edit -------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Experience_Edit_Success()
+        {
+            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, Intensity.High, 10, false);
+            experiencesLogic.Edit(experience);
+            Assert.AreEqual(experience, experiencesLogic.GetById(0));
+        }
+
+        [TestMethod]
+        public void Incorrect_Experience_Edit_With_Invalid_Experience_Name()
+        {
+            ExperienceModel experience = new ExperienceModel(0, "", "test1", 0, Intensity.High, 10, false);
+            experiencesLogic.Edit(experience);
+            Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
+        }
+
+        [TestMethod]
+        public void Incorrect_Experience_Edit_With_Invalid_Experience_Description()
+        {
+            ExperienceModel experience = new ExperienceModel(0, "test1", "", 0, Intensity.High, 10, false);
+            experiencesLogic.Edit(experience);
+            Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
+        }
+
+        [TestMethod]
+        public void Incorrect_Experience_Edit_With_Invalid_Experience_Intensity()
+        {
+            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, (Intensity)909, 10, false);
+            experiencesLogic.Edit(experience);
+            Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
+        }
+
+        [TestMethod]
+        public void Incorrect_Experience_Edit_With_Invalid_Experience_TimeLength()
+        {
+            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, Intensity.High, -10, false);
+            experiencesLogic.Edit(experience);
+            Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
+        }
+
         // Archive ----------------------------------------------------------------------------------------------------------------------
 
         [TestMethod]
