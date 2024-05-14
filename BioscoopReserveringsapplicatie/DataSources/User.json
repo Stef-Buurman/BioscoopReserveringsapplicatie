@@ -8,7 +8,8 @@
     "genres": null,
     "ageCategory": "Undefined",
     "intensity": "Undefined",
-    "language": "Undefined"
+    "language": "Undefined",
+    "promotionsSeen": null
   },
   {
     "id": 2,
@@ -23,6 +24,8 @@
     ],
     "ageCategory": "AGE_18",
     "intensity": "Undefined",
-    "language": "Nederlands"
+    "language": "Nederlands",
+    "promotionsSeen": {
+    }
   }
 ]

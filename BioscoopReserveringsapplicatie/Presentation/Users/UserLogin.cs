@@ -32,7 +32,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 else
                 {
-                    UserMenu.Start();
+                    ShowPromotion.Start();
                 }
             }
             else
