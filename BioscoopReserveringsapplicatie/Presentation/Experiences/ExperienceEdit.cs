@@ -89,8 +89,8 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Experience beschrijving:] {_newDescription}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {MovieName}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {_newIntensity}", Globals.ExperienceColor);
-            ColorConsole.WriteColorLine($"[Experience tijdsduur:] {_timeInInt} minuten\n", Globals.ExperienceColor);
-            ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+            ColorConsole.WriteColorLine($"[Experience tijdsduur:] {_timeInInt} minuten", Globals.ExperienceColor);
+            HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Weet u zeker dat u de aanpassingen op {_newName} wilt opslaan?\n", Globals.ColorInputcClarification);
 
             new SelectionMenuUtil2<string>(saveOptions).Create();
@@ -99,16 +99,12 @@ namespace BioscoopReserveringsapplicatie
         public static void ExperienceName()
         {
             PrintEditedList();
-            ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-            //ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
             _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
             while (string.IsNullOrEmpty(_newName))
             {
-                Console.Clear();
                 PrintEditedList();
                 ColorConsole.WriteColorLine("\nNaam mag niet leeg zijn.", Globals.ErrorColor);
                 ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                //ColorConsole.WriteColor("Voer de experience [naam] in: ", Globals.ColorInputcClarification);
                 _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
             }
         }
@@ -116,16 +112,12 @@ namespace BioscoopReserveringsapplicatie
         public static void ExperienceDescription()
         {
             PrintEditedList();
-            ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-            //ColorConsole.WriteColor("Voer de experience [beschrijving] in: ", Globals.ColorInputcClarification);
             _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
             while (string.IsNullOrEmpty(_newDescription))
             {
-                Console.Clear();
                 PrintEditedList();
                 ColorConsole.WriteColorLine("\nBeschrijving mag niet leeg zijn.", Globals.ErrorColor);
                 ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
-                //ColorConsole.WriteColor("Voer de experience [beschrijving] in: ", Globals.ColorInputcClarification);
                 _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
             }
         }
@@ -133,14 +125,13 @@ namespace BioscoopReserveringsapplicatie
         public static void SelectMovie()
         {
             PrintEditedList();
-            ColorConsole.WriteColorLine("\nSelecteer de film die bij de experience hoort", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Selecteer de [film] die bij de experience hoort\n", Globals.ColorInputcClarification);
             List<MovieModel> movies = MoviesLogic.GetAll();
             List<Option<int>> MovieOptions = new List<Option<int>>();
             foreach (MovieModel movie in movies)
             {
                 MovieOptions.Add(new Option<int>(movie.Id, movie.Title));
             }
-            ColorConsole.WriteColorLine("Kies uw [film]: ", Globals.ColorInputcClarification);
             int top = Console.GetCursorPosition().Top;
             _selectedMovieId = new SelectionMenuUtil2<int>(MovieOptions,
                 () => Start(_experienceId, _returnToName),
@@ -157,8 +148,7 @@ namespace BioscoopReserveringsapplicatie
         public static void SelectIntensity()
         {
             PrintEditedList();
-
-            ColorConsole.WriteColorLine("\nSelecteer de intensiteit van de experience", Globals.TitleColor);
+            ColorConsole.WriteColorLine("Selecteer de [intensiteit] van de experience", Globals.ColorInputcClarification);
             List<Intensity> options = Globals.GetAllEnum<Intensity>();
             int top = Console.GetCursorPosition().Top;
             _newIntensity = new SelectionMenuUtil2<Intensity>(options,
@@ -176,7 +166,6 @@ namespace BioscoopReserveringsapplicatie
         public static void ExperienceLength()
         {
             PrintEditedList();
-            ColorConsole.WriteColorLine("\nVoer nieuwe experience details in (druk op Enter om de huidige te behouden)\n", Globals.TitleColor);
             List<int> intList = Enumerable.Range(1, 100).ToList();
             SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1,
                 () => Start(_experienceId, _returnToMovie),
@@ -219,8 +208,9 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_newName != "" || _selectedMovieId != 0 || _newIntensity != Intensity.Undefined || _timeInInt != 0)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
+            ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
         }
     }
 }
