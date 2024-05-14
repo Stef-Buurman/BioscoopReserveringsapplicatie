@@ -79,7 +79,6 @@ namespace BioscoopReserveringsapplicatie
             PrintEditedList();
             WriteTitle();
 
-            //ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
             _newName = ReadLineUtil.EditValue(_newName, "Wat is de [naam] van de experience?: ", WhatToDoWhenGoBack);
 
             while (!experiencesLogic.ValidateExperienceName(_newName))
@@ -87,7 +86,6 @@ namespace BioscoopReserveringsapplicatie
                 Console.Clear();
                 WriteTitle();
                 ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
-                //ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
                 _newName = ReadLineUtil.EditValue(_newName, "Wat is de [naam] van de experience?: ", WhatToDoWhenGoBack);
             }
         }
@@ -96,8 +94,6 @@ namespace BioscoopReserveringsapplicatie
         {
             PrintEditedList(); 
             WriteTitle();
-
-            //ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
             _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
 
             while (!experiencesLogic.ValidateExperienceDescription(_newDescription))
@@ -105,8 +101,6 @@ namespace BioscoopReserveringsapplicatie
                 Console.Clear();
                 WriteTitle();
                 ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
-                //ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
-
                 _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
             }
         }
@@ -194,7 +188,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_newName != "" || _selectedMovieId != 0 || _Intensity != Intensity.Undefined || _timeInInt != 0)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
         }
     }
