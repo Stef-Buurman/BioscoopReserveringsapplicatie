@@ -46,7 +46,6 @@
         public bool ValidateExperienceIntensity(Intensity intensity) => (!Enum.IsDefined(typeof(Intensity), intensity)) ? false : true;
         public bool ValidateExperienceTimeLength(string timeLength) => (int.TryParse(timeLength, out int _)) ? true : false;
         public bool ValidateMovieId(int filmId) => MoviesLogic.GetById(filmId) == null ? false : true;
-        public bool ValidateExperienceArchive(bool archived) => true;
 
         public bool Add(ExperienceModel experience)
         {
