@@ -81,8 +81,8 @@
                 if (movie == null) continue;
 
                 bool genreMatch = currentUser.Genres.Count == 0 || movie.Genres.Intersect(currentUser.Genres).Any();
-                bool ageMatch = currentUser.AgeCategory == AgeCategory.Undefined || Convert.ToInt32(movie.AgeCategory) <= Convert.ToInt32(currentUser.AgeCategory);
-                bool intensityMatch = currentUser.Intensity == Intensity.Undefined || experience.Intensity == currentUser.Intensity;
+                bool ageMatch = currentUser.AgeCategory == AgeCategory.Undefined || currentUser.AgeCategory == AgeCategory.ALL || movie.AgeCategory == currentUser.AgeCategory;
+                bool intensityMatch = currentUser.Intensity == Intensity.Undefined || currentUser.Intensity == Intensity.All || experience.Intensity == currentUser.Intensity;
                 bool hasScheduldedExperience = ScheduleLogic.HasScheduledExperience(experience.Id);
 
                 if (genreMatch && ageMatch && intensityMatch && hasScheduldedExperience)

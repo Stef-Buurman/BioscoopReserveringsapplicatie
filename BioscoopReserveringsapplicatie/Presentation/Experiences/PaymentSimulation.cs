@@ -4,36 +4,42 @@ namespace BioscoopReserveringsapplicatie
     {
         public static void Start()
         {
-        List<Option<string>> options = new List<Option<string>>
+            List<Option<string>> options = new List<Option<string>>
             {
-                new Option<string>("Creditcard", () => {Console.Clear(); Simulation();}),
-                new Option<string>("PayPal", () => {Console.Clear(); Simulation();}),
-                new Option<string>("Klarna", () => {Console.Clear(); Simulation();}),
-                new Option<string>("Apple Pay", () => {Console.Clear(); Simulation();}),
-                new Option<string>("iDEAL", () => {Console.Clear(); Simulation();}),
+                new Option<string>("iDEAL", Simulation),
+                new Option<string>("Creditcard", Simulation),
+                new Option<string>("PayPal", Simulation),
+                new Option<string>("Klarna", Simulation),
+                new Option<string>("Apple Pay", Simulation),
+                new Option<string>("Paysafecard", Simulation),
+
             };
-            ColorConsole.WriteColorLine($"Kies een [betalingsmethode]", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"\nKies een [betalingsmethode]", ConsoleColor.Green);
             string list = new SelectionMenuUtil2<string>(options).Create();
-            Environment.Exit(0);
+
+            return;
         }
         public static void Simulation()
         {
-            int x = 5;
-            while (x > 0)
+            int progress = 0;
+
+            Console.WriteLine();
+
+            while (progress <= 100)
             {
-                Console.Clear();
-                ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
-                ColorConsole.WriteColorLine($"Betaling wordt verwerkt nog {x} seconden over", ConsoleColor.Green);
-                ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
-                Thread.Sleep(1000);
-                x--;
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write($"Voortgang: {progress}% [{new string('=', progress / 10)}]");
+                Thread.Sleep(500);
+                progress += 10;
             }
-            Console.Clear();
-            ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
+
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.WriteLine($"Voortgang: 100% [{new string('=', 10)}]");
+            Console.WriteLine();
+            HorizontalLine.Print();
             ColorConsole.WriteColorLine("Betaling geslaagd!", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
+            HorizontalLine.Print();
             Thread.Sleep(2000);
-            Console.Clear();
         }
     }
 }

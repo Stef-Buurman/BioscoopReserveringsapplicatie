@@ -19,13 +19,12 @@
     "fullName": "User",
     "genres": [
       "Horror",
-      "Komedie",
-      "Actie"
+      "Comedy",
+      "Action"
     ],
     "ageCategory": "AGE_18",
-    "intensity": "Undefined",
+    "intensity": "Medium",
     "language": "Nederlands",
-    "promotionsSeen": {
-    }
+    "promotionsSeen": {}
   }
 ]

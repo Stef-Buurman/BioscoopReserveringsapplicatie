@@ -5,8 +5,8 @@
     "description": "Beschrijving 1",
     "genres": [
       "Horror",
-      "Komedie",
-      "Actie"
+      "Comedy",
+      "Action"
     ],
     "ageCategory": "AGE_14",
     "archived": false
@@ -30,9 +30,21 @@
     "genres": [
       "History",
       "War",
-      "Actie"
+      "Action"
     ],
     "ageCategory": "AGE_18",
     "archived": true
+  },
+  {
+    "id": 4,
+    "title": "Dit is een nieuwe film",
+    "description": "Dit is de beschrijving",
+    "genres": [
+      "Horror",
+      "Comedy",
+      "Action"
+    ],
+    "ageCategory": "AGE_18",
+    "archived": false
   }
 ]
