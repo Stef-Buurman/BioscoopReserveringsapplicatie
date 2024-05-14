@@ -17,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (returnTo == "" || returnTo == "Description")
             {
-                description = AskForPromotionDescription(title);
+                description = AskForPromotionDescription();
                 returnTo = "";
             }
 
@@ -49,16 +49,15 @@ namespace BioscoopReserveringsapplicatie
             return ReadLineUtil.EnterValue("Vul de [titel] van de promotie in: ", Promotions.Start);
         }
 
-        private static string AskForPromotionDescription(string title)
+        private static string AskForPromotionDescription()
         {
-            //ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
-            //ColorConsole.WriteColorLine($"Vul de [titel] van de promotie in: {title}", Globals.ColorInputcClarification);
-            return ReadLineUtil.EnterValue("Vul de [beschrijving] van de promotie in: ", () => Start("Name"));
+            return ReadLineUtil.EnterValue("Vul de [beschrijving] van de promotie in: ", () => Start("Name"), false, false);
         }
 
         private static void Print(string title, string description, bool status)
         {
-            ColorConsole.WriteColorLine("\nDe promotie is toegevoegd!\n", Globals.PromotionColor);
+            Console.Clear();
+            ColorConsole.WriteColorLine("De promotie is toegevoegd!\n", Globals.PromotionColor);
             ColorConsole.WriteColorLine("[Promotie details]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
