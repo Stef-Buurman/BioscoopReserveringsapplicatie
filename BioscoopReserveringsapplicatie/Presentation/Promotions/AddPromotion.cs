@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
         private static string AskForPromotionName()
         {
             ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
-            return ReadLineUtil.EnterValue("Vul de [titel] van de promotie in: ", Promotions.Start);
+            return ReadLineUtil.EnterValue("Vul de [titel] van de promotie in: ", PromotionOverview.Start);
         }
 
         private static string AskForPromotionDescription()
