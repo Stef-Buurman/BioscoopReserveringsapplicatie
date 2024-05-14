@@ -69,39 +69,30 @@ namespace BioscoopReserveringsapplicatie
 
         private static void MovieName()
         {
-            Console.Clear();
             PrintAddingMovie();
-
-            ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
             string question = "Voer de film [titel] in: ";
-            //ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
 
-            title = ReadLineUtil.EnterValue(question, actionWhenEscapePressed);
-
+            title = ReadLineUtil.EditValue(title, question, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(title))
             {
-                title = ReadLineUtil.EnterValue(question, actionWhenEscapePressed);
+                title = ReadLineUtil.EditValue(title, question, actionWhenEscapePressed);
             }
         }
 
         private static void MovieDescription()
         {
-            Console.Clear();
             PrintAddingMovie();
-            ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
             string question = "Voer de film [beschrijving] in: ";
-            //ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-            description = ReadLineUtil.EnterValue(question, () => Start(_returnToTitle));
+            description = ReadLineUtil.EditValue(description, question, () => Start(_returnToTitle));
 
             while (string.IsNullOrEmpty(description))
             {
-                description = ReadLineUtil.EnterValue(question, () => Start(_returnToTitle));
+                description = ReadLineUtil.EditValue(description, question, () => Start(_returnToTitle));
             }
         }
 
         private static void SelectMovieGenres()
         {
-            Console.Clear();
             PrintAddingMovie();
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
@@ -119,7 +110,6 @@ namespace BioscoopReserveringsapplicatie
 
         private static void SelectMovieRating()
         {
-            Console.Clear();
             PrintAddingMovie();
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
 
@@ -135,7 +125,8 @@ namespace BioscoopReserveringsapplicatie
 
         private static void PrintAddingMovie()
         {
-            if(title != "")
+            Console.Clear();
+            if (title != "")
             {
                 ColorConsole.WriteColorLine("[Huidige Film Details]", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Naam Film:] {title}", Globals.MovieColor);
@@ -154,8 +145,9 @@ namespace BioscoopReserveringsapplicatie
             }
             if (title != "" || description != "" || genres != null && genres.Count >= 1 || rating != AgeCategory.Undefined)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
+            ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
         }
 
         private static void Print()
