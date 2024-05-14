@@ -42,11 +42,19 @@
 
         private bool IsMultiSelect = false;
         private List<Option<T>> SelectedOptions = new List<Option<T>>();
+
+        private bool HasKeyAction = false;
+        private List<KeyAction> KeyActions = new List<KeyAction>();
+        private List<ConsoleKey> KeysInUse = new List<ConsoleKey>(){
+            ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
+        };
+
         private SelectionMenuUtil2(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false,
             Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
             bool visibleSelectedArrows = true, string textBeforeInputShown = default,
             Option<T> selectedOption = default, bool isMultiSelect = false,
-            List<Option<T>> selectedOptions = null, bool showEscapeabilityText = true)
+            List<Option<T>> selectedOptions = null, bool showEscapeabilityText = true,
+            bool hasKeyAction = false, List<KeyAction> keyActions = null, List<ConsoleKey> additionalKeysInUse = null)
         {
             MaxVisibility = maxVisibility;
             AllOptions = options;
@@ -66,6 +74,7 @@
             else
             {
                 CanBeEscaped = canBeEscaped;
+                KeysInUse.Add(ConsoleKey.Escape);
                 EscapeAction = escapeAction;
                 EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             }
@@ -73,6 +82,7 @@
             if (isMultiSelect)
             {
                 IsMultiSelect = isMultiSelect;
+                KeysInUse.Add(ConsoleKey.Spacebar);
                 VisibleSelectedArrows = false;
                 if (selectedOptions != null && selectedOptions.Count > 0)
                 {
@@ -105,6 +115,17 @@
                 TextBeforeInputShown = textBeforeInputShown;
                 TextBeforeInputShownVisible = true;
             }
+            if (hasKeyAction && keyActions != null)
+            {
+                HasKeyAction = hasKeyAction;
+                KeyActions = keyActions;
+                if (additionalKeysInUse != null){
+                    foreach (ConsoleKey key in additionalKeysInUse)
+                    {
+                        KeysInUse.Add(key);
+                    }
+                }
+            }
         }
 
         private SelectionMenuUtil2(List<T> options, int maxVisibility, bool canBeEscaped = false, Action escapeAction = null,
@@ -117,6 +138,8 @@
 
         public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText) { }
+        public SelectionMenuUtil2(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, List<KeyAction> keyActions, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true, bool hasKeyAction = true)
+        : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText, hasKeyAction, keyActions) { }
 
         public SelectionMenuUtil2(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
@@ -253,6 +276,14 @@
                 {
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
+                }
+
+                foreach (KeyAction keyAction in KeyActions)
+                {
+                    if (!KeysInUse.Contains(keyAction.Key))
+                    {
+                        if(keyinfo.Key == keyAction.Key) keyAction.Action();
+                    }
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);

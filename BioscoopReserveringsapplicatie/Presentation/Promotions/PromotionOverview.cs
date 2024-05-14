@@ -47,23 +47,24 @@ namespace BioscoopReserveringsapplicatie
                 string promotionInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "}", promotionTitle, promotionDescription, promotion.Status.GetDisplayName());
                 options.Add(new Option<int>(promotion.Id, promotionInfo));
             }
-
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteLineInfo("Klik op T om een promotie toe te voegen.\n");
             ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:\n", Globals.TitleColor);
-
             Print();
-
             int promotionId = new SelectionMenuUtil2<int>(options,
-                () =>
-                {
-                    AdminMenu.Start();
-                },
-                () =>
-                {
-                    ShowPromotions(promotions);
-                }, showEscapeabilityText: false).Create();
+            () => 
+            {
+                AdminMenu.Start();
+            },
+            () => 
+            {
+                Start();
+            },
+            new List<KeyAction>(){ 
+                new KeyAction(ConsoleKey.T, () => AddPromotion.Start()) 
+            },
+            showEscapeabilityText: false).Create();
 
-            Console.Clear();
             ShowPromotionDetails(promotionId);
         }
 
@@ -77,11 +78,19 @@ namespace BioscoopReserveringsapplicatie
 
         private static void PrintWhenNoPromotionsFound(string message)
         {
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                   AddPromotion.Start();
+                }),
+                new Option<string>("Nee", () => {
+                    AdminMenu.Start();
+                }),
+            };
             Console.WriteLine(message);
-            Thread.Sleep(500);
-            Console.WriteLine("Terug naar promotie overzicht...");
-            Thread.Sleep(1500);
-            Start();
+            Console.WriteLine();
+            Console.WriteLine("Wil je een promotie aanmaken?");
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()
