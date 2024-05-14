@@ -275,14 +275,18 @@
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
                     //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
-                    ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
+                    ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
                 foreach (KeyAction keyAction in KeyActions)
                 {
                     if (!KeysInUse.Contains(keyAction.Key))
                     {
-                        if(keyinfo.Key == keyAction.Key) keyAction.Action();
+                        if (keyinfo.Key == keyAction.Key)
+                        {
+                            Console.CursorVisible = true;
+                            keyAction.Action();
+                        }
                     }
                 }
             }
@@ -345,7 +349,7 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    ReadLineUtil.EscapeKeyPressed(() => { }, EscapeAction, EscapeActionWhenNotEscaping);
+                    ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);

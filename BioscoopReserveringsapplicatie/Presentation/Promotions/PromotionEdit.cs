@@ -60,51 +60,35 @@ namespace BioscoopReserveringsapplicatie
         }
         private static void PromotionTitle()
         {
-            Console.Clear();
             PrintEditingPromotion();
-            
-            newTitle = ReadLineUtil.EditValue(newTitle, () =>
-            {
-                ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de promotie [titel] in: ", Globals.ColorInputcClarification);
-            },
+            string question = "Voer de promotie [titel] in: ";
+            newTitle = ReadLineUtil.EditValue(newTitle, question,
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
             while (string.IsNullOrEmpty(newTitle))
             {
-                newTitle = ReadLineUtil.EditValue(newTitle, () =>
-                {
-                    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de Promotie [titel] in: ", Globals.ColorInputcClarification);
-                },
+                PrintEditingPromotion();
+                ColorConsole.WriteColorLine("De titel mag niet leeg zijn.", Globals.ErrorColor);
+                newTitle = ReadLineUtil.EditValue(newTitle, question, 
                 actionWhenEscapePressed,
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
-                }
+            }
         }
         
         private static void PromotionDescription(int promotionId)
         {
-            Console.Clear();
             PrintEditingPromotion();
-
-            Console.Write("Voer de promotie beschrijving in: ");
-            newDescription = ReadLineUtil.EditValue(newDescription, () =>
-            {
-                ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
-            }, 
+            string question = "Voer de promotie [beschrijving] in: ";
+            newDescription = ReadLineUtil.EditValue(newDescription, question,
             () => Start(promotionId, _returnToTitle),
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
+
             while (string.IsNullOrEmpty(newDescription))
             {
-                Console.Write("Voer de promotie beschrijving in: ");
-                newDescription = ReadLineUtil.EditValue(newDescription, () =>
-                {
-                    ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de promotie [beschrijving] in: ", Globals.ColorInputcClarification);
-                }, 
+                ColorConsole.WriteColorLine("De beschrijving mag niet leeg zijn.", Globals.ErrorColor);
+                newDescription = ReadLineUtil.EditValue(newDescription, question, 
                 () => Start(promotionId, _returnToTitle),
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
             }
@@ -112,7 +96,8 @@ namespace BioscoopReserveringsapplicatie
 
         private static void PrintEditingPromotion()
         {
-            if(newTitle != "")
+            Console.Clear();
+            if (newTitle != "")
             {
                 ColorConsole.WriteColorLine("[Aangepaste Promotie Details]", Globals.PromotionColor);
                 ColorConsole.WriteColorLine($"[Titel Promotie:] {newTitle}", Globals.PromotionColor);
@@ -121,6 +106,11 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine($"[Beschrijving Promotie:] {newDescription}", Globals.PromotionColor);
             }
+            if (newTitle != "" || newDescription != "")
+            {
+                HorizontalLine.Print();
+            }
+            ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
         }
 
         private static void Print(string newTitle, string description)
@@ -128,7 +118,8 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[De nieuwe promotie details:]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{newTitle}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
-            ColorConsole.WriteColorLine($"Weet u zeker dat u de promotie details van {newTitle} wilt [bewerken]?", Globals.ColorInputcClarification);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine($"Weet u zeker dat u de promotie details van [{newTitle}] wilt [bewerken]?", Globals.ColorInputcClarification);
         }
     }
 }

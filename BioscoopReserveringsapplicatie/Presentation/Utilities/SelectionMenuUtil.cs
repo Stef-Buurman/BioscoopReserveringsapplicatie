@@ -119,7 +119,7 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && canBeEscaped)
                 {
-                    ReadLineUtil.EscapeKeyPressed(ActionBeforeMenu, escapeAction, () => WriteMenu(GetOptionsToShow<T>(options, maxVisibility, amountOptionsAbove, (amountOptionsAbove > 0)), options[index], ActionBeforeMenu));
+                    //ReadLineUtil.EscapeKeyPressed(ActionBeforeMenu, escapeAction, () => WriteMenu(GetOptionsToShow<T>(options, maxVisibility, amountOptionsAbove, (amountOptionsAbove > 0)), options[index], ActionBeforeMenu));
                 }
             }
             while (keyinfo.Key != ConsoleKey.X);

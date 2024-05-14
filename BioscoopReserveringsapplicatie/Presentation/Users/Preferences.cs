@@ -229,7 +229,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
         }
     }

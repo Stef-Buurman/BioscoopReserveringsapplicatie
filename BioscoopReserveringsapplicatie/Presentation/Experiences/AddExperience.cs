@@ -68,55 +68,36 @@ namespace BioscoopReserveringsapplicatie
 
         private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
 
-        private static void WhatToDoWhenGoBack()
-        {
-            Console.Clear();
-            AdminMenu.Start();
-        }
+        private static void WhatToDoWhenGoBack() => ExperienceOverview.Start();
 
         private static void AskForExperienceName()
         {
             PrintEditedList();
-            _newName = ReadLineUtil.EditValue(_newName,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                WhatToDoWhenGoBack);
+            WriteTitle();
+
+            _newName = ReadLineUtil.EditValue(_newName, "Wat is de [naam] van de experience?: ", WhatToDoWhenGoBack);
+
             while (!experiencesLogic.ValidateExperienceName(_newName))
             {
-                _newName = ReadLineUtil.EditValue(_newName,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
-                    ColorConsole.WriteColor($"Wat is de [naam] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                WhatToDoWhenGoBack);
+                Console.Clear();
+                WriteTitle();
+                ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
+                _newName = ReadLineUtil.EditValue(_newName, "Wat is de [naam] van de experience?: ", WhatToDoWhenGoBack);
             }
         }
 
         private static void AskForExperienceDescription()
         {
             PrintEditedList();
-            _newDescription = ReadLineUtil.EditValue(_newDescription,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                () => Start(_returnToName));
+            WriteTitle();
+            _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
+
             while (!experiencesLogic.ValidateExperienceDescription(_newDescription))
             {
-                _newDescription = ReadLineUtil.EditValue(_newDescription,
-                () =>
-                {
-                    WriteTitle();
-                    ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
-                    ColorConsole.WriteColor($"Wat is de [beschrijving] van de experience?: ", Globals.ColorInputcClarification);
-                },
-                () => Start(_returnToName));
+                Console.Clear();
+                WriteTitle();
+                ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
+                _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
             }
         }
 
@@ -203,7 +184,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_newName != "" || _selectedMovieId != 0 || _Intensity != Intensity.Undefined || _timeInInt != 0)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
         }
     }
