@@ -116,8 +116,6 @@ namespace BioscoopReserveringsapplicatie
             bool validName = false;
             while (!validName)
             {
-                Console.Clear();
-                //ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
                 _newName = ReadLineUtil.EditValue(_newName, "Voer uw [naam] in: ",
                     () => { UserDetails.Start(); },
                     "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
@@ -131,12 +129,10 @@ namespace BioscoopReserveringsapplicatie
             bool validEmail = false;
             while (!validEmail)
             {
-                Console.Clear();
-                //ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
                 _newEmail = ReadLineUtil.EditValue(_newEmail, "Voer uw [emailadres] in: ",
                     () => Start(_returnToName),
-                    "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
-                );
+                    "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n",
+                false, false);
                 validEmail = _userLogic.ValidateEmail(_newEmail);
             }
         }
@@ -334,12 +330,13 @@ namespace BioscoopReserveringsapplicatie
             }
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
         }
         public static void ChangePassword()
         {
             bool validOldPassword = false;
+            PrintTitle();
             while (!validOldPassword)
             {
                 string oldPassword = ReadLineUtil.EnterValue("Voer uw [oude wachtwoord] in: ", UserDetails.Start, true);
@@ -347,11 +344,13 @@ namespace BioscoopReserveringsapplicatie
 
                 if (!validOldPassword)
                 {
+                    PrintTitle();
                     ColorConsole.WriteColorLine("Oud wachtwoord is onjuist.", Globals.ErrorColor);
                 }
             }
             string newPassword = "";
             bool validNewPassword = false;
+            PrintTitle();
             while (!validNewPassword)
             {
                 newPassword = ReadLineUtil.EnterValue("Voer uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
@@ -361,19 +360,21 @@ namespace BioscoopReserveringsapplicatie
                 {
                     if (newPassword.Length < 5)
                     {
+                        PrintTitle();
                         ColorConsole.WriteColorLine("Wachtwoord moet minimaal 5 tekens bevatten.", Globals.ErrorColor);
                     }
                 }
             }
 
             bool validConfirmPassword = false;
+            PrintTitle();
             while (!validConfirmPassword)
             {
                 string confirmPassword = ReadLineUtil.EnterValue("Bevestig uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
                 validConfirmPassword = newPassword == confirmPassword;
                 if (!validConfirmPassword)
                 {
-                    Console.Clear();
+                    PrintTitle();
                     ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
                     Thread.Sleep(2000);
                 }
@@ -381,12 +382,20 @@ namespace BioscoopReserveringsapplicatie
 
             if (_userLogic != null)
             {
-                _userLogic.EditPassword(newPassword);
+                if (_userLogic.EditPassword(newPassword))
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
+                    Thread.Sleep(4000);
+                }
             }
-            Console.Clear();
-            ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
-            Thread.Sleep(4000);
             UserDetails.Start();
+        }
+
+        public static void PrintTitle()
+        {
+            Console.Clear();
+            ColorConsole.WriteColorLine("Wachtwoord aanpassen\n", Globals.ExperienceColor);
         }
     }
 }
