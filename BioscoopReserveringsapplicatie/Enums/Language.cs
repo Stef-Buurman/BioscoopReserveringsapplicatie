@@ -1,6 +1,12 @@
-public enum Language
+using System.ComponentModel.DataAnnotations;
+
+namespace BioscoopReserveringsapplicatie
 {
-    Undefined,
-    Nederlands,
-    English
+    public enum Language
+    {
+        [Display(Name = "Niet ingevuld")]
+        Undefined,
+        Nederlands,
+        English
+    }
 }

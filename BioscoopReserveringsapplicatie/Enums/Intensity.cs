@@ -1,14 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 
-
-public enum Intensity
+namespace BioscoopReserveringsapplicatie
 {
-    [Display(Name = "Onbekend")]
-    Undefined,
-    [Display(Name = "Laag")]
-    Low,
-    [Display(Name = "Medium")]
-    Medium,
-    [Display(Name = "Hoog")]
-    High
+    public enum Intensity
+    {
+        [Display(Name = "Niet ingevuld")]
+        Undefined,
+        [Display(Name = "Laag")]
+        Low,
+        [Display(Name = "Medium")]
+        Medium,
+        [Display(Name = "Hoog")]
+        High,
+        [Display(Name = "Alle intensiteiten")]
+        All
+    }
 }

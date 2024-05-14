@@ -25,5 +25,14 @@
     "intensity": "High",
     "timeLength": 20,
     "archived": false
+  },
+  {
+    "id": 4,
+    "name": "Dit is een nieuewewewe  experience",
+    "description": "Dit is de beschrijving jonguh",
+    "filmId": 4,
+    "intensity": "Medium",
+    "timeLength": 15,
+    "archived": false
   }
 ]
