@@ -282,11 +282,7 @@
                 {
                     if (!KeysInUse.Contains(keyAction.Key))
                     {
-                        if (keyinfo.Key == keyAction.Key)
-                        {
-                            Console.CursorVisible = true;
-                            keyAction.Action();
-                        }
+                        if(keyinfo.Key == keyAction.Key) keyAction.Action();
                     }
                 }
             }

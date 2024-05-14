@@ -3,7 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class AddMovie
     {
         private static MovieLogic MoviesLogic = new MovieLogic();
-        private static Action actionWhenEscapePressed = MovieOverview.Start;
+        private static Action actionWhenEscapePressed = AdminMenu.Start;
 
         private static string title = "";
         private static string description = "";
@@ -50,7 +50,7 @@ namespace BioscoopReserveringsapplicatie
                 Print();
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
                 };
                 new SelectionMenuUtil2<string>(options, () => Start(_returnToRating), Print).Create();
             }
@@ -61,7 +61,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
+                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
                 };
                 new SelectionMenuUtil2<string>(options).Create();
             }
@@ -75,8 +75,6 @@ namespace BioscoopReserveringsapplicatie
             title = ReadLineUtil.EditValue(title, question, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(title))
             {
-                PrintAddingMovie();
-                ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
                 title = ReadLineUtil.EditValue(title, question, actionWhenEscapePressed);
             }
         }
@@ -89,8 +87,6 @@ namespace BioscoopReserveringsapplicatie
 
             while (string.IsNullOrEmpty(description))
             {
-                PrintAddingMovie();
-                ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
                 description = ReadLineUtil.EditValue(description, question, () => Start(_returnToTitle));
             }
         }
