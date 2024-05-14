@@ -481,8 +481,8 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() {}, Intensity.High, AgeCategory.AGE_9));
-            Assert.AreNotEqual(new List<Genre>{}, userLogic.GetById(3).Genres);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() {(Genre)123}, Intensity.High, AgeCategory.AGE_9));
+            Assert.AreNotEqual(new List<Genre>{(Genre)123}, userLogic.GetById(3).Genres);
         }
 
         [TestMethod]
