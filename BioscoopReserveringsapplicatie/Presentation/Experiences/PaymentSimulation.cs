@@ -36,9 +36,9 @@ namespace BioscoopReserveringsapplicatie
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.WriteLine($"Voortgang: 100% [{new string('=', 10)}]");
             Console.WriteLine();
-            ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
+            HorizontalLine.Print();
             ColorConsole.WriteColorLine("Betaling geslaagd!", ConsoleColor.Green);
-            ColorConsole.WriteColorLine("--------------------------------------------------------------------------------", ConsoleColor.Gray);
+            HorizontalLine.Print();
             Thread.Sleep(2000);
         }
     }
