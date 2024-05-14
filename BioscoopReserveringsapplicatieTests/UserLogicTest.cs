@@ -492,7 +492,7 @@ namespace BioscoopReserveringsapplicatieTests
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
             Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, (Intensity)1000, AgeCategory.AGE_9));
-            Assert.AreNotEqual((Intensity)100, userLogic.GetById(3).Intensity);
+            Assert.AreNotEqual((Intensity)1000, userLogic.GetById(3).Intensity);
         }
 
         [TestMethod]
