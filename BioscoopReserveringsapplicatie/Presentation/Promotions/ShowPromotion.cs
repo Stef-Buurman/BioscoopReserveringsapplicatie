@@ -15,7 +15,6 @@ namespace BioscoopReserveringsapplicatie
                 if (!shownRecently)
                 {
                     promotionLogic.UpdatePromotionShown(activePromotion.Id);
-                    userLogic.UpdateList(UserLogic.CurrentUser);
                     DisplayPromotion(activePromotion);
                 }
             }

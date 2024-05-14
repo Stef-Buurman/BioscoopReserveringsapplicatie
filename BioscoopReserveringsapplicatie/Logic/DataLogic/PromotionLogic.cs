@@ -165,7 +165,7 @@ namespace BioscoopReserveringsapplicatie
         {
             if (UserLogic.CurrentUser != null)
             {
-                UserLogic.CurrentUser.PromotionsSeen.Add(PromotionId, DateTime.Now);
+                UserLogic.CurrentUser.PromotionsSeen[PromotionId] = DateTime.Now;
                 userLogic.UpdateList(UserLogic.CurrentUser);
             }
         }
