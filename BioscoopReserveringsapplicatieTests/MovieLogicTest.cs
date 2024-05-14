@@ -12,7 +12,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var movieRepositoryMock = Substitute.For<IDataAccess<MovieModel>>();
             List<MovieModel> movies = new List<MovieModel>() {
-                new MovieModel(1, "Movie1", "Description1", new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false),
+                new MovieModel(1, "Movie1", "Description1", new List<Genre> { Genre.Action, Genre.Comedy }, AgeCategory.AGE_9, false),
                 new MovieModel(2, "Movie2", "Description2", new List<Genre> { Genre.Western, Genre.Horror }, AgeCategory.AGE_12, true),
                 new MovieModel(3, "Movie3", "Description3", new List<Genre> { Genre.War, Genre.Documentary }, AgeCategory.AGE_16, false),
             };
@@ -37,9 +37,9 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Movie_Title_Validation_With_Movie(string title)
         {
-            MovieModel movie = new MovieModel(1, title, "Description", new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
+            MovieModel movie = new MovieModel(1, title, "Description", new List<Genre> { Genre.Action, Genre.Comedy }, AgeCategory.AGE_9, false);
             Assert.IsFalse(moviesLogic.Validate(movie));
-            MovieModel movie2 = new MovieModel(2, title, "Description", new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
+            MovieModel movie2 = new MovieModel(2, title, "Description", new List<Genre> { Genre.Action, Genre.Comedy }, AgeCategory.AGE_9, false);
             Assert.IsFalse(moviesLogic.Validate(movie2));
         }
 
@@ -66,9 +66,9 @@ namespace BioscoopReserveringsapplicatieTests
         [DataTestMethod]
         public void Incorrect_Movie_Description_Validation_With_Movie(string description)
         {
-            MovieModel movie = new MovieModel(1, "Title", description, new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
+            MovieModel movie = new MovieModel(1, "Title", description, new List<Genre> { Genre.Action, Genre.Comedy }, AgeCategory.AGE_9, false);
             Assert.IsFalse(moviesLogic.Validate(movie));
-            MovieModel movie2 = new MovieModel(2, "Title", description, new List<Genre> { Genre.Actie, Genre.Komedie }, AgeCategory.AGE_9, false);
+            MovieModel movie2 = new MovieModel(2, "Title", description, new List<Genre> { Genre.Action, Genre.Comedy }, AgeCategory.AGE_9, false);
             Assert.IsFalse(moviesLogic.Validate(movie2));
         }
 
@@ -82,7 +82,7 @@ namespace BioscoopReserveringsapplicatieTests
 
         // Genres ------------------------------------------------------------------------------------------------------------------
 
-        [DataRow(Genre.Western, Genre.Komedie, Genre.War)]
+        [DataRow(Genre.Western, Genre.Comedy, Genre.War)]
         [DataRow(Genre.Family, Genre.Crime, Genre.Documentary)]
         [DataRow(Genre.Music, Genre.Mystery, Genre.Fantasy)]
         [DataTestMethod]
