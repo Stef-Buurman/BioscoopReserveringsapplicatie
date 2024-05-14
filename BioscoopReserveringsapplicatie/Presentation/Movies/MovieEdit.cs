@@ -84,16 +84,9 @@ namespace BioscoopReserveringsapplicatie
             PrintEditingMovie();
             ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
             string question = "Voer de film [titel] in: ";
-            //ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
             newTitle = ReadLineUtil.EditValue(newTitle, question, 
             actionWhenEscapePressed,
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
-
-            //() =>
-            //{
-            //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-            //    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-            //},
 
             while (string.IsNullOrEmpty(newTitle))
             {
@@ -101,12 +94,6 @@ namespace BioscoopReserveringsapplicatie
                 actionWhenEscapePressed,
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
                 }
-
-            //() =>
-            //{
-            //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-            //    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-            //},
         }
 
         private static void MovieDescription(int movieId)
@@ -115,29 +102,16 @@ namespace BioscoopReserveringsapplicatie
             PrintEditingMovie();
 
             ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-            //ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
             string question = "Voer de film [beschrijving] in: ";
             newDescription = ReadLineUtil.EditValue(newDescription, question, 
             () => Start(movieId, _returnToTitle),
             "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
 
-            //() =>
-            //{
-            //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-            //    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-            //},
-
             while (string.IsNullOrEmpty(newDescription))
             {
-                //Console.Write("Voer de film beschrijving in: ");
                 newDescription = ReadLineUtil.EditValue(newDescription, question, 
                 () => Start(movieId, _returnToTitle),
                 "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
-                //() =>
-                //{
-                //    ColorConsole.WriteColorLine("Voer nieuwe filmdetails in:\n", Globals.TitleColor);
-                //    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-                //}, 
             }
         }
 
@@ -204,6 +178,10 @@ namespace BioscoopReserveringsapplicatie
             {  
                 ColorConsole.WriteColorLine($"[Beschrijving Film:] {newRating.GetDisplayName()}", Globals.MovieColor);
             }
+            if (newTitle != "" || newDescription != "" || newGenres.Count >= 1 || newRating != AgeCategory.Undefined)
+            {
+                HorizontalLine.Print();
+            }
         }
 
         private static void Print(string currentTitle, string newTitle, string description, List<Genre> genres, AgeCategory rating)
@@ -213,6 +191,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Weet u zeker dat u de filmdetails van {currentTitle} wilt [bewerken]?", Globals.ColorInputcClarification);
         }
     }
