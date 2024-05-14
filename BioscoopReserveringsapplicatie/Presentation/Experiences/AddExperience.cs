@@ -68,11 +68,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
 
-        private static void WhatToDoWhenGoBack()
-        {
-            Console.Clear();
-            AdminMenu.Start();
-        }
+        private static void WhatToDoWhenGoBack() => ExperienceOverview.Start();
 
         private static void AskForExperienceName()
         {
@@ -92,7 +88,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void AskForExperienceDescription()
         {
-            PrintEditedList(); 
+            PrintEditedList();
             WriteTitle();
             _newDescription = ReadLineUtil.EditValue(_newDescription, "Wat is de [beschrijving] van de experience?: ", () => Start(_returnToName));
 
