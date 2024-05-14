@@ -464,15 +464,18 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsFalse(userLogic.Edit("", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
             Assert.AreNotEqual("", userLogic.GetById(3).FullName);
         }
-
-        [TestMethod]
-        public void Incorrect_Email_Edit_User()
+        [DataRow("")]
+        [DataRow("     ")]
+        [DataRow("MailZonder@eenpunt")]
+        [DataRow("GeenAppenstaartje.nl")]
+        [DataTestMethod]
+        public void Incorrect_Email_Edit_User(string email)
         {
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Petra", "nietwerkendemail", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
-            Assert.AreNotEqual("nietwerkendemail", userLogic.GetById(3).EmailAddress);
+            Assert.IsFalse(userLogic.Edit("Petra", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
+            Assert.AreNotEqual(email, userLogic.GetById(3).EmailAddress);
         }
 
         [TestMethod]
