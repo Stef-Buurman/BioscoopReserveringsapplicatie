@@ -326,7 +326,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit( "Tim van Eert", "   ", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "Tim van Eert", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
         }
 
         [TestMethod]
