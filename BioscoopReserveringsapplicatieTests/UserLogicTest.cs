@@ -439,5 +439,73 @@ namespace BioscoopReserveringsapplicatieTests
         {
             Assert.IsFalse(userLogic.ValidateLanguage(value));
         }
+
+        // Edit User --------------------------------------------------------------------------------------------------------------------
+        [TestMethod]
+        public void Correct_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsTrue(userLogic.Edit("PetraNieuweNaam", "petranieuwemail@mail.com", new List<Genre>() { Genre.Adventure }, Intensity.High, AgeCategory.AGE_18));
+            Assert.AreEqual("petranieuwemail@mail.com", userLogic.GetById(3).EmailAddress);
+            Assert.AreEqual("PetraNieuweNaam", userLogic.GetById(3).FullName);
+            Assert.AreEqual(Genre.Adventure, userLogic.GetById(3).Genres[0]);
+            Assert.AreEqual(Intensity.High, userLogic.GetById(3).Intensity);
+            Assert.AreEqual(AgeCategory.AGE_18, userLogic.GetById(3).AgeCategory);
+        }
+
+        [TestMethod]
+        public void Incorrect_Name_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
+            Assert.AreNotEqual("", userLogic.GetById(3).FullName);
+        }
+        [DataRow("")]
+        [DataRow("     ")]
+        [DataRow("MailZonder@eenpunt")]
+        [DataRow("GeenAppenstaartje.nl")]
+        [DataTestMethod]
+        public void Incorrect_Email_Edit_User(string email)
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
+            Assert.AreNotEqual(email, userLogic.GetById(3).EmailAddress);
+        }
+
+        [TestMethod]
+        public void Incorrect_Genres_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() {(Genre)123}, Intensity.High, AgeCategory.AGE_9));
+            Assert.AreNotEqual(new List<Genre>{(Genre)123}, userLogic.GetById(3).Genres);
+        }
+
+        [TestMethod]
+        public void Incorrect_Intensity_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, (Intensity)1000, AgeCategory.AGE_9));
+            Assert.AreNotEqual((Intensity)1000, userLogic.GetById(3).Intensity);
+        }
+
+        [TestMethod]
+        public void Incorrect_AgeCategory_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, (AgeCategory)999));
+            Assert.AreNotEqual((AgeCategory)999, userLogic.GetById(3).AgeCategory);
+        }
     }
 }
