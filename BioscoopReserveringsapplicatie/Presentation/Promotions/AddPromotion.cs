@@ -20,7 +20,7 @@ namespace BioscoopReserveringsapplicatie
                 description = AskForPromotionDescription();
                 returnTo = "";
             }
-
+            Print(title, description, true);
             PromotionModel newPromotion = new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Active);
             List<Option<string>> options = new List<Option<string>>
             {
@@ -37,7 +37,7 @@ namespace BioscoopReserveringsapplicatie
                     Start("Name");
                 }
             }),
-            new Option<string>("Verder gaan met aanpassen", () => { Start(); }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start("Name"); }),
             new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
             };
 
