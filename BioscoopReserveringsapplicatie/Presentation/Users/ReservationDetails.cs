@@ -24,7 +24,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> options;
 
-            if (!reservation.IsCanceled)
+            if (!reservation.IsCanceled && schedule.ScheduledDateTimeStart > DateTime.Now)
             {
                 options = new List<Option<string>>
                 {
