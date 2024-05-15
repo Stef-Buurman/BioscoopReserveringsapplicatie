@@ -155,24 +155,6 @@ namespace BioscoopReserveringsapplicatie
             return schedules.Find(s => s.ExperienceId == experienceId && s.LocationId == location && s.ScheduledDateTimeStart == dateTime && s.RoomId == room).Id;
         }
 
-        public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int? locationId)
-        {
-            List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
-        }
-
-        public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int? locationId, DateTime? date)
-        {
-            List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == date);
-        }
-
-        public ScheduleModel GetRoomForScheduledExperience(int id, int? locationId, DateTime? date, TimeSpan? time)
-        {
-            List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.Find(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == date && s.ScheduledDateTimeStart.TimeOfDay == time);
-        }
-
         public List<ScheduleModel> GetScheduledExperiencesByLocationId(int experienceId, int locationId)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
