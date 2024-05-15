@@ -43,7 +43,7 @@
                 AskForExperienceTimeLength();
                 returnTo = "";
             }
-
+            Print(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt);
             ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt, archived: false);
             List<Option<string>> options = new List<Option<string>>
             {
@@ -56,7 +56,7 @@
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
+                    ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de Experience . Probeer het opnieuw.\n", Globals.ErrorColor);
                     Start(_returnToName);
                 }
             }),
@@ -66,7 +66,6 @@
 
             new SelectionMenuUtil2<string>(options).Create();
         }
-
 
         private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
 

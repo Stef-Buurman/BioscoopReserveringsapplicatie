@@ -15,7 +15,6 @@ namespace BioscoopReserveringsapplicatie
         private static string _returnToGenres = "Genres";
         private static string _returnToRating = "Rating";
 
-
         public static void Start(string returnTo = "")
         {
             Console.Clear();
@@ -56,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                 else
                 {
                 Console.Clear();
-                Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
+                ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n", Globals.ErrorColor);
                 Start(_returnToRating);
                 }
             }),
