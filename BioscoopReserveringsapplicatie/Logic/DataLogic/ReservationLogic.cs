@@ -100,7 +100,7 @@ namespace BioscoopReserveringsapplicatie
         public bool HasUserAlreadyReservedScheduledExperience(int scheduleId, int userId)
         {
             List<ReservationModel> reservations = _DataAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId && r.IsCanceled == false);
         }
 
         public bool HasUserAlreadyReservedScheduledExperienceOnDateTime(int userId, DateTime date)
@@ -111,7 +111,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
 
-                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay)
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false)
                 {
                     return true;
                 }
@@ -127,7 +127,7 @@ namespace BioscoopReserveringsapplicatie
 
             foreach (ScheduleModel schedule in schedules)
             {
-                if (!reservations.Exists(r => r.ScheduleId == schedule.Id))
+                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && r.IsCanceled == false))
                 {
                     return false;
                 }
