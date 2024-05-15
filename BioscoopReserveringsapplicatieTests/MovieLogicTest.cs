@@ -182,7 +182,6 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Movie_Archive_Success()
         {
             moviesLogic.Archive(1);
-            //Assert.IsTrue(moviesLogic.GetById(1).Archived);
             Assert.AreEqual(Status.Archived, moviesLogic.GetById(1).Status);
         }
 
@@ -190,7 +189,6 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Movie_AlreadyArchived_Still_Archived()
         {
             moviesLogic.Archive(2);
-            //Assert.IsTrue(moviesLogic.GetById(2).Archived);
             Assert.AreEqual(Status.Archived, moviesLogic.GetById(2).Status);
         }
     }
