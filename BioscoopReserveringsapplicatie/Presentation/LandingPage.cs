@@ -33,7 +33,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Applicatie sluiten", () => Environment.Exit(0)),
             };
 
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
 
         }
     }

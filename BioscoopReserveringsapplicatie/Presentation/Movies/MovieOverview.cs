@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Alle films bekijken", () => ShowAllMovies()),
                 new Option<string>("Terug", () => AdminMenu.Start()),
             };
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void ShowMovieDetails(int movieId)
@@ -67,7 +67,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteLineInfo("Klik op 2 om alle active films te tonen.");
             ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde films te tonen.\n");
             Print();
-            int movieId = new SelectionMenuUtil2<int>(options,
+            int movieId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
                     AdminMenu.Start();
@@ -127,7 +127,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine(notFoundMessage);
                 Console.WriteLine();
                 Console.WriteLine("Wil je een film aanmaken?");
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
             else
             {

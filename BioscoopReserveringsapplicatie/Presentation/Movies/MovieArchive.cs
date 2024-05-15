@@ -32,7 +32,7 @@ namespace BioscoopReserveringsapplicatie
                     MovieDetails.Start(movieId);
                 }),
             };
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
             else
             {
@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
                         MovieDetails.Start(movieId);
                     }),
                 };
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
         }
 

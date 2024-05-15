@@ -63,7 +63,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<string>("Opniew proberen", () => Start(user)));
                 ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor);
             }
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         public static void SelectGenres()
@@ -83,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            _selectedGenres = new SelectionMenuUtil2<Genre>(availableGenres, selectedGenres).CreateMultiSelect();
+            _selectedGenres = new SelectionMenuUtil<Genre>(availableGenres, selectedGenres).CreateMultiSelect();
         }
 
         public static void SelectAgeCategory()
@@ -99,7 +99,7 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil2<AgeCategory> selectionMenu = new SelectionMenuUtil2<AgeCategory>(options, () =>
+            SelectionMenuUtil<AgeCategory> selectionMenu = new SelectionMenuUtil<AgeCategory>(options, () =>
             {
                 _GenresNotFilledIn = false;
                 Start(_user, _returnToGenres);
@@ -132,7 +132,7 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<Intensity>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil2<Intensity> SelectionMenu = new SelectionMenuUtil2<Intensity>(options, () =>
+            SelectionMenuUtil<Intensity> SelectionMenu = new SelectionMenuUtil<Intensity>(options, () =>
             {
                 _AgeCategoryNotFilledIn = false;
                 Start(_user, _returnToAgeCategory);
@@ -163,7 +163,7 @@ namespace BioscoopReserveringsapplicatie
                 else
                     options.Add(new Option<Language>(option, option.GetDisplayName()));
             }
-            SelectionMenuUtil2<Language> selectionMenu = new SelectionMenuUtil2<Language>(options, () =>
+            SelectionMenuUtil<Language> selectionMenu = new SelectionMenuUtil<Language>(options, () =>
             {
                 _IntensityNotFilledIn = false;
                 Start(_user, _returnToIntensity);

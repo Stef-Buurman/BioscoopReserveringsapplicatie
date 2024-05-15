@@ -64,7 +64,7 @@
             new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
             };
 
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
@@ -113,14 +113,14 @@
             }
             WriteTitle();
             ColorConsole.WriteColorLine("Welke [intensiteit] wilt u? ", Globals.ColorInputcClarification);
-            _Intensity = new SelectionMenuUtil2<Intensity>(intensityOption, 15, WhatToDoWhenGoBack, () => Start(_returnToIntensity)).Create();
+            _Intensity = new SelectionMenuUtil<Intensity>(intensityOption, 15, WhatToDoWhenGoBack, () => Start(_returnToIntensity)).Create();
         }
 
         private static void AskForExperienceTimeLength()
         {
             PrintEditedList();
             List<int> intList = Enumerable.Range(1, 100).ToList();
-            SelectionMenuUtil2<int> selection = new SelectionMenuUtil2<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ");
+            SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ");
             _timeInInt = selection.Create();
             while (!experiencesLogic.ValidateExperienceTimeLength(_timeInInt))
             {
@@ -143,7 +143,7 @@
             }
             WriteTitle();
             ColorConsole.WriteColorLine("Welke [film] wilt u toevoegen?", Globals.ColorInputcClarification);
-            _selectedMovieId = new SelectionMenuUtil2<int>(movieOptions, 15, () => Start(_returnToName), () => Start(_returnToMovie)).Create();
+            _selectedMovieId = new SelectionMenuUtil<int>(movieOptions, 15, () => Start(_returnToName), () => Start(_returnToMovie)).Create();
             Console.Clear();
         }
 

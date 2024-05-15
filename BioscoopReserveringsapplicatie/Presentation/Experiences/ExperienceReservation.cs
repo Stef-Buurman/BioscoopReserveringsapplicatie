@@ -34,7 +34,7 @@ namespace BioscoopReserveringsapplicatie
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId)));
 
-                    new SelectionMenuUtil2<int>(options).Create();
+                    new SelectionMenuUtil<int>(options).Create();
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatie
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId)));
 
-                    new SelectionMenuUtil2<int>(options).Create();
+                    new SelectionMenuUtil<int>(options).Create();
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace BioscoopReserveringsapplicatie
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location)));
 
-                    new SelectionMenuUtil2<int>(options).Create();
+                    new SelectionMenuUtil<int>(options).Create();
                 }
                 else
                 {
@@ -158,7 +158,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
                 Console.WriteLine("Is de reservering correct?\n");
 
-                new SelectionMenuUtil2<int>(optionsConfirm).Create();
+                new SelectionMenuUtil<int>(optionsConfirm).Create();
             }
         }
     }

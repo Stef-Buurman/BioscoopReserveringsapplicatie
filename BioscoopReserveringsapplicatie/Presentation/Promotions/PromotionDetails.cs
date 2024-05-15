@@ -36,7 +36,7 @@ namespace BioscoopReserveringsapplicatie
             });
 
             Print();
-            string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
+            string selectionMenu = new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void ActiveOrDeActiveatePromotion(int promotionId)
@@ -55,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                         };
                 ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
                 ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt deactiveren?", Globals.ErrorColor);
-                string selectionMenu2 = new SelectionMenuUtil2<string>(options2, new Option<string>("Nee")).Create();
+                string selectionMenu2 = new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
             }
             else
             {
@@ -71,7 +71,7 @@ namespace BioscoopReserveringsapplicatie
                         };
                 ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
                 ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt activeren?", Globals.ErrorColor);
-                string selectionMenu2 = new SelectionMenuUtil2<string>(options2, new Option<string>("Nee")).Create();
+                string selectionMenu2 = new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
             }
         }
 

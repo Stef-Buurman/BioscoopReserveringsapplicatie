@@ -41,7 +41,7 @@ namespace BioscoopReserveringsapplicatie
             new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
             };
 
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static string AskForPromotionName()

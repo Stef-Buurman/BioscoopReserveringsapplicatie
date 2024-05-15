@@ -59,7 +59,7 @@ namespace BioscoopReserveringsapplicatie
             }
 
             Print();
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void AdminPreview(int experienceId)
@@ -91,7 +91,7 @@ namespace BioscoopReserveringsapplicatie
             }
 
             Print();
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void Print()

@@ -89,7 +89,7 @@ namespace BioscoopReserveringsapplicatie
 
                             Console.Clear();
                             ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het inplannen. Probeer het opnieuw.\n", Globals.ErrorColor);
-                            new SelectionMenuUtil2<string>(options).Create();
+                            new SelectionMenuUtil<string>(options).Create();
                         }
                     }),
                     new Option<string>("Nee", () => ExperienceDetails.Start(experienceId))
@@ -97,7 +97,7 @@ namespace BioscoopReserveringsapplicatie
 
                 Console.Clear();
                 PendingSchedule(experienceId, roomId, locationId, scheduledDateTime);
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
             else ColorConsole.WriteColorLine("User is geen admin!", ConsoleColor.DarkRed);
         }
@@ -116,7 +116,7 @@ namespace BioscoopReserveringsapplicatie
                 locationOptions.Add(new Option<int>(location.Id, location.Name));
             }
 
-            int locationId = new SelectionMenuUtil2<int>(locationOptions,() => ExperienceDetails.Start(experienceId), () => Start(experienceId, _returnToLocation)).Create();
+            int locationId = new SelectionMenuUtil<int>(locationOptions,() => ExperienceDetails.Start(experienceId), () => Start(experienceId, _returnToLocation)).Create();
             return locationId;
         }
 
@@ -134,7 +134,7 @@ namespace BioscoopReserveringsapplicatie
                 roomOptions.Add(new Option<int>(room.Id, $"Zaal: {room.RoomNumber}"));
             }
 
-            int roomId = new SelectionMenuUtil2<int>(roomOptions,() => Start(experienceId, _returnToLocation), () => Start(experienceId, _returnToRoom)).Create();
+            int roomId = new SelectionMenuUtil<int>(roomOptions,() => Start(experienceId, _returnToLocation), () => Start(experienceId, _returnToRoom)).Create();
             return roomId;
         }
 
@@ -152,7 +152,7 @@ namespace BioscoopReserveringsapplicatie
                 dateOptions.Add(new Option<string>(DateTime.Today.AddDays(i).ToString("dd-MM-yyyy")));
             }
                 
-            string scheduleDate = new SelectionMenuUtil2<string>(dateOptions,() => Start(experienceId, _returnToRoom), () => Start(experienceId, _returnToDate)).Create();
+            string scheduleDate = new SelectionMenuUtil<string>(dateOptions,() => Start(experienceId, _returnToRoom), () => Start(experienceId, _returnToDate)).Create();
             return scheduleDate;
         }
 
@@ -182,7 +182,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }
 
-            string scheduleHour = new SelectionMenuUtil2<string>(hourOptions, 1, () => Start(experienceId, _returnToDate), () => Start(experienceId, _returnToHour), false).Create();
+            string scheduleHour = new SelectionMenuUtil<string>(hourOptions, 1, () => Start(experienceId, _returnToDate), () => Start(experienceId, _returnToHour), false).Create();
             string[] splitscheduleHour = scheduleHour.Split(":");
             return splitscheduleHour[0];
         }
@@ -213,7 +213,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }
 
-            string experienceMinutes = new SelectionMenuUtil2<string>(timeOptions, 1, () => Start(experienceId, _returnToHour), () => Start(experienceId, _returnToTime), false, $"{scheduleHour}:").Create();
+            string experienceMinutes = new SelectionMenuUtil<string>(timeOptions, 1, () => Start(experienceId, _returnToHour), () => Start(experienceId, _returnToTime), false, $"{scheduleHour}:").Create();
             scheduleTime = $"{scheduleHour}:{experienceMinutes}";
             return scheduleTime;
         }

@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
                             }),
                         };
 
-                        new SelectionMenuUtil2<string>(options2).Create();
+                        new SelectionMenuUtil<string>(options2).Create();
 
                     }),
                     new Option<string>("Terug", () => UserReservations.Start()),
@@ -64,7 +64,7 @@ namespace BioscoopReserveringsapplicatie
 
             Print(reservation, schedule, experience, location, room);
 
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void Print(ReservationModel reservation, ScheduleModel schedule, ExperienceModel experience, LocationModel location, RoomModel room)

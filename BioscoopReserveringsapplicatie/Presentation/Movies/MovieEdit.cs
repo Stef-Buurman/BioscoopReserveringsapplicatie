@@ -69,13 +69,13 @@ namespace BioscoopReserveringsapplicatie
                                 new Option<string>("Terug", () => {Console.Clear(); MovieDetails.Start(movieId);}),
                             };
                             Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de film. Probeer het opnieuw.\n");
-                            new SelectionMenuUtil2<string>(options).Create();
+                            new SelectionMenuUtil<string>(options).Create();
                         }
                 }),
                 new Option<string>("Nee, pas de film verder aan", () => {Start(movie.Id, _returnToRating);}),
                 new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); MovieDetails.Start(movie.Id);})
             };
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void MovieName()
@@ -132,7 +132,7 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            newGenres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+            newGenres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () => { Start(movieId, _returnToDescription); },
                     () => { Start(movieId, _returnToGenres); }, 
                     "Welke [genre(s)] hoort/horen bij deze film: ", selectedGenres).CreateMultiSelect();
@@ -150,7 +150,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
-            newRating = new SelectionMenuUtil2<AgeCategory>(options, 
+            newRating = new SelectionMenuUtil<AgeCategory>(options, 
                 () => 
                 {
                     Start(movieId, _returnToGenres); 

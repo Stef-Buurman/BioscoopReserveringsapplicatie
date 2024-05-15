@@ -39,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Sluiten", () => UserMenu.Start()),
             };
 
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
     }
 }
