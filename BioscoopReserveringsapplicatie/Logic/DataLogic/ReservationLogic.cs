@@ -122,7 +122,7 @@ namespace BioscoopReserveringsapplicatie
 
         public bool HasUserReservedAvailableOptionsForLocation(int experienceId, int locationId)
         {
-            List<ReservationModel> reservations = _DataAccess.LoadAll();
+            List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == UserLogic.CurrentUser.Id);
             List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
 
             foreach (ScheduleModel schedule in schedules)
