@@ -104,7 +104,6 @@ namespace BioscoopReserveringsapplicatie
             {
                 PrintEditedList();
                 ColorConsole.WriteColorLine("\nNaam mag niet leeg zijn.", Globals.ErrorColor);
-                ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
                 _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
             }
         }
@@ -117,7 +116,6 @@ namespace BioscoopReserveringsapplicatie
             {
                 PrintEditedList();
                 ColorConsole.WriteColorLine("\nBeschrijving mag niet leeg zijn.", Globals.ErrorColor);
-                ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
                 _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
             }
         }
