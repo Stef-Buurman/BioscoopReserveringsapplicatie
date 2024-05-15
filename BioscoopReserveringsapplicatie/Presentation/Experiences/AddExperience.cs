@@ -1,5 +1,4 @@
-﻿using System;
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     static class AddExperience
     {
@@ -44,26 +43,28 @@ namespace BioscoopReserveringsapplicatie
                 AskForExperienceTimeLength();
                 returnTo = "";
             }
+            Print(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt);
+            ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt,  Status.Active);
+            List<Option<string>> options = new List<Option<string>>
+            {
+            new Option<string>("Opslaan en verlaten", () => 
+            {
+                if (experiencesLogic.Add(newExperience))
+                {
+                    ExperienceOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de Experience . Probeer het opnieuw.\n", Globals.ErrorColor);
+                    Start(_returnToLength);
+                }
+            }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToLength); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            };
 
-            ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt, Status.Active);
-            if (experiencesLogic.Add(newExperience))
-            {
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", WhatToDoWhenGoBack),
-                };
-                Print(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt);
-                new SelectionMenuUtil2<string>(options).Create();
-            }
-            else
-            {
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", WhatToDoWhenGoBack),
-                };
-                ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor);
-                new SelectionMenuUtil2<string>(options);
-            }
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
@@ -149,13 +150,14 @@ namespace BioscoopReserveringsapplicatie
         private static void Print(string name, string description, int filmId, Intensity intensity, int timeLength)
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("De experience is succesvol toegevoegd.", Globals.SuccessColor);
             ColorConsole.WriteColorLine("\nDe details van de experience zijn:", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience naam:] {name}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience beschrijving:] {description}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {MoviesLogic.GetById(filmId).Title}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {intensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience lengte (minuten):] {timeLength}\n", Globals.ExperienceColor);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine($"Wilt u deze [Experience] toevoegen?", Globals.ColorInputcClarification);
         }
 
         private static void PrintEditedList()

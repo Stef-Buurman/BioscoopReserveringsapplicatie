@@ -20,27 +20,28 @@ namespace BioscoopReserveringsapplicatie
                 description = AskForPromotionDescription();
                 returnTo = "";
             }
-
-            if (promotionLogic.Add(new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Inactive)))
+            Print(title, description, true);
+            PromotionModel newPromotion = new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Active);
+            List<Option<string>> options = new List<Option<string>>
             {
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => PromotionOverview.Start())
-                };
-
-                Print(title, description, false);
-                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
-            }
-            else
+            new Option<string>("Opslaan en verlaten", () => 
             {
-                List<Option<string>> options = new List<Option<string>>
+                if (promotionLogic.Add(newPromotion))
                 {
-                    new Option<string>("Terug", () => PromotionOverview.Start())
-                };
+                    PromotionOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n");
+                    Start("Description");
+                }
+            }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start("Description"); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            };
 
-                ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n", Globals.ErrorColor);
-                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
-            }
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static string AskForPromotionName()
@@ -57,11 +58,12 @@ namespace BioscoopReserveringsapplicatie
         private static void Print(string title, string description, bool status)
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("De promotie is toegevoegd!\n", Globals.PromotionColor);
             ColorConsole.WriteColorLine("[Promotie details]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie status: ]{(status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine($"Wilt u deze [Promotie] toevoegen?", Globals.ColorInputcClarification);
         }
     }
 }

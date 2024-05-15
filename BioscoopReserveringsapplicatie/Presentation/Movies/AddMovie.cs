@@ -15,7 +15,6 @@ namespace BioscoopReserveringsapplicatie
         private static string _returnToGenres = "Genres";
         private static string _returnToRating = "Rating";
 
-
         public static void Start(string returnTo = "")
         {
             Console.Clear();
@@ -43,28 +42,27 @@ namespace BioscoopReserveringsapplicatie
                 SelectMovieRating();
                 returnTo = "";
             }
+            Print();
+            List<Option<string>> options = new List<Option<string>>
+            {
+            new Option<string>("Opslaan en verlaten", () => 
+            {
+                if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Inactive)))
+                {
+                    MovieOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n", Globals.ErrorColor);
+                    Start(_returnToRating);
+                }
+            }),
+                new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToTitle); }),
+                new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
+            };
 
-            if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
-            {
-                Console.Clear();
-                Print();
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
-                };
-                new SelectionMenuUtil2<string>(options, () => Start(_returnToRating), Print).Create();
-            }
-            else
-            {
-                Console.Clear();
-                Print();
-                Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
-                };
-                new SelectionMenuUtil2<string>(options).Create();
-            }
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void MovieName()
@@ -156,12 +154,13 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
-            ColorConsole.WriteColorLine("De film is toegevoegd!\n", Globals.MovieColor);
             ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine($"Wilt u deze [Film] toevoegen?", Globals.ColorInputcClarification);
         }
     }
 }
