@@ -78,7 +78,7 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date)
+                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, schedule.ScheduledDateTimeStart) == false)
                         {
                             options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart)));
                         }

@@ -2,6 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public class ReservationLogic : ILogic<ReservationModel>
     {
+        private static ScheduleLogic scheduleLogic = new ScheduleLogic();
         private List<ReservationModel> _reservations = new();
         public IDataAccess<ReservationModel> _DataAccess { get; }
         public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
@@ -102,10 +103,21 @@ namespace BioscoopReserveringsapplicatie
             return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
         }
 
-        public bool HasUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
+        public bool HasUserAlreadyReservedScheduledExperienceOnDateTime(int userId, DateTime date)
         {
-            List<ReservationModel> reservations = _DataAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+            List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
+
+            foreach (ReservationModel reservation in reservations)
+            {
+                ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
+
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
