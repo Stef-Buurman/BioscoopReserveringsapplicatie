@@ -387,6 +387,11 @@
 
         public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*")
         {
+            int HowMuchOverrideForArrowUpAndDown = TextBeforeInputShown.Length
+                    - (TextBeforeInputShownVisible ? 2 : 0)
+                    + (TextBeforeInputShownVisible && MaxVisibility == 1 ? selectedOption.Name.Length / 2 : 0)
+                    + (VisibleSelectedArrows ? 3 : 0)
+                    + (IsMultiSelect ? 1 : 0);
             SetCursorPosition(textToShowEscapability);
 
             int maxOptionsLength = Options.Max(x => x.Name.Length);
@@ -400,10 +405,7 @@
                     strintToPrintForArrowUp = "   ";
                 }
                 // To override the text shown, there must be enough spaces to override the text.
-                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length 
-                    - (TextBeforeInputShownVisible && IsMultiSelect ? 2 : 0) 
-                    + (VisibleSelectedArrows ? 3 : 0) 
-                    + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowUp += " ";
+                while (strintToPrintForArrowUp.Length < HowMuchOverrideForArrowUpAndDown) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowUp.Length < MaxSelectionMenu + 3) strintToPrintForArrowUp += " ";
@@ -433,10 +435,7 @@
                     strintToPrintForArrowDown = "   ";
                 }
                 // To override the text shown, there must be enough spaces to override the text.
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length 
-                    - (TextBeforeInputShownVisible && IsMultiSelect ? 2 : 0) 
-                    + (VisibleSelectedArrows ? 3 : 0) 
-                    + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowDown += " ";
+                while (strintToPrintForArrowDown.Length < HowMuchOverrideForArrowUpAndDown) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
@@ -641,7 +640,7 @@
 
         public static void WaitTime()
         {
-            Thread.Sleep(100);
+            Thread.Sleep(50);
             while (Console.KeyAvailable)
             {
                 Console.ReadKey(true);
