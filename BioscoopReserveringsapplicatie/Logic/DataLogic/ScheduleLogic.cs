@@ -32,7 +32,7 @@ namespace BioscoopReserveringsapplicatie
 
         public ScheduleModel CreateSchedule(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
-            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.IsAdmin())
             {
                 if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
                 {
@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
 
         public bool Add(ScheduleModel schedule)
         {
-            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.IsAdmin())
             {
                 GetAll();
                 
@@ -65,7 +65,7 @@ namespace BioscoopReserveringsapplicatie
 
         public bool Edit(ScheduleModel schedule)
         {
-            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.IsAdmin())
             {
                 if (!Validate(schedule))
                 {

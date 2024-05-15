@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId, string returnTo = "")
         {
-            if(UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if(UserLogic.IsAdmin())
             {
                 Console.Clear();
 

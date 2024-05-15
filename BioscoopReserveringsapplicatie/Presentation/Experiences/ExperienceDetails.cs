@@ -10,11 +10,11 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(int experienceId)
         {
             Console.Clear();
-            if (UserLogic.CurrentUser != null && !UserLogic.CurrentUser.IsAdmin)
+            if (!UserLogic.IsAdmin())
             {
                 UserPreview(experienceId);
             }
-            else if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            else if (UserLogic.IsAdmin())
             {
                 AdminPreview(experienceId);
             }
