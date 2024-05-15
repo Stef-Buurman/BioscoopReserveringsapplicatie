@@ -43,7 +43,6 @@
         private bool IsMultiSelect = false;
         private List<Option<T>> SelectedOptions = new List<Option<T>>();
 
-        private bool HasKeyAction = false;
         private List<KeyAction> KeyActions = new List<KeyAction>();
         private List<ConsoleKey> KeysInUse = new List<ConsoleKey>(){
             ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
@@ -117,7 +116,6 @@
             }
             if (hasKeyAction && keyActions != null)
             {
-                HasKeyAction = hasKeyAction;
                 KeyActions = keyActions;
                 if (additionalKeysInUse != null){
                     foreach (ConsoleKey key in additionalKeysInUse)
@@ -289,6 +287,8 @@
                         }
                     }
                 }
+
+                WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
             Console.CursorVisible = true;
@@ -351,6 +351,7 @@
                 {
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
+                WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
             Console.CursorVisible = true;
@@ -626,6 +627,15 @@
                 {
                     WriteMenu(AllOptions, AllOptions[Index]);
                 }
+            }
+        }
+
+        public static void WaitTime()
+        {
+            Thread.Sleep(100);
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
             }
         }
 
