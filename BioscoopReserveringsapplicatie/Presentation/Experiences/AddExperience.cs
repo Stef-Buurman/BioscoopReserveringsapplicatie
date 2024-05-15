@@ -57,10 +57,10 @@
                 {
                     Console.Clear();
                     ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de Experience . Probeer het opnieuw.\n", Globals.ErrorColor);
-                    Start(_returnToName);
+                    Start(_returnToLength);
                 }
             }),
-            new Option<string>("Verder gaan met aanpassen", () => { Start(); }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToLength); }),
             new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
             };
 
@@ -156,7 +156,8 @@
             ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {MoviesLogic.GetById(filmId).Title}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {intensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience lengte (minuten):] {timeLength}\n", Globals.ExperienceColor);
-            ColorConsole.WriteColorLine("\nWat wilt u doen?\n", Globals.ColorInputcClarification);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine("Wat wilt u doen?", Globals.ColorInputcClarification);
         }
 
         private static void PrintEditedList()

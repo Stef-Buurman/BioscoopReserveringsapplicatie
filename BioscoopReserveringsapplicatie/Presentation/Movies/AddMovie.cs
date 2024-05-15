@@ -21,26 +21,26 @@ namespace BioscoopReserveringsapplicatie
 
             if (returnTo == "" || returnTo == _returnToTitle)
             {
-            MovieName();
-            returnTo = "";
+                MovieName();
+                returnTo = "";
             }
 
             if (returnTo == "" || returnTo == _returnToDescription)
             {
-            MovieDescription();
-            returnTo = "";
+                MovieDescription();
+                returnTo = "";
             }
 
             if (returnTo == "" || returnTo == _returnToGenres)
             {
-            SelectMovieGenres();
-            returnTo = "";
+                SelectMovieGenres();
+                returnTo = "";
             }
 
             if (returnTo == "" || returnTo == _returnToRating)
             {
-            SelectMovieRating();
-            returnTo = "";
+                SelectMovieRating();
+                returnTo = "";
             }
             Print();
             List<Option<string>> options = new List<Option<string>>
@@ -49,18 +49,17 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Inactive)))
                 {
-
-                MovieOverview.Start();
+                    MovieOverview.Start();
                 }
                 else
                 {
-                Console.Clear();
-                ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n", Globals.ErrorColor);
-                Start(_returnToRating);
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n", Globals.ErrorColor);
+                    Start(_returnToRating);
                 }
             }),
-            new Option<string>("Verder gaan met aanpassen", () => { Start(); }),
-            new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
+                new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToTitle); }),
+                new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
             };
 
             new SelectionMenuUtil2<string>(options).Create();
@@ -160,8 +159,8 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
-
-            ColorConsole.WriteColorLine("\nWat wilt u doen?\n", Globals.ColorInputcClarification);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine("Wat wilt u doen?", Globals.ColorInputcClarification);
         }
     }
 }

@@ -34,10 +34,10 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Console.Clear();
                     Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n");
-                    Start("Name");
+                    Start("Description");
                 }
             }),
-            new Option<string>("Verder gaan met aanpassen", () => { Start("Name"); }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start("Description"); }),
             new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
             };
 
@@ -63,7 +63,8 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie status: ]{(status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
-            ColorConsole.WriteColorLine("\nWat wilt u doen?\n", Globals.ColorInputcClarification);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine("Wat wilt u doen?", Globals.ColorInputcClarification);
         }
     }
 }
