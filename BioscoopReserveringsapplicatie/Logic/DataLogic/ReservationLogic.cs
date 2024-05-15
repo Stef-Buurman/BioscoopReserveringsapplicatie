@@ -2,6 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public class ReservationLogic : ILogic<ReservationModel>
     {
+        private static ScheduleLogic scheduleLogic = new ScheduleLogic();
         private List<ReservationModel> _reservations = new();
         public IDataAccess<ReservationModel> _DataAccess { get; }
         public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
@@ -99,13 +100,39 @@ namespace BioscoopReserveringsapplicatie
         public bool HasUserAlreadyReservedScheduledExperience(int scheduleId, int userId)
         {
             List<ReservationModel> reservations = _DataAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId && r.IsCanceled == false);
         }
 
-        public bool HasUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
+        public bool HasUserAlreadyReservedScheduledExperienceOnDateTime(int userId, DateTime date)
         {
-            List<ReservationModel> reservations = _DataAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+            List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
+
+            foreach (ReservationModel reservation in reservations)
+            {
+                ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
+
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool HasUserReservedAvailableOptionsForLocation(int experienceId, int locationId, int userId)
+        {
+            List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
+            List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
+
+            foreach (ScheduleModel schedule in schedules)
+            {
+                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && r.IsCanceled == false))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

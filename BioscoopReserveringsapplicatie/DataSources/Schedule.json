@@ -37,14 +37,22 @@
     "locationId": 1,
     "roomId": 1,
     "scheduledDateTimeStart": "2024-05-16T07:50:00",
-    "scheduledDateTimeEnd": "2024-05-16T08:05:00"
+    "scheduledDateTimeEnd": "2024-05-16T08:00:00"
   },
   {
     "id": 6,
     "experienceId": 4,
     "locationId": 1,
     "roomId": 1,
-    "scheduledDateTimeStart": "2024-05-15T08:00:00",
-    "scheduledDateTimeEnd": "2024-05-15T08:15:00"
+    "scheduledDateTimeStart": "2024-05-16T08:10:00",
+    "scheduledDateTimeEnd": "2024-05-16T08:20:00"
+  },
+  {
+    "id": 7,
+    "experienceId": 4,
+    "locationId": 1,
+    "roomId": 1,
+    "scheduledDateTimeStart": "2024-05-15T11:00:00",
+    "scheduledDateTimeEnd": "2024-05-15T12:15:00"
   }
 ]

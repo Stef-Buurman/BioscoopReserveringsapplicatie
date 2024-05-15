@@ -5,6 +5,8 @@ namespace BioscoopReserveringsapplicatie
         private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
         private static ExperienceModel? experience;
         private static MovieLogic MoviesLogic = new MovieLogic();
+        private static LocationLogic LocationLogic = new LocationLogic();
+        private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static MovieModel? movie;
 
         public static void Start(int experienceId)
@@ -26,11 +28,35 @@ namespace BioscoopReserveringsapplicatie
 
             movie = MoviesLogic.GetById(experience.FilmId);
 
-            var options = new List<Option<string>>
+            List<LocationModel> locations = LocationLogic.GetLocationsForScheduledExperienceById(experienceId);
+
+            bool showReserveOption = false;
+
+            foreach (LocationModel locationSelected in locations)
             {
-                new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
-                new Option<string>("Terug", () => PreferredExperiences.Start()),
-            };
+                if (ReservationLogic.HasUserReservedAvailableOptionsForLocation(experienceId, locationSelected.Id, UserLogic.CurrentUser.Id) == false)
+                {
+                    showReserveOption = true;
+                }
+            }
+
+            var options = new List<Option<string>>();
+
+            if (showReserveOption)
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
+                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                };
+            }
+            else
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                };
+            }
 
             Print();
             new SelectionMenuUtil2<string>(options).Create();
