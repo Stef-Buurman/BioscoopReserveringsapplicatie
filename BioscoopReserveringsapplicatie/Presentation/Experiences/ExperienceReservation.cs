@@ -27,7 +27,10 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (LocationModel locationSelected in locations)
                     {
-                        options.Add(new Option<int>(locationSelected.Id, locationSelected.Name, () => ExperienceReservation.Start(experienceId, locationSelected.Id)));
+                        if (ReservationLogic.HasUserReservedAvailableOptionsForLocation(experienceId, locationSelected.Id) == false)
+                        {
+                            options.Add(new Option<int>(locationSelected.Id, locationSelected.Name, () => ExperienceReservation.Start(experienceId, locationSelected.Id)));
+                        }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId)));
 
