@@ -34,6 +34,7 @@
         private Action? EscapeAction;
         private Action? EscapeActionWhenNotEscaping;
         private bool EscapabilityVisible = false;
+        private bool MultiSelectFuncVisible = false;
 
         private string TextBeforeInputShown = "";
         private bool TextBeforeInputShownVisible = false;
@@ -272,7 +273,6 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
@@ -360,23 +360,32 @@
 
         private void SetCursorPosition(string textToShowEscapability)
         {
+            int top = Top;
             if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
                 ColorConsole.WriteLineInfo(textToShowEscapability + "\n");
-                Console.SetCursorPosition(0, Top + 2);
                 EscapabilityVisible = true;
+                top += 2;
             }
             else if (EscapabilityVisible)
             {
-                Console.SetCursorPosition(0, Top + 2);
+                top += 2;
             }
-            else
+            if (IsMultiSelect && !MultiSelectFuncVisible)
             {
-                Console.SetCursorPosition(0, Top);
+                ColorConsole.WriteLineInfo("Klik op Spatie om een optie te selecteren.");
+                ColorConsole.WriteLineInfo("Klik op Enter deze opties uit te kiezen.\n");
+                top += 3;
+                MultiSelectFuncVisible = true;
             }
+            else if (MultiSelectFuncVisible)
+            {
+                top += 3;
+            }
+            Console.SetCursorPosition(0, top);
         }
 
-        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*")
         {
             SetCursorPosition(textToShowEscapability);
 
