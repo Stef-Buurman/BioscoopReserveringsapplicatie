@@ -9,7 +9,7 @@
       "Action"
     ],
     "ageCategory": "AGE_14",
-    "archived": false
+    "status": "Active"
   },
   {
     "id": 2,
@@ -21,7 +21,7 @@
       "Romance"
     ],
     "ageCategory": "AGE_16",
-    "archived": false
+    "status": "Active"
   },
   {
     "id": 3,
@@ -33,7 +33,7 @@
       "Action"
     ],
     "ageCategory": "AGE_18",
-    "archived": true
+    "status": "Archived"
   },
   {
     "id": 4,
@@ -45,6 +45,6 @@
       "Action"
     ],
     "ageCategory": "AGE_18",
-    "archived": false
+    "status": "Active"
   }
 ]

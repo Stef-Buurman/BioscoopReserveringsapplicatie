@@ -21,23 +21,24 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("ageCategory")]
         public AgeCategory AgeCategory { get; set; }
 
-       [JsonPropertyName("archived")]
-        public bool Archived { get; set; }
+        [JsonConverter(typeof(EnumConverter<Status>))]
+        [JsonPropertyName("status")]
+        public Status Status { get; set; }
 
-        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory, bool archived)
+        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory, Status status)
         {
             Id = id;
             Title = title;
             Description = description;
             Genres = genres;
             AgeCategory = ageCategory;
-            Archived = archived;
+            Status = status;
         }
-        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory) : this(id, title, description, genres, ageCategory, false)
+        public MovieModel(int id, string title, string description, List<Genre> genres, AgeCategory ageCategory) : this(id, title, description, genres, ageCategory, Status.Active)
         { }
-        public MovieModel(string title, string description, List<Genre> genres, AgeCategory ageCategory, bool archived) : this(0, title, description, genres, ageCategory, archived)
+        public MovieModel(string title, string description, List<Genre> genres, AgeCategory ageCategory, Status status) : this(0, title, description, genres, ageCategory, status)
         { }
-        public MovieModel() : this(0, "", "", default, default, false)
+        public MovieModel() : this(0, "", "", default, default, Status.Active)
         { }
     }
 }

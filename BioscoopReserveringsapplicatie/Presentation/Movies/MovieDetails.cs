@@ -11,12 +11,12 @@ namespace BioscoopReserveringsapplicatie
             movie = MoviesLogic.GetById(movieId);
             List<Option<string>> options;
 
-            if (movie.Archived)
+            if (movie.Status == Status.Archived)
             {
                 options = new List<Option<string>>
                 {
                     new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
-                    new Option<string>("Dearchiveer film", () => MovieArchive.Start(movie.Id, false)),
+                    new Option<string>("Dearchiveer film", () => MovieArchive.Start(movie.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
                 };
             }
@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Bewerk film", () => MovieEdit.Start(movie.Id)),
-                    new Option<string>("Archiveer film", () => MovieArchive.Start(movie.Id, true)),
+                    new Option<string>("Archiveer film", () => MovieArchive.Start(movie.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
                 };
             }

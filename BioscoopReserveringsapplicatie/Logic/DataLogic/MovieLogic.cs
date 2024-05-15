@@ -132,7 +132,7 @@ namespace BioscoopReserveringsapplicatie
             MovieModel movie = GetById(id);
             if (movie != null)
             {
-                movie.Archived = true;
+                movie.Status = Status.Archived;
                 UpdateList(movie);
             }
             else
@@ -146,7 +146,7 @@ namespace BioscoopReserveringsapplicatie
             MovieModel movie = GetById(id);
             if (movie != null)
             {
-                movie.Archived = false;
+                movie.Status = Status.Active;
                 UpdateList(movie);
             }
             else
@@ -158,13 +158,13 @@ namespace BioscoopReserveringsapplicatie
         public List<MovieModel> GetAllArchivedMovies()
         {
             _Movies = _DataAccess.LoadAll();
-            return _Movies.FindAll(m => m.Archived);
+            return _Movies.FindAll(m => m.Status == Status.Archived);
         }
 
         public List<MovieModel> GetAllActiveMovies()
         {
             _Movies = _DataAccess.LoadAll();
-            return _Movies.FindAll(m => !m.Archived);
+            return _Movies.FindAll(m => m.Status == Status.Active);
         }
     }
 }
