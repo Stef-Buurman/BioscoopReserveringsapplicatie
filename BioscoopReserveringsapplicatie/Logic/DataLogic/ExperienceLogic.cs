@@ -73,7 +73,7 @@
 
             foreach (ExperienceModel experience in _experiences)
             {
-                if (experience.Archived) continue;
+                if (experience.Status == Status.Archived) continue;
 
                 MovieModel movie = MoviesLogic.GetById(experience.FilmId);
 
@@ -143,7 +143,7 @@
             ExperienceModel experience = GetById(id);
             if (experience != null)
             {
-                experience.Archived = true;
+                experience.Status = Status.Archived;
                 _DataAccess.WriteAll(_experiences);
             }
             else
@@ -157,7 +157,7 @@
             ExperienceModel experience = GetById(id);
             if (experience != null)
             {
-                experience.Archived = false;
+                experience.Status = Status.Active;
                 _DataAccess.WriteAll(_experiences);
             }
             else
@@ -169,13 +169,13 @@
         public List<ExperienceModel> GetAllArchivedExperiences()
         {
             _experiences = _DataAccess.LoadAll();
-            return _experiences.FindAll(e => e.Archived);
+            return _experiences.FindAll(e => e.Status == Status.Archived);
         }
 
         public List<ExperienceModel> GetAllActiveExperiences()
         {
             _experiences = _DataAccess.LoadAll();
-            return _experiences.FindAll(e => !e.Archived);
+            return _experiences.FindAll(e => e.Status == Status.Active);
         }
     }
 }

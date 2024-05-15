@@ -24,10 +24,11 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("timeLength")]
         public int TimeLength { get; set; }
 
-        [JsonPropertyName("archived")]
-        public bool Archived { get; set; }
+        [JsonConverter(typeof(EnumConverter<Status>))]
+        [JsonPropertyName("status")]
+        public Status Status { get; set; }
 
-        public ExperienceModel(int id, string name, string description, int FilmId, Intensity intensity, int timeLength, bool archived)
+        public ExperienceModel(int id, string name, string description, int FilmId, Intensity intensity, int timeLength, Status status)
         {
             this.Id = id;
             this.Name = name;
@@ -35,12 +36,12 @@ namespace BioscoopReserveringsapplicatie
             this.FilmId = FilmId;
             this.Intensity = intensity;
             this.TimeLength = timeLength;
-            this.Archived = archived;
+            this.Status = status;
         }
-        public ExperienceModel(string name, string description, int FilmId, Intensity intensity, int timeLength, bool archived) : this(0, name, description, FilmId, intensity, timeLength, archived)
+        public ExperienceModel(string name, string description, int FilmId, Intensity intensity, int timeLength, Status status) : this(0, name, description, FilmId, intensity, timeLength, status)
         { }
 
-        public ExperienceModel() : this(0, "", "", 0, default, 0, false)
+        public ExperienceModel() : this(0, "", "", 0, default, 0, default)
         { }
     }
 }

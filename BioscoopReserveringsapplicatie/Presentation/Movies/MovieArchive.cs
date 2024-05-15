@@ -4,13 +4,20 @@ namespace BioscoopReserveringsapplicatie
     {
         private static MovieLogic MoviesLogic = new MovieLogic();
 
-        public static void Start(int movieId, bool archive)
+        public static void Start(int movieId)
         {
-            MovieModel movie = MoviesLogic.GetById(movieId);
             Console.Clear();
-            Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory, archive);
+            MovieModel movie = MoviesLogic.GetById(movieId);
+            if (movie == null)
+            {
+                ColorConsole.WriteColorLine("Er is geen film gevonden.", Globals.ErrorColor);
+                Thread.Sleep(2000);
+                MovieOverview.Start();
+                return;
+            }
+            Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory, movie.Status);
 
-            if (archive)
+            if (movie.Status == Status.Active)
             {
                 List<Option<string>> options = new List<Option<string>>
             {
@@ -46,14 +53,14 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print(string title, string description, List<Genre> genres, AgeCategory rating, bool archive)
+        private static void Print(string title, string description, List<Genre> genres, AgeCategory rating, Status status)
         {
             ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
-            if (archive)
+            if (status == Status.Active)
             {
                 ColorConsole.WriteColorLine($"Weet u zeker dat u de film {title} wilt [archiveren]?", Globals.ColorInputcClarification);
             }

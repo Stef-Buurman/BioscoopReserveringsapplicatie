@@ -58,7 +58,7 @@ namespace BioscoopReserveringsapplicatie
                     genres = genres.Substring(0, 25) + "...";
                 }
                 string movieInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) +"} {3,-" + columnWidths[3] +"}",
-                movieTitle, genres, movie.AgeCategory.GetDisplayName(), movie.Archived ? "Ja" : "Nee");
+                movieTitle, genres, movie.AgeCategory.GetDisplayName(), movie.Status.GetDisplayName());
                 options.Add(new Option<int>(movie.Id, movieInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
@@ -174,7 +174,7 @@ namespace BioscoopReserveringsapplicatie
                 movie.Title,
                 string.Join(",", movie.Genres),
                 movie.AgeCategory.GetDisplayName(),
-                movie.Archived ? "Ja" : "Nee"
+                movie.Status.GetDisplayName()
             };
             return movieInfo;
         }
