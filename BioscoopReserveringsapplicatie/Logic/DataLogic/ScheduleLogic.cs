@@ -51,7 +51,7 @@ namespace BioscoopReserveringsapplicatie
             if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
             {
                 GetAll();
-                
+
                 if (!Validate(schedule))
                 {
                     return false;
@@ -78,9 +78,9 @@ namespace BioscoopReserveringsapplicatie
             return false;
         }
 
-        public bool TimeSlotOpenOnRoom(int experienceId, int locationId, int roomId,  string scheduledDateTime, out string error)
+        public bool TimeSlotOpenOnRoom(int experienceId, int locationId, int roomId, string scheduledDateTime, out string error)
         {
-          
+
             if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
             {
                 DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
@@ -127,13 +127,13 @@ namespace BioscoopReserveringsapplicatie
         public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int locationId)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date > DateTime.Today.AddDays(-1));
         }
 
         public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int locationId, DateTime? dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now);
         }
 
         public ScheduleModel GetRoomForScheduledExperience(int id, int locationId, DateTime? dateTime)
