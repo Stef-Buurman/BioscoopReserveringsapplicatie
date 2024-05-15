@@ -217,16 +217,14 @@
             Thread.Sleep(2000);
         }
 
-        public bool Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             if (CurrentUser != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
-                    Console.WriteLine("Niet alle velden zijn correct ingevuld.");
-                    Thread.Sleep(3000);
-                    return false;
+                    return new Result<UserModel>(false, "Niet alle velden zijn correct ingevuld.");
                 }
                 else
                 {
@@ -239,14 +237,12 @@
 
                     UpdateList(CurrentUser);
                     CurrentUser = CurrentUser;
-                    return true;
+                    return new Result<UserModel>(true);
                 }
             }
             else
             {
-                Console.WriteLine("Gebruiker bestaat niet.");
-                Thread.Sleep(3000);
-                return false;
+                return new Result<UserModel>(false, "Gebruiker bestaat niet.");
             }
         }
 

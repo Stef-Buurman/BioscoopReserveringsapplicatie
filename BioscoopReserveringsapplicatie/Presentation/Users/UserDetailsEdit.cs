@@ -72,7 +72,8 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Ja", () => {
                     NotFilledInToFalse();
-                    if(_userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
+                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory);
+                    if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                         Thread.Sleep(2000);
@@ -80,6 +81,7 @@ namespace BioscoopReserveringsapplicatie
                     }
                     else
                     {
+                        ColorConsole.WriteColorLine(result.ErrorMessage, Globals.ErrorColor);
                         List<Option<string>> options = new List<Option<string>>
                         {
                             new Option<string>("Terug", () => {UserDetails.Start();}),
