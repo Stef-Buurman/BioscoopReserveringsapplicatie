@@ -290,7 +290,7 @@
                     }
                 }
             }
-            while (keyinfo.Key != ConsoleKey.X);
+            while (keyinfo != null && keyinfo.Key != null);
             Console.CursorVisible = true;
             return default;
         }
@@ -352,7 +352,7 @@
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
             }
-            while (keyinfo.Key != ConsoleKey.X);
+            while (keyinfo != null && keyinfo.Key != null);
             Console.CursorVisible = true;
             return new List<T>();
         }
