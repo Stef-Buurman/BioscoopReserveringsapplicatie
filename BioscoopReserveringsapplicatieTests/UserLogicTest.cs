@@ -306,7 +306,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsTrue(userLogic.Edit( "Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsTrue(userLogic.Edit( "Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         [TestMethod]
@@ -314,7 +314,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit( "   ", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "   ", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         [DataRow("")]
@@ -326,7 +326,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit( "Tim van Eert", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "Tim van Eert", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit("Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------
@@ -447,7 +447,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsTrue(userLogic.Edit("PetraNieuweNaam", "petranieuwemail@mail.com", new List<Genre>() { Genre.Adventure }, Intensity.High, AgeCategory.AGE_18));
+            Assert.IsTrue(userLogic.Edit("PetraNieuweNaam", "petranieuwemail@mail.com", new List<Genre>() { Genre.Adventure }, Intensity.High, AgeCategory.AGE_18).IsValid);
             Assert.AreEqual("petranieuwemail@mail.com", userLogic.GetById(3).EmailAddress);
             Assert.AreEqual("PetraNieuweNaam", userLogic.GetById(3).FullName);
             Assert.AreEqual(Genre.Adventure, userLogic.GetById(3).Genres[0]);
@@ -461,7 +461,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
+            Assert.IsFalse(userLogic.Edit("", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9).IsValid);
             Assert.AreNotEqual("", userLogic.GetById(3).FullName);
         }
         [DataRow("")]
@@ -474,7 +474,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Petra", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9));
+            Assert.IsFalse(userLogic.Edit("Petra", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9).IsValid);
             Assert.AreNotEqual(email, userLogic.GetById(3).EmailAddress);
         }
 
@@ -484,7 +484,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() {(Genre)123}, Intensity.High, AgeCategory.AGE_9));
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() {(Genre)123}, Intensity.High, AgeCategory.AGE_9).IsValid);
             Assert.AreNotEqual(new List<Genre>{(Genre)123}, userLogic.GetById(3).Genres);
         }
 
@@ -494,7 +494,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, (Intensity)1000, AgeCategory.AGE_9));
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, (Intensity)1000, AgeCategory.AGE_9).IsValid);
             Assert.AreNotEqual((Intensity)1000, userLogic.GetById(3).Intensity);
         }
 
@@ -504,7 +504,7 @@ namespace BioscoopReserveringsapplicatieTests
             UserModel userName = Initialize_Preferences_For_User();
             var x = userLogic.Login("Petra@Petra.Petra", "testtest");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Petra", "Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, (AgeCategory)999));
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, (AgeCategory)999).IsValid);
             Assert.AreNotEqual((AgeCategory)999, userLogic.GetById(3).AgeCategory);
         }
     }
