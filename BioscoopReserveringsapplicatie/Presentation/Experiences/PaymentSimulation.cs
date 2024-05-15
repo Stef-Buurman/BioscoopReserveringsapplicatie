@@ -25,16 +25,22 @@ namespace BioscoopReserveringsapplicatie
 
             Console.WriteLine();
 
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine("Betaling gestart", ConsoleColor.Green);
+            HorizontalLine.Print();
+
+            Console.WriteLine();
+
             while (progress <= 100)
             {
                 Console.SetCursorPosition(0, Console.CursorTop);
-                Console.Write($"Voortgang: {progress}% [{new string('=', progress / 10)}]");
+                Console.Write($"{progress}% [{new string('=', progress / 10)}]");
                 Thread.Sleep(500);
                 progress += 10;
             }
 
             Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine($"Voortgang: 100% [{new string('=', 10)}]");
+            Console.WriteLine($"100% [{new string('=', 10)}]");
             Console.WriteLine();
             HorizontalLine.Print();
             ColorConsole.WriteColorLine("Betaling geslaagd!", ConsoleColor.Green);
