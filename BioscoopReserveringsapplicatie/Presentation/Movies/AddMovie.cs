@@ -160,7 +160,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
             HorizontalLine.Print();
-            ColorConsole.WriteColorLine("Wat wilt u doen?", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine($"Wilt u deze [Film] toevoegen?", Globals.ColorInputcClarification);
         }
     }
 }

@@ -157,7 +157,7 @@
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {intensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience lengte (minuten):] {timeLength}\n", Globals.ExperienceColor);
             HorizontalLine.Print();
-            ColorConsole.WriteColorLine("Wat wilt u doen?", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine($"Wilt u deze [Experience] toevoegen?", Globals.ColorInputcClarification);
         }
 
         private static void PrintEditedList()
