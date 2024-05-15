@@ -44,12 +44,12 @@ namespace BioscoopReserveringsapplicatie
 
             movie = MoviesLogic.GetById(experience.FilmId);
 
-            if (experience.Archived)
+            if (experience.Status == Status.Archived)
             {
                 options = new List<Option<string>>
                 {
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Experience dearchiveren", () => ExperienceArchive.Start(experienceId, false)),
+                    new Option<string>("Experience dearchiveren", () => ExperienceArchive.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
@@ -59,7 +59,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Experience inplannen", () => ScheduleExperience.Start(experienceId)),
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId, true)),
+                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
