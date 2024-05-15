@@ -7,6 +7,7 @@ namespace BioscoopReserveringsapplicatie
         private static ExperienceLogic experiencesLogic = new ExperienceLogic();
         private static LocationLogic locationLogic = new LocationLogic();
         private static RoomLogic roomLogic = new RoomLogic();
+        private static ReservationLogic ReservationLogic = new ReservationLogic();
 
         private List<ScheduleModel> _Schedules;
         public IDataAccess<ScheduleModel> _DataAccess { get; }
@@ -133,7 +134,7 @@ namespace BioscoopReserveringsapplicatie
         public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int locationId, DateTime? dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, s.ScheduledDateTimeStart) == false);
         }
 
         public ScheduleModel GetRoomForScheduledExperience(int id, int locationId, DateTime? dateTime)
