@@ -12,9 +12,9 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var experienceRepositoryMock = Substitute.For<IDataAccess<ExperienceModel>>();
             List<ExperienceModel> experiences = new List<ExperienceModel>() {
-                new ExperienceModel(0, "", "", 0, Intensity.Low, 20, false),
-                new ExperienceModel(1, "", "", 0, Intensity.Medium, 20, true),
-                new ExperienceModel(2, "", "", 0, Intensity.High, 20, false),
+                new ExperienceModel(0, "", "", 0, Intensity.Low, 20, Status.Active),
+                new ExperienceModel(1, "", "", 0, Intensity.Medium, 20, Status.Archived),
+                new ExperienceModel(2, "", "", 0, Intensity.High, 20, Status.Active),
             };
             experienceRepositoryMock.LoadAll().Returns(experiences);
             experienceRepositoryMock.WriteAll(Arg.Any<List<ExperienceModel>>());
@@ -35,9 +35,9 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_Name_Validation_With_Experience()
         {
-            ExperienceModel experience = new ExperienceModel("", "", 0, Intensity.Low, 0, false);
+            ExperienceModel experience = new ExperienceModel("", "", 0, Intensity.Low, 0, Status.Active);
             Assert.IsFalse(experiencesLogic.Validate(experience));
-            ExperienceModel experience2 = new ExperienceModel(null, null, 0, Intensity.Low, 0, false);
+            ExperienceModel experience2 = new ExperienceModel(null, null, 0, Intensity.Low, 0, Status.Active);
             Assert.IsFalse(experiencesLogic.Validate(experience2));
         }
 
@@ -52,9 +52,9 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_Intensity_With_Experience()
         {
-            ExperienceModel experience = new ExperienceModel("test1", "test1", 0, (Intensity)909, 10, false);
+            ExperienceModel experience = new ExperienceModel("test1", "test1", 0, (Intensity)909, 10, Status.Active);
             Assert.IsFalse(experiencesLogic.Validate(experience));
-            ExperienceModel experience2 = new ExperienceModel("test1", "test1", 0, (Intensity)1002, 10, false);
+            ExperienceModel experience2 = new ExperienceModel("test1", "test1", 0, (Intensity)1002, 10, Status.Active);
             Assert.IsFalse(experiencesLogic.Validate(experience2));
         }
 
@@ -92,7 +92,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_TimeLength_Validation_With_Experience()
         {
-            ExperienceModel experience = new ExperienceModel("test1", "test1", 0, Intensity.Low, -10, false);
+            ExperienceModel experience = new ExperienceModel("test1", "test1", 0, Intensity.Low, -10, Status.Active);
             Assert.IsFalse(experiencesLogic.Validate(experience));
         }
 
@@ -113,7 +113,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void CorrectExperience()
         {
-            ExperienceModel experience = new ExperienceModel("test1", "test1", 0, Intensity.High, 10, false);
+            ExperienceModel experience = new ExperienceModel("test1", "test1", 0, Intensity.High, 10, Status.Active);
             Assert.IsTrue(experiencesLogic.Validate(experience));
         }
 
@@ -128,7 +128,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Experience_Edit_Success()
         {
-            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, Intensity.High, 10, false);
+            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, Intensity.High, 10, Status.Active);
             experiencesLogic.Edit(experience);
             Assert.AreEqual(experience, experiencesLogic.GetById(0));
         }
@@ -136,7 +136,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_Edit_With_Invalid_Experience_Name()
         {
-            ExperienceModel experience = new ExperienceModel(0, "", "test1", 0, Intensity.High, 10, false);
+            ExperienceModel experience = new ExperienceModel(0, "", "test1", 0, Intensity.High, 10, Status.Active);
             experiencesLogic.Edit(experience);
             Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
         }
@@ -144,7 +144,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_Edit_With_Invalid_Experience_Description()
         {
-            ExperienceModel experience = new ExperienceModel(0, "test1", "", 0, Intensity.High, 10, false);
+            ExperienceModel experience = new ExperienceModel(0, "test1", "", 0, Intensity.High, 10, Status.Active);
             experiencesLogic.Edit(experience);
             Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
         }
@@ -152,7 +152,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_Edit_With_Invalid_Experience_Intensity()
         {
-            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, (Intensity)909, 10, false);
+            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, (Intensity)909, 10, Status.Active);
             experiencesLogic.Edit(experience);
             Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
         }
@@ -160,7 +160,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Experience_Edit_With_Invalid_Experience_TimeLength()
         {
-            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, Intensity.High, -10, false);
+            ExperienceModel experience = new ExperienceModel(0, "test1", "test1", 0, Intensity.High, -10, Status.Active);
             experiencesLogic.Edit(experience);
             Assert.AreNotEqual(experience, experiencesLogic.GetById(0));
         }
@@ -171,14 +171,14 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Experience_Archive_Success()
         {
             experiencesLogic.Archive(0);
-            Assert.IsTrue(experiencesLogic.GetById(0).Archived);
+            Assert.AreEqual(Status.Archived, experiencesLogic.GetById(0).Status);
         }
 
         [TestMethod]
         public void Correct_Experience_AlreadyArchived_Still_Archived()
         {
             experiencesLogic.Archive(1);
-            Assert.IsTrue(experiencesLogic.GetById(1).Archived);
+            Assert.AreEqual(Status.Archived, experiencesLogic.GetById(1).Status);
         }
 
         [TestMethod]
@@ -186,8 +186,8 @@ namespace BioscoopReserveringsapplicatieTests
         {
             experiencesLogic.Archive(0);
             experiencesLogic.Archive(2);
-            Assert.IsTrue(experiencesLogic.GetById(0).Archived);
-            Assert.IsTrue(experiencesLogic.GetById(2).Archived);
+            Assert.AreEqual(Status.Archived, experiencesLogic.GetById(0).Status);
+            Assert.AreEqual(Status.Archived, experiencesLogic.GetById(2).Status);
         }
 
         [TestMethod]
