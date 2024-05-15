@@ -44,7 +44,7 @@
                 returnTo = "";
             }
             Print(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt);
-            ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt, archived: false);
+            ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt,  Status.Active);
             List<Option<string>> options = new List<Option<string>>
             {
             new Option<string>("Opslaan en verlaten", () => 
@@ -150,13 +150,13 @@
         private static void Print(string name, string description, int filmId, Intensity intensity, int timeLength)
         {
             Console.Clear();
-            ColorConsole.WriteColorLine("De experience is succesvol toegevoegd.", Globals.SuccessColor);
             ColorConsole.WriteColorLine("\nDe details van de experience zijn:", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience naam:] {name}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience beschrijving:] {description}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Film gekoppeld aan experience:] {MoviesLogic.GetById(filmId).Title}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {intensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience lengte (minuten):] {timeLength}\n", Globals.ExperienceColor);
+            ColorConsole.WriteColorLine("\nWat wilt u doen?\n", Globals.ColorInputcClarification);
         }
 
         private static void PrintEditedList()

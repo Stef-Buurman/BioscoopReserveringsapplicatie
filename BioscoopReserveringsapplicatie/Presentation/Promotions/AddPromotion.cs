@@ -63,6 +63,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie status: ]{(status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
+            ColorConsole.WriteColorLine("\nWat wilt u doen?\n", Globals.ColorInputcClarification);
         }
     }
 }
