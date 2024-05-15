@@ -1,5 +1,4 @@
-﻿using System;
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     static class AddExperience
     {
@@ -46,25 +45,28 @@ namespace BioscoopReserveringsapplicatie
             }
 
             ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt, archived: false);
-            if (experiencesLogic.Add(newExperience))
+            List<Option<string>> options = new List<Option<string>>
             {
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", WhatToDoWhenGoBack),
-                };
-                Print(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt);
-                new SelectionMenuUtil2<string>(options).Create();
-            }
-            else
+            new Option<string>("Opslaan en verlaten", () => 
             {
-                List<Option<string>> options = new List<Option<string>>
+                if (experiencesLogic.Add(newExperience))
                 {
-                    new Option<string>("Terug", WhatToDoWhenGoBack),
-                };
-                ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor);
-                new SelectionMenuUtil2<string>(options);
-            }
+                    ExperienceOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
+                    Start(_returnToName);
+                }
+            }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            };
+
+            new SelectionMenuUtil2<string>(options).Create();
         }
+
 
         private static void WriteTitle() => ColorConsole.WriteColorLine("Experience Toevoegen\n", Globals.TitleColor);
 

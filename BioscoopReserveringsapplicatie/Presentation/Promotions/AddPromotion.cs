@@ -21,26 +21,27 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            if (promotionLogic.Add(new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Inactive)))
+            PromotionModel newPromotion = new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Active);
+            List<Option<string>> options = new List<Option<string>>
             {
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => PromotionOverview.Start())
-                };
-
-                Print(title, description, false);
-                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
-            }
-            else
+            new Option<string>("Opslaan en verlaten", () => 
             {
-                List<Option<string>> options = new List<Option<string>>
+                if (promotionLogic.Add(newPromotion))
                 {
-                    new Option<string>("Terug", () => PromotionOverview.Start())
-                };
+                    PromotionOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n");
+                    Start("Name");
+                }
+            }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            };
 
-                ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n", Globals.ErrorColor);
-                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
-            }
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static string AskForPromotionName()

@@ -22,49 +22,49 @@ namespace BioscoopReserveringsapplicatie
 
             if (returnTo == "" || returnTo == _returnToTitle)
             {
-                MovieName();
-                returnTo = "";
+            MovieName();
+            returnTo = "";
             }
 
             if (returnTo == "" || returnTo == _returnToDescription)
             {
-                MovieDescription();
-                returnTo = "";
+            MovieDescription();
+            returnTo = "";
             }
 
             if (returnTo == "" || returnTo == _returnToGenres)
             {
-                SelectMovieGenres();
-                returnTo = "";
+            SelectMovieGenres();
+            returnTo = "";
             }
 
             if (returnTo == "" || returnTo == _returnToRating)
             {
-                SelectMovieRating();
-                returnTo = "";
+            SelectMovieRating();
+            returnTo = "";
             }
 
-            if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, false)))
+            List<Option<string>> options = new List<Option<string>>
             {
-                Console.Clear();
-                Print();
-                List<Option<string>> options = new List<Option<string>>
+            new Option<string>("Opslaan en verlaten", () => 
+            {
+                if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, false)))
                 {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
-                };
-                new SelectionMenuUtil2<string>(options, () => Start(_returnToRating), Print).Create();
-            }
-            else
-            {
                 Console.Clear();
-                Print();
+                MovieOverview.Start();
+                }
+                else
+                {
+                Console.Clear();
                 Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => {Console.Clear(); MovieOverview.Start();}),
-                };
-                new SelectionMenuUtil2<string>(options).Create();
-            }
+                Start(_returnToRating);
+                }
+            }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
+            };
+
+            new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void MovieName()
