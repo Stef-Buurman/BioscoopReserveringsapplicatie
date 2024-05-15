@@ -34,6 +34,7 @@
         private Action? EscapeAction;
         private Action? EscapeActionWhenNotEscaping;
         private bool EscapabilityVisible = false;
+        private bool MultiSelectFuncVisible = false;
 
         private string TextBeforeInputShown = "";
         private bool TextBeforeInputShownVisible = false;
@@ -43,7 +44,6 @@
         private bool IsMultiSelect = false;
         private List<Option<T>> SelectedOptions = new List<Option<T>>();
 
-        private bool HasKeyAction = false;
         private List<KeyAction> KeyActions = new List<KeyAction>();
         private List<ConsoleKey> KeysInUse = new List<ConsoleKey>(){
             ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
@@ -117,7 +117,6 @@
             }
             if (hasKeyAction && keyActions != null)
             {
-                HasKeyAction = hasKeyAction;
                 KeyActions = keyActions;
                 if (additionalKeysInUse != null){
                     foreach (ConsoleKey key in additionalKeysInUse)
@@ -274,7 +273,6 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
-                    //() => WriteMenu(GetOptionsToShow(Options, MaxVisibility, AmountOptionsAbove, (AmountOptionsAbove > 0))
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
@@ -289,8 +287,10 @@
                         }
                     }
                 }
+
+                WaitTime();
             }
-            while (keyinfo.Key != ConsoleKey.X);
+            while (keyinfo != null && keyinfo.Key != null);
             Console.CursorVisible = true;
             return default;
         }
@@ -351,32 +351,47 @@
                 {
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
+                WaitTime();
             }
-            while (keyinfo.Key != ConsoleKey.X);
+            while (keyinfo != null && keyinfo.Key != null);
             Console.CursorVisible = true;
             return new List<T>();
         }
 
         private void SetCursorPosition(string textToShowEscapability)
         {
+            int top = Top;
             if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
                 ColorConsole.WriteLineInfo(textToShowEscapability + "\n");
-                Console.SetCursorPosition(0, Top + 2);
                 EscapabilityVisible = true;
+                top += 2;
             }
             else if (EscapabilityVisible)
             {
-                Console.SetCursorPosition(0, Top + 2);
+                top += 2;
             }
-            else
+            if (IsMultiSelect && !MultiSelectFuncVisible)
             {
-                Console.SetCursorPosition(0, Top);
+                ColorConsole.WriteLineInfo("Klik op Spatie om een optie te selecteren.");
+                ColorConsole.WriteLineInfo("Klik op Enter deze opties uit te kiezen.\n");
+                top += 3;
+                MultiSelectFuncVisible = true;
             }
+            else if (MultiSelectFuncVisible)
+            {
+                top += 3;
+            }
+            Console.SetCursorPosition(0, top);
         }
 
-        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*")
         {
+            int HowMuchOverrideForArrowUpAndDown = TextBeforeInputShown.Length
+                    - (TextBeforeInputShownVisible ? 2 : 0)
+                    + (TextBeforeInputShownVisible && MaxVisibility == 1 ? selectedOption.Name.Length / 2 : 0)
+                    + (VisibleSelectedArrows ? 3 : 0)
+                    + (IsMultiSelect ? 1 : 0);
             SetCursorPosition(textToShowEscapability);
 
             int maxOptionsLength = Options.Max(x => x.Name.Length);
@@ -390,10 +405,7 @@
                     strintToPrintForArrowUp = "   ";
                 }
                 // To override the text shown, there must be enough spaces to override the text.
-                while (strintToPrintForArrowUp.Length < TextBeforeInputShown.Length 
-                    - (TextBeforeInputShownVisible && IsMultiSelect ? 2 : 0) 
-                    + (VisibleSelectedArrows ? 3 : 0) 
-                    + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowUp += " ";
+                while (strintToPrintForArrowUp.Length < HowMuchOverrideForArrowUpAndDown) strintToPrintForArrowUp += " ";
                 strintToPrintForArrowUp += "⯅";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowUp.Length < MaxSelectionMenu + 3) strintToPrintForArrowUp += " ";
@@ -423,10 +435,7 @@
                     strintToPrintForArrowDown = "   ";
                 }
                 // To override the text shown, there must be enough spaces to override the text.
-                while (strintToPrintForArrowDown.Length < TextBeforeInputShown.Length 
-                    - (TextBeforeInputShownVisible && IsMultiSelect ? 2 : 0) 
-                    + (VisibleSelectedArrows ? 3 : 0) 
-                    + (IsMultiSelect ? 1 : 0)) strintToPrintForArrowDown += " ";
+                while (strintToPrintForArrowDown.Length < HowMuchOverrideForArrowUpAndDown) strintToPrintForArrowDown += " ";
                 strintToPrintForArrowDown += "⯆";
                 // To override the text shown, there must be enough spaces to override the text.
                 while (strintToPrintForArrowDown.Length < MaxSelectionMenu + 3) strintToPrintForArrowDown += " ";
@@ -626,6 +635,15 @@
                 {
                     WriteMenu(AllOptions, AllOptions[Index]);
                 }
+            }
+        }
+
+        public static void WaitTime()
+        {
+            Thread.Sleep(50);
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
             }
         }
 
