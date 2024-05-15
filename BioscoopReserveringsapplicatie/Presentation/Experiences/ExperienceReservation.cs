@@ -52,7 +52,10 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
+                        if (ScheduleLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, schedule.ScheduledDateTimeStart.Date).Count > 0)
+                        {
+                            options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
+                        }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId)));
 
