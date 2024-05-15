@@ -119,5 +119,20 @@ namespace BioscoopReserveringsapplicatie
 
             return false;
         }
+
+        public bool HasUserReservedAvailableOptionsForLocation(int experienceId, int locationId)
+        {
+            List<ReservationModel> reservations = _DataAccess.LoadAll();
+            List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
+
+            foreach (ScheduleModel schedule in schedules)
+            {
+                if (!reservations.Exists(r => r.ScheduleId == schedule.Id))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
