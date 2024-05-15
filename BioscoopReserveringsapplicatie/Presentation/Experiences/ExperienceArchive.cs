@@ -39,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Experience intensiteit:] {experience.Intensity}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Experience lengte (in minuten):] {experience.TimeLength}\n", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"Weet u zeker dat u de experience {experience.Name} wilt [archiveren]?", Globals.ColorInputcClarification);
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
             else
             {
@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Experience intensiteit:] {experience.Intensity}", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"[Experience lengte (in minuten):] {experience.TimeLength}\n", Globals.ExperienceColor);
                 ColorConsole.WriteColorLine($"Weet u zeker dat u de experience {experience.Name} wilt [dearchiveren]?", Globals.ColorInputcClarification);
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
         }
     }

@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Taal: ]{UserLogic.CurrentUser.Language}\n", ConsoleColor.Green);
                 Console.WriteLine("Wat wil je doen?");
             }
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
     }
 }

@@ -87,7 +87,7 @@ namespace BioscoopReserveringsapplicatie
                             new Option<string>("Terug", () => {UserDetails.Start();}),
                         };
                         ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het bewerken van uw gebruikersgegevens. Probeer het opnieuw.\n", Globals.ErrorColor);
-                        new SelectionMenuUtil2<string>(options).Create();
+                        new SelectionMenuUtil<string>(options).Create();
                     }
                 }),
                 new Option<string>("Nee, pas mijn gegevens aan", 
@@ -101,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
                     UserDetails.Start();
                 })
             };
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void NotFilledInToFalse()
@@ -155,7 +155,7 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            _newGenres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+            _newGenres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () =>
                     {
                         _GenresNotFilledIn = false;
@@ -181,7 +181,7 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil2<AgeCategory> selectionMenu = new SelectionMenuUtil2<AgeCategory>(options, () =>
+            SelectionMenuUtil<AgeCategory> selectionMenu = new SelectionMenuUtil<AgeCategory>(options, () =>
             {
                 _GenresNotFilledIn = false;
                 Start(_returnToGenres);
@@ -218,7 +218,7 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<Intensity>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil2<Intensity> SelectionMenu = new SelectionMenuUtil2<Intensity>(options, () =>
+            SelectionMenuUtil<Intensity> SelectionMenu = new SelectionMenuUtil<Intensity>(options, () =>
             {
                 _AgeCategoryNotFilledIn = false;
                 Start(_returnToAgeCategory);
@@ -253,7 +253,7 @@ namespace BioscoopReserveringsapplicatie
                 else
                     options.Add(new Option<Language>(option, option.GetDisplayName()));
             }
-            SelectionMenuUtil2<Language> selectionMenu = new SelectionMenuUtil2<Language>(options, () =>
+            SelectionMenuUtil<Language> selectionMenu = new SelectionMenuUtil<Language>(options, () =>
             {
                 _IntensityNotFilledIn = false;
                 Start(_returnToIntensity);

@@ -68,7 +68,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
                 ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren:", Globals.TitleColor);
                 Print();
-                int experienceId = new SelectionMenuUtil2<int>(options,
+                int experienceId = new SelectionMenuUtil<int>(options,
                     () =>
                     {
                         UserMenu.Start();

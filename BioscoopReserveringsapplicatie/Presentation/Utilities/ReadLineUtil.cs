@@ -113,7 +113,7 @@ namespace BioscoopReserveringsapplicatie
                     };
             ColorConsole.WriteColorLine(Line, Globals.ErrorColor);
             ColorConsole.WriteColorLine(Message, Globals.ErrorColor);
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
             return WantToLeave;
         }
 
@@ -138,7 +138,7 @@ namespace BioscoopReserveringsapplicatie
                     };
             ColorConsole.WriteColorLine("\n----------------------------------------------------------------", ConsoleColor.Red);
             ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", ConsoleColor.Red);
-            new SelectionMenuUtil2<string>(options, false).Create();
+            new SelectionMenuUtil<string>(options, false).Create();
             return WantToLeave;
         }
     }

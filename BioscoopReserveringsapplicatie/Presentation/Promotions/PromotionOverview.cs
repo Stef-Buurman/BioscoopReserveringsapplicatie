@@ -51,7 +51,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteLineInfo("Klik op T om een promotie toe te voegen.\n");
             ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:\n", Globals.TitleColor);
             Print();
-            int promotionId = new SelectionMenuUtil2<int>(options,
+            int promotionId = new SelectionMenuUtil<int>(options,
             () => 
             {
                 AdminMenu.Start();
@@ -90,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine(message);
             Console.WriteLine();
             Console.WriteLine("Wil je een promotie aanmaken?");
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void Print()

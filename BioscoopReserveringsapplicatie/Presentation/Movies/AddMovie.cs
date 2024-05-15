@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
             };
 
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void MovieName()
@@ -104,7 +104,7 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            genres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+            genres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () => { Start(_returnToDescription); },
                     () => { Start(_returnToGenres); },
                     "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect();
@@ -122,7 +122,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
 
-            rating = new SelectionMenuUtil2<AgeCategory>(AgeCatagories, () => { genres = new List<Genre>(); Start(_returnToGenres); }, () => Start(_returnToRating)).Create();
+            rating = new SelectionMenuUtil<AgeCategory>(AgeCatagories, () => { genres = new List<Genre>(); Start(_returnToGenres); }, () => Start(_returnToRating)).Create();
         }
 
         private static void PrintAddingMovie()

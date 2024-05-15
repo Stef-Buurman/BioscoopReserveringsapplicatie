@@ -61,7 +61,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteLineInfo("Klik op 2 om alle active experiences te tonen.");
             ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde experiences te tonen.\n");
             Print();
-            int experienceId = new SelectionMenuUtil2<int>(options,
+            int experienceId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
                     AdminMenu.Start();
@@ -122,7 +122,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine(notFoundMessage);
                 Console.WriteLine();
                 Console.WriteLine("Wil je een experience aanmaken?");
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
             else
             {

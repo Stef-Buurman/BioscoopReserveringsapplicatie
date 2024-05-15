@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
 
             };
             ColorConsole.WriteColorLine($"\nKies een [betalingsmethode]", ConsoleColor.Green);
-            string list = new SelectionMenuUtil2<string>(options).Create();
+            string list = new SelectionMenuUtil<string>(options).Create();
 
             return;
         }

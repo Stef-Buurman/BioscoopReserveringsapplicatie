@@ -22,7 +22,7 @@ namespace BioscoopReserveringsapplicatie
                         };
                 ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
                 ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt dearchiveren?", Globals.ErrorColor);
-                string selectionMenu2 = new SelectionMenuUtil2<string>(options2, new Option<string>("Nee")).Create();
+                string selectionMenu2 = new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
             }
             else
             {
@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
                         };
                 ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
                 ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt archiveren?", Globals.ErrorColor);
-                string selectionMenu2 = new SelectionMenuUtil2<string>(options2, new Option<string>("Nee")).Create();
+                string selectionMenu2 = new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
             }
         }
     }

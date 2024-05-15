@@ -86,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
 
             Print();
 
-            int reservationId = new SelectionMenuUtil2<int>(options,
+            int reservationId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
                     UserDetails.Start();
