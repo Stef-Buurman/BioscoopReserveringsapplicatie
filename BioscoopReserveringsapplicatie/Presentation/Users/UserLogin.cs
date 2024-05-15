@@ -17,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("\nU bent ingelogd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
 
-                if (UserLogic.CurrentUser.IsAdmin)
+                if (UserLogic.IsAdmin())
                 {
                     AdminMenu.Start();
                 }

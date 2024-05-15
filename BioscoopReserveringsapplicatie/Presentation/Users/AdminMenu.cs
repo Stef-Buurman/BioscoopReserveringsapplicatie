@@ -6,7 +6,7 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.IsAdmin())
             {
                 List<Option<string>> options = new List<Option<string>>
                 {

@@ -282,5 +282,11 @@
             }
             return false;
         }
+
+        public static bool IsAdmin()
+        {
+            if (CurrentUser != null && CurrentUser.IsAdmin) return true;
+            return false;
+        }
     }
 }
