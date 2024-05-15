@@ -10,6 +10,13 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
             ExperienceModel experience = ExperienceLogic.GetById(experienceId);
+            if (experience == null)
+            {
+                ColorConsole.WriteColorLine("Er is geen experience gevonden.", Globals.ErrorColor);
+                Thread.Sleep(2000);
+                ExperienceOverview.Start();
+                return;
+            }
 
             if (experience.Status == Status.Active)
             {

@@ -6,8 +6,15 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int movieId)
         {
-            MovieModel movie = MoviesLogic.GetById(movieId);
             Console.Clear();
+            MovieModel movie = MoviesLogic.GetById(movieId);
+            if (movie == null)
+            {
+                ColorConsole.WriteColorLine("Er is geen film gevonden.", Globals.ErrorColor);
+                Thread.Sleep(2000);
+                MovieOverview.Start();
+                return;
+            }
             Print(movie.Title, movie.Description, movie.Genres, movie.AgeCategory, movie.Status);
 
             if (movie.Status == Status.Active)
