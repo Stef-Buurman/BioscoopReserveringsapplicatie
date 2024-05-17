@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
                 "Genres",
                 "Leeftijdscategorie",
                 "Intensiteit",
-                "Gearchiveerd"
+                "Status"
             };
 
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, experiences, experienceDataExtractor);
@@ -144,7 +144,7 @@ namespace BioscoopReserveringsapplicatie
                 "Genres",
                 "Leeftijdscategorie",
                 "Intensiteit",
-                "Gearchiveerd"
+                "Status"
             };
 
             List<ExperienceModel> allExperiences = ExperiencesLogic.GetAll();
