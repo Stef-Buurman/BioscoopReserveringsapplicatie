@@ -161,7 +161,20 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             Header();
             CurrentSchedule(experienceId);
-            Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n");
+
+            List<ScheduleModel> test = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
+            
+            Console.WriteLine("\nIngeplande experiences op deze datum:\n");
+            foreach(var schedule in test)
+            {
+                string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
+                string startTime = schedule.ScheduledDateTimeStart.ToString("HH:mm");
+                string endTime = schedule.ScheduledDateTimeEnd.ToString("HH:mm");
+
+                Console.WriteLine($"{experienceName} : {startTime} - {endTime}");
+            }
+
+            Console.WriteLine("\nKies een tijd om deze experience op in te plannen.\n");
 
             if (_slotNotOpenError != "")
             {
@@ -193,6 +206,20 @@ namespace BioscoopReserveringsapplicatie
             Header();
             CurrentSchedule(experienceId);
             Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n");
+
+            List<ScheduleModel> test = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
+            
+            Console.WriteLine("\nIngeplande experiences op deze datum:\n");
+            foreach(var schedule in test)
+            {
+                string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
+                string startTime = schedule.ScheduledDateTimeStart.ToString("HH:mm");
+                string endTime = schedule.ScheduledDateTimeEnd.ToString("HH:mm");
+
+                Console.WriteLine($"{experienceName} : {startTime} - {endTime}");
+            }
+
+            Console.WriteLine("\nKies een tijd om deze experience op in te plannen.\n");
 
             if (_slotNotOpenError != "")
             {
