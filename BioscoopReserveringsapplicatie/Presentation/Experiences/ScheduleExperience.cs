@@ -205,7 +205,6 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             Header();
             CurrentSchedule(experienceId);
-            Console.WriteLine("Kies een tijd om deze experience op in te plannen.\n");
 
             List<ScheduleModel> test = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
             
