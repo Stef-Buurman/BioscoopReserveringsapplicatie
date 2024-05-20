@@ -171,7 +171,7 @@ namespace BioscoopReserveringsapplicatie
                 string startTime = schedule.ScheduledDateTimeStart.ToString("HH:mm");
                 string endTime = schedule.ScheduledDateTimeEnd.ToString("HH:mm");
 
-                Console.WriteLine($"{experienceName} : {startTime} - {endTime}");
+                ColorConsole.WriteColorLine($"{experienceName} : {startTime} - {endTime}", ConsoleColor.Green);
             }
 
             Console.WriteLine("\nKies een tijd om deze experience op in te plannen.\n");
@@ -215,7 +215,7 @@ namespace BioscoopReserveringsapplicatie
                 string startTime = schedule.ScheduledDateTimeStart.ToString("HH:mm");
                 string endTime = schedule.ScheduledDateTimeEnd.ToString("HH:mm");
 
-                Console.WriteLine($"{experienceName} : {startTime} - {endTime}");
+                ColorConsole.WriteColorLine($"{experienceName} : {startTime} - {endTime}", ConsoleColor.Green);
             }
 
             Console.WriteLine("\nKies een tijd om deze experience op in te plannen.\n");
