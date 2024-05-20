@@ -6,6 +6,8 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
+            _userLogic = new UserLogic();
+            
             Console.Clear();
 
             ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
