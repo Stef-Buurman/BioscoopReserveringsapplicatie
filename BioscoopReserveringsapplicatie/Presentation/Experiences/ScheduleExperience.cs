@@ -229,7 +229,6 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience duur: ]{experiencesLogic.GetById(experienceId).TimeLength} Minuten", ConsoleColor.Green);
 
-
             if(locationId != 0)
             {
                 ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
