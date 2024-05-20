@@ -227,6 +227,8 @@ namespace BioscoopReserveringsapplicatie
         {
             ColorConsole.WriteColorLine("Huidige inplanning experience", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Experience duur: ]{experiencesLogic.GetById(experienceId).TimeLength} Minuten", ConsoleColor.Green);
+
 
             if(locationId != 0)
             {
