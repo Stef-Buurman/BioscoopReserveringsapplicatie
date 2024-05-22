@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace BioscoopReserveringsapplicatie
 {
@@ -134,6 +135,11 @@ namespace BioscoopReserveringsapplicatie
             Console.ForegroundColor = originalForeColor;
             Console.BackgroundColor = originalBackColor;
             Console.Write(message.Substring(startIndex));
+        }
+
+        public static void WriteLineColor(string message)
+        {
+            WriteColor(message + Environment.NewLine);
         }
 
         public static void WriteLineInfo(string message) => WriteColorLine($"[{message}]", ConsoleColor.DarkGray);
