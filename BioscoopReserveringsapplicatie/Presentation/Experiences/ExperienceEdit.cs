@@ -91,7 +91,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Experience intensiteit:] {_newIntensity}", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience tijdsduur:] {_timeInInt} minuten", Globals.ExperienceColor);
             HorizontalLine.Print();
-            ColorConsole.WriteColorLine($"Weet u zeker dat u de aanpassingen op {_newName} wilt opslaan?\n", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine($"Weet u zeker dat u de Experience details van {_newName} wilt bewerken?\n", Globals.ColorInputcClarification);
 
             new SelectionMenuUtil<string>(saveOptions).Create();
         }
