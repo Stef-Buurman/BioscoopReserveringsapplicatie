@@ -20,23 +20,26 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("fullName")]
         public string FullName { get; set; }
 
-        [JsonConverter(typeof(GenreListConverter))]
+        [JsonConverter(typeof(EnumListConverter<Genre>))]
         [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
 
-        [JsonConverter(typeof(AgeCategoryConverter))]
+        [JsonConverter(typeof(EnumConverter<AgeCategory>))]
         [JsonPropertyName("ageCategory")]
         public AgeCategory AgeCategory { get; set; }
 
-        [JsonConverter(typeof(IntensityConverter))]
+        [JsonConverter(typeof(EnumConverter<Intensity>))]
         [JsonPropertyName("intensity")]
         public Intensity Intensity { get; set; }
 
-        [JsonConverter(typeof(LanguageConverter))]
+        [JsonConverter(typeof(EnumConverter<Language>))]
         [JsonPropertyName("language")]
         public Language Language { get; set; }
+ 
+        [JsonPropertyName("promotionsSeen")]
+        public Dictionary<int, DateTime> PromotionsSeen { get; set; }
 
-        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language)
+        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, Dictionary<int, DateTime> promotionsSeen)
         {
             Id = id;
             IsAdmin = isAdmin;
@@ -47,6 +50,7 @@ namespace BioscoopReserveringsapplicatie
             AgeCategory = ageCategory;
             Intensity = intensity;
             Language = language;
+            PromotionsSeen = promotionsSeen;
         }
     }
 }

@@ -6,33 +6,26 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
+            _userLogic = new UserLogic();
+            
             Console.Clear();
 
-            string email = ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Vul uw [e-mailadres] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start);
-            Console.Write("Vul uw wachtwoord in: ");
-            string password = ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {email}", Globals.ColorInputcClarification);
-                ColorConsole.WriteColor("Vul uw [wachtwoord] in: ", Globals.ColorInputcClarification);
-            }, LandingPage.Start, true);
+            ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
+            string email = ReadLineUtil.EnterValue("Vul uw [e-mailadres] in: ", LandingPage.Start);
+            string password = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);
 
             if (_userLogic.CheckLogin(email, password) != null)
             {
                 ColorConsole.WriteColorLine("\nU bent ingelogd.", Globals.SuccessColor);
                 Thread.Sleep(2000);
 
-                if (UserLogic.CurrentUser.IsAdmin)
+                if (UserLogic.IsAdmin())
                 {
                     AdminMenu.Start();
                 }
                 else
                 {
-                    UserMenu.Start();
+                    ShowPromotion.Start();
                 }
             }
             else

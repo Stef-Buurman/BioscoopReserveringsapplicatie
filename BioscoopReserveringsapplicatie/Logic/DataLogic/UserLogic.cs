@@ -43,7 +43,7 @@
             return _accounts.Find(i => i.Id == id);
         }
 
-        public RegistrationResult RegisterNewUser(string name, string email, string password)
+        public Result<UserModel> RegisterNewUser(string name, string email, string password)
         {
             bool validated = false;
             string errorMessage = "";
@@ -84,16 +84,16 @@
 
             if (validated)
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
                 UpdateList(newAccount);
                 _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default);
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
             }
-            return new RegistrationResult(validated, errorMessage, newAccount);
+            return new Result<UserModel>(validated, errorMessage, newAccount);
         }
 
         public UserModel? CheckLogin(string email, string password)
@@ -217,16 +217,14 @@
             Thread.Sleep(2000);
         }
 
-        public bool Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             if (CurrentUser != null)
             {
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
-                    Console.WriteLine("Niet alle velden zijn correct ingevuld.");
-                    Thread.Sleep(3000);
-                    return false;
+                    return new Result<UserModel>(false, "Niet alle velden zijn correct ingevuld.");
                 }
                 else
                 {
@@ -239,14 +237,12 @@
 
                     UpdateList(CurrentUser);
                     CurrentUser = CurrentUser;
-                    return true;
+                    return new Result<UserModel>(true);
                 }
             }
             else
             {
-                Console.WriteLine("Gebruiker bestaat niet.");
-                Thread.Sleep(3000);
-                return false;
+                return new Result<UserModel>(false, "Gebruiker bestaat niet.");
             }
         }
 
@@ -280,6 +276,12 @@
                     return true;
                 }
             }
+            return false;
+        }
+
+        public static bool IsAdmin()
+        {
+            if (CurrentUser != null && CurrentUser.IsAdmin) return true;
             return false;
         }
     }

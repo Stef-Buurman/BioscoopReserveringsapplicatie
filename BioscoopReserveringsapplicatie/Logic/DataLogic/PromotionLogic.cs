@@ -1,9 +1,10 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class PromotionLogic
+    public class PromotionLogic : ILogic<PromotionModel>
     {
         private List<PromotionModel> _promotions = new();
-        private IDataAccess<PromotionModel> _DataAccess = new DataAccess<PromotionModel>();
+        public IDataAccess<PromotionModel> _DataAccess { get; }
+        private static UserLogic userLogic = new UserLogic();
         public PromotionLogic(IDataAccess<PromotionModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -24,28 +25,34 @@ namespace BioscoopReserveringsapplicatie
             return _promotions.Find(s => s.Id == id);
         }
 
-        public PromotionModel? GetByStatus(bool status)
+        public PromotionModel? GetByStatus(Status status)
         {
             _promotions = _DataAccess.LoadAll();
             return _promotions.Find(s => s.Status == status);
         }
 
-        public bool Add(string title, string description)
+        public int GetNextId() => IdGenerator.GetNextId(_promotions);
+
+        public bool Add(PromotionModel promotion)
         {
             GetAll();
 
-            if (ValidateTitle(title) && ValidateDescription(description))
+            if (!Validate(promotion))
             {
-                PromotionModel promotion = new PromotionModel(IdGenerator.GetNextId(_promotions), title, description, false);
-
-                if (this.Validate(promotion))
-                {
-                    UpdateList(promotion);
-                    return true;
-                }
+                return false;
             }
+            UpdateList(promotion);
+            return true;
+        }
 
-            return false;
+        public bool Edit(PromotionModel promotion)
+        {
+            if (!Validate(promotion))
+            {
+                return false;
+            }
+            UpdateList(promotion);
+            return true;
         }
 
         public void Activate(int id)
@@ -54,7 +61,18 @@ namespace BioscoopReserveringsapplicatie
 
             if (promotion != null)
             {
-                promotion.Status = true;
+                List<PromotionModel?> activePromo = _promotions.FindAll(promo => promo.Status == Status.Active);
+
+                if (activePromo != null)
+                {
+                    foreach (PromotionModel promo in activePromo)
+                    {
+                        promo.Status = Status.Inactive;
+                        UpdateList(promo);
+                    }
+                }
+
+                promotion.Status = Status.Active;
                 UpdateList(promotion);
             }
         }
@@ -65,7 +83,29 @@ namespace BioscoopReserveringsapplicatie
 
             if (promotion != null)
             {
-                promotion.Status = false;
+                promotion.Status = Status.Inactive;
+                UpdateList(promotion);
+            }
+        }
+
+        public void Archive(int id)
+        {
+            PromotionModel? promotion = GetById(id);
+
+            if (promotion != null)
+            {
+                promotion.Status = Status.Archived;
+                UpdateList(promotion);
+            }
+        }
+
+        public void Unarchive(int id)
+        {
+            PromotionModel? promotion = GetById(id);
+
+            if (promotion != null)
+            {
+                promotion.Status = Status.Inactive;
                 UpdateList(promotion);
             }
         }
@@ -104,6 +144,30 @@ namespace BioscoopReserveringsapplicatie
                 _promotions.Add(promotion);
             }
             _DataAccess.WriteAll(_promotions);
+        }
+        public PromotionModel? GetActivePromotion()
+        {
+            _promotions = _DataAccess.LoadAll();
+            return _promotions.Find(s => s.Status == Status.Active);
+        }
+
+        public bool IsPromotionShownRecently(int promotionId)
+        {
+            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.PromotionsSeen.ContainsKey(promotionId))
+            {
+                DateTime lastShownTime = UserLogic.CurrentUser.PromotionsSeen[promotionId];
+                return (DateTime.Now - lastShownTime).TotalHours < 24;
+            }
+            return false;
+        }
+
+        public void UpdatePromotionShown(int PromotionId)
+        {
+            if (UserLogic.CurrentUser != null)
+            {
+                UserLogic.CurrentUser.PromotionsSeen[PromotionId] = DateTime.Now;
+                userLogic.UpdateList(UserLogic.CurrentUser);
+            }
         }
     }
 }

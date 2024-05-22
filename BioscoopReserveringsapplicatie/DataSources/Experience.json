@@ -1,26 +1,38 @@
 [
-   {
-     "id": 1,
-     "name": "Experience 1",
-     "filmId": 1,
-     "intensity": "Low",
-     "timeLength": 20,
-     "archived": false
+  {
+    "id": 1,
+    "name": "Experience 1",
+    "description": "",
+    "filmId": 1,
+    "intensity": "Low",
+    "timeLength": 20,
+    "status": "Active"
   },
   {
     "id": 2,
     "name": "Experience 2",
+    "description": "",
     "filmId": 2,
     "intensity": "Medium",
     "timeLength": 20,
-    "archived": false
+    "status": "Active"
   },
   {
     "id": 3,
     "name": "Experience 3",
+    "description": "",
     "filmId": 3,
     "intensity": "High",
     "timeLength": 20,
-    "archived": false
+    "status": "Active"
+  },
+  {
+    "id": 4,
+    "name": "Dit is een nieuewewewe  experience",
+    "description": "Dit is de beschrijving jonguh",
+    "filmId": 4,
+    "intensity": "Medium",
+    "timeLength": 15,
+    "status": "Active"
   }
 ]

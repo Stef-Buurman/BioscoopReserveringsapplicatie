@@ -1,9 +1,9 @@
 namespace BioscoopReserveringsapplicatie
 {
-    class LocationLogic
+    public class LocationLogic : ILogic<LocationModel>
     {
         private List<LocationModel> _Locations;
-        private IDataAccess<LocationModel> _DataAccess = new DataAccess<LocationModel>();
+        public IDataAccess<LocationModel> _DataAccess { get; }
         private ScheduleLogic SheduleLogic;
         public LocationLogic(IDataAccess<LocationModel> dataAccess = null, IDataAccess<ScheduleModel> sheduleAccess = null)
         {
@@ -16,17 +16,31 @@ namespace BioscoopReserveringsapplicatie
             _Locations = _DataAccess.LoadAll();
         }
 
+        public int GetNextId() => IdGenerator.GetNextId(_Locations);
+
         public List<LocationModel> GetAll() => _Locations = _DataAccess.LoadAll();
 
         public LocationModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
-        public void Add(string name)
+        public bool Validate(LocationModel location) => location != null && !string.IsNullOrEmpty(location.Name);
+
+        public bool Add(LocationModel location)
         {
             GetAll();
 
-            LocationModel location = new LocationModel(IdGenerator.GetNextId(_Locations), name);
+            if (!Validate(location))
+            {
+                return false;
+            }
 
             UpdateList(location);
+            return true;
+        }
+
+        public bool Edit(LocationModel location)
+        {
+            // This will be done in the near future
+            return true;
         }
 
         public void UpdateList(LocationModel location)

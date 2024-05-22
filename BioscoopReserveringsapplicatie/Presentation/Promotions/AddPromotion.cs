@@ -17,58 +17,53 @@ namespace BioscoopReserveringsapplicatie
             }
             if (returnTo == "" || returnTo == "Description")
             {
-                description = AskForPromotionDescription(title);
+                description = AskForPromotionDescription();
                 returnTo = "";
             }
-
-            if (promotionLogic.Add(title, description))
+            Print(title, description, true);
+            PromotionModel newPromotion = new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Active);
+            List<Option<string>> options = new List<Option<string>>
             {
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => PromotionOverview.Start())
-                };
-
-                Print(title, description, false);
-                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
-            }
-            else
+            new Option<string>("Opslaan en verlaten", () => 
             {
-                List<Option<string>> options = new List<Option<string>>
+                if (promotionLogic.Add(newPromotion))
                 {
-                    new Option<string>("Terug", () => Promotions.Start())
-                };
+                    PromotionOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n");
+                    Start("Description");
+                }
+            }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start("Description"); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            };
 
-                ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het toevoegen van de promotie. Probeer het opnieuw.\n", Globals.ErrorColor);
-                string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
-            }
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static string AskForPromotionName()
         {
-            return ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Vul de [titel] van de promotie in: ", Globals.ColorInputcClarification);
-            }, Promotions.Start);
+            ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
+            return ReadLineUtil.EnterValue("Vul de [titel] van de promotie in: ", PromotionOverview.Start);
         }
 
-        private static string AskForPromotionDescription(string title)
+        private static string AskForPromotionDescription()
         {
-            return ReadLineUtil.EnterValue(true, () =>
-            {
-                ColorConsole.WriteColorLine("Promotie toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Vul de [titel] van de promotie in: {title}", Globals.ColorInputcClarification);
-                ColorConsole.WriteColor("Vul de [beschrijving] van de promotie in: ", Globals.ColorInputcClarification);
-            }, () => Start("Name"));
+            return ReadLineUtil.EnterValue("Vul de [beschrijving] van de promotie in: ", () => Start("Name"), false, false);
         }
 
         private static void Print(string title, string description, bool status)
         {
-            ColorConsole.WriteColorLine("\nDe promotie is toegevoegd!\n", Globals.PromotionColor);
+            Console.Clear();
             ColorConsole.WriteColorLine("[Promotie details]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie status: ]{(status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine($"Wilt u deze [Promotie] toevoegen?", Globals.ColorInputcClarification);
         }
     }
 }

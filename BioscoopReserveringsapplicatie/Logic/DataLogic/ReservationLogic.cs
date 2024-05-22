@@ -1,9 +1,10 @@
 namespace BioscoopReserveringsapplicatie
 {
-    public class ReservationLogic
+    public class ReservationLogic : ILogic<ReservationModel>
     {
+        private static ScheduleLogic scheduleLogic = new ScheduleLogic();
         private List<ReservationModel> _reservations = new();
-        private IDataAccess<ReservationModel> _DataAccess = new DataAccess<ReservationModel>();
+        public IDataAccess<ReservationModel> _DataAccess { get; }
         public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -11,6 +12,8 @@ namespace BioscoopReserveringsapplicatie
 
             _reservations = _DataAccess.LoadAll();
         }
+
+        public int GetNextId() => IdGenerator.GetNextId(_reservations);
 
         public List<ReservationModel> GetAll()
         {
@@ -24,6 +27,12 @@ namespace BioscoopReserveringsapplicatie
             return _reservations.Find(s => s.Id == id);
         }
 
+        public List<ReservationModel> GetByUserId(int userId)
+        {
+            _reservations = _DataAccess.LoadAll();
+            return _reservations.FindAll(s => s.UserId == userId);
+        }
+
         public bool Complete(int scheduleId, int userId)
         {
             GetAll();
@@ -31,15 +40,36 @@ namespace BioscoopReserveringsapplicatie
             if (scheduleId != 0 && userId != 0)
             {
                 ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId);
-
-                if (this.Validate(reservation))
-                {
-                    UpdateList(reservation);
-                    return true;
-                }
+                return Add(reservation);
             }
 
             return false;
+        }
+
+        public bool Add(ReservationModel reservation)
+        {
+            if (!Validate(reservation))
+            {
+                return false;
+            }
+
+            UpdateList(reservation);
+            return true;
+        }
+
+        public bool Edit(ReservationModel reservation)
+        {
+            // This will be done in the near future
+            return true;
+        }
+
+        public bool Cancel(ReservationModel reservation)
+        {
+            if (reservation == null) return false;
+
+            reservation.IsCanceled = true;
+            UpdateList(reservation);
+            return true;
         }
 
         public bool Validate(ReservationModel reservation)
@@ -70,13 +100,39 @@ namespace BioscoopReserveringsapplicatie
         public bool HasUserAlreadyReservedScheduledExperience(int scheduleId, int userId)
         {
             List<ReservationModel> reservations = _DataAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId && r.IsCanceled == false);
         }
 
-        public bool HasUserAlreadyReservatedScheduledExperience(int scheduleId, int userId)
+        public bool HasUserAlreadyReservedScheduledExperienceOnDateTime(int userId, DateTime date)
         {
-            List<ReservationModel> reservations = _DataAccess.LoadAll();
-            return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId);
+            List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
+
+            foreach (ReservationModel reservation in reservations)
+            {
+                ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
+
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool HasUserReservedAvailableOptionsForLocation(int experienceId, int locationId, int userId)
+        {
+            List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
+            List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
+
+            foreach (ScheduleModel schedule in schedules)
+            {
+                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && r.IsCanceled == false))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

@@ -27,11 +27,14 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (LocationModel locationSelected in locations)
                     {
-                        options.Add(new Option<int>(locationSelected.Id, locationSelected.Name, () => ExperienceReservation.Start(experienceId, locationSelected.Id)));
+                        if (ReservationLogic.HasUserReservedAvailableOptionsForLocation(experienceId, locationSelected.Id, UserLogic.CurrentUser.Id) == false)
+                        {
+                            options.Add(new Option<int>(locationSelected.Id, locationSelected.Name, () => ExperienceReservation.Start(experienceId, locationSelected.Id)));
+                        }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId)));
 
-                    new SelectionMenuUtil2<int>(options).Create();
+                    new SelectionMenuUtil<int>(options).Create();
                 }
                 else
                 {
@@ -52,11 +55,14 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
+                        if (ScheduleLogic.GetScheduledExperienceTimeSlotsForLocationById(experienceId, location, schedule.ScheduledDateTimeStart.Date).Count > 0)
+                        {
+                            options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
+                        }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId)));
 
-                    new SelectionMenuUtil2<int>(options).Create();
+                    new SelectionMenuUtil<int>(options).Create();
                 }
                 else
                 {
@@ -75,14 +81,14 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date)
+                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, schedule.ScheduledDateTimeStart) == false)
                         {
                             options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart)));
                         }
                     }
                     options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location)));
 
-                    new SelectionMenuUtil2<int>(options).Create();
+                    new SelectionMenuUtil<int>(options).Create();
                 }
                 else
                 {
@@ -108,6 +114,8 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 if (!ReservationLogic.HasUserAlreadyReservedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                                 {
+                                    PaymentSimulation.Start();
+
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id))
                                     {
                                         ColorConsole.WriteColorLine("\nReservering bevestigd", Globals.SuccessColor);
@@ -150,7 +158,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
                 Console.WriteLine("Is de reservering correct?\n");
 
-                new SelectionMenuUtil2<int>(optionsConfirm).Create();
+                new SelectionMenuUtil<int>(optionsConfirm).Create();
             }
         }
     }

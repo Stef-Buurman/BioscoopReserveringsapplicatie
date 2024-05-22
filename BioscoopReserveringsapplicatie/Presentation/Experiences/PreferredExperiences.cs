@@ -43,7 +43,7 @@ namespace BioscoopReserveringsapplicatie
 
                 foreach (ExperienceModel experience in experiences)
                 {
-                    MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+                    MovieModel movie = MoviesLogic.GetById(experience.FilmId);
 
                     string experienceName = experience.Name;
                     if (experienceName.Length > 25)
@@ -68,7 +68,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
                 ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren:", Globals.TitleColor);
                 Print();
-                int experienceId = new SelectionMenuUtil2<int>(options,
+                int experienceId = new SelectionMenuUtil<int>(options,
                     () =>
                     {
                         UserMenu.Start();
@@ -127,7 +127,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static string[] ExtractExperienceData(ExperienceModel experience)
         {
-            MovieModel movie = MoviesLogic.GetMovieById(experience.FilmId);
+            MovieModel movie = MoviesLogic.GetById(experience.FilmId);
 
             string[] experienceInfo = {
                 experience.Name,

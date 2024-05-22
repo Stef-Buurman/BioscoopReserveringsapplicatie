@@ -12,14 +12,14 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
             List<UserModel> users = new List<UserModel>() {
-                new UserModel(1, false, "Henk@henk.henk", "testtest", "henk", null, default, default, default),
-                new UserModel(2, false, "Gerda@Gerda.Gerda", "testtest", "Gerda", null, default, default, default),
-                new UserModel(3, true, "Petra@Petra.Petra", "testtest", "Petra",new List<Genre>() { Genre.Horror, Genre.Mystery, Genre.Family }, AgeCategory.AGE_9, Intensity.Low, Language.English),
-                new UserModel(4, false, "Nick@Nick.Nick", "NickPassword", "Nick", null, default, default, default),
-                new UserModel(5, true, "Pieter@Pieter.Pieter", "PieterPassword", "Pieter", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.High, Language.Nederlands),
-                new UserModel(6, false, "Tim@Tim.Tim", "TimPassword", "Tim", null, default, default, default),
-                new UserModel(1, false, "Stef@Stef.Stef", "StefPassword", "Stef", new List<Genre>() { Genre.Horror, Genre.Western, Genre.Romance }, AgeCategory.AGE_18, Intensity.Medium, Language.English),
-                new UserModel(1, false, "Menno@Menno.Menno", "MennoPassword", "Menno", null, default, default, default),
+                new UserModel(1, false, "Henk@henk.henk", "testtest", "henk", null, default, default, default, null),
+                new UserModel(2, false, "Gerda@Gerda.Gerda", "testtest", "Gerda", null, default, default, default, null),
+                new UserModel(3, true, "Petra@Petra.Petra", "testtest", "Petra",new List<Genre>() { Genre.Horror, Genre.Mystery, Genre.Family }, AgeCategory.AGE_9, Intensity.Low, Language.English, null),
+                new UserModel(4, false, "Nick@Nick.Nick", "NickPassword", "Nick", null, default, default, default, null),
+                new UserModel(5, true, "Pieter@Pieter.Pieter", "PieterPassword", "Pieter", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.High, Language.Nederlands, null),
+                new UserModel(6, false, "Tim@Tim.Tim", "TimPassword", "Tim", null, default, default, default, null),
+                new UserModel(1, false, "Stef@Stef.Stef", "StefPassword", "Stef", new List<Genre>() { Genre.Horror, Genre.Western, Genre.Romance }, AgeCategory.AGE_18, Intensity.Medium, Language.English, null),
+                new UserModel(1, false, "Menno@Menno.Menno", "MennoPassword", "Menno", null, default, default, default, null),
             };
             userRepositoryMock.LoadAll().Returns(users);
             userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Name_Is_Empty()
         {
-            RegistrationResult results = userLogic.RegisterNewUser("", this.CorrectEmail, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser("", this.CorrectEmail, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.NameEmpty));
         }
@@ -72,7 +72,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Is_Empty()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, "", this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, "", this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailEmpty));
         }
@@ -80,7 +80,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_Not_Enough_Characters()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailCharsCount, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailCharsCount, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
         }
@@ -88,7 +88,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_No_At_Sign()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoAtSign, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoAtSign, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
         }
@@ -96,7 +96,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Email_No_Dot()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoDot, this.CorrectPassword);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.IncorrectEmailNoDot, this.CorrectPassword);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete));
         }
@@ -106,7 +106,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Password_Is_Empty()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, "");
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
@@ -114,7 +114,7 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Incorrect_Register_New_User_Password_Has_Too_Few_Characters()
         {
-            RegistrationResult results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, this.IncorrectPasswordCharsCount);
+            Result<UserModel> results = userLogic.RegisterNewUser(this.CorrectUserName, this.CorrectEmail, this.IncorrectPasswordCharsCount);
             Assert.IsFalse(results.IsValid);
             Assert.IsTrue(results.ErrorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars));
         }
@@ -306,7 +306,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsTrue(userLogic.Edit( "Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsTrue(userLogic.Edit( "Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         [TestMethod]
@@ -314,7 +314,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit( "   ", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "   ", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         [DataRow("")]
@@ -326,7 +326,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit( "Tim van Eert", "   ", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit( "Tim van Eert", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var x = userLogic.Login("Tim@Tim.Tim","TimPassword");
             Assert.IsTrue(x);
-            Assert.IsFalse(userLogic.Edit("Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6));
+            Assert.IsFalse(userLogic.Edit("Tim van Eert", "Tim@Tim.Tim", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery, Genre.Undefined}, Intensity.High, AgeCategory.AGE_6).IsValid);
         }
 
         // -------------------------------------------------------------------------------------------------------------------------------
@@ -438,6 +438,74 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Language_Validation(Language value)
         {
             Assert.IsFalse(userLogic.ValidateLanguage(value));
+        }
+
+        // Edit User --------------------------------------------------------------------------------------------------------------------
+        [TestMethod]
+        public void Correct_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsTrue(userLogic.Edit("PetraNieuweNaam", "petranieuwemail@mail.com", new List<Genre>() { Genre.Adventure }, Intensity.High, AgeCategory.AGE_18).IsValid);
+            Assert.AreEqual("petranieuwemail@mail.com", userLogic.GetById(3).EmailAddress);
+            Assert.AreEqual("PetraNieuweNaam", userLogic.GetById(3).FullName);
+            Assert.AreEqual(Genre.Adventure, userLogic.GetById(3).Genres[0]);
+            Assert.AreEqual(Intensity.High, userLogic.GetById(3).Intensity);
+            Assert.AreEqual(AgeCategory.AGE_18, userLogic.GetById(3).AgeCategory);
+        }
+
+        [TestMethod]
+        public void Incorrect_Name_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9).IsValid);
+            Assert.AreNotEqual("", userLogic.GetById(3).FullName);
+        }
+        [DataRow("")]
+        [DataRow("     ")]
+        [DataRow("MailZonder@eenpunt")]
+        [DataRow("GeenAppenstaartje.nl")]
+        [DataTestMethod]
+        public void Incorrect_Email_Edit_User(string email)
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", email, new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, AgeCategory.AGE_9).IsValid);
+            Assert.AreNotEqual(email, userLogic.GetById(3).EmailAddress);
+        }
+
+        [TestMethod]
+        public void Incorrect_Genres_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() {(Genre)123}, Intensity.High, AgeCategory.AGE_9).IsValid);
+            Assert.AreNotEqual(new List<Genre>{(Genre)123}, userLogic.GetById(3).Genres);
+        }
+
+        [TestMethod]
+        public void Incorrect_Intensity_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra@Petra.Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, (Intensity)1000, AgeCategory.AGE_9).IsValid);
+            Assert.AreNotEqual((Intensity)1000, userLogic.GetById(3).Intensity);
+        }
+
+        [TestMethod]
+        public void Incorrect_AgeCategory_Edit_User()
+        {
+            UserModel userName = Initialize_Preferences_For_User();
+            var x = userLogic.Login("Petra@Petra.Petra", "testtest");
+            Assert.IsTrue(x);
+            Assert.IsFalse(userLogic.Edit("Petra", "Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, (AgeCategory)999).IsValid);
+            Assert.AreNotEqual((AgeCategory)999, userLogic.GetById(3).AgeCategory);
         }
     }
 }

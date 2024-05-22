@@ -5,16 +5,18 @@ namespace BioscoopReserveringsapplicatie
         private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
         private static ExperienceModel? experience;
         private static MovieLogic MoviesLogic = new MovieLogic();
+        private static LocationLogic LocationLogic = new LocationLogic();
+        private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static MovieModel? movie;
 
         public static void Start(int experienceId)
         {
             Console.Clear();
-            if (UserLogic.CurrentUser != null && !UserLogic.CurrentUser.IsAdmin)
+            if (!UserLogic.IsAdmin())
             {
                 UserPreview(experienceId);
             }
-            else if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            else if (UserLogic.IsAdmin())
             {
                 AdminPreview(experienceId);
             }
@@ -24,16 +26,40 @@ namespace BioscoopReserveringsapplicatie
         {
             experience = ExperienceLogic.GetById(experienceId);
 
-            movie = MoviesLogic.GetMovieById(experience.FilmId);
+            movie = MoviesLogic.GetById(experience.FilmId);
 
-            var options = new List<Option<string>>
+            List<LocationModel> locations = LocationLogic.GetLocationsForScheduledExperienceById(experienceId);
+
+            bool showReserveOption = false;
+
+            foreach (LocationModel locationSelected in locations)
             {
-                new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
-                new Option<string>("Terug", () => PreferredExperiences.Start()),
-            };
+                if (ReservationLogic.HasUserReservedAvailableOptionsForLocation(experienceId, locationSelected.Id, UserLogic.CurrentUser.Id) == false)
+                {
+                    showReserveOption = true;
+                }
+            }
+
+            var options = new List<Option<string>>();
+
+            if (showReserveOption)
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
+                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                };
+            }
+            else
+            {
+                options = new List<Option<string>>
+                {
+                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                };
+            }
 
             Print();
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void AdminPreview(int experienceId)
@@ -42,14 +68,14 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> options;
 
-            movie = MoviesLogic.GetMovieById(experience.FilmId);
+            movie = MoviesLogic.GetById(experience.FilmId);
 
-            if (experience.Archived)
+            if (experience.Status == Status.Archived)
             {
                 options = new List<Option<string>>
                 {
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Experience dearchiveren", () => ExperienceArchive.Start(experienceId, false)),
+                    new Option<string>("Experience dearchiveren", () => ExperienceArchive.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
@@ -59,13 +85,13 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Experience inplannen", () => ScheduleExperience.Start(experienceId)),
                     new Option<string>("Experience bewerken", () => ExperienceEdit.Start(experienceId)),
-                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId, true)),
+                    new Option<string>("Experience archiveren", () => ExperienceArchive.Start(experienceId)),
                     new Option<string>("Terug", () => {Console.Clear(); ExperienceOverview.Start();}),
                 };
             }
 
             Print();
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void Print()

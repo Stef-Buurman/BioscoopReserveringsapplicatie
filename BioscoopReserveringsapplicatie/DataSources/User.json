@@ -6,9 +6,10 @@
     "password": "admin",
     "fullName": "Admin",
     "genres": null,
-    "ageCategory": 0,
+    "ageCategory": "Undefined",
     "intensity": "Undefined",
-    "language": "Undefined"
+    "language": "Undefined",
+    "promotionsSeen": null
   },
   {
     "id": 2,
@@ -18,11 +19,12 @@
     "fullName": "User",
     "genres": [
       "Horror",
-      "Komedie",
-      "Actie"
+      "Comedy",
+      "Action"
     ],
-    "ageCategory": 18,
-    "intensity": "Undefined",
-    "language": "Nederlands"
+    "ageCategory": "AGE_18",
+    "intensity": "Medium",
+    "language": "Nederlands",
+    "promotionsSeen": {}
   }
 ]

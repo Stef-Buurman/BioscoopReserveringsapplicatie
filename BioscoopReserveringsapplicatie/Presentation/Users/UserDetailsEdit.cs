@@ -72,7 +72,8 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Ja", () => {
                     NotFilledInToFalse();
-                    if(_userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory))
+                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory);
+                    if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                         Thread.Sleep(2000);
@@ -80,12 +81,13 @@ namespace BioscoopReserveringsapplicatie
                     }
                     else
                     {
+                        ColorConsole.WriteColorLine(result.ErrorMessage, Globals.ErrorColor);
                         List<Option<string>> options = new List<Option<string>>
                         {
                             new Option<string>("Terug", () => {UserDetails.Start();}),
                         };
                         ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het bewerken van uw gebruikersgegevens. Probeer het opnieuw.\n", Globals.ErrorColor);
-                        new SelectionMenuUtil2<string>(options).Create();
+                        new SelectionMenuUtil<string>(options).Create();
                     }
                 }),
                 new Option<string>("Nee, pas mijn gegevens aan", 
@@ -99,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
                     UserDetails.Start();
                 })
             };
-            new SelectionMenuUtil2<string>(options).Create();
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void NotFilledInToFalse()
@@ -116,13 +118,7 @@ namespace BioscoopReserveringsapplicatie
             bool validName = false;
             while (!validName)
             {
-                Console.Clear();
-                _newName = ReadLineUtil.EditValue(_newName,
-                    () =>
-                    {
-                        PrintEditedList();
-                        ColorConsole.WriteColor("Voer uw [naam] in: ", Globals.ColorInputcClarification);
-                    },
+                _newName = ReadLineUtil.EditValue(_newName, "Voer uw [naam] in: ",
                     () => { UserDetails.Start(); },
                     "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
                 );
@@ -135,16 +131,10 @@ namespace BioscoopReserveringsapplicatie
             bool validEmail = false;
             while (!validEmail)
             {
-                Console.Clear();
-                _newEmail = ReadLineUtil.EditValue(_newEmail,
-                    () =>
-                    {
-                        PrintEditedList();
-                        ColorConsole.WriteColor("Voer uw [emailadres] in: ", Globals.ColorInputcClarification);
-                    },
+                _newEmail = ReadLineUtil.EditValue(_newEmail, "Voer uw [emailadres] in: ",
                     () => Start(_returnToName),
-                    "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
-                );
+                    "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n",
+                false, false);
                 validEmail = _userLogic.ValidateEmail(_newEmail);
             }
         }
@@ -165,7 +155,7 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            _newGenres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+            _newGenres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () =>
                     {
                         _GenresNotFilledIn = false;
@@ -191,7 +181,7 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil2<AgeCategory> selectionMenu = new SelectionMenuUtil2<AgeCategory>(options, () =>
+            SelectionMenuUtil<AgeCategory> selectionMenu = new SelectionMenuUtil<AgeCategory>(options, () =>
             {
                 _GenresNotFilledIn = false;
                 Start(_returnToGenres);
@@ -228,7 +218,7 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<Intensity>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil2<Intensity> SelectionMenu = new SelectionMenuUtil2<Intensity>(options, () =>
+            SelectionMenuUtil<Intensity> SelectionMenu = new SelectionMenuUtil<Intensity>(options, () =>
             {
                 _AgeCategoryNotFilledIn = false;
                 Start(_returnToAgeCategory);
@@ -263,7 +253,7 @@ namespace BioscoopReserveringsapplicatie
                 else
                     options.Add(new Option<Language>(option, option.GetDisplayName()));
             }
-            SelectionMenuUtil2<Language> selectionMenu = new SelectionMenuUtil2<Language>(options, () =>
+            SelectionMenuUtil<Language> selectionMenu = new SelectionMenuUtil<Language>(options, () =>
             {
                 _IntensityNotFilledIn = false;
                 Start(_returnToIntensity);
@@ -342,68 +332,72 @@ namespace BioscoopReserveringsapplicatie
             }
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("---------------------------------------------------------------", ConsoleColor.White);
+                HorizontalLine.Print();
             }
         }
         public static void ChangePassword()
         {
             bool validOldPassword = false;
+            PrintTitle();
             while (!validOldPassword)
             {
-                string oldPassword = ReadLineUtil.EnterValue(true, () =>
-                {
-                    ColorConsole.WriteColor("Voer uw [oude wachtwoord] in: ", Globals.ColorInputcClarification);
-                }, UserDetails.Start, true);
+                string oldPassword = ReadLineUtil.EnterValue("Voer uw [oude wachtwoord] in: ", UserDetails.Start, true);
                 validOldPassword = _userLogic.ValidateOldPassword(oldPassword);
 
                 if (!validOldPassword)
                 {
+                    PrintTitle();
                     ColorConsole.WriteColorLine("Oud wachtwoord is onjuist.", Globals.ErrorColor);
                 }
             }
             string newPassword = "";
             bool validNewPassword = false;
+            PrintTitle();
             while (!validNewPassword)
             {
-                newPassword = ReadLineUtil.EnterValue(true, () =>
-                {
-                    ColorConsole.WriteColor("Voer uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
-                }, UserDetails.Start, true);
+                newPassword = ReadLineUtil.EnterValue("Voer uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
                 validNewPassword = _userLogic.ValidatePassword(newPassword);
 
                 if (!validNewPassword)
                 {
                     if (newPassword.Length < 5)
                     {
+                        PrintTitle();
                         ColorConsole.WriteColorLine("Wachtwoord moet minimaal 5 tekens bevatten.", Globals.ErrorColor);
                     }
                 }
             }
 
             bool validConfirmPassword = false;
+            PrintTitle();
+            ColorConsole.WriteColorLine("Uw nieuwe wachtoord is geldig. Voer het nogmaals in om te bevestigen.", Globals.SuccessColor);
             while (!validConfirmPassword)
             {
-                string confirmPassword = ReadLineUtil.EnterValue(true, () =>
-                {
-                    ColorConsole.WriteColor("Bevestig uw [nieuwe wachtwoord] in: ", Globals.ColorInputcClarification);
-                }, UserDetails.Start, true);
+                string confirmPassword = ReadLineUtil.EnterValue("Bevestig uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
                 validConfirmPassword = newPassword == confirmPassword;
                 if (!validConfirmPassword)
                 {
-                    Console.Clear();
+                    PrintTitle();
                     ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
-                    Thread.Sleep(2000);
                 }
             }
 
             if (_userLogic != null)
             {
-                _userLogic.EditPassword(newPassword);
+                if (_userLogic.EditPassword(newPassword))
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
+                    Thread.Sleep(3000);
+                }
             }
-            Console.Clear();
-            ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
-            Thread.Sleep(4000);
             UserDetails.Start();
+        }
+
+        public static void PrintTitle()
+        {
+            Console.Clear();
+            ColorConsole.WriteColorLine("Wachtwoord aanpassen\n", Globals.ExperienceColor);
         }
     }
 }

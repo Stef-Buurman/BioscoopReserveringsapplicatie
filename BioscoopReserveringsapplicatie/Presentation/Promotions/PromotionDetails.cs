@@ -12,15 +12,38 @@ namespace BioscoopReserveringsapplicatie
 
             promotion = promotionLogic.GetById(promotionId);
 
-            List<Option<string>> options;
-
-            if (promotion.Status)
+            if (promotion == null)
             {
-                options = new List<Option<string>>
+                ColorConsole.WriteColorLine("Promotie niet gevonden", Globals.ErrorColor);
+                PromotionOverview.Start();
+                return;
+            }
+
+            List<Option<string>> options = new List<Option<string>>();
+
+            if (promotion.Status != Status.Archived)
+            {
+                options.Add(new Option<string>(promotion.Status == Status.Active ? "Deactiveer promotie" : "Activeer promotie", () =>
                 {
-                    new Option<string>("Deactiveer promotie", () =>
-                    {
-                        List<Option<string>> options2 = new List<Option<string>>
+                    ActiveOrDeActiveatePromotion(promotionId);
+                }));
+            }
+            options.AddRange(new List<Option<string>>
+            {
+                new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
+                new Option<string>(promotion.Status != Status.Archived ? "Archiveer promotie" : "Dearchiveer promotie", () => PromotionArchive.Start(promotionId)),
+                new Option<string>("Terug", () => PromotionOverview.Start()),
+            });
+
+            Print();
+            string selectionMenu = new SelectionMenuUtil<string>(options).Create();
+        }
+
+        private static void ActiveOrDeActiveatePromotion(int promotionId)
+        {
+            if (promotion?.Status == Status.Active)
+            {
+                List<Option<string>> options2 = new List<Option<string>>
                         {
                             new Option<string>("Ja", () => {
                                 promotionLogic.Deactivate(promotionId);
@@ -30,22 +53,13 @@ namespace BioscoopReserveringsapplicatie
                                 Start(promotionId);
                             }),
                         };
-                        ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
-                        ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt deactiveren?", Globals.ErrorColor);
-                        string selectionMenu2 = new SelectionMenuUtil2<string>(options2).Create();
-                    }),
-                    new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
-                    new Option<string>("Verwijder promotie", () => PromotionDelete.Start(promotionId)),
-                    new Option<string>("Terug", () => PromotionOverview.Start()),
-                };
+                ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt deactiveren?", Globals.ErrorColor);
+                string selectionMenu2 = new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
             }
             else
             {
-                options = new List<Option<string>>
-                {
-                    new Option<string>("Activeer promotie", () =>
-                    {
-                        List<Option<string>> options2 = new List<Option<string>>
+                List<Option<string>> options2 = new List<Option<string>>
                         {
                             new Option<string>("Ja", () => {
                                 promotionLogic.Activate(promotionId);
@@ -55,17 +69,10 @@ namespace BioscoopReserveringsapplicatie
                                 Start(promotionId);
                             }),
                         };
-                        ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
-                        ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt activeren?", Globals.ErrorColor);
-                        string selectionMenu2 = new SelectionMenuUtil2<string>(options2).Create();
-                    }),
-                    new Option<string>("Bewerk promotie", () => PromotionEdit.Start(promotionId)),
-                    new Option<string>("Verwijder promotie", () => PromotionDelete.Start(promotionId)),
-                    new Option<string>("Terug", () => PromotionOverview.Start()),
-                };
+                ColorConsole.WriteColorLine("\n----------------------------------------------------------------", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Weet u zeker dat u deze promotie wilt activeren?", Globals.ErrorColor);
+                string selectionMenu2 = new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
             }
-            Print();
-            string selectionMenu = new SelectionMenuUtil2<string>(options).Create();
         }
 
         private static void Print()
@@ -75,7 +82,8 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Promotie details]", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie titel: ]{promotion.Title}", Globals.PromotionColor);
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{promotion.Description}", Globals.PromotionColor);
-            ColorConsole.WriteColorLine($"[Promotie status: ]{(promotion.Status ? "Actief" : "Inactief")}\n", Globals.PromotionColor);
+            ColorConsole.WriteColorLine($"[Promotie status: ]{promotion.Status.GetDisplayName()}\n\n", Globals.PromotionColor);
+            Console.WriteLine("Wat wil je doen?");
         }
     }
 }

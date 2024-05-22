@@ -6,17 +6,17 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.IsAdmin())
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
                     new Option<string>("Films", () => MovieOverview.Start()),
                     new Option<string>("Experiences", () => ExperienceOverview.Start()),
-                    new Option<string>("Promoties", () => Promotions.Start()),
+                    new Option<string>("Promoties", () => PromotionOverview.Start()),
                     new Option<string>("Uitloggen", () => LandingPage.Start())
                 };
                 ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green);
-                new SelectionMenuUtil2<string>(options).Create();
+                new SelectionMenuUtil<string>(options).Create();
             }
             else
             {

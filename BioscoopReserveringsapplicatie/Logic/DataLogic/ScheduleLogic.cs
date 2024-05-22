@@ -2,14 +2,15 @@ using System.Globalization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    class ScheduleLogic
+    public class ScheduleLogic : ILogic<ScheduleModel>
     {
         private static ExperienceLogic experiencesLogic = new ExperienceLogic();
         private static LocationLogic locationLogic = new LocationLogic();
         private static RoomLogic roomLogic = new RoomLogic();
+        private static ReservationLogic ReservationLogic = new ReservationLogic();
 
         private List<ScheduleModel> _Schedules;
-        private IDataAccess<ScheduleModel> _DataAccess = new DataAccess<ScheduleModel>();
+        public IDataAccess<ScheduleModel> _DataAccess { get; }
         public ScheduleLogic(IDataAccess<ScheduleModel> dataAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
@@ -17,6 +18,8 @@ namespace BioscoopReserveringsapplicatie
 
             _Schedules = _DataAccess.LoadAll();
         }
+
+        public int GetNextId() => IdGenerator.GetNextId(_Schedules);
 
         public List<ScheduleModel> GetAll() => _Schedules = _DataAccess.LoadAll();
 
@@ -28,29 +31,57 @@ namespace BioscoopReserveringsapplicatie
 
         public List<ScheduleModel> GetByExperienceId(int id) => _DataAccess.LoadAll().FindAll(i => i.ExperienceId == id);
 
-        public bool Add(int experienceId, int roomId, int locationId, string scheduledDateTime)
+        public ScheduleModel CreateSchedule(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
-            if (UserLogic.CurrentUser != null && UserLogic.CurrentUser.IsAdmin)
+            if (UserLogic.IsAdmin())
             {
                 if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
                 {
                     DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
-
-                    GetAll();
-
                     ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTimeStart, dateTimeEnd);
-
-                    UpdateList(schedule);
-                    return true;
+                    return schedule;
                 }
-                else return false;
             }
-            else return false;
+            return null;
         }
 
-        public bool TimeSlotOpenOnRoom(int experienceId, int locationId, int roomId,  string scheduledDateTime, out string error)
+        public bool Validate(ScheduleModel schedule) => schedule != null;
+
+        public bool Add(ScheduleModel schedule)
         {
-          
+            if (UserLogic.IsAdmin())
+            {
+                GetAll();
+
+                if (!Validate(schedule))
+                {
+                    return false;
+                }
+
+                UpdateList(schedule);
+                return true;
+            }
+            return false;
+        }
+
+        public bool Edit(ScheduleModel schedule)
+        {
+            if (UserLogic.IsAdmin())
+            {
+                if (!Validate(schedule))
+                {
+                    return false;
+                }
+
+                UpdateList(schedule);
+                return true;
+            }
+            return false;
+        }
+
+        public bool TimeSlotOpenOnRoom(int experienceId, int locationId, int roomId, string scheduledDateTime, out string error)
+        {
+
             if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
             {
                 DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
@@ -97,13 +128,13 @@ namespace BioscoopReserveringsapplicatie
         public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int locationId)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date > DateTime.Today.AddDays(-1));
         }
 
         public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int locationId, DateTime? dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, s.ScheduledDateTimeStart) == false);
         }
 
         public ScheduleModel GetRoomForScheduledExperience(int id, int locationId, DateTime? dateTime)
@@ -124,22 +155,16 @@ namespace BioscoopReserveringsapplicatie
             return schedules.Find(s => s.ExperienceId == experienceId && s.LocationId == location && s.ScheduledDateTimeStart == dateTime && s.RoomId == room).Id;
         }
 
-        public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int? locationId)
+        public List<ScheduleModel> GetScheduledExperiencesByLocationId(int experienceId, int locationId)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId);
+            return schedules.FindAll(s => s.ExperienceId == experienceId && s.LocationId == locationId && s.ScheduledDateTimeStart > DateTime.Now);
         }
 
-        public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int? locationId, DateTime? date)
+        public List<ScheduleModel> GetScheduledExperiencesByDateAndRoomId(int roomId, DateTime dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == date);
-        }
-
-        public ScheduleModel GetRoomForScheduledExperience(int id, int? locationId, DateTime? date, TimeSpan? time)
-        {
-            List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.Find(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == date && s.ScheduledDateTimeStart.TimeOfDay == time);
+            return schedules.FindAll(s => s.RoomId == roomId && s.ScheduledDateTimeStart.Date == dateTime.Date);
         }
     }
 }

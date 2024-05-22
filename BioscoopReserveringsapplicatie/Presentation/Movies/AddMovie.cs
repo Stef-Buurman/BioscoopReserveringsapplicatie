@@ -3,7 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class AddMovie
     {
         private static MovieLogic MoviesLogic = new MovieLogic();
-        private static Action actionWhenEscapePressed = AdminMenu.Start;
+        private static Action actionWhenEscapePressed = MovieOverview.Start;
 
         private static string title = "";
         private static string description = "";
@@ -15,103 +15,86 @@ namespace BioscoopReserveringsapplicatie
         private static string _returnToGenres = "Genres";
         private static string _returnToRating = "Rating";
 
-
         public static void Start(string returnTo = "")
         {
             Console.Clear();
 
-            if(returnTo == "" || returnTo == _returnToTitle)
+            if (returnTo == "" || returnTo == _returnToTitle)
             {
                 MovieName();
                 returnTo = "";
             }
 
-            if(returnTo == "" || returnTo == _returnToDescription)
+            if (returnTo == "" || returnTo == _returnToDescription)
             {
                 MovieDescription();
                 returnTo = "";
             }
 
-            if(returnTo == "" || returnTo == _returnToGenres)
+            if (returnTo == "" || returnTo == _returnToGenres)
             {
                 SelectMovieGenres();
                 returnTo = "";
             }
 
-            if(returnTo == "" || returnTo == _returnToRating)
+            if (returnTo == "" || returnTo == _returnToRating)
             {
                 SelectMovieRating();
                 returnTo = "";
             }
+            Print();
+            List<Option<string>> options = new List<Option<string>>
+            {
+            new Option<string>("Opslaan en verlaten", () => 
+            {
+                if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
+                {
+                    MovieOverview.Start();
+                }
+                else
+                {
+                    Console.Clear();
+                    ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n", Globals.ErrorColor);
+                    Start(_returnToRating);
+                }
+            }),
+                new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToTitle); }),
+                new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
+            };
 
-            if (MoviesLogic.AddMovie(title, description, genres, rating))
-            {
-                Console.Clear();
-                Print();
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
-                };
-                new SelectionMenuUtil2<string>(options, () => Start(_returnToRating), Print).Create();
-            }
-            else
-            {
-                Console.Clear();
-                Print();
-                Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de film. Probeer het opnieuw.\n");
-                List<Option<string>> options = new List<Option<string>>
-                {
-                    new Option<string>("Terug", () => {Console.Clear(); AdminMenu.Start();}),
-                };
-                new SelectionMenuUtil2<string>(options).Create();
-            }
+            new SelectionMenuUtil<string>(options).Create();
         }
 
         private static void MovieName()
         {
-            Console.Clear();
             PrintAddingMovie();
-            
-            title = ReadLineUtil.EnterValue(() =>
-            {
-                ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-            }, actionWhenEscapePressed);
+            string question = "Voer de film [titel] in: ";
 
+            title = ReadLineUtil.EditValue(title, question, actionWhenEscapePressed);
             while (string.IsNullOrEmpty(title))
             {
-                title = ReadLineUtil.EnterValue(() =>
-                {
-                    ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de film [titel] in: ", Globals.ColorInputcClarification);
-                }, actionWhenEscapePressed);
+                PrintAddingMovie();
+                ColorConsole.WriteColorLine("Voer alstublieft een geldige naam in!", Globals.ErrorColor);
+                title = ReadLineUtil.EditValue(title, question, actionWhenEscapePressed);
             }
         }
 
         private static void MovieDescription()
         {
-            Console.Clear();
             PrintAddingMovie();
-
-            description = ReadLineUtil.EnterValue(() =>
-            {
-                ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-            }, () => Start(_returnToTitle));
+            string question = "Voer de film [beschrijving] in: ";
+            description = ReadLineUtil.EditValue(description, question, () => Start(_returnToTitle));
 
             while (string.IsNullOrEmpty(description))
             {
-                description = ReadLineUtil.EnterValue(() =>
-                {
-                    ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
-                    ColorConsole.WriteColor("Voer de film [beschrijving] in: ", Globals.ColorInputcClarification);
-                }, () => Start(_returnToTitle));
+                PrintAddingMovie();
+                ColorConsole.WriteColorLine("Voer alstublieft een geldige beschrijving in!", Globals.ErrorColor);
+                description = ReadLineUtil.EditValue(description, question, () => Start(_returnToTitle));
             }
         }
 
         private static void SelectMovieGenres()
         {
-            Console.Clear();
             PrintAddingMovie();
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
@@ -121,15 +104,14 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            genres = new SelectionMenuUtil2<Genre>(availableGenres, 9,
+            genres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () => { Start(_returnToDescription); },
-                    () => { Start(_returnToGenres);},
+                    () => { Start(_returnToGenres); },
                     "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect();
         }
 
         private static void SelectMovieRating()
         {
-            Console.Clear();
             PrintAddingMovie();
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
 
@@ -140,38 +122,45 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
 
-            rating = new SelectionMenuUtil2<AgeCategory>(AgeCatagories, () => { genres = new List<Genre>(); Start(_returnToGenres); }, () => Start(_returnToRating)).Create();
+            rating = new SelectionMenuUtil<AgeCategory>(AgeCatagories, () => { genres = new List<Genre>(); Start(_returnToGenres); }, () => Start(_returnToRating)).Create();
         }
 
         private static void PrintAddingMovie()
         {
-            if(title != "")
+            Console.Clear();
+            if (title != "")
             {
                 ColorConsole.WriteColorLine("[Huidige Film Details]", Globals.MovieColor);
                 ColorConsole.WriteColorLine($"[Naam Film:] {title}", Globals.MovieColor);
             }
-            if(description != "")
+            if (description != "")
             {
                 ColorConsole.WriteColorLine($"[Beschrijving Film:] {description}", Globals.MovieColor);
             }
-            if(genres != null && genres.Count >= 1)
+            if (genres != null && genres.Count >= 1)
             {
                 ColorConsole.WriteColorLine($"[Genres Film:] {string.Join(", ", genres)}", Globals.MovieColor);
             }
-            if(rating != AgeCategory.Undefined)
-            {  
+            if (rating != AgeCategory.Undefined)
+            {
                 ColorConsole.WriteColorLine($"[Beschrijving Film:] {rating.GetDisplayName()}", Globals.MovieColor);
             }
+            if (title != "" || description != "" || (genres != null && genres.Count >= 1) || rating != AgeCategory.Undefined)
+            {
+                HorizontalLine.Print();
+            }
+            ColorConsole.WriteColorLine("Film Toevoegen\n", Globals.TitleColor);
         }
 
         private static void Print()
         {
-            ColorConsole.WriteColorLine("De film is toegevoegd!\n", Globals.MovieColor);
             ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            HorizontalLine.Print();
+            ColorConsole.WriteColorLine($"Wilt u deze [Film] toevoegen?", Globals.ColorInputcClarification);
         }
     }
 }
