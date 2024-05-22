@@ -188,7 +188,7 @@ namespace BioscoopReserveringsapplicatie
                         }
                         else
                         {
-                            ExperienceReservation.Start(experienceId, location, dateTime.Value.Date); // fix voor meerdere experiences
+                            ExperienceReservation.Start(experienceId, location, dateTime.Value.Date);
                         }
                         })
                 };
