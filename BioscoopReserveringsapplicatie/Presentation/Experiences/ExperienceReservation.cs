@@ -6,6 +6,7 @@ namespace BioscoopReserveringsapplicatie
         private static LocationLogic LocationLogic = new LocationLogic();
         private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
+        private static RoomLogic roomLogic = new RoomLogic();
 
         public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0)
         {
@@ -105,7 +106,7 @@ namespace BioscoopReserveringsapplicatie
 
                     if (scheduledExperience.Count > 1)
                     {
-                        
+
                         ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [zalen]:", Globals.ColorInputcClarification);
 
                         var options = new List<Option<int>>();
@@ -113,7 +114,7 @@ namespace BioscoopReserveringsapplicatie
                         foreach (ScheduleModel schedule in scheduledExperience)
                         {
 
-                            options.Add(new Option<int>(schedule.Id, $"Zaal {schedule.RoomId}", () => ExperienceReservation.Start(experienceId, location, dateTime, schedule.RoomId)));
+                            options.Add(new Option<int>(schedule.Id, $"Zaal {roomLogic.GetById(schedule.RoomId).RoomNumber}", () => ExperienceReservation.Start(experienceId, location, dateTime, roomLogic.GetById(schedule.RoomId).RoomNumber)));
 
                         }
                         options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date)));
@@ -123,7 +124,7 @@ namespace BioscoopReserveringsapplicatie
                     else
                     {
                         singleScheduled = true;
-                        room = scheduledExperience[0].RoomId;
+                        room = roomLogic.GetById(scheduledExperience[0].RoomId).RoomNumber;
                         ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
                     }
                 }

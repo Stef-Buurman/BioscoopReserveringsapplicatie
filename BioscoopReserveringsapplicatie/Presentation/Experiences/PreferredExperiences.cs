@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace BioscoopReserveringsapplicatie
 {
     static class PreferredExperiences
@@ -13,12 +15,17 @@ namespace BioscoopReserveringsapplicatie
             if (experienceId != 0) ExperienceDetails.Start(experienceId);
         }
 
-        private static int ShowExperiencesWithUserPreferences()
+        private static int ShowExperiencesWithUserPreferences(DateTime? date = null)
         {
             if (UserLogic.CurrentUser == null)
             {
                 Console.WriteLine("Geen gebruiker gevonden");
                 return 0;
+            }
+
+            if (date == null)
+            {
+                date = DateTime.Now;
             }
 
             Console.Clear();
@@ -35,7 +42,7 @@ namespace BioscoopReserveringsapplicatie
                 "Intensiteit",
             };
 
-            List<ExperienceModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser);
+            List<ExperienceModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser, (DateTime)date);
 
             if (experiences.Count > 0)
             {
@@ -67,7 +74,8 @@ namespace BioscoopReserveringsapplicatie
                 }
                 ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
                 ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren:", Globals.TitleColor);
-                Print();
+                ColorConsole.WriteColorLine($"Week {ISOWeek.GetWeekOfYear((DateTime)date)} - {date.Value.ToString("dd-MM-yyyy")} - {date.Value.AddDays(7).ToString("dd-MM-yyyy")}", Globals.ColorInputcClarification);
+                Print((DateTime)date);
                 int experienceId = new SelectionMenuUtil<int>(options,
                     () =>
                     {
@@ -75,7 +83,12 @@ namespace BioscoopReserveringsapplicatie
                     },
                     () =>
                     {
-                        ShowExperiencesWithUserPreferences();
+                        ShowExperiencesWithUserPreferences(date);
+                    },
+                    new List<KeyAction>()
+                    {
+                        new KeyAction(ConsoleKey.LeftArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(7));}),
+                        new KeyAction(ConsoleKey.RightArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(-7));}),
                     }, showEscapeabilityText: false).Create();
                 Console.Clear();
                 return experienceId;
@@ -90,7 +103,7 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print()
+        private static void Print(DateTime date)
         {
             // Defineer de kolom koppen voor de tabel
             List<string> columnHeaders = new List<string>
@@ -103,7 +116,7 @@ namespace BioscoopReserveringsapplicatie
                 "Intensiteit",
             };
 
-            List<ExperienceModel> allExperiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser);
+            List<ExperienceModel> allExperiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser, date);
             // Bereken de breedte voor elke kolom op basis van de koptekst en experiences
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences, experienceDataExtractor);
 
