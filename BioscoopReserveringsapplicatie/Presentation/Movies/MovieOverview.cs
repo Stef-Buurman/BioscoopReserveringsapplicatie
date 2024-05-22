@@ -39,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
                 "Film Naam",
                 "Genres",
                 "Leeftijdscategorie",
-                "Gearchiveerd"
+                "Status"
             };
 
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, movies, movieDataExtractor);
@@ -147,7 +147,7 @@ namespace BioscoopReserveringsapplicatie
                 "Film Naam",
                 "Genres",
                 "Leeftijdscategorie",
-                "Gearchiveerd"
+                "Status"
             };
 
             List<MovieModel> allMovies = MoviesLogic.GetAll();

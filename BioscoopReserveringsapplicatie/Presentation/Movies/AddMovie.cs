@@ -47,7 +47,7 @@ namespace BioscoopReserveringsapplicatie
             {
             new Option<string>("Opslaan en verlaten", () => 
             {
-                if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Inactive)))
+                if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
                 {
                     MovieOverview.Start();
                 }
