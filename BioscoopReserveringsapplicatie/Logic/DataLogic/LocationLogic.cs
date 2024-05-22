@@ -22,7 +22,7 @@ namespace BioscoopReserveringsapplicatie
 
         public LocationModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
-        public bool Validate(LocationModel location) => location != null && !string.IsNullOrEmpty(location.Name);
+        public bool Validate(LocationModel location) => location != null && !string.IsNullOrEmpty(location.Name) && checkIfLocationNameDoesNotExistAlready(location.Name);
 
         public bool Add(LocationModel location)
         {
@@ -81,16 +81,9 @@ namespace BioscoopReserveringsapplicatie
             return locations;
         }
 
-        public List<LocationModel> GetAllArchivedLocations()
+        public bool checkIfLocationNameDoesNotExistAlready(string name)
         {
-            _Locations = _DataAccess.LoadAll();
-            return _Locations.FindAll(e => e.Status == Status.Archived);
-        }
-        
-        public List<LocationModel> GetAllActiveLocations()
-        {
-            _Locations = _DataAccess.LoadAll();
-            return _Locations.FindAll(e => e.Status == Status.Active);
+            return !_Locations.Any(l => l.Name == name);
         }
 
     }

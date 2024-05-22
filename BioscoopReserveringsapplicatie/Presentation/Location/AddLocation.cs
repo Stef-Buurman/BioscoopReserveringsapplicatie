@@ -28,10 +28,11 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Console.Clear();
                     Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de Locatie. Probeer het opnieuw.\n");
-                    Start("Description");
+                    Thread.Sleep(3000);
+                    Start("Name");
                 }
             }),
-            new Option<string>("Verder gaan met aanpassen", () => { Start("Description"); }),
+            new Option<string>("Verder gaan met aanpassen", () => { Start("Name"); }),
             new Option<string>("Verlaten zonder op te slaan", () => { LocationOverview.Start(); }),
             };
 
