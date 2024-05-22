@@ -90,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
         {
             List<string> columnHeaders = new List<string>
             {
-                "Naam Locatie",
+                "Naam locatie",
                 "Status",
             };
 

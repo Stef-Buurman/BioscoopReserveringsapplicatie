@@ -24,8 +24,8 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Bewerk Locatie", () => LocationEdit.Start(location.Id)),
-                    new Option<string>("Archiveer Locatie", () => LocationArchive.Start(location.Id)),
+                    new Option<string>("Bewerk locatie", () => LocationEdit.Start(location.Id)),
+                    new Option<string>("Archiveer locatie", () => LocationArchive.Start(location.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); LocationOverview.Start();}),
                 };
             }
@@ -36,7 +36,7 @@ namespace BioscoopReserveringsapplicatie
         private static void Print()
         {
             ColorConsole.WriteColorLine("[Locatie details]", Globals.LocationColor);
-            ColorConsole.WriteColorLine($"[naam Locatie: ]{location.Name}\n", Globals.LocationColor);
+            ColorConsole.WriteColorLine($"[Naam locatie: ]{location.Name}\n", Globals.LocationColor);
 
         
         }   
