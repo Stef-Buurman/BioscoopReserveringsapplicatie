@@ -10,9 +10,15 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start()
         {
-            int experienceId = ShowExperiencesWithUserPreferences();
+            ShowExperiencesWithUserPreferences();
+        }
 
-            if (experienceId != 0) ExperienceDetails.Start(experienceId);
+        private static void ShowExperienceDetails(int experienceId)
+        {
+            if (experienceId != 0)
+            {
+                ExperienceDetails.Start(experienceId);
+            }
         }
 
         private static int ShowExperiencesWithUserPreferences(DateTime? date = null)
@@ -96,6 +102,7 @@ namespace BioscoopReserveringsapplicatie
                         new KeyAction(ConsoleKey.RightArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(7));}),
                     }, showEscapeabilityText: false).Create();
                 Console.Clear();
+                ShowExperienceDetails(experienceId);
                 return experienceId;
             }
             else
@@ -120,6 +127,11 @@ namespace BioscoopReserveringsapplicatie
                     else if (key.Key == ConsoleKey.RightArrow)
                     {
                         ShowExperiencesWithUserPreferences(date.Value.AddDays(7));
+                        break;
+                    }
+                    else if (key.Key == ConsoleKey.Escape)
+                    {
+                        ReadLineUtil.EscapeKeyPressed(() => { UserMenu.Start(); }, () => { ShowExperiencesWithUserPreferences(date); });
                         break;
                     }
                 }
