@@ -14,6 +14,9 @@ namespace BioscoopReserveringsapplicatie
                         {
                             new Option<string>("Ja", () => {
                                 locationLogic.UnArchive(LocationId);
+                                Console.Clear();
+                                ColorConsole.WriteColorLine($"De locatie: {location.Name} is gedearchiveerd!", Globals.SuccessColor);
+                                Thread.Sleep(4000);
                                 LocationDetails.Start(LocationId);
                             }),
                             new Option<string>("Nee", () => {
@@ -30,6 +33,9 @@ namespace BioscoopReserveringsapplicatie
                         {
                             new Option<string>("Ja", () => {
                                 locationLogic.Archive(LocationId);
+                                Console.Clear();
+                                ColorConsole.WriteColorLine($"De locatie: {location.Name} is gearchiveerd!", Globals.SuccessColor);
+                                Thread.Sleep(4000);
                                 LocationDetails.Start(LocationId);
                             }),
                             new Option<string>("Nee", () => {
