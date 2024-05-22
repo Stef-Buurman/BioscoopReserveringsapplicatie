@@ -73,8 +73,13 @@ namespace BioscoopReserveringsapplicatie
                     options.Add(new Option<int>(experience.Id, experienceInfo));
                 }
                 ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-                ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren:", Globals.TitleColor);
-                ColorConsole.WriteColorLine($"Week {ISOWeek.GetWeekOfYear((DateTime)date)} - {date.Value.ToString("dd-MM-yyyy")} - {date.Value.AddDays(7).ToString("dd-MM-yyyy")}", Globals.ColorInputcClarification);
+
+                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje] en [rechterpijltje om door de weken te scrollen*\n");
+
+                ColorConsole.WriteColorLine($"Week {ISOWeek.GetWeekOfYear((DateTime)date)} - {date.Value.ToString("dd-MM-yyyy")} - {date.Value.AddDays(7).ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
+
+                ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren in deze week:\n", Globals.TitleColor);
+
                 Print((DateTime)date);
                 int experienceId = new SelectionMenuUtil<int>(options,
                     () =>
@@ -87,18 +92,38 @@ namespace BioscoopReserveringsapplicatie
                     },
                     new List<KeyAction>()
                     {
-                        new KeyAction(ConsoleKey.LeftArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(7));}),
-                        new KeyAction(ConsoleKey.RightArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(-7));}),
+                        new KeyAction(ConsoleKey.LeftArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(-7));}),
+                        new KeyAction(ConsoleKey.RightArrow, () => {ShowExperiencesWithUserPreferences(date.Value.AddDays(7));}),
                     }, showEscapeabilityText: false).Create();
                 Console.Clear();
                 return experienceId;
             }
             else
             {
-                ColorConsole.WriteColorLine("Er zijn geen experiences gevonden op basis van uw voorkeuren.", Globals.ErrorColor);
-                ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar het gebruikersmenu.", Globals.ColorInputcClarification);
-                Console.ReadKey();
-                UserMenu.Start();
+                ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+
+                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje] en [rechterpijltje om door de weken te scrollen*\n");
+
+                ColorConsole.WriteColorLine($"Week {ISOWeek.GetWeekOfYear((DateTime)date)} - {date.Value.ToString("dd-MM-yyyy")} - {date.Value.AddDays(7).ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
+
+                ColorConsole.WriteColorLine("Er zijn geen experiences gevonden op basis van uw voorkeuren in deze week.", Globals.ErrorColor);
+
+                while (true)
+                {
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+
+                    if (key.Key == ConsoleKey.LeftArrow)
+                    {
+                        ShowExperiencesWithUserPreferences(date.Value.AddDays(-7));
+                        break;
+                    }
+                    else if (key.Key == ConsoleKey.RightArrow)
+                    {
+                        ShowExperiencesWithUserPreferences(date.Value.AddDays(7));
+                        break;
+                    }
+                }
+
                 return 0;
             }
         }
