@@ -33,7 +33,7 @@ namespace BioscoopReserveringsapplicatie
             if (_user == null) _user = user;
 
             if ((returnTo == "" || returnTo == _returnToGenres) && !_GenresNotFilledIn)
-            { 
+            {
                 SelectGenres();
                 returnTo = "";
             }
@@ -55,7 +55,15 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Inloggen", UserLogin.Start),
+                    new Option<string>("Inloggen",
+                    () =>
+                    {
+                        _selectedGenres = new List<Genre>();
+                        _ageCategory = AgeCategory.Undefined;
+                        _intensity = Intensity.Undefined;
+                        _language = Language.Undefined;
+                        UserLogin.Start();
+                    }),
                 };
             PrintEditedList();
             if (!PreferencesLogic.addPreferencesToAccount(_selectedGenres, _ageCategory, _intensity, _language, user))
@@ -93,9 +101,9 @@ namespace BioscoopReserveringsapplicatie
             List<Option<AgeCategory>> options = new List<Option<AgeCategory>>();
             foreach (AgeCategory option in AgeCatagories)
             {
-                if(option == AgeCategory.Undefined)
+                if (option == AgeCategory.Undefined)
                     options.Add(new Option<AgeCategory>(option, _NotFilledIn));
-                else 
+                else
                     options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
             ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
@@ -103,7 +111,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 _GenresNotFilledIn = false;
                 Start(_user, _returnToGenres);
-            }, 
+            },
             () =>
             {
                 _AgeCategoryNotFilledIn = false;
@@ -188,9 +196,9 @@ namespace BioscoopReserveringsapplicatie
         {
             string NotFilledIn = "Niet ingevuld";
             Console.Clear();
-            bool AnyOfTheFieldsFilledIn = _selectedGenres.Count > 0 || _ageCategory != AgeCategory.Undefined 
-                || _intensity != Intensity.Undefined || _language != Language.Undefined 
-                || _GenresNotFilledIn || _AgeCategoryNotFilledIn || _IntensityNotFilledIn 
+            bool AnyOfTheFieldsFilledIn = _selectedGenres.Count > 0 || _ageCategory != AgeCategory.Undefined
+                || _intensity != Intensity.Undefined || _language != Language.Undefined
+                || _GenresNotFilledIn || _AgeCategoryNotFilledIn || _IntensityNotFilledIn
                 || _LanguageNotFilledIn;
             if (AnyOfTheFieldsFilledIn)
             {
@@ -199,7 +207,8 @@ namespace BioscoopReserveringsapplicatie
             if (_selectedGenres.Count > 0)
             {
                 ColorConsole.WriteColorLine($"[Genres:] {string.Join(", ", _selectedGenres)}", Globals.ExperienceColor);
-            }else if (_GenresNotFilledIn)
+            }
+            else if (_GenresNotFilledIn)
             {
                 ColorConsole.WriteColorLine($"[Genres:] {NotFilledIn}", Globals.ExperienceColor);
             }

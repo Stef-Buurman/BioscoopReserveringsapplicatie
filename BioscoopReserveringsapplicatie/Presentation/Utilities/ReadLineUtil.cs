@@ -2,7 +2,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ReadLineUtil
     {
-        public static int Top;
+        public static int Top = 0;
         public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n", bool mask = false, bool showEscapability = true)
         {
             bool isEscapable = escapeAction != null;
@@ -57,19 +57,19 @@ namespace BioscoopReserveringsapplicatie
                 {
                     input = input.Insert(cursorPosition, key.KeyChar.ToString());
                     cursorPosition++;
-                    Console.Write(key.KeyChar + input.Substring(cursorPosition));
+                    ColorConsole.WriteColor(key.KeyChar + input.Substring(cursorPosition), Globals.ColorEditInput);
                 }
                 else if (!char.IsControl(key.KeyChar) && mask == true)
                 {
                     input = input.Insert(cursorPosition, key.KeyChar.ToString());
                     cursorPosition++;
-                    Console.Write("*" + input.Substring(cursorPosition));
+                    ColorConsole.WriteColor("*" + input.Substring(cursorPosition), Globals.ColorEditInput);
                 }
                 Console.CursorVisible = false;
                 Console.SetCursorPosition(originalPosX, Console.CursorTop);
                 ColorConsole.WriteColor(whatToEnterText, Globals.ColorInputcClarification);
                 if (mask)
-                    Console.Write(new string('*', input.Length) + new string(' ', Console.WindowWidth - input.Length - originalPosX));
+                    ColorConsole.WriteColor(new string('*', input.Length) + new string(' ', Console.WindowWidth - input.Length - originalPosX), Globals.ColorEditInput);
                 else
                     ColorConsole.WriteColor(input + new string(' ', Console.WindowWidth - input.Length - originalPosX), Globals.ColorEditInput);
                 Console.CursorVisible = true;
