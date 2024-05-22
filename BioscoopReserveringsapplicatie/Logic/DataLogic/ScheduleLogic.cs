@@ -134,7 +134,7 @@ namespace BioscoopReserveringsapplicatie
         public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int locationId, DateTime? dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, s.ScheduledDateTimeStart) == false);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTimeForLocation(UserLogic.CurrentUser.Id, s.ScheduledDateTimeStart, locationId) == false);
         }
 
         public ScheduleModel GetRoomForScheduledExperience(int id, int locationId, DateTime? dateTime)
