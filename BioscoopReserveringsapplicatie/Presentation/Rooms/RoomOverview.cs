@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             List<RoomModel> rooms = roomLogic.GetAll();
 
-            if (rooms.Count == 0) ColorConsole.WriteColorLine("Er zijn geen zalen gevonden.", Globals.TitleColor); 
+            if (rooms.Count == 0) PrintWhenNoRoomsFound("Er zijn geen zalen gevonden."); 
             else ShowRooms(rooms);
         }
 
@@ -63,7 +63,7 @@ namespace BioscoopReserveringsapplicatie
         {
             if (roomId == 0)
             {
-                PromotionDetails.Start(roomId);
+                RoomDetails.Start(roomId);
             }
         }
 

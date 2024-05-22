@@ -24,7 +24,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Dearchiveer zaal", () => RoomArchive.Start(room.Id)),
+                    //new Option<string>("Dearchiveer zaal", () => RoomArchive.Start(room.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); RoomOverview.Start();}),
                 };
             }
@@ -32,7 +32,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Archiveer zaal", () => RoomArchive.Start(room.Id)),
+                    //new Option<string>("Archiveer zaal", () => RoomArchive.Start(room.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); RoomOverview.Start();}),
                 };
             }
