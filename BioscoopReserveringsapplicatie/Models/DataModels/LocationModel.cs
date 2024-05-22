@@ -13,11 +13,12 @@ namespace BioscoopReserveringsapplicatie
         [JsonConverter(typeof(EnumConverter<Status>))]
         [JsonPropertyName("status")]
         public Status Status { get; set; }
-        
+
         public LocationModel(int id, string name)
         {
             Id = id;
             Name = name;
+            Status = Status.Active;
         }
     }
 }
