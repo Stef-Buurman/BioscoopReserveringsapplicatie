@@ -19,10 +19,10 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Email: ]{UserLogic.CurrentUser.EmailAddress}\n", ConsoleColor.Cyan);
 
                 ColorConsole.WriteColorLine("Persoonlijke voorkeuren", ConsoleColor.Green);
-                ColorConsole.WriteColorLine($"[Genre: ]{(UserLogic.CurrentUser.Genres.Any() ? string.Join(", ", UserLogic.CurrentUser.Genres) : "Undefined")}", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Genre: ]{(UserLogic.CurrentUser.Genres.Any() ? string.Join(", ", UserLogic.CurrentUser.Genres) : "Niet ingevuld")}", ConsoleColor.Green);
                 ColorConsole.WriteColorLine($"[Kijkwijzer: ]{UserLogic.CurrentUser.AgeCategory.GetDisplayName()}", ConsoleColor.Green);
                 ColorConsole.WriteColorLine($"[Intensiteit: ]{UserLogic.CurrentUser.Intensity.GetDisplayName()}", ConsoleColor.Green);
-                ColorConsole.WriteColorLine($"[Taal: ]{UserLogic.CurrentUser.Language}\n", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Taal: ]{UserLogic.CurrentUser.Language.GetDisplayName()}\n", ConsoleColor.Green);
                 Console.WriteLine("Wat wil je doen?");
             }
             new SelectionMenuUtil<string>(options).Create();
