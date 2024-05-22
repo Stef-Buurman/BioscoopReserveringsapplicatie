@@ -26,6 +26,7 @@ namespace BioscoopReserveringsapplicatie
         public static readonly ConsoleColor ReservationColor = ConsoleColor.DarkCyan;
         public static readonly ConsoleColor ErrorColor = ConsoleColor.DarkRed;
         public static readonly ConsoleColor SuccessColor = ConsoleColor.DarkGreen;
+        public static readonly ConsoleColor LocationColor = ConsoleColor.DarkMagenta;
 
         public static List<T> GetAllEnum<T>()
         {

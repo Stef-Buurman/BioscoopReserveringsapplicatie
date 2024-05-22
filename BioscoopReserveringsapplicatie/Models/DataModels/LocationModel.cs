@@ -10,6 +10,10 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonConverter(typeof(EnumConverter<Status>))]
+        [JsonPropertyName("status")]
+        public Status Status { get; set; }
+        
         public LocationModel(int id, string name)
         {
             Id = id;

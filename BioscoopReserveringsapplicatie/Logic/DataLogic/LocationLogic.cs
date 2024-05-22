@@ -80,5 +80,18 @@ namespace BioscoopReserveringsapplicatie
 
             return locations;
         }
+
+        public List<LocationModel> GetAllArchivedLocations()
+        {
+            _Locations = _DataAccess.LoadAll();
+            return _Locations.FindAll(e => e.Status == Status.Archived);
+        }
+        
+        public List<LocationModel> GetAllActiveLocations()
+        {
+            _Locations = _DataAccess.LoadAll();
+            return _Locations.FindAll(e => e.Status == Status.Active);
+        }
+
     }
 }
