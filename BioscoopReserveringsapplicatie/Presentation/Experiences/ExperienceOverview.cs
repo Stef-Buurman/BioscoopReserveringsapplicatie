@@ -52,7 +52,7 @@ namespace BioscoopReserveringsapplicatie
                     genres = genres.Substring(0, 25) + "...";
                 }
                 string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) + "} {1,-" + (columnWidths[1] + 1) + "} {2,-" + (columnWidths[2] + 1) + "} {3,-" + (columnWidths[3] + 1) + "} {4,-" + columnWidths[4] + "}",
-                experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity, experience.Status.GetDisplayName());
+                experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity.GetDisplayName(), experience.Status.GetDisplayName());
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");

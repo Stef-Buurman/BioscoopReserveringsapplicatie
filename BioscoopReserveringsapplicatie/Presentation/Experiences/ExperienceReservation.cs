@@ -75,6 +75,8 @@ namespace BioscoopReserveringsapplicatie
 
                     schedules.Sort((x, y) => x.ScheduledDateTimeStart.CompareTo(y.ScheduledDateTimeStart));
 
+                    schedules = schedules.DistinctBy(s => s.ScheduledDateTimeStart.TimeOfDay).ToList();
+
                     ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [tijden]:", Globals.ColorInputcClarification);
 
                     var options = new List<Option<int>>();
@@ -97,10 +99,32 @@ namespace BioscoopReserveringsapplicatie
 
                 if (room == 0)
                 {
-                    ScheduleModel scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, dateTime);
+                    List<ScheduleModel> scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, dateTime);
 
-                    room = scheduledExperience.RoomId;
+                    if (scheduledExperience.Count > 1)
+                    {
+                        ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [zalen]:", Globals.ColorInputcClarification);
 
+                        var options = new List<Option<int>>();
+
+                        foreach (ScheduleModel schedule in scheduledExperience)
+                        {
+
+                            options.Add(new Option<int>(schedule.Id, $"Zaal {schedule.RoomId}", () => ExperienceReservation.Start(experienceId, location, dateTime, schedule.RoomId)));
+
+                        }
+                        options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date)));
+
+                        new SelectionMenuUtil<int>(options).Create();
+                    }
+                    else
+                    {
+                        room = scheduledExperience[0].RoomId;
+                        ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                    }
+                }
+                else
+                {
                     ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
                 }
 
@@ -152,7 +176,7 @@ namespace BioscoopReserveringsapplicatie
 
                             }
                         }),
-                    new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date))
+                    new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime)) // fix voor 1 of meerdere toevoegen
                 };
 
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
