@@ -118,7 +118,6 @@ namespace BioscoopReserveringsapplicatie
                 location.Name,
                 location.Status.GetDisplayName(),
             };
-
             return locationInfo;
         }
     }

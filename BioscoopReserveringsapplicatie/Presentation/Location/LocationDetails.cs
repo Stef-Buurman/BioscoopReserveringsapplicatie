@@ -37,8 +37,6 @@ namespace BioscoopReserveringsapplicatie
         {
             ColorConsole.WriteColorLine("[Locatie details]", Globals.LocationColor);
             ColorConsole.WriteColorLine($"[Naam locatie: ]{location.Name}\n", Globals.LocationColor);
-
-        
         }   
         
     }
