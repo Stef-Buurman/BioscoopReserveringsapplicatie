@@ -5,10 +5,10 @@ namespace BioscoopReserveringsapplicatie
         private static LocationLogic LocationLogic = new LocationLogic();
         private static LocationModel? location;
 
-        public static void Start(int movieId)
+        public static void Start(int locationId)
         {
             Console.Clear();
-            location = LocationLogic.GetById(movieId);
+            location = LocationLogic.GetById(locationId);
             List<Option<string>> options;
 
             if (location.Status == Status.Archived)
