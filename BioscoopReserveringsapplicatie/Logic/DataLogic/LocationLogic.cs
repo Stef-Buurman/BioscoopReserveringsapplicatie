@@ -86,5 +86,30 @@ namespace BioscoopReserveringsapplicatie
             return !_Locations.Any(l => l.Name == name);
         }
 
+        public bool Archive(int id)
+        {
+            LocationModel? location = GetById(id);
+            if (location == null)
+            {
+                return false;
+            }
+
+            location.Status = Status.Archived;
+            UpdateList(location);
+            return true;
+        }
+
+        public bool UnArchive(int id)
+        {
+            LocationModel? location = GetById(id);
+            if (location == null)
+            {
+                return false;
+            }
+
+            location.Status = Status.Active;
+            UpdateList(location);
+            return true;
+        }
     }
 }

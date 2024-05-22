@@ -36,7 +36,8 @@ namespace BioscoopReserveringsapplicatie
         private static void Print()
         {
             ColorConsole.WriteColorLine("[Locatie details]", Globals.LocationColor);
-            ColorConsole.WriteColorLine($"[Naam locatie: ]{location.Name}\n", Globals.LocationColor);
+            ColorConsole.WriteColorLine($"[Naam locatie: ]{location.Name}", Globals.LocationColor);
+            ColorConsole.WriteColorLine($"[Status: ]{location.Status}\n", Globals.LocationColor);
         }   
         
     }
