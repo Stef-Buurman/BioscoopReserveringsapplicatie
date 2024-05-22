@@ -370,6 +370,7 @@ namespace BioscoopReserveringsapplicatie
 
             bool validConfirmPassword = false;
             PrintTitle();
+            ColorConsole.WriteColorLine("Uw nieuwe wachtoord is geldig. Voer het nogmaals in om te bevestigen.", Globals.SuccessColor);
             while (!validConfirmPassword)
             {
                 string confirmPassword = ReadLineUtil.EnterValue("Bevestig uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
@@ -378,7 +379,6 @@ namespace BioscoopReserveringsapplicatie
                 {
                     PrintTitle();
                     ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
-                    Thread.Sleep(2000);
                 }
             }
 
@@ -388,7 +388,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Console.Clear();
                     ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
-                    Thread.Sleep(4000);
+                    Thread.Sleep(3000);
                 }
             }
             UserDetails.Start();
