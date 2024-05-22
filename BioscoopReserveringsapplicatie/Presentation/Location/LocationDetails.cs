@@ -26,6 +26,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<string>("Bewerk locatie", () => LocationEdit.Start(location.Id)),
                     new Option<string>("Archiveer locatie", () => LocationArchive.Start(location.Id)),
+                    new Option<string>("Zaal toevoegen", () => AddRoom.Start(location.Id)),
                     new Option<string>("Terug", () => {Console.Clear(); LocationOverview.Start();}),
                 };
             }

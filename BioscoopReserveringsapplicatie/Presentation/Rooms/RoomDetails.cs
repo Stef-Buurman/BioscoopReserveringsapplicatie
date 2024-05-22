@@ -12,6 +12,8 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             room = roomLogic.GetById(roomId);
 
+            location = locationLogic.GetById(room.LocationId);
+
             if (room == null)
             {
                 ColorConsole.WriteColorLine("Zaal niet gevonden.", Globals.ErrorColor);
@@ -45,9 +47,9 @@ namespace BioscoopReserveringsapplicatie
             if (room != null)
             {
                 ColorConsole.WriteColorLine("[Zaal details]", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"[Locatie: ]{location.Name}\n", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"[Zaalnummer: ]{room.RoomNumber}\n", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"[Capaciteit: ]{room.Capacity}\n", Globals.RoomColor);
+                ColorConsole.WriteColorLine($"[Locatie: ]{location.Name}", Globals.RoomColor);
+                ColorConsole.WriteColorLine($"[Zaalnummer: ]{room.RoomNumber}", Globals.RoomColor);
+                ColorConsole.WriteColorLine($"[Capaciteit: ]{room.Capacity}\n\n", Globals.RoomColor);
                 Console.WriteLine("Wat wil je doen?");
             }
         }

@@ -51,9 +51,6 @@ namespace BioscoopReserveringsapplicatie
             {
                 Start();
             },
-            new List<KeyAction>(){
-                //new KeyAction(ConsoleKey.T, () => AddRoom.Start())
-            },
             showEscapeabilityText: false).Create();
 
             ShowRoomDetails(roomId);
@@ -61,7 +58,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void ShowRoomDetails(int roomId)
         {
-            if (roomId == 0)
+            if (roomId != 0)
             {
                 RoomDetails.Start(roomId);
             }
@@ -71,16 +68,13 @@ namespace BioscoopReserveringsapplicatie
         {
             List<Option<string>> options = new List<Option<string>>
             {
-                new Option<string>("Ja", () => {
-                    AddPromotion.Start();
-                }),
-                new Option<string>("Nee", () => {
+                new Option<string>("Terug", () => {
                     AdminMenu.Start();
                 }),
             };
             Console.WriteLine(message);
             Console.WriteLine();
-            Console.WriteLine("Wil je een promotie aanmaken?");
+            Console.WriteLine("Wil je een terug?");
             new SelectionMenuUtil<string>(options).Create();
         }
 
