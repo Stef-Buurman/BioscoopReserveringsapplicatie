@@ -160,5 +160,11 @@ namespace BioscoopReserveringsapplicatie
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
             return schedules.FindAll(s => s.ExperienceId == experienceId && s.LocationId == locationId && s.ScheduledDateTimeStart > DateTime.Now);
         }
+
+        public List<ScheduleModel> GetScheduledExperiencesByDateAndRoomId(int roomId, DateTime dateTime)
+        {
+            List<ScheduleModel> schedules = _DataAccess.LoadAll();
+            return schedules.FindAll(s => s.RoomId == roomId && s.ScheduledDateTimeStart.Date == dateTime.Date);
+        }
     }
 }
