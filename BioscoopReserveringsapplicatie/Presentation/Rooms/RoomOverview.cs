@@ -24,7 +24,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 "Locatie",
                 "Zaalnummer",
-                "Capaciteit",
+                "Zaaltype",
                 //"Status",
             };
 
@@ -34,12 +34,11 @@ namespace BioscoopReserveringsapplicatie
             {
                 LocationModel location = locationLogic.GetById(room.LocationId);
                 string roomInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "}", 
-                location.Name, room.RoomNumber, room.Capacity);
+                location.Name, room.RoomNumber, room.RoomType.GetDisplayName());
                 //room.Status.GetDisplayName()
                 options.Add(new Option<int>(room.Id, roomInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteLineInfo("Klik op T om een zaal toe te voegen.\n");
             ColorConsole.WriteColorLine("Dit zijn alle zalen die momenteel bestaan:\n", Globals.TitleColor);
             Print();
             int roomId = new SelectionMenuUtil<int>(options,
@@ -84,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 "Locatie",
                 "Zaalnummer",
-                "Capaciteit",
+                "Zaaltype",
                 //"Status",
             };
 
@@ -113,7 +112,8 @@ namespace BioscoopReserveringsapplicatie
             string[] roomInfo = {
                 location.Name,
                 room.RoomNumber.ToString(),
-                room.Capacity.ToString(),
+                room.RoomType.GetDisplayName(),
+
                 //room.Status.GetDisplayName()
             };
 
