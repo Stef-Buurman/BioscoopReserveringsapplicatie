@@ -10,7 +10,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Experienceoverzicht", () => PreferredExperiences.Start()),
+                    new Option<string>("Experiences", () => PreferredExperiences.Start()),
                     new Option<string>("Mijn account", () => UserDetails.Start()),
                     new Option<string>("Uitloggen", () => LandingPage.Start()),
                 };
