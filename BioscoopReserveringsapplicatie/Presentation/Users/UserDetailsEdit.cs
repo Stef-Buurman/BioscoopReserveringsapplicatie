@@ -101,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
                     UserDetails.Start();
                 })
             };
-            new SelectionMenuUtil<string>(options).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
         }
 
         private static void NotFilledInToFalse()

@@ -83,7 +83,7 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine(message);
             Console.WriteLine();
             Console.WriteLine("Wil je een locatie aanmaken?");
-            new SelectionMenuUtil<string>(options).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
         }
 
         private static void Print()

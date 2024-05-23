@@ -97,7 +97,7 @@ namespace BioscoopReserveringsapplicatie
 
                 Console.Clear();
                 PendingSchedule(experienceId, roomId, locationId, scheduledDateTime);
-                new SelectionMenuUtil<string>(options).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else ColorConsole.WriteColorLine("User is geen admin!", ConsoleColor.DarkRed);
         }

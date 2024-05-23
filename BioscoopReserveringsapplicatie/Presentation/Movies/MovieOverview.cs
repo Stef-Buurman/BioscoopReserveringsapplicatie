@@ -127,7 +127,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine(notFoundMessage);
                 Console.WriteLine();
                 Console.WriteLine("Wil je een film aanmaken?");
-                new SelectionMenuUtil<string>(options).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
             {
