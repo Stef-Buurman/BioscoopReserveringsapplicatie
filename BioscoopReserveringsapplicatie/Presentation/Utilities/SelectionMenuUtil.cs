@@ -640,7 +640,7 @@
 
         public static void WaitTime()
         {
-            Thread.Sleep(50);
+            WaitUtil.WaitTime(50);
             while (Console.KeyAvailable)
             {
                 Console.ReadKey(true);

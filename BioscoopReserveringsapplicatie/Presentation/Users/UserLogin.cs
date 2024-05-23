@@ -17,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
             if (_userLogic.CheckLogin(email, password) != null)
             {
                 ColorConsole.WriteColorLine("\nU bent ingelogd.", Globals.SuccessColor);
-                Thread.Sleep(2000);
+                WaitUtil.WaitTime(2000);
 
                 if (UserLogic.IsAdmin())
                 {

@@ -76,7 +76,7 @@ namespace BioscoopReserveringsapplicatie
                     if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
-                        Thread.Sleep(2000);
+                        WaitUtil.WaitTime(2000);
                         UserDetails.Start();
                     }
                     else
@@ -388,7 +388,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Console.Clear();
                     ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
-                    Thread.Sleep(3000);
+                    WaitUtil.WaitTime(3000);
                 }
             }
             UserDetails.Start();
