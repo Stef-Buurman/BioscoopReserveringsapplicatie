@@ -93,7 +93,7 @@ namespace BioscoopReserveringsapplicatie
                     {
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nTeruggaan...");
-                                Thread.Sleep(1000);
+                                WaitUtil.WaitTime(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
@@ -124,7 +124,7 @@ namespace BioscoopReserveringsapplicatie
                     {
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nTeruggaan...");
-                                Thread.Sleep(1000);
+                                WaitUtil.WaitTime(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }

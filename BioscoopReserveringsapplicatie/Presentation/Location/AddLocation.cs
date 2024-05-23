@@ -28,7 +28,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Console.Clear();
                     Console.WriteLine("Er is een fout opgetreden tijdens het toevoegen van de locatie. Probeer het opnieuw.\n");
-                    Thread.Sleep(3000);
+                    WaitUtil.WaitTime(3000);
                     Start("Name");
                 }
             }),

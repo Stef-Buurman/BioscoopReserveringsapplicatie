@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
             if (movie == null)
             {
                 ColorConsole.WriteColorLine("Er is geen film gevonden.", Globals.ErrorColor);
-                Thread.Sleep(2000);
+                WaitUtil.WaitTime(2000);
                 MovieOverview.Start();
                 return;
             }
@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
                     MoviesLogic.Archive(movieId);
                     Console.Clear();
                     ColorConsole.WriteColorLine($"De Film: {movie.Title} is gearchiveerd!", Globals.SuccessColor);
-                    Thread.Sleep(4000);
+                    WaitUtil.WaitTime(4000);
                     MovieOverview.Start();
                 }),
                 new Option<string>("Nee", () => {
@@ -42,7 +42,7 @@ namespace BioscoopReserveringsapplicatie
                         MoviesLogic.Unarchive(movieId);
                         Console.Clear();
                         ColorConsole.WriteColorLine($"De Film: {movie.Title} is gedearchiveerd!", Globals.SuccessColor);
-                        Thread.Sleep(4000);
+                        WaitUtil.WaitTime(4000);
                         MovieOverview.Start();
                     }),
                     new Option<string>("Nee", () => {

@@ -128,9 +128,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 Console.Clear();
                 Console.WriteLine(notFoundMessage);
-                Thread.Sleep(500);
+                WaitUtil.WaitTime(500);
                 Console.WriteLine("Terug naar alle experience overzicht...");
-                Thread.Sleep(1500);
+                WaitUtil.WaitTime(1500);
                 Start();
             }
         }
