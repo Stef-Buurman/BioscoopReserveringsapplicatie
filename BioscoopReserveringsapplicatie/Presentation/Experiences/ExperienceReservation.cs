@@ -6,6 +6,7 @@ namespace BioscoopReserveringsapplicatie
         private static LocationLogic LocationLogic = new LocationLogic();
         private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
+        private static RoomLogic roomLogic = new RoomLogic();
 
         public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0)
         {
@@ -75,13 +76,15 @@ namespace BioscoopReserveringsapplicatie
 
                     schedules.Sort((x, y) => x.ScheduledDateTimeStart.CompareTo(y.ScheduledDateTimeStart));
 
+                    schedules = schedules.DistinctBy(s => s.ScheduledDateTimeStart.TimeOfDay).ToList();
+
                     ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [tijden]:", Globals.ColorInputcClarification);
 
                     var options = new List<Option<int>>();
 
                     foreach (ScheduleModel schedule in schedules)
                     {
-                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, schedule.ScheduledDateTimeStart) == false)
+                        if (schedule.ScheduledDateTimeStart.Date == dateTime.Value.Date && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTimeForLocation(UserLogic.CurrentUser.Id, schedule.ScheduledDateTimeStart, location) == false)
                         {
                             options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.ToString("HH:mm"), () => ExperienceReservation.Start(experienceId, location, schedule.ScheduledDateTimeStart)));
                         }
@@ -95,12 +98,38 @@ namespace BioscoopReserveringsapplicatie
                     ColorConsole.WriteColorLine("[Tijd:] " + dateTime.Value.ToString("HH:mm"), Globals.ExperienceColor);
                 }
 
+                bool singleScheduled = false;
+
                 if (room == 0)
                 {
-                    ScheduleModel scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, dateTime);
+                    List<ScheduleModel> scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, dateTime);
 
-                    room = scheduledExperience.RoomId;
+                    if (scheduledExperience.Count > 1)
+                    {
 
+                        ColorConsole.WriteColorLine("\nMaak een keuze uit een van de onderstaande [zalen]:", Globals.ColorInputcClarification);
+
+                        var options = new List<Option<int>>();
+
+                        foreach (ScheduleModel schedule in scheduledExperience)
+                        {
+
+                            options.Add(new Option<int>(schedule.Id, $"Zaal {roomLogic.GetById(schedule.RoomId).RoomNumber}", () => ExperienceReservation.Start(experienceId, location, dateTime, roomLogic.GetById(schedule.RoomId).RoomNumber)));
+
+                        }
+                        options.Add(new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date)));
+
+                        new SelectionMenuUtil<int>(options).Create();
+                    }
+                    else
+                    {
+                        singleScheduled = true;
+                        room = roomLogic.GetById(scheduledExperience[0].RoomId).RoomNumber;
+                        ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                    }
+                }
+                else
+                {
                     ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
                 }
 
@@ -152,7 +181,16 @@ namespace BioscoopReserveringsapplicatie
 
                             }
                         }),
-                    new Option<int>(0, "Terug", () => ExperienceReservation.Start(experienceId, location, dateTime.Value.Date))
+                    new Option<int>(0, "Terug", () => {
+                        if(singleScheduled == false)
+                        {
+                            ExperienceReservation.Start(experienceId, location, dateTime);
+                        }
+                        else
+                        {
+                            ExperienceReservation.Start(experienceId, location, dateTime.Value.Date);
+                        }
+                        })
                 };
 
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
