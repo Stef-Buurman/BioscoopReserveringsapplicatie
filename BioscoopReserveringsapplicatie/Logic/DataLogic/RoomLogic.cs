@@ -25,6 +25,11 @@ namespace BioscoopReserveringsapplicatie
             return room != null;
         }
 
+        public bool IsDuplicateRoomNumber(int locationId, int roomNumber)
+        {
+            return _Rooms.Any(r => r.LocationId == locationId && r.RoomNumber == roomNumber);
+        }
+
         public bool Add(RoomModel room)
         {
             GetAll();
