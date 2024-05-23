@@ -13,7 +13,7 @@ namespace BioscoopReserveringsapplicatie
             if (experience == null)
             {
                 ColorConsole.WriteColorLine("Er is geen experience gevonden.", Globals.ErrorColor);
-                Thread.Sleep(2000);
+                WaitUtil.WaitTime(2000);
                 ExperienceOverview.Start();
                 return;
             }
@@ -26,7 +26,7 @@ namespace BioscoopReserveringsapplicatie
                         ExperienceLogic.Archive(experienceId);
                         Console.Clear();
                         ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gearchiveerd!", Globals.SuccessColor);
-                        Thread.Sleep(4000);
+                        WaitUtil.WaitTime(4000);
                         ExperienceDetails.Start(experienceId);
                     }),
                     new Option<string>("Nee", () => {
@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
                     ExperienceLogic.Unarchive(experienceId);
                     Console.Clear();
                     ColorConsole.WriteColorLine($"De Experience: {experience.Name} is gedearchiveerd!", Globals.SuccessColor);
-                    Thread.Sleep(4000);
+                    WaitUtil.WaitTime(4000);
                     ExperienceDetails.Start(experienceId);
                 }),
                 new Option<string>("Nee", () => {

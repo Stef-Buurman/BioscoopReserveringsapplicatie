@@ -214,7 +214,7 @@
         {
             CurrentUser = null;
             ColorConsole.WriteColorLine("\nU bent uitgelogd.", Globals.SuccessColor);
-            Thread.Sleep(2000);
+            WaitUtil.WaitTime(2000);
         }
 
         public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)

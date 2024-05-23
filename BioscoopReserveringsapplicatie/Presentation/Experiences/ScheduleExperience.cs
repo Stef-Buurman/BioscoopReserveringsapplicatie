@@ -77,7 +77,7 @@ namespace BioscoopReserveringsapplicatie
                         {
                             Console.Clear();
                             ColorConsole.WriteColorLine("Experience is ingepland!", Globals.SuccessColor);
-                            Thread.Sleep(2000);
+                            WaitUtil.WaitTime(2000);
                             AdminMenu.Start();
                         }
                         else
