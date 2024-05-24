@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
                             }),
                         };
 
-                        new SelectionMenuUtil<string>(options2).Create();
+                        new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
 
                     }),
                     new Option<string>("Terug", () => UserReservations.Start()),

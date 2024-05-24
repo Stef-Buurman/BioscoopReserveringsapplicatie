@@ -56,7 +56,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Nee, pas de promotie verder aan", () => {Start(promotion.Id, _returnToDescription);}),
                 new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); PromotionDetails.Start(promotion.Id);})
             };
-            new SelectionMenuUtil<string>(options).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas de promotie verder aan")).Create();
         }
         private static void PromotionTitle()
         {

@@ -20,19 +20,19 @@ namespace BioscoopReserveringsapplicatie
             if (movie.Status == Status.Active)
             {
                 List<Option<string>> options = new List<Option<string>>
-            {
-                new Option<string>("Ja", () => {
-                    MoviesLogic.Archive(movieId);
-                    Console.Clear();
-                    ColorConsole.WriteColorLine($"De Film: {movie.Title} is gearchiveerd!", Globals.SuccessColor);
-                    WaitUtil.WaitTime(4000);
-                    MovieOverview.Start();
-                }),
-                new Option<string>("Nee", () => {
-                    MovieDetails.Start(movieId);
-                }),
-            };
-                new SelectionMenuUtil<string>(options).Create();
+                {
+                    new Option<string>("Ja", () => {
+                        MoviesLogic.Archive(movieId);
+                        Console.Clear();
+                        ColorConsole.WriteColorLine($"De Film: {movie.Title} is gearchiveerd!", Globals.SuccessColor);
+                        WaitUtil.WaitTime(4000);
+                        MovieOverview.Start();
+                    }),
+                    new Option<string>("Nee", () => {
+                        MovieDetails.Start(movieId);
+                    }),
+                };
+                    new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
             {
@@ -49,7 +49,7 @@ namespace BioscoopReserveringsapplicatie
                         MovieDetails.Start(movieId);
                     }),
                 };
-                new SelectionMenuUtil<string>(options).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
         }
 

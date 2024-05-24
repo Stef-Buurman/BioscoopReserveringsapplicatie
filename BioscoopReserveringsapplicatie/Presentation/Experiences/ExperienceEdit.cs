@@ -93,7 +93,7 @@ namespace BioscoopReserveringsapplicatie
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Weet u zeker dat u de Experience details van {_newName} wilt bewerken?\n", Globals.ColorInputcClarification);
 
-            new SelectionMenuUtil<string>(saveOptions).Create();
+            new SelectionMenuUtil<string>(saveOptions, new Option<string>("Nee, pas de experience verder aan")).Create();
         }
 
         public static void ExperienceName()
