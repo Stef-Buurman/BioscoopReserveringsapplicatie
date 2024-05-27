@@ -85,9 +85,9 @@ namespace BioscoopReserveringsapplicatie
                     experienceName, movie.Title, genres, movie.AgeCategory.GetDisplayName(), experience.TimeLength + " minuten", experience.Intensity.GetDisplayName());
                     options.Add(new Option<int>(experience.Id, experienceInfo));
                 }
-                ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om teurg te gaan*", Globals.ColorInputcClarification);
 
-                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje] en [rechterpijltje om door de weken te scrollen*\n");
+                ColorConsole.WriteLineInfoHighlight("*Klik op het [linkerpijltje] en [rechterpijltje] om door de weken te scrollen*\n", Globals.ColorInputcClarification);
 
                 ColorConsole.WriteColorLine($"Week {currentWeek} - {firstDayOfWeek.ToString("dd-MM-yyyy")} - {lastDayOfWeek.ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
                 ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren in deze week:\n", Globals.TitleColor);
@@ -120,9 +120,9 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om teurg te gaan*", Globals.ColorInputcClarification);
 
-                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje] en [rechterpijltje om door de weken te scrollen*\n");
+                ColorConsole.WriteLineInfoHighlight("*Klik op het [linkerpijltje] en [rechterpijltje] om door de weken te scrollen*\n", Globals.ColorInputcClarification);;
 
                 ColorConsole.WriteColorLine($"Week {currentWeek} - {firstDayOfWeek.ToString("dd-MM-yyyy")} - {lastDayOfWeek.ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
 
