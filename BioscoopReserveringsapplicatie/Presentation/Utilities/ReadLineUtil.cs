@@ -3,11 +3,11 @@ namespace BioscoopReserveringsapplicatie
     public static class ReadLineUtil
     {
         public static int Top = 0;
-        public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n", bool mask = false, bool showEscapability = true)
+        public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op [escape] om terug te gaan*\n", bool mask = false, bool showEscapability = true)
         {
             bool isEscapable = escapeAction != null;
 
-            if (showEscapability) ColorConsole.WriteLineInfo(textToShowEscapability);
+            if (showEscapability) ColorConsole.WriteLineInfoHighlight(textToShowEscapability, Globals.ColorInputcClarification);
 
             int originalPosX = Console.CursorLeft;
             string input = defaultValue;
@@ -78,7 +78,7 @@ namespace BioscoopReserveringsapplicatie
             return input;
         }
 
-        public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op [escape] om terug te gaan*\n")
         {
             return EditValue("", whatToEnterText, escapeAction, textToShowEscapability, mask, showEscapability);
         }
