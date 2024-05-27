@@ -137,5 +137,22 @@ namespace BioscoopReserveringsapplicatie
         }
 
         public static void WriteLineInfo(string message) => WriteColorLine($"[{message}]", ConsoleColor.DarkGray);
+
+        public static void WriteLineInfoHighlight(string message, ConsoleColor fontColor, ConsoleColor? backgroundColor = null)
+        {
+            if (backgroundColor == null)
+            {
+                backgroundColor = Console.BackgroundColor;
+            }
+            ConsoleColor originalForeColor = Console.ForegroundColor;
+            ConsoleColor originalBackColor = Console.BackgroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+
+            WriteColor($"{message}", fontColor, backgroundColor ?? Console.BackgroundColor, ConsoleColor.DarkGray, originalBackColor);
+
+            Console.ForegroundColor = originalForeColor;
+            Console.BackgroundColor = originalBackColor;
+            Console.WriteLine();
+        }
     }
 }
