@@ -207,7 +207,7 @@ namespace BioscoopReserveringsapplicatie
                     foreach (ScheduleModel schedule in scheduledExperience)
                     {
 
-                        options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}", () => Start(experienceId, location, dateTime, RoomLogic.GetById(schedule.RoomId).RoomNumber)));
+                        options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}", () => Start(experienceId, location, dateTime, schedule.RoomId)));
 
                     }
                     options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date)));
@@ -217,8 +217,9 @@ namespace BioscoopReserveringsapplicatie
                 else
                 {
                     _singleScheduled = true;
-                    room = RoomLogic.GetById(scheduledExperience[0].RoomId).RoomNumber;
+                    room = scheduledExperience[0].RoomId;
                     ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                    Start(experienceId, location, dateTime, room);
                 }
             }
             else
@@ -237,7 +238,8 @@ namespace BioscoopReserveringsapplicatie
             {
                 HorizontalLine.Print();
                 ColorConsole.WriteColorLine("\nKies uw stoelen: ", Globals.ExperienceColor);
-                Option<string>[,] options = OptionGrid.GenerateOptionGrid(10, 10, true);
+                RoomModel chosenRoom = RoomLogic.GetById(room);
+                Option<string>[,] options = OptionGrid.GenerateOptionGrid(10, 10, chosenRoom.RoomType == RoomType.Round);
 
                 int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
                 List<(int, int)> selectedOptions = ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId);
