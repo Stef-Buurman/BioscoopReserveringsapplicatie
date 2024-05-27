@@ -1,4 +1,6 @@
-﻿namespace BioscoopReserveringsapplicatie
+﻿using System.Text.RegularExpressions;
+
+namespace BioscoopReserveringsapplicatie
 {
     public class SelectionMenuUtil<T>
     {
@@ -60,6 +62,10 @@
             ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
         };
 
+
+        private int _originalWidth;
+        private int _originalHeight;
+
         private SelectionMenuUtil(List<Option<T>> options = null, int maxVisibility = 9, bool canBeEscaped = false,
             Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
             bool visibleSelectedArrows = true, string textBeforeInputShown = default,
@@ -116,7 +122,7 @@
                         }
                     }
                 }
-                if(UnSelectableOptions.Contains(GridIndex))
+                if(!IsOptionAvailable(GridIndex.Item1, GridIndex.Item2))
                 {
                     Move(0, 1);
                     while(IsUnselectable(GridIndex.Item1, GridIndex.Item2) || !IsOptionAvailable(GridIndex.Item1, GridIndex.Item2))
@@ -217,8 +223,8 @@
         public SelectionMenuUtil(Option<T>[,] options, List<(int, int)> unSelectableOptions, string gridSeperator = null, bool tableFormat = false, List<(int, int)> SelectedOptions = default)
             : this(null, 9, false, default, default, true, default, default, true, default, true, options, SelectedOptions, gridSeperator, tableFormat, unSelectableOptions) { }
 
-        public SelectionMenuUtil(Option<T>[,] options, List<(int, int)> unSelectableOptions, bool tableFormat, List<(int, int)> SelectedOptions = default)
-            : this(null, 9, false, default, default, true, default, default, true, default, true, options, SelectedOptions, null, tableFormat, unSelectableOptions) { }
+        public SelectionMenuUtil(Option<T>[,] options, List<(int, int)> unSelectableOptions, bool tableFormat, Action escapeAction = default, Action escapeActionWhenNotEscaping = default, bool canBeEscaped = false, List<(int, int)> SelectedOptions = default)
+            : this(null, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, true, default, default, true, default, true, options, SelectedOptions, null, tableFormat, unSelectableOptions) { }
 
         public SelectionMenuUtil(List<Option<T>> options)
             : this(options, 9, false) { }
@@ -280,7 +286,8 @@
             Top = Console.GetCursorPosition().Top;
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
-            Console.CursorVisible = false;
+
+            ConsoleLocationStart();
 
             if (SelectedOption != null)
             {
@@ -328,7 +335,7 @@
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    Console.CursorVisible = true;
+                    ConsoleLocationEnd();
                     AllOptions[Index].SelectFunction();
                     return AllOptions[Index].Value;
                 }
@@ -342,7 +349,7 @@
                 WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
-            Console.CursorVisible = true;
+            ConsoleLocationEnd();
             return default;
         }
 
@@ -354,7 +361,8 @@
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
             if (!IsMultiSelect) return default;
-            Console.CursorVisible = false;
+
+            ConsoleLocationStart();
 
             WriteMenu(OptionsToShow, OptionsToShow[Index]);
 
@@ -377,7 +385,7 @@
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    Console.CursorVisible = true;
+                    ConsoleLocationEnd();
                     return AllOptions.FindAll(x => x.IsSelected).ConvertAll(x => x.Value);
                 }
 
@@ -407,7 +415,7 @@
                 WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
-            Console.CursorVisible = true;
+            ConsoleLocationEnd();
             return new List<T>();
         }
 
@@ -419,7 +427,8 @@
             if (GridOptions.Length == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
             if (!IsGridSelect) return default;
-            Console.CursorVisible = false;
+
+            ConsoleLocationStart();
 
             WriteGridMenu();
 
@@ -458,7 +467,7 @@
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    Console.CursorVisible = true;
+                    ConsoleLocationEnd();
                     List<(int, int)> selectedIndexes = new List<(int, int)>();
 
                     for (int i = 0; i < GridOptions.GetLength(0); i++)
@@ -483,6 +492,7 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
+                    Console.Clear();
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
@@ -490,30 +500,37 @@
                 WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
-            Console.CursorVisible = true;
+            ConsoleLocationEnd();
             return new List<(int, int)>();
         }
 
-        private void WriteGridMenu(string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*")
+        private void WriteGridMenu(string textToShowEscapability = "*Klik op [Escape] om dit onderdeel te verlaten.*")
         {
             SetCursorPosition(textToShowEscapability);
+            int gridHeight = GridOptions.GetLength(0);
             if (TableFormat)
             {
-                string stringtToPrint = "   ";
-                for (int i = 0; i < GridOptions.GetLength(0); i++)
+                string stringtToPrint = "  ";
+                while (stringtToPrint.Length - 1 <= $"{GridOptions.GetLength(0)}".Length) stringtToPrint += " ";
+                for (int i = 0; i < GridOptions.GetLength(1); i++)
                 {
                     string strToAdd = $"{i + 1}";
-                    while (strToAdd.Length <= GetMaxColWith(i)) strToAdd += " ";
+                    while (strToAdd.Length <= GetMaxColWith(i, -1)) strToAdd += " ";
                     if(GridSeperator != null) strToAdd += "  ";
                     stringtToPrint += strToAdd;
                 }
                 ColorConsole.WriteColorLine(stringtToPrint, Console.ForegroundColor, ConsoleColor.DarkGray);
             }
-                
-            for (int i = 0; i < GridOptions.GetLength(0); i++)
+
+            for (int i = 0; i < gridHeight; i++)
             {
                 string stringtToPrint = "";
-                if (TableFormat) stringtToPrint += $"[{Console.ForegroundColor}:{ConsoleColor.DarkGray}]{i+1}:[/] ";
+                if (TableFormat)
+                {
+                    string strToAdd = $"{i + 1}";
+                    while (strToAdd.Length < $"{gridHeight}".Length) strToAdd += " ";
+                    stringtToPrint += $"[{Console.ForegroundColor}:{ConsoleColor.DarkGray}]{strToAdd}:[/] ";
+                }
                 for (int j = 0; j < GridOptions.GetLength(1); j++)
                 {
                     string strToAdd = "";
@@ -550,20 +567,21 @@
                         }
                         else
                         {
-                            stringtToPrint += $"{strToAdd}";
+                            stringtToPrint += $"[{ConsoleColor.White}:{ConsoleColor.Black}]{strToAdd}[/]";
                         }
 
                         if (j != GridOptions.GetLength(1) - 1 && GridSeperator != null)
                         {
-                            stringtToPrint += $"{GridSeperator} ";
+                            stringtToPrint += $"[{ConsoleColor.White}:{ConsoleColor.Black}]{GridSeperator} [/]";
                         }
                     }
                     stringtToPrint += spaces;
                 }
-                MaxSelectionMenu = stringtToPrint.Length;
+                if (Regex.Replace(stringtToPrint, @"\[.*?\]", string.Empty).Length > MaxSelectionMenu) MaxSelectionMenu = Regex.Replace(stringtToPrint, @"\[.*?\]", string.Empty).Length;
                 while (stringtToPrint.Length < MaxSelectionMenu) stringtToPrint += " ";
                 ColorConsole.WriteColorLine(stringtToPrint);
             }
+            Console.SetCursorPosition(0, Top);
         }
 
         private void Move(int rowDelta, int colDelta)
@@ -579,6 +597,23 @@
                 newRow += rowDelta;
                 newCol += colDelta;
 
+                if (newRow >= GridOptions.GetLength(0))
+                {
+                    newRow = 0;
+                }
+                else if (newCol >= GridOptions.GetLength(1))
+                {
+                    newCol = 0;
+                }
+                else if (newCol < 0)
+                {
+                    newCol = GridOptions.GetLength(1) - 1;
+                }
+                else if (newRow < 0)
+                {
+                    newRow = GridOptions.GetLength(0) - 1;
+                }
+
                 if (newRow >= 0 && newRow < GridOptions.GetLength(0) &&
                     newCol >= 0 && newCol < GridOptions.GetLength(1) &&
                     IsOptionAvailable(newRow, newCol))
@@ -586,22 +621,14 @@
                     GridIndex = (newRow, newCol);
                     break;
                 }
-
-                if (newRow < 0 || newRow >= GridOptions.GetLength(0) ||
-                    newCol < 0 || newCol >= GridOptions.GetLength(1))
+                if(newRow == oldRow && newCol == oldCol)
                 {
-                    GridIndex = (oldRow, oldCol);
+                    GridIndex = (newRow, newCol);
                     break;
                 }
+
             }
         }
-
-        //private Option<T> GetOption(int row, int col)
-        //{
-        //    if (GridOptions == null) return new Option<T>(" ");
-        //    if (row < 0 || row >= GridOptions.GetLength(0) || col < 0 || col >= GridOptions.GetLength(1)) return null;
-        //    return GridOptions[row, col];
-        //}
 
         private bool IsOptionAvailable(int Yas, int Xas)
         {
@@ -620,7 +647,7 @@
             return false;
         }
 
-        public int GetMaxColWith(int col = -1, int row = -1) 
+        private int GetMaxColWith(int col = -1, int row = -1) 
         {
             int max = 0;
             if (GridOptions == null || col != -1 && row != -1 || row > GridOptions.GetLength(0) || col > GridOptions.GetLength(1)) return max;
@@ -630,6 +657,7 @@
                 {
                     for (int j = 0; j < GridOptions.GetLength(1); j++)
                     {
+                        if (GridOptions[i, j] == null) continue;
                         if (col != -1 && j == col)
                         {
                             return GridOptions[i, j].Name.Length;
@@ -642,18 +670,47 @@
                 }
                 else if(col != -1)
                 {
-                    if (GridOptions[i, col] != null && GridOptions[i, col].Name.Length > max) max = GridOptions[i, col].Name.Length;
+                    if (GridOptions[i, col] == null) continue;
+                    if (GridOptions[i, col].Name.Length > max) max = GridOptions[i, col].Name.Length;
+                }
+            }
+            if ($"{GridOptions.GetLength(1)}".Length > max)
+            {
+                if($"{GridOptions.GetLength(1)}".Length - 1 == $"{GridOptions.GetLength(1) - 1}".Length)
+                {
+                    max = $"{GridOptions.GetLength(1)}".Length - 1;
+                }
+                else
+                {
+                    max = $"{GridOptions.GetLength(1)}".Length;
                 }
             }
             return max;
         }
 
+        private void ConsoleLocationStart()
+        {
+            Console.CursorVisible = false;
+            _originalWidth = Console.WindowWidth;
+            _originalHeight = Console.WindowHeight;
+
+            Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+        }
+
+        private void ConsoleLocationEnd()
+        {
+            Console.CursorVisible = true;
+            Console.SetBufferSize(_originalWidth, _originalHeight);
+
+        }
+
         private void SetCursorPosition(string textToShowEscapability)
         {
+            Console.SetCursorPosition(0, Top);
             int top = Top;
             if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
-                ColorConsole.WriteLineInfo(textToShowEscapability + "\n");
+                ColorConsole.WriteLineInfoHighlight(textToShowEscapability, Globals.ColorInputcClarification);
                 EscapabilityVisible = true;
                 top += 2;
             }
@@ -663,8 +720,9 @@
             }
             if (IsMultiSelect && !MultiSelectFuncVisible)
             {
-                ColorConsole.WriteLineInfo("Klik op Spatie om een optie te selecteren.");
-                ColorConsole.WriteLineInfo("Klik op Enter deze opties uit te kiezen.\n");
+                if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText) Console.WriteLine();
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Spatie] om een optie te selecteren.*", Globals.ColorInputcClarification);
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] deze opties uit te kiezen.*\n", Globals.ColorInputcClarification);
                 top += 3;
                 MultiSelectFuncVisible = true;
             }
@@ -683,14 +741,14 @@
                 {
                     if (keyinfo.Key == keyAction.Key)
                     {
-                        Console.CursorVisible = true;
+                        ConsoleLocationEnd();
                         keyAction.Action();
                     }
                 }
             }
         }
 
-        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*")
+        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op [Escape] om dit onderdeel te verlaten.*")
         {
             int HowMuchOverrideForArrowUpAndDown = TextBeforeInputShown.Length
                     - (TextBeforeInputShownVisible ? 2 : 0)
