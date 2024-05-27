@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
                 "Locatie",
                 "Zaalnummer",
                 "Zaaltype",
-                //"Status",
+                "Status",
             };
 
             int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, rooms, RoomDataExtractor);
@@ -40,9 +40,8 @@ namespace BioscoopReserveringsapplicatie
                     locationName = locationName.Substring(0, 25) + "...";
                 }
 
-                string roomInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "}", 
-                location.Name, room.RoomNumber, room.RoomType.GetDisplayName());
-                //room.Status.GetDisplayName()
+                string roomInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + (columnWidths[3] + 2) + "}", 
+                location.Name, room.RoomNumber, room.RoomType.GetDisplayName(), room.Status.GetDisplayName());
                 options.Add(new Option<int>(room.Id, roomInfo));
             }
             ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
@@ -91,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
                 "Locatie",
                 "Zaalnummer",
                 "Zaaltype",
-                //"Status",
+                "Status",
             };
 
             List<RoomModel> allRooms = roomLogic.GetAll();
@@ -120,8 +119,7 @@ namespace BioscoopReserveringsapplicatie
                 location.Name,
                 room.RoomNumber.ToString(),
                 room.RoomType.GetDisplayName(),
-
-                //room.Status.GetDisplayName()
+                room.Status.GetDisplayName(),
             };
 
             return roomInfo;

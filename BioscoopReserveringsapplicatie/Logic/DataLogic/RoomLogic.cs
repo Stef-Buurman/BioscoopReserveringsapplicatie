@@ -69,5 +69,35 @@ namespace BioscoopReserveringsapplicatie
             }
             _DataAccess.WriteAll(_Rooms);
         }
+
+        public void Archive(int id)
+        {
+            RoomModel? room = GetById(id);
+            if (room != null)
+            {
+                room.Status = Status.Archived;
+                _DataAccess.WriteAll(_Rooms);
+                UpdateList(room);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void Unarchive(int id)
+        {
+            RoomModel? room = GetById(id);
+            if (room != null)
+            {
+                room.Status = Status.Active;
+                _DataAccess.WriteAll(_Rooms);
+                UpdateList(room);
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }
