@@ -69,6 +69,13 @@ namespace BioscoopReserveringsapplicatie
 
             reservation.IsCanceled = true;
             UpdateList(reservation);
+            foreach(ReservationModel res in _reservations)
+            {
+                if (res.Id == reservation.Id)
+                {
+                    res.IsCanceled = true;
+                }
+            }
             return true;
         }
 
