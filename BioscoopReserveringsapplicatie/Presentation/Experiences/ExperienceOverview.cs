@@ -55,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                 experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity.GetDisplayName(), experience.Status.GetDisplayName());
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
-            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om dit terug te gaan*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een promotie toe te voegen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [1] om alle films te tonen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active films te tonen*", Globals.ColorInputcClarification);
