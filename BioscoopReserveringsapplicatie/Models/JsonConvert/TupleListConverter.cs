@@ -3,32 +3,44 @@ using System.Text.Json;
 
 namespace BioscoopReserveringsapplicatie
 {
-    public class TupleListConverter<T> : JsonConverter<List<T>>
+    public class TupleListConverter<T1, T2> : JsonConverter<List<(T1, T2)>>
     {
-        public override List<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override List<(T1, T2)> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            using (JsonDocument doc = JsonDocument.ParseValue(ref reader))
+            var result = new List<(T1, T2)>();
+
+            if (reader.TokenType != JsonTokenType.StartArray)
+                throw new JsonException();
+
+            while (reader.Read())
             {
-                var root = doc.RootElement;
-                var result = new List<T>();
+                if (reader.TokenType == JsonTokenType.EndArray)
+                    return result;
 
-                foreach (var element in root.EnumerateArray())
-                {
-                    var tupleArray = JsonSerializer.Deserialize<int[]>(element.GetRawText());
-                    result.Add((T)Convert.ChangeType((tupleArray[0], tupleArray[1]), typeof(T)));
-                }
+                if (reader.TokenType != JsonTokenType.StartArray)
+                    throw new JsonException();
 
-                return result;
+                reader.Read();
+                var item1 = JsonSerializer.Deserialize<T1>(ref reader, options);
+                reader.Read();
+                var item2 = JsonSerializer.Deserialize<T2>(ref reader, options);
+                reader.Read(); // EndArray
+
+                result.Add((item1, item2));
             }
+
+            throw new JsonException();
         }
 
-        public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, List<(T1, T2)> value, JsonSerializerOptions options)
         {
             writer.WriteStartArray();
             foreach (var tuple in value)
             {
-                var tupleArray = JsonSerializer.SerializeToUtf8Bytes(tuple, options);
-                writer.WriteRawValue(tupleArray);
+                writer.WriteStartArray();
+                JsonSerializer.Serialize(writer, tuple.Item1, options);
+                JsonSerializer.Serialize(writer, tuple.Item2, options);
+                writer.WriteEndArray();
             }
             writer.WriteEndArray();
         }
