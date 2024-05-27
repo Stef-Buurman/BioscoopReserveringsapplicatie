@@ -48,6 +48,8 @@ namespace BioscoopReserveringsapplicatie
         private bool ShowEscapeabilityText;
 
         private (int, int) GridIndex = (0, 0);
+        private int MaxGridRows = 30;
+        private int MaxGridCols = 35;
         private bool IsGridSelect = false;
         private string GridSeperator = null;
         private bool TableFormat = false;
@@ -106,7 +108,45 @@ namespace BioscoopReserveringsapplicatie
                 KeysInUse.Add(ConsoleKey.LeftArrow);
                 KeysInUse.Add(ConsoleKey.RightArrow);
                 IsGridSelect = true;
-                GridOptions = gridOptions;
+
+
+                if (gridOptions.GetLength(0) > MaxGridRows && gridOptions.GetLength(1) > MaxGridCols)
+                {
+                    GridOptions = new Option<T>[MaxGridRows, MaxGridCols];
+                    for (int i = 0; i < MaxGridRows; i++)
+                    {
+                        for (int j = 0; j < MaxGridCols; j++)
+                        {
+                            GridOptions[i, j] = gridOptions[i, j];
+                        }
+                    }
+                }
+                else if(gridOptions.GetLength(0) > MaxGridRows)
+                {
+                    GridOptions = new Option<T>[MaxGridRows, gridOptions.GetLength(1)];
+                    for (int i = 0; i < MaxGridRows; i++)
+                    {
+                        for (int j = 0; j < gridOptions.GetLength(1); j++)
+                        {
+                            GridOptions[i, j] = gridOptions[i, j];
+                        }
+                    }
+                }
+                else if(gridOptions.GetLength(1) > MaxGridCols)
+                {
+                    GridOptions = new Option<T>[gridOptions.GetLength(0), MaxGridCols];
+                    for (int i = 0; i < gridOptions.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < MaxGridCols; j++)
+                        {
+                            GridOptions[i, j] = gridOptions[i, j];
+                        }
+                    }
+                }
+                else
+                {
+                    GridOptions = gridOptions;
+                }
                 UnSelectableOptions = unSelectableOptions;
                 GridSeperator = gridSeperator;
                 TableFormat = tableFormat;
