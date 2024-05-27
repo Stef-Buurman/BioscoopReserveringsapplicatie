@@ -3,7 +3,7 @@ namespace BioscoopReserveringsapplicatie
     public static class ReadLineUtil
     {
         public static int Top = 0;
-        public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op [escape] om terug te gaan*\n", bool mask = false, bool showEscapability = true)
+        public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op [Escape] om terug te gaan*\n", bool mask = false, bool showEscapability = true)
         {
             bool isEscapable = escapeAction != null;
 
@@ -78,7 +78,7 @@ namespace BioscoopReserveringsapplicatie
             return input;
         }
 
-        public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op [escape] om terug te gaan*\n")
+        public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op [Escape] om terug te gaan*\n")
         {
             return EditValue("", whatToEnterText, escapeAction, textToShowEscapability, mask, showEscapability);
         }

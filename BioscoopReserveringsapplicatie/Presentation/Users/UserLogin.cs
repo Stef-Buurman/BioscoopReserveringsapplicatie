@@ -31,7 +31,7 @@ namespace BioscoopReserveringsapplicatie
             else
             {
                 ColorConsole.WriteColorLine("\nEr is geen account gevonden met dat e-mailadres en wachtwoord.", Globals.ErrorColor);
-                Console.WriteLine("Druk op Esc om terug te gaan of op een willekeurige toets om het opnieuw te proberen.");
+                ColorConsole.WriteColorLine("Druk op [Esc] om login te verlaten of op een [willekeurige toets] om het opnieuw te proberen.", Globals.ColorInputcClarification);
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
 

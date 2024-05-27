@@ -86,13 +86,13 @@ namespace BioscoopReserveringsapplicatie
             string question = "Voer de film [titel] in: ";
             newTitle = ReadLineUtil.EditValue(newTitle, question, 
             actionWhenEscapePressed,
-            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+            "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
 
             while (string.IsNullOrEmpty(newTitle))
             {
                 newTitle = ReadLineUtil.EditValue(newTitle, question,
                 actionWhenEscapePressed,
-                "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
                 }
         }
 
@@ -105,13 +105,13 @@ namespace BioscoopReserveringsapplicatie
             string question = "Voer de film [beschrijving] in: ";
             newDescription = ReadLineUtil.EditValue(newDescription, question, 
             () => Start(movieId, _returnToTitle),
-            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+            "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
 
             while (string.IsNullOrEmpty(newDescription))
             {
                 newDescription = ReadLineUtil.EditValue(newDescription, question, 
                 () => Start(movieId, _returnToTitle),
-                "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
             }
         }
 
