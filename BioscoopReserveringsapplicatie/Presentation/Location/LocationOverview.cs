@@ -41,7 +41,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(locations.Id, locationInfo));
             }
             ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
-            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een promotie toe te voegen*\n", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een locatie toe te voegen*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn alle locaties die momenteel bestaan:\n", Globals.TitleColor);
             Print();
             int locationId = new SelectionMenuUtil<int>(options,

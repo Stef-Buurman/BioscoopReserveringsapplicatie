@@ -85,7 +85,7 @@ namespace BioscoopReserveringsapplicatie
                     experienceName, movie.Title, genres, movie.AgeCategory.GetDisplayName(), experience.TimeLength + " minuten", experience.Intensity.GetDisplayName());
                     options.Add(new Option<int>(experience.Id, experienceInfo));
                 }
-                ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om teurg te gaan*", Globals.ColorInputcClarification);
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
 
                 ColorConsole.WriteLineInfoHighlight("*Klik op het [linkerpijltje] en [rechterpijltje] om door de weken te scrollen*\n", Globals.ColorInputcClarification);
 

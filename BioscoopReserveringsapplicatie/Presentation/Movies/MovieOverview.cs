@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(movie.Id, movieInfo));
             }
             ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
-            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een promotie toe te voegen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een film toe te voegen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [1] om alle films te tonen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active films te tonen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [3] om alle gearchiveerde films te tonen*\n", Globals.ColorInputcClarification);
