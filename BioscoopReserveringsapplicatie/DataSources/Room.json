@@ -1,14 +1,16 @@
 [
-    {
-        "id": 1,
-        "locationId": 1,
-        "roomNumber": 1,
-        "capacity": 50
-    },
-    {
-        "id": 2,
-        "locationId": 2,
-        "roomNumber": 1,
-        "capacity": 50
-    }
+  {
+    "id": 1,
+    "locationId": 1,
+    "roomNumber": 1,
+    "roomType": "Square",
+    "status": "Active"
+  },
+  {
+    "id": 2,
+    "locationId": 2,
+    "roomNumber": 1,
+    "roomType": "Square",
+    "status": "Active"
+  }
 ]
