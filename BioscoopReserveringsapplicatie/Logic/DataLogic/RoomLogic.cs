@@ -16,11 +16,7 @@ namespace BioscoopReserveringsapplicatie
 
         public List<RoomModel> GetAll() => _Rooms = _DataAccess.LoadAll();
 
-        public RoomModel GetById(int id)
-        {
-            _Rooms = _DataAccess.LoadAll();
-            return _Rooms.Find(i => i.Id == id);
-        }
+        public RoomModel? GetById(int id) => _DataAccess.LoadAll().Find(i => i.Id == id);
 
         public List<RoomModel> GetByLocationId(int id) => _DataAccess.LoadAll().FindAll(i => i.LocationId == id);
 
@@ -81,6 +77,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 room.Status = Status.Archived;
                 _DataAccess.WriteAll(_Rooms);
+                UpdateList(room);
             }
             else
             {
@@ -95,6 +92,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 room.Status = Status.Active;
                 _DataAccess.WriteAll(_Rooms);
+                UpdateList(room);
             }
             else
             {
