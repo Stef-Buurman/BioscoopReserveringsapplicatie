@@ -32,11 +32,11 @@ namespace BioscoopReserveringsapplicatie
                         RoomDetails.Start(roomId);
                     }),
                 };
-                ColorConsole.WriteColorLine("De zaal details zijn:", Globals.RoomColor);
+                ColorConsole.WriteColorLine("Zaal details", Globals.RoomColor);
                 ColorConsole.WriteColorLine($"[Locatie:] {location.Name}", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"[Zaanummer:] {room.RoomNumber}", Globals.RoomColor);
+                ColorConsole.WriteColorLine($"[Zaalnummer:] {room.RoomNumber}", Globals.RoomColor);
                 ColorConsole.WriteColorLine($"[Zaaltype:] {room.RoomType.GetDisplayName()}\n", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"Weet u zeker dat u de zaal {room.RoomNumber} wilt [archiveren]?", Globals.ColorInputcClarification);
+                ColorConsole.WriteColorLine($"Weet u zeker dat u zaal {room.RoomNumber} wilt [archiveren]?", Globals.ColorInputcClarification);
                 new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
@@ -54,11 +54,11 @@ namespace BioscoopReserveringsapplicatie
                         RoomDetails.Start(roomId);
                     }),
                 };
-                ColorConsole.WriteColorLine("De zaal details zijn:", Globals.RoomColor);
+                ColorConsole.WriteColorLine("Zaal details", Globals.RoomColor);
                 ColorConsole.WriteColorLine($"[Locatie:] {location.Name}", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"[Zaanummer:] {room.RoomNumber}", Globals.RoomColor);
+                ColorConsole.WriteColorLine($"[Zaalnummer:] {room.RoomNumber}", Globals.RoomColor);
                 ColorConsole.WriteColorLine($"[Zaaltype:] {room.RoomType.GetDisplayName()}\n", Globals.RoomColor);
-                ColorConsole.WriteColorLine($"Weet u zeker dat u de zaal {room.RoomNumber} wilt [dearchiveren]?", Globals.ColorInputcClarification);
+                ColorConsole.WriteColorLine($"Weet u zeker dat u zaal {room.RoomNumber} wilt [dearchiveren]?", Globals.ColorInputcClarification);
                 new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
         }
