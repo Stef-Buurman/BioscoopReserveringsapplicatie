@@ -13,7 +13,7 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("userId")]
         public int UserId { get; set; }
 
-        [JsonConverter(typeof(TupleListConverter<(int, int)>))]
+        [JsonConverter(typeof(TupleListConverter<int, int>))]
         [JsonPropertyName("seat")]
         public List<(int, int)> Seat { get; set; }
 
