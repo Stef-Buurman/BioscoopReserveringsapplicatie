@@ -136,11 +136,6 @@ namespace BioscoopReserveringsapplicatie
             Console.Write(message.Substring(startIndex));
         }
 
-        public static void WriteLineColor(string message)
-        {
-            WriteColor(message + Environment.NewLine);
-        }
-
         public static void WriteLineInfo(string message) => WriteColorLine($"[{message}]", ConsoleColor.DarkGray);
 
         public static void WriteLineInfoHighlight(string message, ConsoleColor fontColor, ConsoleColor? backgroundColor = null)
