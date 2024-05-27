@@ -4,9 +4,9 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ColorConsole
     {
-        public static void WriteColorLine(string message, ConsoleColor color)
+        public static void WriteColorLine(string message, ConsoleColor color, ConsoleColor backgroundColor = ConsoleColor.Black)
         {
-            WriteColor(message, color);
+            WriteColor(message, color, backgroundColor);
             Console.WriteLine();
         }
 
@@ -15,13 +15,22 @@ namespace BioscoopReserveringsapplicatie
             WriteColor(message);
             Console.WriteLine();
         }
-        public static void WriteColor(string message, ConsoleColor color)
+
+        public static void WriteColor(string message, ConsoleColor fontColor, ConsoleColor backgroundColor = ConsoleColor.Black, ConsoleColor? originalForeColor = null, ConsoleColor? originalBackgroundColor = null)
         {
-            ConsoleColor originalForeColor = Console.ForegroundColor;
+            if (originalForeColor == null)
+            {
+                originalForeColor = Console.ForegroundColor;
+            }
+            if (originalBackgroundColor == null)
+            {
+                originalBackgroundColor = Console.BackgroundColor;
+            }
             List<string> piecesOfMessage = new List<string>(Regex.Split(message, @"(\[[^\]]*\])"));
             if (piecesOfMessage.Count == 1)
             {
-                Console.ForegroundColor = color;
+                Console.BackgroundColor = backgroundColor;
+                Console.ForegroundColor = fontColor;
                 Console.Write(message);
                 Console.ResetColor();
             }
@@ -31,21 +40,24 @@ namespace BioscoopReserveringsapplicatie
                 {
                     if (messagePiece.StartsWith("[") && messagePiece.EndsWith("]"))
                     {
-                        Console.ForegroundColor = color;
+                        Console.BackgroundColor = backgroundColor;
+                        Console.ForegroundColor = fontColor;
                         Console.Write(messagePiece.Substring(1, messagePiece.Length - 2));
                     }
                     else
                     {
                         Console.Write(messagePiece);
                     }
-                    Console.ForegroundColor = originalForeColor;
+                    Console.BackgroundColor = originalBackgroundColor ?? ConsoleColor.Black;
+                    Console.ForegroundColor = originalForeColor ?? ConsoleColor.White;
                 }
             }
         }
 
-        static void WriteColor(string message)
+        public static void WriteColor(string message)
         {
             ConsoleColor originalForeColor = Console.ForegroundColor;
+            ConsoleColor originalBackColor = Console.BackgroundColor;
 
             int startIndex = 0;
             int openBracketIndex = message.IndexOf('[');
@@ -64,35 +76,83 @@ namespace BioscoopReserveringsapplicatie
                 Console.Write(message.Substring(startIndex, openBracketIndex - startIndex));
 
                 string colorString = message.Substring(openBracketIndex + 1, closeBracketIndex - openBracketIndex - 1);
-                ConsoleColor color;
-                if (Enum.TryParse(colorString, true, out color))
+                string[] colorParts = colorString.Split(':');
+                if(colorParts.Length == 1)
                 {
+                    ConsoleColor color;
+                    if (Enum.TryParse(colorString, true, out color))
+                    {
+                        int endTagIndex = message.IndexOf("[/]", closeBracketIndex);
+                        if (endTagIndex == -1)
+                        {
+                            Console.ForegroundColor = originalForeColor;
+                            Console.BackgroundColor = originalBackColor;
+                            Console.WriteLine(message.Substring(startIndex));
+                            return;
+                        }
+
+                        WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), color, originalForeColor: originalBackColor, originalBackgroundColor: originalBackColor);
+
+                        startIndex = endTagIndex + 3;
+
+                        openBracketIndex = message.IndexOf('[', startIndex);
+                    }
+                    else
+                    {
+                        Console.Write($"[{colorString}]");
+                        startIndex = closeBracketIndex + 1;
+                        openBracketIndex = message.IndexOf('[', startIndex);
+                    }
+                }
+                else if(colorParts.Length == 2)
+                {
+                    ConsoleColor foreColor;
+                    ConsoleColor backColor = ConsoleColor.Black;
+                    if (Enum.TryParse(colorParts[0], true, out foreColor) && Enum.TryParse(colorParts[1], true, out backColor))
+                    {
+                        Console.ForegroundColor = foreColor;
+                        Console.BackgroundColor = backColor;
+                    }
+                    else
+                    {
+                        Console.Write($"[{colorParts[0]}:{colorParts[1]}]");
+                    }
                     int endTagIndex = message.IndexOf("[/]", closeBracketIndex);
                     if (endTagIndex == -1)
                     {
                         Console.ForegroundColor = originalForeColor;
+                        Console.BackgroundColor = originalBackColor;
                         Console.WriteLine(message.Substring(startIndex));
                         return;
                     }
-
-                    WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), color);
-
+                    WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), foreColor, backColor, originalForeColor, originalBackColor);
                     startIndex = endTagIndex + 3;
-
-                    openBracketIndex = message.IndexOf('[', startIndex);
-                }
-                else
-                {
-                    Console.Write($"[{colorString}]");
-                    startIndex = closeBracketIndex + 1;
                     openBracketIndex = message.IndexOf('[', startIndex);
                 }
             }
 
             Console.ForegroundColor = originalForeColor;
+            Console.BackgroundColor = originalBackColor;
             Console.Write(message.Substring(startIndex));
         }
 
         public static void WriteLineInfo(string message) => WriteColorLine($"[{message}]", ConsoleColor.DarkGray);
+
+        public static void WriteLineInfoHighlight(string message, ConsoleColor fontColor, ConsoleColor? backgroundColor = null)
+        {
+            if (backgroundColor == null)
+            {
+                backgroundColor = Console.BackgroundColor;
+            }
+            ConsoleColor originalForeColor = Console.ForegroundColor;
+            ConsoleColor originalBackColor = Console.BackgroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+
+            WriteColor($"{message}", fontColor, backgroundColor ?? Console.BackgroundColor, ConsoleColor.DarkGray, originalBackColor);
+
+            Console.ForegroundColor = originalForeColor;
+            Console.BackgroundColor = originalBackColor;
+            Console.WriteLine();
+        }
     }
 }
