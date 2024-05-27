@@ -55,11 +55,11 @@ namespace BioscoopReserveringsapplicatie
                 experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity.GetDisplayName(), experience.Status.GetDisplayName());
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
-            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteLineInfo("Klik op T om een experience toe te voegen.");
-            ColorConsole.WriteLineInfo("Klik op 1 om alle experiences te tonen.");
-            ColorConsole.WriteLineInfo("Klik op 2 om alle active experiences te tonen.");
-            ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde experiences te tonen.\n");
+            ColorConsole.WriteLineInfoHighlight("*Klik op [escape] om dit terug te gaan*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een promotie toe te voegen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [1] om alle films te tonen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active films te tonen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [3] om alle gearchiveerde films te tonen*\n", Globals.ColorInputcClarification);
             Print();
             int experienceId = new SelectionMenuUtil<int>(options,
                 () =>
