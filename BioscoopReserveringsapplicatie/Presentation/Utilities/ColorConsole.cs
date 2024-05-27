@@ -15,10 +15,17 @@ namespace BioscoopReserveringsapplicatie
             WriteColor(message);
             Console.WriteLine();
         }
-        public static void WriteColor(string message, ConsoleColor fontColor, ConsoleColor backgroundColor = ConsoleColor.Black)
+
+        public static void WriteColor(string message, ConsoleColor fontColor, ConsoleColor backgroundColor = ConsoleColor.Black, ConsoleColor? originalForeColor = null, ConsoleColor? originalBackgroundColor = null)
         {
-            ConsoleColor originalForeColor = Console.ForegroundColor;
-            ConsoleColor originalBackgroundColor = Console.BackgroundColor;
+            if (originalForeColor == null)
+            {
+                originalForeColor = Console.ForegroundColor;
+            }
+            if (originalBackgroundColor == null)
+            {
+                originalBackgroundColor = Console.BackgroundColor;
+            }
             List<string> piecesOfMessage = new List<string>(Regex.Split(message, @"(\[[^\]]*\])"));
             if (piecesOfMessage.Count == 1)
             {
@@ -41,8 +48,8 @@ namespace BioscoopReserveringsapplicatie
                     {
                         Console.Write(messagePiece);
                     }
-                    Console.BackgroundColor = originalBackgroundColor;
-                    Console.ForegroundColor = originalForeColor;
+                    Console.BackgroundColor = originalBackgroundColor ?? ConsoleColor.Black;
+                    Console.ForegroundColor = originalForeColor ?? ConsoleColor.White;
                 }
             }
         }
@@ -84,7 +91,7 @@ namespace BioscoopReserveringsapplicatie
                             return;
                         }
 
-                        WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), color);
+                        WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), color, originalForeColor: originalBackColor, originalBackgroundColor: originalBackColor);
 
                         startIndex = endTagIndex + 3;
 
@@ -118,7 +125,7 @@ namespace BioscoopReserveringsapplicatie
                         Console.WriteLine(message.Substring(startIndex));
                         return;
                     }
-                    WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), foreColor, backColor);
+                    WriteColor(message.Substring(closeBracketIndex + 1, endTagIndex - closeBracketIndex - 1), foreColor, backColor, originalForeColor, originalBackColor);
                     startIndex = endTagIndex + 3;
                     openBracketIndex = message.IndexOf('[', startIndex);
                 }
@@ -127,11 +134,6 @@ namespace BioscoopReserveringsapplicatie
             Console.ForegroundColor = originalForeColor;
             Console.BackgroundColor = originalBackColor;
             Console.Write(message.Substring(startIndex));
-        }
-
-        public static void WriteLineColor(string message)
-        {
-            WriteColor(message + Environment.NewLine);
         }
 
         public static void WriteLineInfo(string message) => WriteColorLine($"[{message}]", ConsoleColor.DarkGray);
