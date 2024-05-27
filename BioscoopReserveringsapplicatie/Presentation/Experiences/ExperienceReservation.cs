@@ -6,9 +6,11 @@ namespace BioscoopReserveringsapplicatie
         private static LocationLogic LocationLogic = new LocationLogic();
         private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static ScheduleLogic ScheduleLogic = new ScheduleLogic();
-        private static RoomLogic roomLogic = new RoomLogic();
+        private static RoomLogic RoomLogic = new RoomLogic();
 
         private static bool _singleScheduled = false;
+
+        private static List<(int, int)> SelectedValues = new List<(int, int)>();
 
         public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0, List<(int, int)> seats = default)
         {
@@ -29,6 +31,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     new Option<int>(0, "Bevestig reservering", () =>
                         {
+                            SelectedValues = new List<(int, int)>();
                             int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
 
                             if (UserLogic.CurrentUser != null && scheduleId != 0)
@@ -76,11 +79,11 @@ namespace BioscoopReserveringsapplicatie
                     new Option<int>(0, "Terug", () => {
                         if(_singleScheduled == false)
                         {
-                            Start(experienceId, location, dateTime, room, seats);
+                            Start(experienceId, location, dateTime, room);
                         }
                         else
                         {
-                            Start(experienceId, location, dateTime.Value.Date, room, seats);
+                            Start(experienceId, location, dateTime.Value.Date, room);
                         }
                         })
                 };
@@ -204,7 +207,7 @@ namespace BioscoopReserveringsapplicatie
                     foreach (ScheduleModel schedule in scheduledExperience)
                     {
 
-                        options.Add(new Option<int>(schedule.Id, $"Zaal {roomLogic.GetById(schedule.RoomId).RoomNumber}", () => Start(experienceId, location, dateTime, roomLogic.GetById(schedule.RoomId).RoomNumber)));
+                        options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}", () => Start(experienceId, location, dateTime, RoomLogic.GetById(schedule.RoomId).RoomNumber)));
 
                     }
                     options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date)));
@@ -214,7 +217,7 @@ namespace BioscoopReserveringsapplicatie
                 else
                 {
                     _singleScheduled = true;
-                    room = roomLogic.GetById(scheduledExperience[0].RoomId).RoomNumber;
+                    room = RoomLogic.GetById(scheduledExperience[0].RoomId).RoomNumber;
                     ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
                 }
             }
@@ -225,22 +228,30 @@ namespace BioscoopReserveringsapplicatie
         }
         private static void ChooseSeat(int experienceId, int location, DateTime? dateTime, int room, List<(int, int)> seat = default)
         {
+            if (dateTime == null)
+            {
+                Start(experienceId, location, dateTime);
+                return;
+            }
             if (seat == null)
             {
                 HorizontalLine.Print();
                 ColorConsole.WriteColorLine("\nKies uw stoelen: ", Globals.ExperienceColor);
                 Option<string>[,] options = OptionGrid.GenerateOptionGrid(10, 10, true);
 
-                List<(int, int)> selectedOptions = new List<(int, int)> { };
+                int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
+                List<(int, int)> selectedOptions = ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId);
 
-                List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true, () => Start(experienceId, location, dateTime), () => Start(experienceId, location, dateTime, room), true).CreateGridSelect();
+                List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true, 
+                    () => Start(experienceId, location, dateTime), 
+                    () => Start(experienceId, location, dateTime, room), true, SelectedValues).CreateGridSelect(out SelectedValues);
                 
                 Start(experienceId, location, dateTime, room, chosenSeats);
             }
             else
             {
-                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(", ", seat.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
-                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(", ", seat.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seat.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seat.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
             }
         }
     }
