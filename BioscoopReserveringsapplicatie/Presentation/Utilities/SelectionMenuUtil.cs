@@ -459,17 +459,17 @@ namespace BioscoopReserveringsapplicatie
             return new List<T>();
         }
 
-        public List<(int, int)> CreateGridSelect()
+        public List<(int, int)> CreateGridSelect(out List<(int, int)> SelectedOptions)
         {
             Index = 0;
             VisibleIndex = 0;
             Top = Console.GetCursorPosition().Top;
+            SelectedOptions = new List<(int, int)>();
             if (GridOptions.Length == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
             if (!IsGridSelect) return default;
 
             ConsoleLocationStart();
-
             WriteGridMenu();
 
             ConsoleKeyInfo keyinfo;
@@ -508,20 +508,7 @@ namespace BioscoopReserveringsapplicatie
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     ConsoleLocationEnd();
-                    List<(int, int)> selectedIndexes = new List<(int, int)>();
-
-                    for (int i = 0; i < GridOptions.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < GridOptions.GetLength(1); j++)
-                        {
-                            if (GridOptions[i, j] != null && GridOptions[i, j].IsSelected)
-                            {
-                                selectedIndexes.Add((i, j));
-                            }
-                        }
-                    }
-
-                    return selectedIndexes;
+                    return GetAllSelected();
                 }
 
                 if (keyinfo.Key == ConsoleKey.Spacebar)
@@ -533,6 +520,7 @@ namespace BioscoopReserveringsapplicatie
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
                     Console.Clear();
+                    SelectedOptions = GetAllSelected();
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
@@ -542,6 +530,24 @@ namespace BioscoopReserveringsapplicatie
             while (keyinfo != null && keyinfo.Key != null);
             ConsoleLocationEnd();
             return new List<(int, int)>();
+        }
+
+        private List<(int, int)> GetAllSelected()
+        {
+            List<(int, int)> selectedIndexes = new List<(int, int)>();
+
+            for (int i = 0; i < GridOptions.GetLength(0); i++)
+            {
+                for (int j = 0; j < GridOptions.GetLength(1); j++)
+                {
+                    if (GridOptions[i, j] != null && GridOptions[i, j].IsSelected)
+                    {
+                        selectedIndexes.Add((i, j));
+                    }
+                }
+            }
+
+            return selectedIndexes;
         }
 
         private void WriteGridMenu(string textToShowEscapability = "*Klik op [Escape] om dit onderdeel te verlaten.*")
