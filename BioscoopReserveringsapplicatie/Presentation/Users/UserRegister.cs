@@ -44,6 +44,13 @@ namespace BioscoopReserveringsapplicatie
             }
 
             string userPassword = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);
+            string confirmPassword = ReadLineUtil.EnterValue("Bevestig uw [wachtwoord]: ", LandingPage.Start, true, false);
+            while (userPassword != confirmPassword)
+            {
+                ColorConsole.WriteColorLine("Wachtwoorden komen niet overeen. Probeer het opnieuw.", Globals.ErrorColor);
+                userPassword = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);
+                confirmPassword = ReadLineUtil.EnterValue("Bevestig uw [wachtwoord]: ", LandingPage.Start, true, false);
+            }
 
             Result<UserModel> registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
 
@@ -53,11 +60,22 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
+                Console.Clear();
+                PrintNameEmail(registrationResult.Item);
+                WaitUtil.WaitTime(4000);
                 Preferences.Start(registrationResult.Item);
                 ColorConsole.WriteColorLine("\nU bent geregistreerd.", Globals.SuccessColor);
                 WaitUtil.WaitTime(2000);
                 UserLogin.Start();
             }
+        }
+
+        public static void PrintNameEmail(UserModel user)
+        {
+            ColorConsole.WriteColorLine("Uw gegevens", Globals.UserColor);
+            ColorConsole.WriteColorLine($"[Naam: ]{user.FullName}", Globals.UserColor);
+            ColorConsole.WriteColorLine($"[Email: ]{user.EmailAddress}\n", Globals.UserColor);
+            ColorConsole.WriteColorLine("Registratie is gelukt, u wordt nu doorverwezen om uw voorkeuren in te stellen.", Globals.SuccessColor);
         }
     }
 }
