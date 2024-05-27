@@ -33,6 +33,13 @@ namespace BioscoopReserveringsapplicatie
             foreach (RoomModel room in rooms)
             {
                 LocationModel location = locationLogic.GetById(room.LocationId);
+
+                string locationName = location.Name;
+                if (locationName.Length > 25)
+                {
+                    locationName = locationName.Substring(0, 25) + "...";
+                }
+
                 string roomInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "}", 
                 location.Name, room.RoomNumber, room.RoomType.GetDisplayName());
                 //room.Status.GetDisplayName()

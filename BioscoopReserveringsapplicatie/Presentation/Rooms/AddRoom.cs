@@ -66,9 +66,9 @@ namespace BioscoopReserveringsapplicatie
 
         private static void AskForRoomType()
         {
-            List<RoomType> roomTypeenum = Globals.GetAllEnum<RoomType>();
+            List<RoomType> roomTypeEnum = Globals.GetAllEnum<RoomType>();
             List<Option<RoomType>> roomTypeOption = new List<Option<RoomType>>();
-            foreach (RoomType roomType in roomTypeenum)
+            foreach (RoomType roomType in roomTypeEnum)
             {
                 roomTypeOption.Add(new Option<RoomType>(roomType, roomType.GetDisplayName()));
             }
