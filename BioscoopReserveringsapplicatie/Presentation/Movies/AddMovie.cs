@@ -113,7 +113,7 @@ namespace BioscoopReserveringsapplicatie
         private static void SelectMovieRating()
         {
             PrintAddingMovie();
-            ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine("Wat is uw [leeftijdscategorie]: \n", Globals.ColorInputcClarification);
 
             List<AgeCategory> AgeCatagories = Globals.GetAllEnum<AgeCategory>();
             List<Option<AgeCategory>> options = new List<Option<AgeCategory>>();
@@ -158,7 +158,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
-            ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film leeftijdscategorie ]{rating.GetDisplayName()}\n", Globals.MovieColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Wilt u deze [Film] toevoegen?", Globals.ColorInputcClarification);
         }

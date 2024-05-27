@@ -19,6 +19,6 @@ namespace BioscoopReserveringsapplicatie
         [Display(Name = "PG 18")]
         AGE_18 = 18,
         [Display(Name = "Alle leeftijden")]
-        ALL,
+        All,
     }
 }

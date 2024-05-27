@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                userName = ReadLineUtil.EnterValue("Vul uw [naam] in: ", LandingPage.Start);
+                userName = ReadLineUtil.EnterValue("Vul uw [volledige naam] in: ", LandingPage.Start);
             }
 
             string userEmail = "";
@@ -32,15 +32,15 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                if (errorMessage != null) ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
-                userEmail = ReadLineUtil.EnterValue("Vul uw [e-mail] in: ", LandingPage.Start, false, false);
+                if (errorMessage != null) ColorConsole.WriteColorLine($"Vul uw [volledige naam] in: {userName}", Globals.ColorInputcClarification);
+                userEmail = ReadLineUtil.EnterValue("Vul uw [e-mailadres] in: ", LandingPage.Start, false, false);
                 errorMessage = null;
             }
 
             if (errorMessage != null)
             {
-                ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
-                ColorConsole.WriteColorLine($"Vul uw [e-mail] in: {userEmail}", Globals.ColorInputcClarification);
+                ColorConsole.WriteColorLine($"Vul uw [volledige naam] in: {userName}", Globals.ColorInputcClarification);
+                ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {userEmail}", Globals.ColorInputcClarification);
             }
 
             string userPassword = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);

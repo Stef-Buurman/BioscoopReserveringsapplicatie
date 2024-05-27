@@ -59,7 +59,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
-            ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film leeftijdscategorie ]{rating.GetDisplayName()}\n", Globals.MovieColor);
             if (status == Status.Active)
             {
                 ColorConsole.WriteColorLine($"Weet u zeker dat u de film {title} wilt [archiveren]?", Globals.ColorInputcClarification);

@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar mijn account", Globals.ColorInputcClarification);
 
                 Console.ReadKey();
-                UserDetails.Start();
+                UserMenu.Start();
             }
             else
             {
@@ -89,7 +89,7 @@ namespace BioscoopReserveringsapplicatie
             int reservationId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
-                    UserDetails.Start();
+                    UserMenu.Start();
                 },
                 () =>
                 {

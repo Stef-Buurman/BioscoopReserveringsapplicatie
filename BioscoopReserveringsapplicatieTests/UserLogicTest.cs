@@ -388,7 +388,7 @@ namespace BioscoopReserveringsapplicatieTests
         [DataRow(AgeCategory.AGE_14)]
         [DataRow(AgeCategory.AGE_16)]
         [DataRow(AgeCategory.AGE_18)]
-        [DataRow(AgeCategory.ALL)]
+        [DataRow(AgeCategory.All)]
         [DataTestMethod]
         public void Correct_AgeCategory_Validation(AgeCategory age)
         {
