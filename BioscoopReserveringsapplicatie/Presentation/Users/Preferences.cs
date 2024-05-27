@@ -53,13 +53,16 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            List<Option<string>> options = new List<Option<string>>
-                {};
+            
             PrintEditedList();
             if (!PreferencesLogic.addPreferencesToAccount(_selectedGenres, _ageCategory, _intensity, _language, user))
             {
-                options.Add(new Option<string>("Opniew proberen", () => Start(user)));
+                List<Option<string>> options = new List<Option<string>>
+                {
+                    new Option<string>("Opnieuw proberen", () => Start(user))
+                };
                 ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor);
+                new SelectionMenuUtil<string>(options).Create();
             }
             else
             {
@@ -71,7 +74,6 @@ namespace BioscoopReserveringsapplicatie
                 WaitUtil.WaitTime(3000);
                 UserLogin.Start();
             }
-            new SelectionMenuUtil<string>(options).Create();
         }
 
         public static void SelectGenres()
