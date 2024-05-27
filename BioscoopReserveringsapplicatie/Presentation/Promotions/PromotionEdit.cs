@@ -64,7 +64,7 @@ namespace BioscoopReserveringsapplicatie
             string question = "Voer de promotie [titel] in: ";
             newTitle = ReadLineUtil.EditValue(newTitle, question,
             actionWhenEscapePressed,
-            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+            "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
 
             while (string.IsNullOrEmpty(newTitle))
             {
@@ -72,7 +72,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("De titel mag niet leeg zijn.", Globals.ErrorColor);
                 newTitle = ReadLineUtil.EditValue(newTitle, question, 
                 actionWhenEscapePressed,
-                "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
             }
         }
         
@@ -82,7 +82,7 @@ namespace BioscoopReserveringsapplicatie
             string question = "Voer de promotie [beschrijving] in: ";
             newDescription = ReadLineUtil.EditValue(newDescription, question,
             () => Start(promotionId, _returnToTitle),
-            "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+            "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
 
 
             while (string.IsNullOrEmpty(newDescription))
@@ -90,7 +90,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("De beschrijving mag niet leeg zijn.", Globals.ErrorColor);
                 newDescription = ReadLineUtil.EditValue(newDescription, question, 
                 () => Start(promotionId, _returnToTitle),
-                "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n");
+                "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
             }
         }
 
