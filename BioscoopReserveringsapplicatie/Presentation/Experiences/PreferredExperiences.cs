@@ -80,7 +80,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
 
-                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje] en [rechterpijltje om door de weken te scrollen*\n");
+                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje en rechterpijltje om door de weken te scrollen*\n");
 
                 ColorConsole.WriteColorLine($"Week {ISOWeek.GetWeekOfYear((DateTime)date)} - {date.Value.ToString("dd-MM-yyyy")} - {date.Value.AddDays(7).ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
 
@@ -109,7 +109,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
 
-                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje] en [rechterpijltje om door de weken te scrollen*\n");
+                ColorConsole.WriteLineInfo("*Klik op het linkerpijltje en rechterpijltje om door de weken te scrollen*\n");
 
                 ColorConsole.WriteColorLine($"Week {ISOWeek.GetWeekOfYear((DateTime)date)} - {date.Value.ToString("dd-MM-yyyy")} - {date.Value.AddDays(7).ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
 
