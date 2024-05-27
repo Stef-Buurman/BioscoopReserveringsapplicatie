@@ -134,5 +134,9 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
+
+        public List<(int, int)> GetAllReservedSeatsOfSchedule(int scheduleId) => GetAllReservationsByScheduleId(scheduleId).SelectMany(reservation => reservation.Seat).ToList();
+        
+        public List<ReservationModel> GetAllReservationsByScheduleId(int scheduleId) => _reservations.FindAll(r => r.ScheduleId == scheduleId && !r.IsCanceled);
     }
 }
