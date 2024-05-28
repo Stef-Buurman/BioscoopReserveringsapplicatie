@@ -19,6 +19,9 @@ namespace BioscoopReserveringsapplicatie
             if (experienceId != 0)
             {
                 ColorConsole.WriteColorLine("Experience reserveren\n", Globals.TitleColor);
+
+                HorizontalLine.Print();
+
                 ColorConsole.WriteColorLine("[Naam experience:] " + ExperienceLogic.GetById(experienceId).Name, Globals.ExperienceColor);
 
                 ChooseLocation(experienceId, location);
@@ -46,6 +49,7 @@ namespace BioscoopReserveringsapplicatie
 
                                         Console.Clear();
                                         ColorConsole.WriteColorLine("Experience gereserveerd\n", Globals.TitleColor);
+                                        HorizontalLine.Print();
                                         ColorConsole.WriteColorLine("[Naam experience:] " + ExperienceLogic.GetById(experienceId).Name, Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Locatie:] " + LocationLogic.GetById((int)location).Name, Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Datum:] " + dateTime.Value.ToString("dd-MM-yyyy"), Globals.ExperienceColor);
@@ -54,7 +58,7 @@ namespace BioscoopReserveringsapplicatie
                                         ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seats.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seats.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
-
+                                        HorizontalLine.Print();
                                         ColorConsole.WriteColorLine("\nReservering geslaagd", Globals.SuccessColor);
 
                                         ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar het hoofdmenu", Globals.ColorInputcClarification);
@@ -102,6 +106,8 @@ namespace BioscoopReserveringsapplicatie
                 };
 
                 ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
+
+                HorizontalLine.Print();
 
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
                 Console.WriteLine("Is de reservering correct?\n");
