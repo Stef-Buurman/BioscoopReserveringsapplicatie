@@ -8,8 +8,8 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Profielgegevens bewerken",() => UserDetailsEdit.Start()),
-                new Option<string>("Wachtwoord wijzigen", () => UserDetailsEdit.ChangePassword()),
                 new Option<string>("Voorkeuren bewerken", () => UserDetailsEdit.StartPrefrences()), 
+                new Option<string>("Wachtwoord wijzigen", () => UserDetailsEdit.ChangePassword()),
                 new Option<string>("Terug", () => UserMenu.Start())
             };
             if (UserLogic.CurrentUser != null)
