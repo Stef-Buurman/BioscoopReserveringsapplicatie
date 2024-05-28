@@ -87,7 +87,7 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.SetCursorPosition(Console.CursorLeft, Top);
             bool WantToLeave = false;
-            string Line = "\n----------------------------------------------------------------";
+            string Line = "\n\n----------------------------------------------------------------";
             string Message = "Weet je zeker dat je terug wilt gaan?";
             List<Option<string>> options = new List<Option<string>>
                     {
