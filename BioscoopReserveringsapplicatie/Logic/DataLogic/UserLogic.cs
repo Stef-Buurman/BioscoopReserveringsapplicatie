@@ -161,14 +161,13 @@
             return false;
         }
 
-        public bool ValidateGenres(List<Genre> genres)
+        public Result<List<Genre>> ValidateGenres(List<Genre> genres)
         {
             List<Genre> CorrectGenre = Globals.GetAllEnum<Genre>();
 
             if (genres.Distinct().Count() != genres.Count)
             {
-                Console.WriteLine("U mag niet een genre meerdere keren selecteren.");
-                return false;
+                return new Result<List<Genre>>(false, "U mag niet een genre meerdere keren selecteren.");
             }
 
             foreach (Genre genre in genres)
@@ -176,11 +175,10 @@
             {
                 if (!CorrectGenre.Contains(genre))
                 {
-                    Console.WriteLine("Ongeldige input, Selecteer genres uit de lijst.");
-                    return false;
+                    return new Result<List<Genre>>(false, "Ongeldige input, Selecteer genres uit de lijst.");
                 }
             }
-            return true;
+            return new Result<List<Genre>>(true);
         }
         public bool ValidateAgeCategory(AgeCategory ageCategory)
         {
@@ -221,10 +219,11 @@
         {
             if (CurrentUser != null)
             {
-                if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
+                Result<List<Genre>> validateGenres = ValidateGenres(newGenres);
+                if (!ValidateName(newName) || !ValidateEmail(newEmail) || !validateGenres.IsValid ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
-                    return new Result<UserModel>(false, "Niet alle velden zijn correct ingevuld.");
+                    return new Result<UserModel>(false, $"Niet alle velden zijn correct ingevuld.\n{validateGenres.ErrorMessage}");
                 }
                 else
                 {
