@@ -740,13 +740,13 @@ namespace BioscoopReserveringsapplicatie
             _originalWidth = Console.WindowWidth;
             _originalHeight = Console.WindowHeight;
 
-            //Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
         }
 
         private void ConsoleLocationEnd()
         {
             Console.CursorVisible = true;
-            //Console.SetBufferSize(_originalWidth, _originalHeight);
+            Console.SetBufferSize(_originalWidth, _originalHeight);
 
         }
 
