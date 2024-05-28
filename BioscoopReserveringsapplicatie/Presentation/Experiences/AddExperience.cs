@@ -105,7 +105,7 @@
         private static void AskForExperienceIntensity()
         {
             PrintEditedList();
-            List<Intensity> intensityenum = Globals.GetAllEnum<Intensity>();
+            List<Intensity> intensityenum = new List<Intensity> { Intensity.Low, Intensity.Medium, Intensity.High };
             List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
             foreach (Intensity intensity in intensityenum)
             {
