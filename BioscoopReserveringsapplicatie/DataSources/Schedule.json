@@ -54,5 +54,21 @@
     "roomId": 1,
     "scheduledDateTimeStart": "2024-05-15T11:00:00",
     "scheduledDateTimeEnd": "2024-05-15T12:15:00"
-  }
+  },
+  {
+    "id": 8,
+    "experienceId": 5,
+    "locationId": 2,
+    "roomId": 2,
+    "scheduledDateTimeStart": "2024-05-29T20:00:00",
+    "scheduledDateTimeEnd": "2024-05-29T20:10:00"
+  },
+    {
+        "id": 9,
+        "experienceId": 5,
+        "locationId": 2,
+        "roomId": 3,
+        "scheduledDateTimeStart": "2024-05-29T20:00:00",
+        "scheduledDateTimeEnd": "2024-05-29T20:10:00"
+    }
 ]

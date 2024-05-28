@@ -33,13 +33,13 @@ namespace BioscoopReserveringsapplicatie
             return _reservations.FindAll(s => s.UserId == userId);
         }
 
-        public bool Complete(int scheduleId, int userId)
+        public bool Complete(int scheduleId, int userId, List<(int, int)> seat)
         {
             GetAll();
 
             if (scheduleId != 0 && userId != 0)
             {
-                ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId);
+                ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId, seat);
                 return Add(reservation);
             }
 
@@ -69,6 +69,13 @@ namespace BioscoopReserveringsapplicatie
 
             reservation.IsCanceled = true;
             UpdateList(reservation);
+            foreach(ReservationModel res in _reservations)
+            {
+                if (res.Id == reservation.Id)
+                {
+                    res.IsCanceled = true;
+                }
+            }
             return true;
         }
 
@@ -134,5 +141,9 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
+
+        public List<(int, int)> GetAllReservedSeatsOfSchedule(int scheduleId) => GetAllReservationsByScheduleId(scheduleId).SelectMany(reservation => reservation.Seat).ToList();
+        
+        public List<ReservationModel> GetAllReservationsByScheduleId(int scheduleId) => _reservations.FindAll(r => r.ScheduleId == scheduleId && !r.IsCanceled);
     }
 }

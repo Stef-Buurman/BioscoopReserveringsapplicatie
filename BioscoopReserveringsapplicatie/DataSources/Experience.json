@@ -34,5 +34,14 @@
     "intensity": "Medium",
     "timeLength": 15,
     "status": "Active"
+  },
+  {
+    "id": 5,
+    "name": "Dit is echt een hele mooie xD",
+    "description": "mooi",
+    "filmId": 1,
+    "intensity": "Low",
+    "timeLength": 10,
+    "status": "Active"
   }
 ]
