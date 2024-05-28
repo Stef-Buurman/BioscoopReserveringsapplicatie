@@ -38,7 +38,7 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 if (!ReservationLogic.HasUserAlreadyReservedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                                 {
-                                    PaymentSimulation.Start();
+                                    PaymentSimulation.Start(seats.Count);
                                     if (seats == null) Start(experienceId, location, dateTime, room);
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id, seats))
                                     {
@@ -53,6 +53,7 @@ namespace BioscoopReserveringsapplicatie
                                         ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seats.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seats.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
 
                                         ColorConsole.WriteColorLine("\nReservering geslaagd", Globals.SuccessColor);
 
@@ -99,6 +100,8 @@ namespace BioscoopReserveringsapplicatie
                         }
                         })
                 };
+
+                ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
 
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
                 Console.WriteLine("Is de reservering correct?\n");
