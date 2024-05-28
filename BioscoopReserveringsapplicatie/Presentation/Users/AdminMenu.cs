@@ -15,7 +15,7 @@ namespace BioscoopReserveringsapplicatie
                     new Option<string>("Promoties", () => PromotionOverview.Start()),
                     new Option<string>("Locaties", () => LocationOverview.Start()),
                     new Option<string>("Zalen", () => RoomOverview.Start()),
-                    new Option<string>("Uitloggen", () => LandingPage.Start())
+                    new Option<string>("Uitloggen", () => {UserLogic.Logout(); LandingPage.Start();})
                 };
                 ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green);
                 new SelectionMenuUtil<string>(options).Create();
