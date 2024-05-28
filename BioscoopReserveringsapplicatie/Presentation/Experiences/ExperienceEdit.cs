@@ -147,7 +147,7 @@ namespace BioscoopReserveringsapplicatie
         {
             PrintEditedList();
             ColorConsole.WriteColorLine("Selecteer de [intensiteit] van de experience", Globals.ColorInputcClarification);
-            List<Intensity> options = Globals.GetAllEnum<Intensity>();
+            List<Intensity> options = new List<Intensity> { Intensity.Low, Intensity.Medium, Intensity.High };
             int top = Console.GetCursorPosition().Top;
             _newIntensity = new SelectionMenuUtil<Intensity>(options,
                 () => Start(_experienceId, _returnToMovie),
