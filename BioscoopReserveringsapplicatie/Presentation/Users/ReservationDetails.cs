@@ -77,7 +77,8 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Zaalnummer: ]{room.RoomNumber}", Globals.ReservationColor);
                 ColorConsole.WriteColorLine($"[Starttijd: ]{schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm")}", Globals.ReservationColor);
                 ColorConsole.WriteColorLine($"[Eindtijd: ]{schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm")}", Globals.ReservationColor);
-                ColorConsole.WriteColorLine($"[Status: ]{(reservation.IsCanceled ? "Geannuleerd" : "Actief")}\n", Globals.ReservationColor);
+                ColorConsole.WriteColorLine($"[Status: ]{(reservation.IsCanceled ? "Geannuleerd" : "Actief")}", Globals.ReservationColor);
+                ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * reservation.Seat.Count, 2)}\n", Globals.ReservationColor);
 
                 Console.WriteLine("Wat wil je doen?");
             }
