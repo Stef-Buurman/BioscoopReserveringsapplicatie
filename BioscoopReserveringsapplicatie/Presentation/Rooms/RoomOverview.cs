@@ -45,7 +45,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(room.Id, roomInfo));
             }
             ColorConsole.WriteLineInfoHighlight("*Klik op een zaal om de details te bekijken*", Globals.ColorInputcClarification);
-            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn alle zalen die momenteel bestaan:\n", Globals.TitleColor);
             Print();
             int roomId = new SelectionMenuUtil<int>(options,
