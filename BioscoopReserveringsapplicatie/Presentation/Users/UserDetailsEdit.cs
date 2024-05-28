@@ -296,7 +296,7 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                ColorConsole.WriteColorLine($"[Genre(s):] Alle genres", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Genre(s):] Niet ingevuld", ConsoleColor.Green);
             }
             if (_newAgeCategory != AgeCategory.Undefined)
             {

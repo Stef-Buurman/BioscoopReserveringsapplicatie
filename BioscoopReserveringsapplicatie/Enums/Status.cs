@@ -4,7 +4,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public enum Status
     {
-        [Display(Name = "Niet ingevuld")]
+        [Display(Name = "Onbekend")]
         Undefined,
         [Display(Name = "Inactief")]
         Inactive,

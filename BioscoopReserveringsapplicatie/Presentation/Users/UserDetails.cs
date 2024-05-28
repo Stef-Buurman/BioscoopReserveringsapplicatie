@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Email: ]{UserLogic.CurrentUser.EmailAddress}\n", ConsoleColor.Cyan);
 
                 ColorConsole.WriteColorLine("Persoonlijke voorkeuren", ConsoleColor.Green);
-                ColorConsole.WriteColorLine($"[Genre(s): ]{(UserLogic.CurrentUser.Genres.Any() ? string.Join(", ", UserLogic.CurrentUser.Genres) : "Alle genres")}", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Genre(s): ]{(UserLogic.CurrentUser.Genres.Any() ? string.Join(", ", UserLogic.CurrentUser.Genres) : "Niet ingevuld")}", ConsoleColor.Green);
                 ColorConsole.WriteColorLine($"[Leeftijdscategorie: ]{UserLogic.CurrentUser.AgeCategory.GetDisplayName()}", ConsoleColor.Green);
                 ColorConsole.WriteColorLine($"[Intensiteit: ]{UserLogic.CurrentUser.Intensity.GetDisplayName()}", ConsoleColor.Green);
                 ColorConsole.WriteColorLine($"[Taal: ]{UserLogic.CurrentUser.Language.GetDisplayName()}\n", ConsoleColor.Green);
