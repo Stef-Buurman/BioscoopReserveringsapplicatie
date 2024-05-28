@@ -30,7 +30,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Inloggen", () => UserLogin.Start()),
                 new Option<string>("Registreren", () => UserRegister.Start()),
-                new Option<string>("Applicatie sluiten", () => Environment.Exit(0)),
+                new Option<string>("Applicatie sluiten", () => {ColorConsole.WriteColorLine("\nTot ziens!", Globals.SuccessColor); Environment.Exit(0);}),
             };
 
             new SelectionMenuUtil<string>(options).Create();
