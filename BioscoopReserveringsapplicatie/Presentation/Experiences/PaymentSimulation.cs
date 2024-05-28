@@ -6,6 +6,10 @@ namespace BioscoopReserveringsapplicatie
         {
             double price = Math.Round(Globals.pricePerSeat * amountOfSeats, 2);
 
+            Console.WriteLine();
+
+            HorizontalLine.Print();
+
             ColorConsole.WriteColorLine($"\nTotale prijs: [€ {price}] ", ConsoleColor.Green);
 
             List<Option<string>> options = new List<Option<string>>
