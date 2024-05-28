@@ -628,7 +628,6 @@ namespace BioscoopReserveringsapplicatie
                 while (stringtToPrint.Length < MaxSelectionMenu) stringtToPrint += " ";
                 ColorConsole.WriteColorLine(stringtToPrint);
             }
-            Console.SetCursorPosition(0, Top);
         }
 
         private void Move(int rowDelta, int colDelta)
