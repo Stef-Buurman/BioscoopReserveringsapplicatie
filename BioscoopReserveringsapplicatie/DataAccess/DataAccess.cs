@@ -28,8 +28,20 @@ namespace BioscoopReserveringsapplicatie
         }
         public List<T> LoadAll()
         {
-            string json = File.ReadAllText(Path);
-            return JsonSerializer.Deserialize<List<T>>(json);
+            try
+            {
+                string json = File.ReadAllText(Path);
+                return JsonSerializer.Deserialize<List<T>>(json);
+            }
+            catch (FileNotFoundException)
+            {
+                File.Create(Path).Close();
+                string startingJson = "[]";
+                File.WriteAllText(Path, startingJson);
+
+                string json = File.ReadAllText(Path);
+                return JsonSerializer.Deserialize<List<T>>(json);
+            }
         }
 
         public void WriteAll(List<T> accounts)
