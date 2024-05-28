@@ -42,7 +42,7 @@ namespace BioscoopReserveringsapplicatie
                                     if (seats == null) Start(experienceId, location, dateTime, room);
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id, seats))
                                     {
-                                        WaitUtil.WaitTime(2000);
+                                        WaitUtil.WaitTime(1000);
 
                                         Console.Clear();
                                         ColorConsole.WriteColorLine("Experience gereserveerd\n", Globals.TitleColor);
