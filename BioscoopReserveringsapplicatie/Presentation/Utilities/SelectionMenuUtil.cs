@@ -48,7 +48,7 @@ namespace BioscoopReserveringsapplicatie
         private bool ShowEscapeabilityText;
 
         private (int, int) GridIndex = (0, 0);
-        private int MaxGridRows = 30;
+        private int MaxGridRows = 20;
         private int MaxGridCols = 35;
         private bool IsGridSelect = false;
         private string GridSeperator = null;
@@ -508,6 +508,7 @@ namespace BioscoopReserveringsapplicatie
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     ConsoleLocationEnd();
+                    SelectedOptions = GetAllSelected();
                     return GetAllSelected();
                 }
 
@@ -627,7 +628,6 @@ namespace BioscoopReserveringsapplicatie
                 while (stringtToPrint.Length < MaxSelectionMenu) stringtToPrint += " ";
                 ColorConsole.WriteColorLine(stringtToPrint);
             }
-            Console.SetCursorPosition(0, Top);
         }
 
         private void Move(int rowDelta, int colDelta)
@@ -737,22 +737,26 @@ namespace BioscoopReserveringsapplicatie
         private void ConsoleLocationStart()
         {
             Console.CursorVisible = false;
-            _originalWidth = Console.WindowWidth;
-            _originalHeight = Console.WindowHeight;
-
-            Console.SetBufferSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
         }
 
         private void ConsoleLocationEnd()
         {
-            Console.CursorVisible = true;
-            Console.SetBufferSize(_originalWidth, _originalHeight);
+            //if (IsGridSelect)
+            //{
+            //    int top = 0;
+            //    foreach (Option<T> options in GridOptions)
+            //    {
 
+            //    }
+            //}
+
+            //Console.SetCursorPosition(0, Top);
+            Console.CursorVisible = true;
         }
 
         private void SetCursorPosition(string textToShowEscapability)
         {
-            Console.SetCursorPosition(0, Top);
+            //Console.SetCursorPosition(0, Top);
             int top = Top;
             if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
