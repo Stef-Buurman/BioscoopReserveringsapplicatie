@@ -40,7 +40,7 @@ namespace BioscoopReserveringsapplicatie
                 string locationInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "}", locationName, locations.Status.GetDisplayName());
                 options.Add(new Option<int>(locations.Id, locationInfo));
             }
-            ColorConsole.WriteLineInfoHighlight("*Klik op een locatie om de details te bekijken*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] om de details van een locatie te bekijken*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een locatie toe te voegen*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn alle locaties die momenteel bestaan:\n", Globals.TitleColor);

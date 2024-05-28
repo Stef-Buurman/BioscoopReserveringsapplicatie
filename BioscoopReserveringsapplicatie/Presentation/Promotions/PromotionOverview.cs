@@ -47,7 +47,7 @@ namespace BioscoopReserveringsapplicatie
                 string promotionInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "}", promotionTitle, promotionDescription, promotion.Status.GetDisplayName());
                 options.Add(new Option<int>(promotion.Id, promotionInfo));
             }
-            ColorConsole.WriteLineInfoHighlight("*Klik op een promotie om de details te bekijken*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] om de details van een promotie te bekijken*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een promotie toe te voegen*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn alle promoties die momenteel bestaan:\n", Globals.TitleColor);
