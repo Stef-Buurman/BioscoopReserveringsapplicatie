@@ -68,7 +68,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active films te tonen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [3] om alle gearchiveerde films te tonen*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn alle films die momenteel bestaan:\n", Globals.TitleColor);
-            Print();
+            Print(columnHeaders, columnWidths);
             int movieId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
@@ -142,19 +142,8 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print()
+        private static void Print(List<string> columnHeaders, int[] columnWidths)
         {
-            List<string> columnHeaders = new List<string>
-            {
-                "Film Naam",
-                "Genres",
-                "Leeftijdscategorie",
-                "Status"
-            };
-
-            List<MovieModel> allMovies = MoviesLogic.GetAll();
-            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allMovies, movieDataExtractor);
-
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
             {
