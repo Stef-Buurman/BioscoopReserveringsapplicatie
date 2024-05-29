@@ -1,4 +1,3 @@
-
 namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceEdit
