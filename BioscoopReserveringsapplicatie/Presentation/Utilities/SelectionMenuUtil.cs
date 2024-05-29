@@ -245,6 +245,8 @@ namespace BioscoopReserveringsapplicatie
         
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
+        public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption,bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, selectedOption) { }
        
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, string textBeforeInputShown, List<Option<T>> selectedOptions)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, false, textBeforeInputShown, null, true, selectedOptions) { }
