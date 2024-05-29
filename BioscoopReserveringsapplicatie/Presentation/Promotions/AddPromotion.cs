@@ -8,6 +8,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(string returnTo = "")
         {
+            ClearFields();
             Console.Clear();
 
             if (returnTo == "" || returnTo == "Name")
@@ -44,6 +45,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (promotionLogic.Add(newPromotion))
                 {
+                    ClearFields();
                     PromotionOverview.Start();
                 }
                 else
@@ -54,7 +56,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }),
             new Option<string>("Verder gaan met aanpassen", () => { Start("Description"); }),
-            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ClearFields(); ExperienceOverview.Start(); }),
             };
 
             new SelectionMenuUtil<string>(options).Create();
@@ -80,6 +82,12 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Promotie status: ]{status.GetDisplayName()}\n", Globals.PromotionColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Wilt u deze [Promotie] toevoegen?", Globals.ColorInputcClarification);
+        }
+        
+        public static void ClearFields()
+        {
+            title = "";
+            description = "";
         }
     }
 }
