@@ -62,7 +62,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active experiences te tonen*", Globals.ColorInputcClarification);
             ColorConsole.WriteLineInfoHighlight("*Klik op [3] om alle gearchiveerde experiences te tonen*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel bestaan:\n", Globals.TitleColor);
-            Print();
+            Print(columnHeaders, columnWidths);
             int experienceId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
@@ -137,22 +137,8 @@ namespace BioscoopReserveringsapplicatie
             }
         }
 
-        private static void Print()
+        private static void Print(List<string> columnHeaders, int[] columnWidths)
         {
-            // Defineer de kolom koppen voor de tabel
-            List<string> columnHeaders = new List<string>
-            {
-                "Experience Naam  ",
-                "Genres",
-                "Leeftijdscategorie",
-                "Intensiteit",
-                "Status"
-            };
-
-            List<ExperienceModel> allExperiences = ExperiencesLogic.GetAll();
-            // Bereken de breedte voor elke kolom op basis van de koptekst en experiences
-            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences, experienceDataExtractor);
-
             // Print de kop van de tabel
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
@@ -160,7 +146,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 2));
             }
             Console.WriteLine();
-
+            
             // Print de "----"-lijn tussen de kop en de data
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
