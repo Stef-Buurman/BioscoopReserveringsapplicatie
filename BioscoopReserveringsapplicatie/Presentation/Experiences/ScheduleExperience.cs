@@ -77,6 +77,7 @@ namespace BioscoopReserveringsapplicatie
                         {
                             Console.Clear();
                             ColorConsole.WriteColorLine("Experience is ingepland!", Globals.SuccessColor);
+                            _slotNotOpenError = "";
                             WaitUtil.WaitTime(2000);
                             AdminMenu.Start();
                         }
@@ -89,6 +90,7 @@ namespace BioscoopReserveringsapplicatie
 
                             Console.Clear();
                             ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het inplannen. Probeer het opnieuw.\n", Globals.ErrorColor);
+                            _slotNotOpenError = "";
                             new SelectionMenuUtil<string>(options).Create();
                         }
                     }),
@@ -97,6 +99,7 @@ namespace BioscoopReserveringsapplicatie
 
                 Console.Clear();
                 PendingSchedule(experienceId, roomId, locationId, scheduledDateTime);
+                _slotNotOpenError = "";
                 new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else ColorConsole.WriteColorLine("User is geen admin!", ConsoleColor.DarkRed);
