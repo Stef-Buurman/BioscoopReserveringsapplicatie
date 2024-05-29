@@ -555,10 +555,11 @@ namespace BioscoopReserveringsapplicatie
         {
             SetCursorPosition(textToShowEscapability);
             int gridHeight = GridOptions.GetLength(0);
+            int gridWeight = GridOptions.GetLength(1);
             if (TableFormat)
             {
                 string stringtToPrint = "  ";
-                while (stringtToPrint.Length - 1 <= $"{GridOptions.GetLength(0)}".Length) stringtToPrint += " ";
+                while (stringtToPrint.Length - 1 <= $"{gridHeight}".Length) stringtToPrint += " ";
                 for (int i = 0; i < GridOptions.GetLength(1); i++)
                 {
                     string strToAdd = $"{i + 1}";
@@ -568,7 +569,7 @@ namespace BioscoopReserveringsapplicatie
                 }
                 ColorConsole.WriteColorLine(stringtToPrint, Console.ForegroundColor, ConsoleColor.DarkGray);
             }
-
+            string GridString = "";
             for (int i = 0; i < gridHeight; i++)
             {
                 string stringtToPrint = "";
@@ -578,7 +579,7 @@ namespace BioscoopReserveringsapplicatie
                     while (strToAdd.Length < $"{gridHeight}".Length) strToAdd += " ";
                     stringtToPrint += $"[{Console.ForegroundColor}:{ConsoleColor.DarkGray}]{strToAdd}:[/] ";
                 }
-                for (int j = 0; j < GridOptions.GetLength(1); j++)
+                for (int j = 0; j < gridWeight; j++)
                 {
                     string strToAdd = "";
                     string spaces = "";
@@ -617,7 +618,7 @@ namespace BioscoopReserveringsapplicatie
                             stringtToPrint += $"[{ConsoleColor.White}:{ConsoleColor.Black}]{strToAdd}[/]";
                         }
 
-                        if (j != GridOptions.GetLength(1) - 1 && GridSeperator != null)
+                        if (j != gridWeight - 1 && GridSeperator != null)
                         {
                             stringtToPrint += $"[{ConsoleColor.White}:{ConsoleColor.Black}]{GridSeperator} [/]";
                         }
@@ -626,8 +627,10 @@ namespace BioscoopReserveringsapplicatie
                 }
                 if (Regex.Replace(stringtToPrint, @"\[.*?\]", string.Empty).Length > MaxSelectionMenu) MaxSelectionMenu = Regex.Replace(stringtToPrint, @"\[.*?\]", string.Empty).Length;
                 while (stringtToPrint.Length < MaxSelectionMenu) stringtToPrint += " ";
-                ColorConsole.WriteColorLine(stringtToPrint);
+                GridString += stringtToPrint + "\n";
             }
+            ColorConsole.WriteColorLine(GridString);
+            GetKeys();
         }
 
         private void Move(int rowDelta, int colDelta)
@@ -741,22 +744,12 @@ namespace BioscoopReserveringsapplicatie
 
         private void ConsoleLocationEnd()
         {
-            //if (IsGridSelect)
-            //{
-            //    int top = 0;
-            //    foreach (Option<T> options in GridOptions)
-            //    {
-
-            //    }
-            //}
-
-            //Console.SetCursorPosition(0, Top);
+            GetKeys();
             Console.CursorVisible = true;
         }
 
         private void SetCursorPosition(string textToShowEscapability)
         {
-            //Console.SetCursorPosition(0, Top);
             int top = Top;
             if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
@@ -991,6 +984,13 @@ namespace BioscoopReserveringsapplicatie
                         OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
                         WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
                     }
+                    else if(MaxVisibility == 1)
+                    {
+                        if (AmountOptionsAbove > 0) AmountOptionsAbove--;
+                        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
+                        VisibleIndex = 0;
+                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
+                    }
                     // When the selected option is neither of the above, this will be executed.
                     else
                     {
@@ -1054,6 +1054,11 @@ namespace BioscoopReserveringsapplicatie
         public static void WaitTime()
         {
             WaitUtil.WaitTime(50);
+            GetKeys();
+        }
+
+        public static void GetKeys()
+        {
             while (Console.KeyAvailable)
             {
                 Console.ReadKey(true);
