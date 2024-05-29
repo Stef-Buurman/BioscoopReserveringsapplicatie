@@ -5,7 +5,6 @@ namespace BioscoopReserveringsapplicatie
     {
         static public ExperienceLogic ExperiencesLogic = new ExperienceLogic();
         static public MovieLogic MoviesLogic = new MovieLogic();
-        private static Action actionWhenEscapePressed = ExperienceOverview.Start;
         private static ExperienceModel _experience;
         private static string _newName = "";
         private static string _newDescription = "";
@@ -14,18 +13,9 @@ namespace BioscoopReserveringsapplicatie
         private static int _timeInInt = 0;
         private static int _experienceId;
 
-        private static string _returnToName = "Name";
-        private static string _returnToDescription = "Description";
-        private static string _returnToMovie = "Movie";
-        private static string _returnToIntensity = "Intensity";
-        private static string _returnToLength = "Length";
-
-        public static void Start(int experienceId, string returnTo = "")
+        public static void Start(int experienceId)
         {
-            actionWhenEscapePressed = () => ExperienceDetails.Start(experienceId);
-            Console.Clear();
             _experienceId = experienceId;
-
             _experience = ExperiencesLogic.GetById(experienceId);
 
             if (_experience == null) return;
@@ -35,41 +25,34 @@ namespace BioscoopReserveringsapplicatie
             if (_newIntensity == Intensity.Undefined) _newIntensity = _experience.Intensity;
             if (_timeInInt == 0) _timeInInt = _experience.TimeLength;
 
-            if (returnTo == "" || returnTo == _returnToName)
-            {
-                ExperienceName();
-                returnTo = "";
-            }
-            if (returnTo == "" || returnTo == _returnToDescription)
-            {
-                ExperienceDescription();
-                returnTo = "";
-            }
-            if (returnTo == "" || returnTo == _returnToMovie)
-            {
-                SelectMovie();
-                returnTo = "";
-            }
-            if (returnTo == "" || returnTo == _returnToIntensity)
-            {
-                SelectIntensity();
-                returnTo = "";
-            }
-            if (returnTo == "" || returnTo == _returnToLength)
-            {
-                ExperienceLength();
-                returnTo = "";
-            }
+            PrintEditedList();
+            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van deze experience?", Globals.TitleColor);
 
+            List<Option<string>> editOptions = new List<Option<string>>()
+            {
+                new Option<string>("Naam", () => { ExperienceName(); }),
+                new Option<string>("Beschrijving", () => { ExperienceDescription(); }),
+                new Option<string>("Film", () => { SelectMovie(); }),
+                new Option<string>("Intensiteit", () => { SelectIntensity(); }),
+                new Option<string>("Tijdsduur", () => { ExperienceLength(); }),
+                new Option<string>("Opslaan", () => { SaveExperience(); }, Globals.SaveColor),
+                new Option<string>("Terug", () => { ExperienceDetails.Start(experienceId); }, Globals.GoBackColor)
+            };
+
+            new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
+        }
+
+        public static void SaveExperience()
+        {
             string MovieName = MoviesLogic.GetById(_selectedMovieId).Title;
             Console.Clear();
             List<Option<string>> saveOptions = new List<Option<string>>()
             {
                 new Option<string> ("Ja", () =>
                 {
-                    if (ExperiencesLogic.Edit(experienceId, _newName, _newDescription, _newIntensity, _timeInInt, _selectedMovieId))
+                    if (ExperiencesLogic.Edit(_experienceId, _newName, _newDescription, _newIntensity, _timeInInt, _selectedMovieId))
                     {
-                        ExperienceDetails.Start(experienceId);
+                        ExperienceDetails.Start(_experienceId);
                     }
                     else
                     {
@@ -81,7 +64,7 @@ namespace BioscoopReserveringsapplicatie
                         new SelectionMenuUtil<string>(errorOptions).Create();
                     }
                 }),
-                new Option<string>("Nee, pas de experience verder aan", () => { Start(_experience.Id, _returnToLength); }),
+                new Option<string>("Nee, pas de experience verder aan", () => { Start(_experience.Id); }),
                 new Option<string>("Nee, stop met aanpassen", () => { Console.Clear(); ExperienceDetails.Start(_experience.Id); })
             };
             ColorConsole.WriteColorLine("Dit zijn de nieuwe experience details:", Globals.ExperienceColor);
@@ -99,25 +82,27 @@ namespace BioscoopReserveringsapplicatie
         public static void ExperienceName()
         {
             PrintEditedList();
-            _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
+            _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", () => Start(_experienceId));
             while (string.IsNullOrEmpty(_newName))
             {
                 PrintEditedList();
                 ColorConsole.WriteColorLine("\nNaam mag niet leeg zijn.", Globals.ErrorColor);
-                _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", actionWhenEscapePressed);
+                _newName = ReadLineUtil.EditValue(_newName, "Voer de experience [naam] in: ", () => Start(_experienceId));
             }
+            Start(_experienceId);
         }
 
         public static void ExperienceDescription()
         {
             PrintEditedList();
-            _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
+            _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId));
             while (string.IsNullOrEmpty(_newDescription))
             {
                 PrintEditedList();
                 ColorConsole.WriteColorLine("\nBeschrijving mag niet leeg zijn.", Globals.ErrorColor);
-                _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId, _returnToName));
+                _newDescription = ReadLineUtil.EditValue(_newDescription, "Voer de experience [beschrijving] in: ", () => Start(_experienceId));
             }
+            Start(_experienceId);
         }
 
         public static void SelectMovie()
@@ -132,15 +117,16 @@ namespace BioscoopReserveringsapplicatie
             }
             int top = Console.GetCursorPosition().Top;
             _selectedMovieId = new SelectionMenuUtil<int>(MovieOptions,
-                () => Start(_experienceId, _returnToName),
-                () => Start(_experienceId, _returnToMovie),
+                () => Start(_experienceId),
+                () => SelectMovie(),
                 new Option<int>(_selectedMovieId)).Create();
             while (!ExperiencesLogic.ValidateMovieId(_selectedMovieId))
             {
                 Console.SetCursorPosition(0, top);
                 ColorConsole.WriteColorLine("Ongeldige Input. Probeer het opnieuw.", Globals.ErrorColor);
-                _selectedMovieId = new SelectionMenuUtil<int>(MovieOptions, () => Start(_experienceId, _returnToName), () => Start(_experienceId, _returnToMovie)).Create();
+                _selectedMovieId = new SelectionMenuUtil<int>(MovieOptions, () => Start(_experienceId), () => SelectMovie()).Create();
             }
+            Start(_experienceId);
         }
 
         public static void SelectIntensity()
@@ -150,15 +136,16 @@ namespace BioscoopReserveringsapplicatie
             List<Intensity> options = new List<Intensity> { Intensity.Low, Intensity.Medium, Intensity.High };
             int top = Console.GetCursorPosition().Top;
             _newIntensity = new SelectionMenuUtil<Intensity>(options,
-                () => Start(_experienceId, _returnToMovie),
-                () => Start(_experienceId, _returnToIntensity),
+                () => Start(_experienceId),
+                () => SelectIntensity(),
                 new Option<Intensity>(_newIntensity)).Create();
             while (!ExperiencesLogic.ValidateExperienceIntensity(_newIntensity))
             {
                 Console.SetCursorPosition(0, top);
                 ColorConsole.WriteColorLine("Ongeldige input. Probeer het opnieuw", Globals.ErrorColor);
-                _newIntensity = new SelectionMenuUtil<Intensity>(options, () => Start(_experienceId, _returnToMovie), () => Start(_experienceId, _returnToIntensity)).Create();
+                _newIntensity = new SelectionMenuUtil<Intensity>(options, () => Start(_experienceId), () => SelectIntensity()).Create();
             }
+            Start(_experienceId);
         }
 
         public static void ExperienceLength()
@@ -166,8 +153,8 @@ namespace BioscoopReserveringsapplicatie
             PrintEditedList();
             List<int> intList = Enumerable.Range(1, 100).ToList();
             SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1,
-                () => Start(_experienceId, _returnToMovie),
-                () => Start(_experienceId, _returnToLength),
+                () => Start(_experienceId),
+                () => ExperienceLength(),
                 false, "Voer de [lengte] van de experience in (in minuten): ",
                 new Option<int>(_timeInInt));
             _timeInInt = selection.Create();
@@ -175,6 +162,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 _timeInInt = selection.Create();
             }
+            Start(_experienceId);
         }
 
         private static void PrintEditedList()
@@ -208,7 +196,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 HorizontalLine.Print();
             }
-            ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
+            //ColorConsole.WriteColorLine("Voer nieuwe experience details in (druk op Enter om de huidige te behouden)", Globals.TitleColor);
         }
     }
 }
