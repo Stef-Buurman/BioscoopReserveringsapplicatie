@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.Clear();
 
-            ColorConsole.WriteLineInfoHighlight("*Gebruik [fullscreen] voor de beste ervaring*\n", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Gebruik [fullscreen] voor de beste gebruikerservaring*\n", Globals.ColorInputcClarification);
 
             ColorConsole.WriteColorLine(@"[Blue] _______  __[/]                [Red]_                     [/]");
             ColorConsole.WriteColorLine(@"[Blue]|  ___\ \/ /[/][Red]_ __   ___ _ __(_) ___ _ __   ___ ___ [/]");
