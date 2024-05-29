@@ -18,6 +18,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(string returnTo = "")
         {
             Console.Clear();
+            ClearFields();
 
             if (returnTo == "" || returnTo == _returnToTitle)
             {
@@ -49,6 +50,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
                 {
+                    ClearFields();
                     MovieOverview.Start();
                 }
                 else
@@ -59,7 +61,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }),
                 new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToTitle); }),
-                new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
+                new Option<string>("Verlaten zonder op te slaan", () => {ClearFields(); MovieOverview.Start(); }),
             };
 
             new SelectionMenuUtil<string>(options).Create();
@@ -161,6 +163,14 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film leeftijdscategorie ]{rating.GetDisplayName()}\n", Globals.MovieColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Wilt u deze [Film] toevoegen?", Globals.ColorInputcClarification);
+        }
+        
+        public static void ClearFields()
+        {
+            title = "";
+            description = "";
+            genres = new List<Genre>();
+            rating = AgeCategory.Undefined;
         }
     }
 }

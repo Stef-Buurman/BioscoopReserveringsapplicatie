@@ -18,6 +18,7 @@
         public static void Start(string returnTo = "")
         {
             Console.Clear();
+            ClearFields();
             if (returnTo == "" || returnTo == _returnToName)
             {
                 AskForExperienceName();
@@ -51,6 +52,7 @@
             {
                 if (experiencesLogic.Add(newExperience))
                 {
+                    ClearFields();
                     ExperienceOverview.Start();
                 }
                 else
@@ -61,7 +63,7 @@
                 }
             }),
             new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToLength); }),
-            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ClearFields(); ExperienceOverview.Start();}),
             };
 
             new SelectionMenuUtil<string>(options).Create();
@@ -189,6 +191,14 @@
             {
                 HorizontalLine.Print();
             }
+        }
+        private static void ClearFields()
+        {
+            _newName = string.Empty;
+            _newDescription = string.Empty;
+            _selectedMovieId = 0;
+            _Intensity = Intensity.Undefined;
+            _timeInInt = 0;
         }
     }
 }
