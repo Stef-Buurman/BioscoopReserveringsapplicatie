@@ -2,8 +2,16 @@ namespace BioscoopReserveringsapplicatie
 {
     static class PaymentSimulation
     {
-        public static void Start()
+        public static void Start(int amountOfSeats)
         {
+            double price = Math.Round(Globals.pricePerSeat * amountOfSeats, 2);
+
+            Console.WriteLine();
+
+            HorizontalLine.Print();
+
+            ColorConsole.WriteColorLine($"\nTotale prijs: [€ {price}] ", ConsoleColor.Green);
+
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("iDEAL", Simulation),

@@ -30,6 +30,8 @@ namespace BioscoopReserveringsapplicatie
         public static readonly ConsoleColor LocationColor = ConsoleColor.DarkMagenta;
         public static readonly ConsoleColor UserColor = ConsoleColor.Cyan;
 
+        public static readonly double pricePerSeat = 19.99;
+
 
         public static List<T> GetAllEnum<T>()
         {

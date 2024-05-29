@@ -19,6 +19,9 @@ namespace BioscoopReserveringsapplicatie
             if (experienceId != 0)
             {
                 ColorConsole.WriteColorLine("Experience reserveren\n", Globals.TitleColor);
+
+                HorizontalLine.Print();
+
                 ColorConsole.WriteColorLine("[Naam experience:] " + ExperienceLogic.GetById(experienceId).Name, Globals.ExperienceColor);
 
                 ChooseLocation(experienceId, location);
@@ -38,17 +41,31 @@ namespace BioscoopReserveringsapplicatie
                             {
                                 if (!ReservationLogic.HasUserAlreadyReservedScheduledExperience(scheduleId, UserLogic.CurrentUser.Id))
                                 {
-                                    PaymentSimulation.Start();
+                                    PaymentSimulation.Start(seats.Count);
                                     if (seats == null) Start(experienceId, location, dateTime, room);
                                     if (ReservationLogic.Complete(scheduleId, UserLogic.CurrentUser.Id, seats))
                                     {
-                                        ColorConsole.WriteColorLine("\nReservering bevestigd", Globals.SuccessColor);
+                                        WaitUtil.WaitTime(1000);
 
-                                        ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar de experience details", Globals.ColorInputcClarification);
+                                        Console.Clear();
+                                        ColorConsole.WriteColorLine("Experience gereserveerd\n", Globals.TitleColor);
+                                        HorizontalLine.Print();
+                                        ColorConsole.WriteColorLine("[Naam experience:] " + ExperienceLogic.GetById(experienceId).Name, Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Locatie:] " + LocationLogic.GetById((int)location).Name, Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Datum:] " + dateTime.Value.ToString("dd-MM-yyyy"), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Tijd:] " + dateTime.Value.ToString("HH:mm"), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seats.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seats.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
+                                        HorizontalLine.Print();
+                                        ColorConsole.WriteColorLine("\nReservering geslaagd", Globals.SuccessColor);
+
+                                        ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar het hoofdmenu", Globals.ColorInputcClarification);
 
                                         Console.ReadKey();
 
-                                        ExperienceDetails.Start(experienceId);
+                                        UserMenu.Start();
                                     }
                                     else
                                     {
@@ -87,6 +104,10 @@ namespace BioscoopReserveringsapplicatie
                         }
                         })
                 };
+
+                ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
+
+                HorizontalLine.Print();
 
                 ColorConsole.WriteColorLine("\nReservering bevestigen", Globals.ExperienceColor);
                 Console.WriteLine("Is de reservering correct?\n");
@@ -244,10 +265,10 @@ namespace BioscoopReserveringsapplicatie
                 int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
                 List<(int, int)> selectedOptions = ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId);
 
-                List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true, 
-                    () => Start(experienceId, location, dateTime), 
+                List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true,
+                    () => Start(experienceId, location, dateTime),
                     () => Start(experienceId, location, dateTime, room), true, SelectedValues).CreateGridSelect(out SelectedValues);
-                
+
                 Start(experienceId, location, dateTime, room, chosenSeats);
             }
             else
