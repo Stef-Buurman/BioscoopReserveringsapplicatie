@@ -67,7 +67,7 @@
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
             }
 
-            if (password.Length < 5 || confirmPassword.Length < 5)
+            if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
             }
