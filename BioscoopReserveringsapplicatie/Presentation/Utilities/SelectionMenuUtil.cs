@@ -236,24 +236,25 @@ namespace BioscoopReserveringsapplicatie
 
         public SelectionMenuUtil(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText) { }
+        
         public SelectionMenuUtil(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, List<KeyAction> keyActions, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true, bool hasKeyAction = true)
         : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText, default, default, null, false, default, hasKeyAction, keyActions) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
-
+       
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, string textBeforeInputShown, List<Option<T>> selectedOptions)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, false, textBeforeInputShown, null, true, selectedOptions) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
-
+        
         public SelectionMenuUtil(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
 

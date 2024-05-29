@@ -165,6 +165,7 @@ namespace BioscoopReserveringsapplicatie
         {
             PrintEditedList();
             List<int> intList = Enumerable.Range(1, 100).ToList();
+            intList.Reverse();
             SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1,
                 () => Start(_experienceId, _returnToMovie),
                 () => Start(_experienceId, _returnToLength),
