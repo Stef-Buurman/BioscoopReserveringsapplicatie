@@ -7,27 +7,24 @@ namespace BioscoopReserveringsapplicatie
         {
             bool isEscapable = escapeAction != null;
 
-            if (showEscapability)
-                ColorConsole.WriteLineInfoHighlight(textToShowEscapability, Globals.ColorInputcClarification);
+            if (showEscapability) ColorConsole.WriteLineInfoHighlight(textToShowEscapability, Globals.ColorInputcClarification);
 
             int originalPosX = Console.CursorLeft;
-            int originalPosY = Console.CursorTop;
             string input = defaultValue;
-            int cursorPosition = defaultValue.Length;
-            int top = Console.GetCursorPosition().Top;
+            int cursorPosition = 0 + defaultValue.Length;
+            Top = Console.GetCursorPosition().Top;
 
             int textLength = whatToEnterText.Length - 2;
 
             ColorConsole.WriteColor(whatToEnterText, Globals.ColorInputcClarification);
             ColorConsole.WriteColor(input, Globals.ColorEditInput);
-
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Escape && isEscapable)
                 {
                     if (EscapeKeyPressed(escapeAction)) break;
-                    Console.SetCursorPosition(Console.CursorLeft, top);
+                    Console.SetCursorPosition(Console.CursorLeft, Top);
                 }
                 else if (key.Key == ConsoleKey.Enter)
                 {
@@ -56,38 +53,35 @@ namespace BioscoopReserveringsapplicatie
                         cursorPosition++;
                     }
                 }
-                else if (!char.IsControl(key.KeyChar) && !mask)
+                else if (!char.IsControl(key.KeyChar) && mask == false)
                 {
                     input = input.Insert(cursorPosition, key.KeyChar.ToString());
                     cursorPosition++;
                 }
-                else if (!char.IsControl(key.KeyChar) && mask)
+                else if (!char.IsControl(key.KeyChar) && mask == true)
                 {
                     input = input.Insert(cursorPosition, key.KeyChar.ToString());
                     cursorPosition++;
                 }
 
                 Console.CursorVisible = false;
-
-                Console.SetCursorPosition(originalPosX, top);
+                Console.SetCursorPosition(originalPosX, Top);
+                Console.Write(new string(' ', Console.WindowWidth * (Console.WindowHeight - Top)));
+                Console.SetCursorPosition(originalPosX, Top);
                 ColorConsole.WriteColor(whatToEnterText, Globals.ColorInputcClarification);
 
-                int spacesToPad = Math.Max(0, Console.WindowWidth - input.Length - originalPosX);
                 if (mask)
-                    ColorConsole.WriteColor(new string('*', input.Length) + new string(' ', spacesToPad), Globals.ColorEditInput);
+                    ColorConsole.WriteColor(new string('*', input.Length), Globals.ColorEditInput);
                 else
-                    ColorConsole.WriteColor(input + new string(' ', spacesToPad), Globals.ColorEditInput);
-
-                int linesFromTop = (originalPosX + textLength + cursorPosition) / Console.WindowWidth;
-                int newCursorLeft = (originalPosX + textLength + cursorPosition) % Console.WindowWidth;
-                int newCursorTop = originalPosY + linesFromTop;
-                Console.SetCursorPosition(newCursorLeft, newCursorTop);
+                    ColorConsole.WriteColor(input, Globals.ColorEditInput);
 
                 Console.CursorVisible = true;
+                int currentLine = (originalPosX + cursorPosition + textLength) / Console.WindowWidth;
+                int currentColumn = (originalPosX + cursorPosition + textLength) % Console.WindowWidth;
+                Console.SetCursorPosition(currentColumn, Top + currentLine);
             }
             return input;
         }
-
 
         public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op [Escape] om terug te gaan*\n")
         {
