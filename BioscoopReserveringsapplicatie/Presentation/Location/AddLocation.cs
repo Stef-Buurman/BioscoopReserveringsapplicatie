@@ -7,6 +7,7 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(string returnTo = "")
         {
+            ClearFields();
             Console.Clear();
 
             if (returnTo == "" || returnTo == "Name")
@@ -22,6 +23,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (locationLogic.Add(newLocation))
                 {
+                    ClearFields();
                     LocationOverview.Start();
                 }
                 else
@@ -33,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }),
             new Option<string>("Verder gaan met aanpassen", () => { Start("Name"); }),
-            new Option<string>("Verlaten zonder op te slaan", () => { LocationOverview.Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ClearFields(); LocationOverview.Start(); }),
             };
 
             new SelectionMenuUtil<string>(options).Create();
@@ -52,6 +54,11 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Naam Locatie: ]{title}", Globals.LocationColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Wilt u deze [Locatie] toevoegen?", Globals.ColorInputcClarification);
+        }
+
+        public static void ClearFields()
+        {
+            title = "";
         }
     }
 }
