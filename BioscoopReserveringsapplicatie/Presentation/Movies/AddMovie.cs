@@ -109,7 +109,7 @@ namespace BioscoopReserveringsapplicatie
             genres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () => { Start(_returnToDescription); },
                     () => { Start(_returnToGenres); },
-                    "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect();
+                    "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect(out List<Option<Genre>> selectedGenres);
         }
 
         private static void SelectMovieRating()
