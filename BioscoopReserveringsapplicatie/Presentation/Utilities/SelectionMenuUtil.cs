@@ -902,7 +902,7 @@ namespace BioscoopReserveringsapplicatie
                     // To override the text shown, there must be enough spaces to override the text.
                     while (strintToPrint.Length < MaxSelectionMenu + 6) strintToPrint += " ";
 
-                    Console.WriteLine($"{strintToPrint}");
+                    ColorConsole.WriteColorLine($"{strintToPrint}", option.Color);
                 }
             }
         }
