@@ -4,7 +4,7 @@ namespace BioscoopReserveringsapplicatie
 {
     public static class ColorConsole
     {
-        public static void WriteColorLine(string message, ConsoleColor color, ConsoleColor backgroundColor = ConsoleColor.Black)
+        public static void WriteColorLine(string message, ConsoleColor color, ConsoleColor? backgroundColor = null)
         {
             WriteColor(message, color, backgroundColor);
             Console.WriteLine();
@@ -16,20 +16,16 @@ namespace BioscoopReserveringsapplicatie
             Console.WriteLine();
         }
 
-        public static void WriteColor(string message, ConsoleColor fontColor, ConsoleColor backgroundColor = ConsoleColor.Black, ConsoleColor? originalForeColor = null, ConsoleColor? originalBackgroundColor = null)
+        public static void WriteColor(string message, ConsoleColor fontColor, ConsoleColor? backgroundColor = null, ConsoleColor? originalForeColor = null, ConsoleColor? originalBackgroundColor = null)
         {
-            if (originalForeColor == null)
-            {
-                originalForeColor = Console.ForegroundColor;
-            }
-            if (originalBackgroundColor == null)
-            {
-                originalBackgroundColor = Console.BackgroundColor;
-            }
+            ConsoleColor newOriginalForeColor = originalForeColor ?? Console.ForegroundColor;
+            ConsoleColor newOriginalBackgroundColor = originalBackgroundColor ?? Console.BackgroundColor;
+            ConsoleColor newBackgroundColor = backgroundColor ?? Console.BackgroundColor;
+
             List<string> piecesOfMessage = new List<string>(Regex.Split(message, @"(\[[^\]]*\])"));
             if (piecesOfMessage.Count == 1)
             {
-                Console.BackgroundColor = backgroundColor;
+                Console.BackgroundColor = newBackgroundColor;
                 Console.ForegroundColor = fontColor;
                 Console.Write(message);
                 Console.ResetColor();
@@ -40,7 +36,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     if (messagePiece.StartsWith("[") && messagePiece.EndsWith("]"))
                     {
-                        Console.BackgroundColor = backgroundColor;
+                        Console.BackgroundColor = newBackgroundColor;
                         Console.ForegroundColor = fontColor;
                         Console.Write(messagePiece.Substring(1, messagePiece.Length - 2));
                     }
@@ -48,8 +44,8 @@ namespace BioscoopReserveringsapplicatie
                     {
                         Console.Write(messagePiece);
                     }
-                    Console.BackgroundColor = originalBackgroundColor ?? ConsoleColor.Black;
-                    Console.ForegroundColor = originalForeColor ?? ConsoleColor.White;
+                    Console.BackgroundColor = newOriginalBackgroundColor;
+                    Console.ForegroundColor = newOriginalForeColor;
                 }
             }
         }
@@ -107,7 +103,7 @@ namespace BioscoopReserveringsapplicatie
                 else if(colorParts.Length == 2)
                 {
                     ConsoleColor foreColor;
-                    ConsoleColor backColor = ConsoleColor.Black;
+                    ConsoleColor backColor = Console.BackgroundColor;
                     if (Enum.TryParse(colorParts[0], true, out foreColor) && Enum.TryParse(colorParts[1], true, out backColor))
                     {
                         Console.ForegroundColor = foreColor;

@@ -228,7 +228,12 @@ namespace BioscoopReserveringsapplicatie
                     foreach (ScheduleModel schedule in scheduledExperience)
                     {
 
-                        options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}", () => Start(experienceId, location, dateTime, schedule.RoomId)));
+                        options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}",
+                            () =>
+                            {
+                                SelectedValues.Clear();
+                                Start(experienceId, location, dateTime, schedule.RoomId);
+                            }));
 
                     }
                     options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date)));
