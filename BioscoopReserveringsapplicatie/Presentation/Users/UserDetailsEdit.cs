@@ -345,6 +345,10 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine($"[Genre(s):] {(string.Join(", ", _newGenres.Select(x => x.GetDisplayName())))}", Globals.ExperienceColor);
             }
+            else if (_newGenres.Count == 0)
+            {
+                ColorConsole.WriteColorLine($"[Genre(s):] Niet ingevuld", Globals.ExperienceColor);
+            }
             if (_newAgeCategory != AgeCategory.Undefined)
             {
                 ColorConsole.WriteColorLine($"[Leeftijdscategorie:] {_newAgeCategory.GetDisplayName()}", Globals.ExperienceColor);
