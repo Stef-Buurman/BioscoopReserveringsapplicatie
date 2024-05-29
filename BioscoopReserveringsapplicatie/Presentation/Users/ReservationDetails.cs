@@ -41,7 +41,7 @@ namespace BioscoopReserveringsapplicatie
                                 Console.Clear();
                                 ColorConsole.WriteColorLine($"De reservering is geannuleerd!", Globals.SuccessColor);
                                 WaitUtil.WaitTime(2000);
-                                ReservationDetails.Start(reservationId);
+                                Start(reservationId);
                             }),
                             new Option<string>("Nee", () => {
                                 Start(reservationId);

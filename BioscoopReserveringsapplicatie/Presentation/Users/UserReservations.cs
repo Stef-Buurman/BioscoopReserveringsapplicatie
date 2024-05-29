@@ -81,7 +81,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(reservation.Id, reservationInfo));
             }
 
-            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om dit onderdeel te verlaten*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn jouw reserveringen:\n", Globals.TitleColor);
 
             Print();
