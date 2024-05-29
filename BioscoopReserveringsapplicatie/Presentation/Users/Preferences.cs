@@ -24,6 +24,8 @@ namespace BioscoopReserveringsapplicatie
         private static bool _IntensityNotFilledIn = false;
         private static bool _LanguageNotFilledIn = false;
 
+        private static bool showGenresPreference = false;
+
         public static void Start(UserModel user, string returnTo = "")
         {
             Console.Clear();
@@ -51,15 +53,15 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
 
-            
             PrintEditedList();
+
             if (!PreferencesLogic.addPreferencesToAccount(_selectedGenres, _ageCategory, _intensity, _language, user))
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
                     new Option<string>("Opnieuw proberen", () => Start(user))
                 };
-                ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de experience.", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Er is een error opgetreden tijdens het toevoegen van de voorkeuren aan uw account.", Globals.ErrorColor);
                 new SelectionMenuUtil<string>(options).Create();
             }
             else
@@ -67,15 +69,15 @@ namespace BioscoopReserveringsapplicatie
                 _selectedGenres = new List<Genre>();
                 _ageCategory = AgeCategory.Undefined;
                 _intensity = Intensity.Undefined;
-                _language = Language.Undefined;   
-                ColorConsole.WriteColorLine("Voorkeuren succesvol ingesteld! U wordt automatisch doorverwezen naar de loginpagina.", Globals.SuccessColor);
-                WaitUtil.WaitTime(3000);
-                UserLogin.Start();
+                _language = Language.Undefined;
+                return;
             }
         }
 
         public static void SelectGenres()
         {
+            showGenresPreference = false;
+            PrintEditedList();
             ColorConsole.WriteColorLine("Kies een of meerdere [genre(s)]: \n", Globals.ColorInputcClarification);
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
@@ -91,6 +93,8 @@ namespace BioscoopReserveringsapplicatie
             }
 
             _selectedGenres = new SelectionMenuUtil<Genre>(availableGenres, selectedGenres).CreateMultiSelect();
+
+            showGenresPreference = true;
         }
 
         public static void SelectAgeCategory()
@@ -198,9 +202,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine($"[Genre(s):] {string.Join(", ", _selectedGenres)}", Globals.ExperienceColor);
             }
-            else if (_selectedGenres.Count == 0)
+            else if (_selectedGenres.Count == 0 && showGenresPreference)
             {
-                ColorConsole.WriteColorLine($"[Genre(s):] Alle genres", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Genre(s):] {NotFilledIn}", Globals.ExperienceColor);
             }
             if (_ageCategory != AgeCategory.Undefined)
             {
