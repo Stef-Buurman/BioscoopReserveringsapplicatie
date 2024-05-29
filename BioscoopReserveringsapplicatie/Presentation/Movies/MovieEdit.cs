@@ -9,6 +9,7 @@ namespace BioscoopReserveringsapplicatie
         private static string newDescription = "";
         private static List<Genre> newGenres = new List<Genre>();
         private static AgeCategory newRating = AgeCategory.Undefined;
+        private static List<Option<Genre>> selectedGenresInMenu = new List<Option<Genre>>();
 
         public static void Start(int movieId)
         {
@@ -20,13 +21,16 @@ namespace BioscoopReserveringsapplicatie
             if (newRating == AgeCategory.Undefined) newRating = movie.AgeCategory;
 
             PrintEditingMovie();
-            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van deze experience?", Globals.TitleColor);
+            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van deze film?", Globals.TitleColor);
 
             List<Option<string>> editOptions = new List<Option<string>>()
             {
                 new Option<string>("Naam", () => { MovieName(); }),
                 new Option<string>("Beschrijving", () => { MovieDescription(); }),
-                new Option<string>("Genres", () => { SelectMovieGenres(); }),
+                new Option<string>("Genres", () => {
+                    selectedGenresInMenu = newGenres.ConvertAll(x => new Option<Genre>(x, x.GetDisplayName()));
+                    SelectMovieGenres(); 
+                }),
                 new Option<string>("Intensiteit", () => { SelectMovieRating(); }),
                 new Option<string>("Opslaan", () => { SaveMovie(); }, Globals.SaveColor),
                 new Option<string>("Terug", () => { MovieDetails.Start(movie.Id); }, Globals.GoBackColor)
@@ -112,7 +116,7 @@ namespace BioscoopReserveringsapplicatie
 
             foreach (Genre option in Genres)
             {
-                if (newGenres.Contains(option))
+                if (selectedGenresInMenu.ConvertAll(x => x.Value).Contains(option))
                 {
                     selectedGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
@@ -122,7 +126,7 @@ namespace BioscoopReserveringsapplicatie
             newGenres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () => { Start(movie.Id); },
                     () => { SelectMovieGenres(); }, 
-                    "Welke [genre(s)] hoort/horen bij deze film: ", selectedGenres).CreateMultiSelect();
+                    "Welke [genre(s)] hoort/horen bij deze film: ", selectedGenres).CreateMultiSelect(out selectedGenresInMenu);
             Start(movie.Id);
         }
 
