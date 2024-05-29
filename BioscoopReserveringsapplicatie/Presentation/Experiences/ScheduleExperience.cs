@@ -183,7 +183,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> hourOptions = new List<Option<string>>();
 
-            for (int i = 7; i <= 23; i++)
+            for (int i = 23; i >= 7; i--)
             {
                 if (i.ToString().Length == 1)
                 {
@@ -195,7 +195,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }
 
-            string scheduleHour = new SelectionMenuUtil<string>(hourOptions, 1, () => Start(experienceId, _returnToDate), () => Start(experienceId, _returnToHour), false).Create();
+            string scheduleHour = new SelectionMenuUtil<string>(hourOptions, 1, () => Start(experienceId, _returnToDate), () => Start(experienceId, _returnToHour), new Option<string>("07:00"), false).Create();
             string[] splitscheduleHour = scheduleHour.Split(":");
             return splitscheduleHour[0];
         }
@@ -227,7 +227,7 @@ namespace BioscoopReserveringsapplicatie
 
             List<Option<string>> timeOptions = new List<Option<string>>();
 
-            for (int i = 0; i <= 55; i = i + 5)
+            for (int i = 55; i >= 0; i = i - 5)
             {
                 if (i.ToString().Length == 1)
                 {
@@ -238,8 +238,8 @@ namespace BioscoopReserveringsapplicatie
                     timeOptions.Add(new Option<string>($"{i}"));
                 }
             }
-
-            string experienceMinutes = new SelectionMenuUtil<string>(timeOptions, 1, () => Start(experienceId, _returnToHour), () => Start(experienceId, _returnToTime), false, $"{scheduleHour}:").Create();
+            
+            string experienceMinutes = new SelectionMenuUtil<string>(timeOptions, 1, () => Start(experienceId, _returnToHour), () => Start(experienceId, _returnToTime), new Option<string>("00"), false, $"{scheduleHour}:").Create();
             scheduleTime = $"{scheduleHour}:{experienceMinutes}";
             return scheduleTime;
         }

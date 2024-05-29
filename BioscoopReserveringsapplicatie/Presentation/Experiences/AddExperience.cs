@@ -120,7 +120,8 @@
         {
             PrintEditedList();
             List<int> intList = Enumerable.Range(1, 100).ToList();
-            SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ");
+            intList.Reverse();
+            SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ", new Option<int>(1));
             _timeInInt = selection.Create();
             while (!experiencesLogic.ValidateExperienceTimeLength(_timeInInt))
             {
