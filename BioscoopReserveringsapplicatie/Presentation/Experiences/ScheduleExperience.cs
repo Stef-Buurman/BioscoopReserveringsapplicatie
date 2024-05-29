@@ -22,9 +22,16 @@ namespace BioscoopReserveringsapplicatie
         private static string _returnToTime = "Time";
 
         private static string _slotNotOpenError = "";
+        private static List<ScheduleModel> schedules = new List<ScheduleModel>();
 
         public static void Start(int experienceId, string returnTo = "")
         {
+            locationId = 0;
+            roomId = 0;
+            scheduleDate = "";
+            scheduleHour = "";
+            scheduleTime = "";
+
             if(UserLogic.IsAdmin())
             {
                 Console.Clear();
@@ -165,10 +172,11 @@ namespace BioscoopReserveringsapplicatie
             Header();
             CurrentSchedule(experienceId);
 
-            List<ScheduleModel> test = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
+            schedules = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
+            schedules = schedules.OrderBy(schedule => schedule.ScheduledDateTimeStart).ToList();
             
             Console.WriteLine("\nIngeplande experiences op deze datum:\n");
-            foreach(var schedule in test)
+            foreach(var schedule in schedules)
             {
                 string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
                 string startTime = schedule.ScheduledDateTimeStart.ToString("HH:mm");
@@ -208,11 +216,9 @@ namespace BioscoopReserveringsapplicatie
             Console.Clear();
             Header();
             CurrentSchedule(experienceId);
-
-            List<ScheduleModel> test = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
             
             Console.WriteLine("\nIngeplande experiences op deze datum:\n");
-            foreach(var schedule in test)
+            foreach(var schedule in schedules)
             {
                 string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
                 string startTime = schedule.ScheduledDateTimeStart.ToString("HH:mm");
@@ -281,9 +287,9 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("Gegevens ingeplande experience", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Datum: ]{scheduleDate}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Tijd: ]{scheduleTime} T/M {formattedTime}\n", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
             ColorConsole.WriteColorLine("Weet je zeker dat je de experience wilt inplannen ?", ConsoleColor.Red);
         }
     }
