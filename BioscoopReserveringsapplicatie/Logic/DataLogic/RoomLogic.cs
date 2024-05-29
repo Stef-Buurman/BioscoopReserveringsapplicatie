@@ -22,8 +22,14 @@ namespace BioscoopReserveringsapplicatie
 
         public bool Validate(RoomModel room)
         {
-            return room != null;
+            if (room == null) return false;
+            else if (!ValidateRoomType(room.RoomType)) return false;
+            else if (!ValidateRoomNumber(room.RoomNumber)) return false;
+            return true;
         }
+
+        public bool ValidateRoomType(RoomType roomType) => (!Enum.IsDefined(typeof(RoomType), roomType)) ? false : true;
+        public bool ValidateRoomNumber(int roomNumber) => roomNumber < 0 ? false : true;
 
         public bool IsDuplicateRoomNumber(int locationId, int roomNumber)
         {
