@@ -268,6 +268,7 @@ namespace BioscoopReserveringsapplicatie
                 Option<string>[,] options = OptionGrid.GenerateOptionGrid(10, 10, chosenRoom.RoomType == RoomType.Round);
 
                 int scheduleId = ScheduleLogic.GetRelatedScheduledExperience(experienceId, location, dateTime, room);
+                ReservationLogic.GetAll();
                 List<(int, int)> selectedOptions = ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId);
 
                 List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true,
