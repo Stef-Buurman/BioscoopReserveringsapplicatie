@@ -20,14 +20,14 @@ namespace BioscoopReserveringsapplicatie
             if (_newEmail == "") _newEmail = UserLogic.CurrentUser.EmailAddress;
 
             PrintEditedListAccountNameEmail();
-            ColorConsole.WriteColorLine("\nWat wilt u aanpassen uw gegevens??", Globals.TitleColor);
+            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van uw profielgegevens?", Globals.TitleColor);
 
             List<Option<string>> editOptions = new List<Option<string>>()
             {
                 new Option<string>("Naam", () => { UserName(); }),
                 new Option<string>("Email", () => { UserEmail(); }),
                 new Option<string>("Opslaan", () => { SaveAccountDetails(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { UserDetails.Start(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { ResetAccountDetails(); UserDetails.Start(); }, Globals.GoBackColor)
             };
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
         }
@@ -69,6 +69,11 @@ namespace BioscoopReserveringsapplicatie
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens aan")).Create();
         }
 
+        public static void ResetAccountDetails()
+        {
+            _newName = UserLogic.CurrentUser.FullName;
+            _newEmail = UserLogic.CurrentUser.EmailAddress;
+        }
 
         public static void StartPrefrences()
         {
@@ -85,13 +90,13 @@ namespace BioscoopReserveringsapplicatie
             {
                 new Option<string>("Genres", () => {
                     selectedGenresInMenu = _newGenres.ConvertAll(x => new Option<Genre>(x, x.GetDisplayName()));
-                    SelectGenres(); 
+                    SelectGenres();
                 }),
-                new Option<string>("Beschrijving", () => { SelectAgeCategory(); }),
+                new Option<string>("Leeftijdscategorie", () => { SelectAgeCategory(); }),
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Taal", () => { SelectLanguage(); }),
                 new Option<string>("Opslaan", () => { SavePreferences(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { UserDetails.Start(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { ResetPreferences(); UserDetails.Start(); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -134,6 +139,13 @@ namespace BioscoopReserveringsapplicatie
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
         }
 
+        public static void ResetPreferences()
+        {
+            _newGenres = UserLogic.CurrentUser.Genres;
+            _newAgeCategory = UserLogic.CurrentUser.AgeCategory;
+            _newIntensity = UserLogic.CurrentUser.Intensity;
+            _language = UserLogic.CurrentUser.Language;
+        }
 
         private static void UserName()
         {
