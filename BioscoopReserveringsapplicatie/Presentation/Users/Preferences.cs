@@ -92,7 +92,7 @@ namespace BioscoopReserveringsapplicatie
                 availableGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
             }
 
-            _selectedGenres = new SelectionMenuUtil<Genre>(availableGenres, selectedGenres).CreateMultiSelect();
+            _selectedGenres = new SelectionMenuUtil<Genre>(availableGenres, selectedGenres).CreateMultiSelect(out selectedGenres);
 
             showGenresPreference = true;
         }

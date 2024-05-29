@@ -29,6 +29,8 @@ namespace BioscoopReserveringsapplicatie
         public static readonly ConsoleColor SuccessColor = ConsoleColor.DarkGreen;
         public static readonly ConsoleColor LocationColor = ConsoleColor.DarkMagenta;
         public static readonly ConsoleColor UserColor = ConsoleColor.Cyan;
+        public static readonly ConsoleColor SaveColor = ConsoleColor.Green;
+        public static readonly ConsoleColor GoBackColor = ConsoleColor.Red;
 
         public static readonly double pricePerSeat = 19.99;
 

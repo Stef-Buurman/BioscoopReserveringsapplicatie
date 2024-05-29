@@ -3,75 +3,74 @@ namespace BioscoopReserveringsapplicatie
     public static class PromotionEdit
     {
         private static PromotionLogic PromotionLogic = new PromotionLogic();
-        private static Action actionWhenEscapePressed = PromotionOverview.Start;
         private static PromotionModel? promotion = null;
 
         private static string newTitle = "";
         private static string newDescription = "";
 
-        private static string _returnToTitle = "Title";
-        private static string _returnToDescription = "Description";
-
         public static void Start(int promotionId, string returnTo = "")
         {
             promotion = PromotionLogic.GetById(promotionId);
-            actionWhenEscapePressed = () => PromotionDetails.Start(promotionId);
+            if (promotion == null) return;
             if (newTitle == "") newTitle = promotion.Title;
             if (newDescription == "") newDescription = promotion.Description;
 
-            Console.Clear();
+            PrintEditingPromotion();
+            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van deze promotie?", Globals.TitleColor);
 
-            if (returnTo == "" || returnTo == _returnToTitle)
+            List<Option<string>> editOptions = new List<Option<string>>()
             {
-                PromotionTitle();
-                returnTo = "";
-            }
+                new Option<string>("Titel", () => { PromotionTitle(); }),
+                new Option<string>("Intensiteit", () => { PromotionDescription(promotionId); }),
+                new Option<string>("Opslaan", () => { SavePromotion(); }, Globals.SaveColor),
+                new Option<string>("Terug", () => { PromotionDetails.Start(promotionId); }, Globals.GoBackColor)
+            };
 
-            if (returnTo == "" || returnTo == _returnToDescription)
-            {
-                PromotionDescription(promotionId);
-                returnTo = "";
-            }
+            new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
+        }
 
+        private static void SavePromotion()
+        {
             Console.Clear();
             Print(newTitle, newDescription);
 
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    if (PromotionLogic.Edit(new PromotionModel(promotionId, newTitle, newDescription, promotion.Status)))
+                    if (PromotionLogic.Edit(new PromotionModel(promotion.Id, newTitle, newDescription, promotion.Status)))
                         {
-                            PromotionDetails.Start(promotionId);
+                            PromotionDetails.Start(promotion.Id);
                         }
                         else
                         {
                             List<Option<string>> options = new List<Option<string>>
                             {
-                                new Option<string>("Terug", () => {Console.Clear(); PromotionDetails.Start(promotionId);}),
+                                new Option<string>("Terug", () => {Console.Clear(); PromotionDetails.Start(promotion.Id);}),
                             };
                             Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de promotie. Probeer het opnieuw.\n");
                             new SelectionMenuUtil<string>(options).Create();
                         }
                 }),
-                new Option<string>("Nee, pas de promotie verder aan", () => {Start(promotion.Id, _returnToDescription);}),
+                new Option<string>("Nee, pas de promotie verder aan", () => {Start(promotion.Id);}),
                 new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); PromotionDetails.Start(promotion.Id);})
             };
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas de promotie verder aan")).Create();
         }
+
         private static void PromotionTitle()
         {
             PrintEditingPromotion();
             string question = "Voer de promotie [titel] in: ";
             newTitle = ReadLineUtil.EditValue(newTitle, question,
-            actionWhenEscapePressed,
+            () => Start(promotion.Id),
             "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
 
             while (string.IsNullOrEmpty(newTitle))
             {
                 PrintEditingPromotion();
                 ColorConsole.WriteColorLine("De titel mag niet leeg zijn.", Globals.ErrorColor);
-                newTitle = ReadLineUtil.EditValue(newTitle, question, 
-                actionWhenEscapePressed,
+                newTitle = ReadLineUtil.EditValue(newTitle, question,
+                () => Start(promotion.Id),
                 "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
             }
         }
@@ -81,7 +80,7 @@ namespace BioscoopReserveringsapplicatie
             PrintEditingPromotion();
             string question = "Voer de promotie [beschrijving] in: ";
             newDescription = ReadLineUtil.EditValue(newDescription, question,
-            () => Start(promotionId, _returnToTitle),
+            () => Start(promotionId),
             "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
 
 
@@ -89,7 +88,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine("De beschrijving mag niet leeg zijn.", Globals.ErrorColor);
                 newDescription = ReadLineUtil.EditValue(newDescription, question, 
-                () => Start(promotionId, _returnToTitle),
+                () => Start(promotionId),
                 "(druk op [Enter] om de huidige waarde te behouden en op [Esc] om terug te gaan)\n");
             }
         }
@@ -110,7 +109,6 @@ namespace BioscoopReserveringsapplicatie
             {
                 HorizontalLine.Print();
             }
-            ColorConsole.WriteColorLine("Voer nieuwe promotie details in:\n", Globals.TitleColor);
         }
 
         private static void Print(string newTitle, string description)
