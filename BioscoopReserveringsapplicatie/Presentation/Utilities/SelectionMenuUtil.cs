@@ -393,11 +393,12 @@ namespace BioscoopReserveringsapplicatie
             return default;
         }
 
-        public List<T> CreateMultiSelect()
+        public List<T> CreateMultiSelect(out List<Option<T>> selectedOptions)
         {
             Index = 0;
             VisibleIndex = 0;
             Top = Console.GetCursorPosition().Top;
+            selectedOptions = new List<Option<T>>();
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
             if (!IsMultiSelect) return default;
@@ -426,7 +427,8 @@ namespace BioscoopReserveringsapplicatie
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
                     ConsoleLocationEnd();
-                    return AllOptions.FindAll(x => x.IsSelected).ConvertAll(x => x.Value);
+                    selectedOptions = AllOptions.FindAll(x => x.IsSelected);
+                    return selectedOptions.ConvertAll(x => x.Value);
                 }
 
                 if (keyinfo.Key == ConsoleKey.Spacebar)
@@ -448,6 +450,7 @@ namespace BioscoopReserveringsapplicatie
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
+                    selectedOptions = AllOptions.FindAll(x => x.IsSelected);
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
