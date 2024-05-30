@@ -53,12 +53,6 @@ namespace BioscoopReserveringsapplicatie
                 WaitUtil.WaitTime(4000);
 
                 Preferences.Start(registrationResult.Item);
-
-                ColorConsole.WriteColorLine("\nU bent klaar met het instellen van uw account en kunt nu inloggen.", Globals.SuccessColor);
-
-                WaitUtil.WaitTime(4000);
-
-                UserLogin.Start();
             }
         }
     }
