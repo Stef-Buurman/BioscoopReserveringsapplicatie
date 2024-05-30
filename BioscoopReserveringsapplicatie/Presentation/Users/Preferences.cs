@@ -70,10 +70,9 @@ namespace BioscoopReserveringsapplicatie
                 _ageCategory = AgeCategory.Undefined;
                 _intensity = Intensity.Undefined;
                 _language = Language.Undefined;
+
                 ColorConsole.WriteColorLine("\nU bent klaar met het instellen van uw account en kunt nu inloggen.", Globals.SuccessColor);
-
                 WaitUtil.WaitTime(4000);
-
                 UserLogin.Start();
             }
         }
