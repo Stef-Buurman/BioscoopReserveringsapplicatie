@@ -33,7 +33,7 @@ namespace BioscoopReserveringsapplicatie
                 }),
                 new Option<string>("Intensiteit", () => { SelectMovieRating(); }),
                 new Option<string>("Opslaan", () => { SaveMovie(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { MovieDetails.Start(movie.Id); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -49,20 +49,20 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Ja", () => {
                     if (MoviesLogic.Edit(new MovieModel(movie.Id, newTitle, newDescription, newGenres, newRating)))
                         {
-                            MovieDetails.Start(movie.Id);
+                            GoBackToDetails();
                         }
                         else
                         {
                             List<Option<string>> options = new List<Option<string>>
                             {
-                                new Option<string>("Terug", () => {Console.Clear(); MovieDetails.Start(movie.Id);}),
+                                new Option<string>("Terug", () => GoBackToDetails()),
                             };
                             Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de film. Probeer het opnieuw.\n");
                             new SelectionMenuUtil<string>(options).Create();
                         }
                 }),
                 new Option<string>("Nee, pas de film verder aan", () => {Start(movie.Id);}),
-                new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); MovieDetails.Start(movie.Id);})
+                new Option<string>("Nee, stop met aanpassen", () => GoBackToDetails())
             };
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas de film verder aan")).Create();
         }
@@ -184,6 +184,17 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film leeftijdscategorie ]{rating.GetDisplayName()}", Globals.MovieColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Weet u zeker dat u de filmdetails van {currentTitle} wilt bewerken?\n", Globals.ColorInputcClarification);
+        }
+
+        private static void GoBackToDetails()
+        {
+            newTitle = "";
+            newDescription = "";
+            newGenres.Clear();
+            newRating = AgeCategory.Undefined;
+            selectedGenresInMenu.Clear();
+            Console.Clear();
+            MovieDetails.Start(movie.Id);
         }
     }
 }

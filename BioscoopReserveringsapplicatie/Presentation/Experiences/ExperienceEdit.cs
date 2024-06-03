@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Tijdsduur", () => { ExperienceLength(); }),
                 new Option<string>("Opslaan", () => { SaveExperience(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { ExperienceDetails.Start(experienceId); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -51,20 +51,20 @@ namespace BioscoopReserveringsapplicatie
                 {
                     if (ExperiencesLogic.Edit(_experienceId, _newName, _newDescription, _newIntensity, _timeInInt, _selectedMovieId))
                     {
-                        ExperienceDetails.Start(_experienceId);
+                        GoBackToDetails();
                     }
                     else
                     {
                         List<Option<string>> errorOptions = new List<Option<string>>()
                         {
-                            new Option<string>("Terug", () => { Console.Clear(); ExperienceDetails.Start(_experience.Id); })
+                            new Option<string>("Terug", () => { GoBackToDetails(); })
                         };
                         ColorConsole.WriteColorLine("Error. Probeer het opnieuw \n",Globals.ErrorColor);
                         new SelectionMenuUtil<string>(errorOptions).Create();
                     }
                 }),
                 new Option<string>("Nee, pas de experience verder aan", () => { Start(_experience.Id); }),
-                new Option<string>("Nee, stop met aanpassen", () => { Console.Clear(); ExperienceDetails.Start(_experience.Id); })
+                new Option<string>("Nee, stop met aanpassen", () => { GoBackToDetails(); })
             };
             ColorConsole.WriteColorLine("Dit zijn de nieuwe experience details:", Globals.ExperienceColor);
             ColorConsole.WriteColorLine($"[Experience naam:] {_newName}", Globals.ExperienceColor);
@@ -196,6 +196,17 @@ namespace BioscoopReserveringsapplicatie
             {
                 HorizontalLine.Print();
             }
+        }
+
+        private static void GoBackToDetails()
+        {
+            _newName = "";
+            _newDescription = "";
+            _selectedMovieId = 0;
+            _newIntensity = Intensity.Undefined;
+            _timeInInt = 0;
+            Console.Clear();
+            ExperienceDetails.Start(_experience.Id);
         }
     }
 }

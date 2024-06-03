@@ -27,7 +27,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Naam", () => { UserName(); }),
                 new Option<string>("Email", () => { UserEmail(); }),
                 new Option<string>("Opslaan", () => { SaveAccountDetails(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { ResetAccountDetails(); UserDetails.Start(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
             };
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
         }
@@ -44,14 +44,14 @@ namespace BioscoopReserveringsapplicatie
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
                         WaitUtil.WaitTime(2000);
-                        UserDetails.Start();
+                        GoBackToDetails();
                     }
                     else
                     {
                         ColorConsole.WriteColorLine(result.ErrorMessage, Globals.ErrorColor);
                         List<Option<string>> options = new List<Option<string>>
                         {
-                            new Option<string>("Terug", () => {UserDetails.Start();}),
+                            new Option<string>("Terug", () => GoBackToDetails()),
                         };
                         ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het bewerken van uw gebruikersgegevens. Probeer het opnieuw.\n", Globals.ErrorColor);
                         new SelectionMenuUtil<string>(options).Create();
@@ -62,17 +62,9 @@ namespace BioscoopReserveringsapplicatie
                     Start();
                 }),
                 new Option<string>("Nee, terug naar mijn details",
-                () => {
-                    UserDetails.Start();
-                })
+                () => GoBackToDetails())
             };
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens aan")).Create();
-        }
-
-        public static void ResetAccountDetails()
-        {
-            _newName = UserLogic.CurrentUser.FullName;
-            _newEmail = UserLogic.CurrentUser.EmailAddress;
         }
 
         public static void StartPrefrences()
@@ -96,7 +88,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Taal", () => { SelectLanguage(); }),
                 new Option<string>("Opslaan", () => { SavePreferences(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { ResetPreferences(); UserDetails.Start(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -114,14 +106,14 @@ namespace BioscoopReserveringsapplicatie
                     {
                         ColorConsole.WriteColorLine("\n Preferences zijn aangepast !", Globals.SuccessColor);
                         WaitUtil.WaitTime(2000);
-                        UserDetails.Start();
+                        GoBackToDetails();
                     }
                     else
                     {
                         ColorConsole.WriteColorLine(result.ErrorMessage, Globals.ErrorColor);
                         List<Option<string>> options = new List<Option<string>>
                         {
-                            new Option<string>("Terug", () => {UserDetails.Start();}),
+                            new Option<string>("Terug", () => GoBackToDetails()),
                         };
                         ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het bewerken van uw Preferences, Probeer het opnieuw.\n", Globals.ErrorColor);
                         new SelectionMenuUtil<string>(options).Create();
@@ -129,22 +121,24 @@ namespace BioscoopReserveringsapplicatie
                 }),
                 new Option<string>("Nee, pas mijn gegevens aan",
                 ()=>{
-                    Start();
+                    StartPrefrences();
                 }),
                 new Option<string>("Nee, terug naar mijn details",
-                () => {
-                    UserDetails.Start();
-                })
+                () => GoBackToDetails())
             };
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
         }
 
-        public static void ResetPreferences()
+        public static void GoBackToDetails()
         {
-            _newGenres = UserLogic.CurrentUser.Genres;
-            _newAgeCategory = UserLogic.CurrentUser.AgeCategory;
-            _newIntensity = UserLogic.CurrentUser.Intensity;
-            _language = UserLogic.CurrentUser.Language;
+            _newName = "";
+            _newEmail = "";
+            _newGenres.Clear();
+            _newAgeCategory = AgeCategory.Undefined;
+            _newIntensity = Intensity.Undefined;
+            _language = Language.Undefined;
+            Console.Clear();
+            UserDetails.Start();
         }
 
         private static void UserName()

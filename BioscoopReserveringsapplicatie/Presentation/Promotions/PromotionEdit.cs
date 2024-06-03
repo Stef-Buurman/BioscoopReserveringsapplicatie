@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Titel", () => { PromotionTitle(); }),
                 new Option<string>("Intensiteit", () => { PromotionDescription(promotionId); }),
                 new Option<string>("Opslaan", () => { SavePromotion(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { PromotionDetails.Start(promotionId); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => GoBackToDetails(), Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -39,20 +39,20 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Ja", () => {
                     if (PromotionLogic.Edit(new PromotionModel(promotion.Id, newTitle, newDescription, promotion.Status)))
                         {
-                            PromotionDetails.Start(promotion.Id);
+                            GoBackToDetails();
                         }
                         else
                         {
                             List<Option<string>> options = new List<Option<string>>
                             {
-                                new Option<string>("Terug", () => {Console.Clear(); PromotionDetails.Start(promotion.Id);}),
+                                new Option<string>("Terug", () => GoBackToDetails()),
                             };
                             Console.WriteLine("Er is een fout opgetreden tijdens het bewerken van de promotie. Probeer het opnieuw.\n");
                             new SelectionMenuUtil<string>(options).Create();
                         }
                 }),
                 new Option<string>("Nee, pas de promotie verder aan", () => {Start(promotion.Id);}),
-                new Option<string>("Nee, stop met aanpassen", () => {Console.Clear(); PromotionDetails.Start(promotion.Id);})
+                new Option<string>("Nee, stop met aanpassen", () => GoBackToDetails())
             };
             new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas de promotie verder aan")).Create();
         }
@@ -118,6 +118,14 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Promotie beschrijving: ]{description}", Globals.PromotionColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Weet u zeker dat u de promotie details van {newTitle} wilt bewerken?", Globals.ColorInputcClarification);
+        }
+
+        private static void GoBackToDetails()
+        {
+            newTitle = "";
+            newDescription = "";
+            Console.Clear();
+            PromotionDetails.Start(promotion.Id);
         }
     }
 }
