@@ -22,7 +22,18 @@ namespace BioscoopReserveringsapplicatie
 
         public bool Validate(RoomModel room)
         {
-            return room != null;
+            if (room == null) return false;
+            else if (!ValidateRoomType(room.RoomType)) return false;
+            else if (!ValidateRoomNumber(room.RoomNumber)) return false;
+            return true;
+        }
+
+        public bool ValidateRoomType(RoomType roomType) => (!Enum.IsDefined(typeof(RoomType), roomType)) ? false : true;
+        public bool ValidateRoomNumber(int roomNumber) => roomNumber < 0 ? false : true;
+
+        public bool IsDuplicateRoomNumber(int locationId, int roomNumber)
+        {
+            return _Rooms.Any(r => r.LocationId == locationId && r.RoomNumber == roomNumber);
         }
 
         public bool Add(RoomModel room)
@@ -63,6 +74,36 @@ namespace BioscoopReserveringsapplicatie
                 _Rooms.Add(room);
             }
             _DataAccess.WriteAll(_Rooms);
+        }
+
+        public void Archive(int id)
+        {
+            RoomModel? room = GetById(id);
+            if (room != null)
+            {
+                room.Status = Status.Archived;
+                _DataAccess.WriteAll(_Rooms);
+                UpdateList(room);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void Unarchive(int id)
+        {
+            RoomModel? room = GetById(id);
+            if (room != null)
+            {
+                room.Status = Status.Active;
+                _DataAccess.WriteAll(_Rooms);
+                UpdateList(room);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

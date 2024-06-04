@@ -7,7 +7,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start()
         {
             _userLogic = new UserLogic();
-            
+
             Console.Clear();
 
             ColorConsole.WriteColorLine("Loginpagina\n", Globals.TitleColor);
@@ -17,7 +17,7 @@ namespace BioscoopReserveringsapplicatie
             if (_userLogic.CheckLogin(email, password) != null)
             {
                 ColorConsole.WriteColorLine("\nU bent ingelogd.", Globals.SuccessColor);
-                Thread.Sleep(2000);
+                WaitUtil.WaitTime(2000);
 
                 if (UserLogic.IsAdmin())
                 {
@@ -30,8 +30,8 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                ColorConsole.WriteColorLine("\nEr is geen account gevonden met dat e-mailadres en wachtwoord.", Globals.ErrorColor);
-                Console.WriteLine("Druk op Esc om terug te gaan of op een willekeurige toets om het opnieuw te proberen.");
+                ColorConsole.WriteColorLine("\nEr is geen account gevonden met dat e-mailadres en wachtwoord.\n", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Druk op [Esc] om de loginpagina te verlaten of op een [willekeurige toets] om het opnieuw te proberen.", Globals.ColorInputcClarification);
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
 

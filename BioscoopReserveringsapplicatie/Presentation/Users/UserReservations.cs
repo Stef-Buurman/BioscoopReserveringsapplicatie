@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("Druk op een [toets] om terug te gaan naar mijn account", Globals.ColorInputcClarification);
 
                 Console.ReadKey();
-                UserDetails.Start();
+                UserMenu.Start();
             }
             else
             {
@@ -81,7 +81,7 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<int>(reservation.Id, reservationInfo));
             }
 
-            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om dit onderdeel te verlaten*\n", Globals.ColorInputcClarification);
             ColorConsole.WriteColorLine("Dit zijn jouw reserveringen:\n", Globals.TitleColor);
 
             Print();
@@ -89,7 +89,7 @@ namespace BioscoopReserveringsapplicatie
             int reservationId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
-                    UserDetails.Start();
+                    UserMenu.Start();
                 },
                 () =>
                 {

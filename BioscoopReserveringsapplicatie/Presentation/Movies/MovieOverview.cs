@@ -61,12 +61,14 @@ namespace BioscoopReserveringsapplicatie
                 movieTitle, genres, movie.AgeCategory.GetDisplayName(), movie.Status.GetDisplayName());
                 options.Add(new Option<int>(movie.Id, movieInfo));
             }
-            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteLineInfo("Klik op T om een film toe te voegen.");
-            ColorConsole.WriteLineInfo("Klik op 1 om alle films te tonen.");
-            ColorConsole.WriteLineInfo("Klik op 2 om alle active films te tonen.");
-            ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde films te tonen.\n");
-            Print();
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] om de details van een film te bekijken*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een film toe te voegen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [1] om alle films te tonen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active films te tonen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [3] om alle gearchiveerde films te tonen*\n", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine("Dit zijn alle films die momenteel bestaan:\n", Globals.TitleColor);
+            Print(columnHeaders, columnWidths);
             int movieId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
@@ -127,32 +129,21 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine(notFoundMessage);
                 Console.WriteLine();
                 Console.WriteLine("Wil je een film aanmaken?");
-                new SelectionMenuUtil<string>(options).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine(notFoundMessage);
-                Thread.Sleep(500);
+                WaitUtil.WaitTime(500);
                 Console.WriteLine("Terug naar movie overzicht...");
-                Thread.Sleep(1500);
+                WaitUtil.WaitTime(1500);
                 Start();
             }
         }
 
-        private static void Print()
+        private static void Print(List<string> columnHeaders, int[] columnWidths)
         {
-            List<string> columnHeaders = new List<string>
-            {
-                "Film Naam",
-                "Genres",
-                "Leeftijdscategorie",
-                "Status"
-            };
-
-            List<MovieModel> allMovies = MoviesLogic.GetAll();
-            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allMovies, movieDataExtractor);
-
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
             {

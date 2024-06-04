@@ -52,15 +52,17 @@ namespace BioscoopReserveringsapplicatie
                     genres = genres.Substring(0, 25) + "...";
                 }
                 string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) + "} {1,-" + (columnWidths[1] + 1) + "} {2,-" + (columnWidths[2] + 1) + "} {3,-" + (columnWidths[3] + 1) + "} {4,-" + columnWidths[4] + "}",
-                experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity, experience.Status.GetDisplayName());
+                experienceName, genres, movie.AgeCategory.GetDisplayName(), experience.Intensity.GetDisplayName(), experience.Status.GetDisplayName());
                 options.Add(new Option<int>(experience.Id, experienceInfo));
             }
-            ColorConsole.WriteLineInfo("*Klik op escape om dit onderdeel te verlaten*\n");
-            ColorConsole.WriteLineInfo("Klik op T om een experience toe te voegen.");
-            ColorConsole.WriteLineInfo("Klik op 1 om alle experiences te tonen.");
-            ColorConsole.WriteLineInfo("Klik op 2 om alle active experiences te tonen.");
-            ColorConsole.WriteLineInfo("Klik op 3 om alle gearchiveerde experiences te tonen.\n");
-            Print();
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] om de details van een experience te bekijken*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [T] om een experience toe te voegen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [1] om alle experiences te tonen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [2] om alle active experiences te tonen*", Globals.ColorInputcClarification);
+            ColorConsole.WriteLineInfoHighlight("*Klik op [3] om alle gearchiveerde experiences te tonen*\n", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine("Dit zijn alle experiences die momenteel bestaan:\n", Globals.TitleColor);
+            Print(columnHeaders, columnWidths);
             int experienceId = new SelectionMenuUtil<int>(options,
                 () =>
                 {
@@ -122,35 +124,21 @@ namespace BioscoopReserveringsapplicatie
                 Console.WriteLine(notFoundMessage);
                 Console.WriteLine();
                 Console.WriteLine("Wil je een experience aanmaken?");
-                new SelectionMenuUtil<string>(options).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine(notFoundMessage);
-                Thread.Sleep(500);
+                WaitUtil.WaitTime(500);
                 Console.WriteLine("Terug naar alle experience overzicht...");
-                Thread.Sleep(1500);
+                WaitUtil.WaitTime(1500);
                 Start();
             }
         }
 
-        private static void Print()
+        private static void Print(List<string> columnHeaders, int[] columnWidths)
         {
-            // Defineer de kolom koppen voor de tabel
-            List<string> columnHeaders = new List<string>
-            {
-                "Experience Naam  ",
-                "Genres",
-                "Leeftijdscategorie",
-                "Intensiteit",
-                "Status"
-            };
-
-            List<ExperienceModel> allExperiences = ExperiencesLogic.GetAll();
-            // Bereken de breedte voor elke kolom op basis van de koptekst en experiences
-            int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, allExperiences, experienceDataExtractor);
-
             // Print de kop van de tabel
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
@@ -158,7 +146,7 @@ namespace BioscoopReserveringsapplicatie
                 Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 2));
             }
             Console.WriteLine();
-
+            
             // Print de "----"-lijn tussen de kop en de data
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)

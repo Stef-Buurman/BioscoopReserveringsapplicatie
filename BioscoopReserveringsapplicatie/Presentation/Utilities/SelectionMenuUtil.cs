@@ -1,4 +1,6 @@
-﻿namespace BioscoopReserveringsapplicatie
+﻿using System.Text.RegularExpressions;
+
+namespace BioscoopReserveringsapplicatie
 {
     public class SelectionMenuUtil<T>
     {
@@ -24,6 +26,10 @@
             }
         }
 
+        private ConsoleColor SelectedColor = ConsoleColor.Blue;
+        private ConsoleColor HighLightedColor = ConsoleColor.Yellow;
+        private ConsoleColor UnselectableColor = ConsoleColor.Red;
+
         private List<Option<T>> AllOptions;
         private List<Option<T>> OptionsToShow = new List<Option<T>>();
         private Option<T> SelectedOption;
@@ -41,6 +47,15 @@
         private bool VisibleSelectedArrows;
         private bool ShowEscapeabilityText;
 
+        private (int, int) GridIndex = (0, 0);
+        private int MaxGridRows = 20;
+        private int MaxGridCols = 35;
+        private bool IsGridSelect = false;
+        private string GridSeperator = null;
+        private bool TableFormat = false;
+        private Option<T>[,] GridOptions;
+        private List<(int, int)> UnSelectableOptions;
+
         private bool IsMultiSelect = false;
         private List<Option<T>> SelectedOptions = new List<Option<T>>();
 
@@ -49,17 +64,26 @@
             ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
         };
 
-        private SelectionMenuUtil(List<Option<T>> options, int maxVisibility = 9, bool canBeEscaped = false,
+
+        private int _originalWidth;
+        private int _originalHeight;
+
+        private SelectionMenuUtil(List<Option<T>> options = null, int maxVisibility = 9, bool canBeEscaped = false,
             Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
             bool visibleSelectedArrows = true, string textBeforeInputShown = default,
             Option<T> selectedOption = default, bool isMultiSelect = false,
             List<Option<T>> selectedOptions = null, bool showEscapeabilityText = true,
+            Option<T>[,] gridOptions = default, List<(int, int)> selectedGridOptions = default, string gridSeperator = null, bool tableFormat = false,
+            List<(int, int)> unSelectableOptions = null,
             bool hasKeyAction = false, List<KeyAction> keyActions = null, List<ConsoleKey> additionalKeysInUse = null)
         {
             MaxVisibility = maxVisibility;
-            AllOptions = options;
-            OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility);
-            moreOptionsThanVisibility = AllOptions.Count > maxVisibility;
+            if(options != null)
+            {
+                AllOptions = options;
+                OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility);
+                moreOptionsThanVisibility = AllOptions.Count > maxVisibility;
+            }
             Index = 0;
             VisibleIndex = 0;
 
@@ -78,6 +102,84 @@
                 EscapeAction = escapeAction;
                 EscapeActionWhenNotEscaping = escapeActionWhenNotEscaping;
             }
+
+            if(gridOptions != default && isMultiSelect)
+            {
+                KeysInUse.Add(ConsoleKey.LeftArrow);
+                KeysInUse.Add(ConsoleKey.RightArrow);
+                IsGridSelect = true;
+
+
+                if (gridOptions.GetLength(0) > MaxGridRows && gridOptions.GetLength(1) > MaxGridCols)
+                {
+                    GridOptions = new Option<T>[MaxGridRows, MaxGridCols];
+                    for (int i = 0; i < MaxGridRows; i++)
+                    {
+                        for (int j = 0; j < MaxGridCols; j++)
+                        {
+                            GridOptions[i, j] = gridOptions[i, j];
+                        }
+                    }
+                }
+                else if(gridOptions.GetLength(0) > MaxGridRows)
+                {
+                    GridOptions = new Option<T>[MaxGridRows, gridOptions.GetLength(1)];
+                    for (int i = 0; i < MaxGridRows; i++)
+                    {
+                        for (int j = 0; j < gridOptions.GetLength(1); j++)
+                        {
+                            GridOptions[i, j] = gridOptions[i, j];
+                        }
+                    }
+                }
+                else if(gridOptions.GetLength(1) > MaxGridCols)
+                {
+                    GridOptions = new Option<T>[gridOptions.GetLength(0), MaxGridCols];
+                    for (int i = 0; i < gridOptions.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < MaxGridCols; j++)
+                        {
+                            GridOptions[i, j] = gridOptions[i, j];
+                        }
+                    }
+                }
+                else
+                {
+                    GridOptions = gridOptions;
+                }
+                UnSelectableOptions = unSelectableOptions;
+                GridSeperator = gridSeperator;
+                TableFormat = tableFormat;
+
+                if(selectedGridOptions != default)
+                {
+                    foreach ((int, int) index in selectedGridOptions)
+                    {
+                        Option<T> option = GridOptions[index.Item1, index.Item2];
+                        if (option != null)
+                        {
+                            option.InvertSelecttion();
+                        }
+                    }
+                }
+                if(!IsOptionAvailable(GridIndex.Item1, GridIndex.Item2))
+                {
+                    Move(0, 1);
+                    while(IsUnselectable(GridIndex.Item1, GridIndex.Item2) || !IsOptionAvailable(GridIndex.Item1, GridIndex.Item2))
+                    {
+                        GridIndex.Item1++;
+                        if (!IsUnselectable(GridIndex.Item1, GridIndex.Item2) && IsOptionAvailable(GridIndex.Item1, GridIndex.Item2)) break;
+                        Move(0, 1);
+                        if(GridIndex.Item1 >= GridOptions.GetLength(0))
+                        {
+                            IsMultiSelect = false;
+                            IsGridSelect = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
 
             if (isMultiSelect)
             {
@@ -134,29 +236,38 @@
 
         public SelectionMenuUtil(List<Option<T>> options, bool canBeEscaped = false, Action escapeAction = null, Action escapeActionWhenNotEscaping = null, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText) { }
+        
         public SelectionMenuUtil(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, List<KeyAction> keyActions, bool visibleSelectedArrows = true, string textBeforeInputShown = default, bool showEscapeabilityText = true, bool hasKeyAction = true)
-        : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText, hasKeyAction, keyActions) { }
-
+        : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, null, false, null, showEscapeabilityText, default, default, null, false, default, hasKeyAction, keyActions) { }
+        
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown) { }
-
+        public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption,bool visibleSelectedArrows = true, string textBeforeInputShown = default)
+        : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, visibleSelectedArrows, textBeforeInputShown, selectedOption) { }
+       
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, string textBeforeInputShown, List<Option<T>> selectedOptions)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, false, textBeforeInputShown, null, true, selectedOptions) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, maxVisibility, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
-
+        
         public SelectionMenuUtil(List<Option<T>> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
-
+        
         public SelectionMenuUtil(List<T> options, Action escapeAction, Action escapeActionWhenNotEscaping, Option<T> selectedOption)
             : this(options, 9, true, escapeAction, escapeActionWhenNotEscaping, true, default, selectedOption) { }
 
         public SelectionMenuUtil(List<Option<T>> options, Option<T> selectedOption)
             : this(options, 9, false, default, default, true, default, selectedOption) { }
+
+        public SelectionMenuUtil(Option<T>[,] options, List<(int, int)> unSelectableOptions, string gridSeperator = null, bool tableFormat = false, List<(int, int)> SelectedOptions = default)
+            : this(null, 9, false, default, default, true, default, default, true, default, true, options, SelectedOptions, gridSeperator, tableFormat, unSelectableOptions) { }
+
+        public SelectionMenuUtil(Option<T>[,] options, List<(int, int)> unSelectableOptions, bool tableFormat, Action escapeAction = default, Action escapeActionWhenNotEscaping = default, bool canBeEscaped = false, List<(int, int)> SelectedOptions = default)
+            : this(null, 9, canBeEscaped, escapeAction, escapeActionWhenNotEscaping, true, default, default, true, default, true, options, SelectedOptions, null, tableFormat, unSelectableOptions) { }
 
         public SelectionMenuUtil(List<Option<T>> options)
             : this(options, 9, false) { }
@@ -218,7 +329,8 @@
             Top = Console.GetCursorPosition().Top;
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
-            Console.CursorVisible = false;
+
+            ConsoleLocationStart();
 
             if (SelectedOption != null)
             {
@@ -266,7 +378,7 @@
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    Console.CursorVisible = true;
+                    ConsoleLocationEnd();
                     AllOptions[Index].SelectFunction();
                     return AllOptions[Index].Value;
                 }
@@ -276,34 +388,25 @@
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
 
-                foreach (KeyAction keyAction in KeyActions)
-                {
-                    if (!KeysInUse.Contains(keyAction.Key))
-                    {
-                        if (keyinfo.Key == keyAction.Key)
-                        {
-                            Console.CursorVisible = true;
-                            keyAction.Action();
-                        }
-                    }
-                }
-
+                specialKey(keyinfo);
                 WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
-            Console.CursorVisible = true;
+            ConsoleLocationEnd();
             return default;
         }
 
-        public List<T> CreateMultiSelect()
+        public List<T> CreateMultiSelect(out List<Option<T>> selectedOptions)
         {
             Index = 0;
             VisibleIndex = 0;
             Top = Console.GetCursorPosition().Top;
+            selectedOptions = new List<Option<T>>();
             if (AllOptions.Count == 0) return default;
             if (CanBeEscaped && EscapeAction == null) return default;
             if (!IsMultiSelect) return default;
-            Console.CursorVisible = false;
+
+            ConsoleLocationStart();
 
             WriteMenu(OptionsToShow, OptionsToShow[Index]);
 
@@ -326,8 +429,9 @@
                 // When the user presses the enter key, the selected option will be executed
                 if (keyinfo.Key == ConsoleKey.Enter)
                 {
-                    Console.CursorVisible = true;
-                    return AllOptions.FindAll(x => x.IsSelected).ConvertAll(x => x.Value);
+                    ConsoleLocationEnd();
+                    selectedOptions = AllOptions.FindAll(x => x.IsSelected);
+                    return selectedOptions.ConvertAll(x => x.Value);
                 }
 
                 if (keyinfo.Key == ConsoleKey.Spacebar)
@@ -349,13 +453,305 @@
 
                 if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
                 {
+                    selectedOptions = AllOptions.FindAll(x => x.IsSelected);
                     ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
                 }
+
+                specialKey(keyinfo);
                 WaitTime();
             }
             while (keyinfo != null && keyinfo.Key != null);
-            Console.CursorVisible = true;
+            ConsoleLocationEnd();
             return new List<T>();
+        }
+
+        public List<(int, int)> CreateGridSelect(out List<(int, int)> SelectedOptions)
+        {
+            Index = 0;
+            VisibleIndex = 0;
+            Top = Console.GetCursorPosition().Top;
+            SelectedOptions = new List<(int, int)>();
+            if (GridOptions.Length == 0) return default;
+            if (CanBeEscaped && EscapeAction == null) return default;
+            if (!IsGridSelect) return default;
+
+            ConsoleLocationStart();
+            WriteGridMenu();
+
+            ConsoleKeyInfo keyinfo;
+            do
+            {
+                keyinfo = Console.ReadKey(true);
+                // When the user presses the down arrow, the selected option will move down
+                if (keyinfo.Key == ConsoleKey.DownArrow)
+                {
+                    Move(1, 0);
+                    WriteGridMenu();
+                }
+
+                // When the user presses the up arrow, this will be executed.
+                if (keyinfo.Key == ConsoleKey.UpArrow)
+                {
+                    Move(-1, 0);
+                    WriteGridMenu();
+                }
+
+                // When the user presses the left arrow, this will be executed.
+                if (keyinfo.Key == ConsoleKey.LeftArrow)
+                {
+                    Move(0, -1);
+                    WriteGridMenu();
+                }
+
+                // When the user presses the right arrow, this will be executed.
+                if (keyinfo.Key == ConsoleKey.RightArrow)
+                {
+                    Move(0, 1);
+                    WriteGridMenu();
+                }
+
+                // When the user presses the enter key, the selected option will be executed
+                if (keyinfo.Key == ConsoleKey.Enter)
+                {
+                    ConsoleLocationEnd();
+                    SelectedOptions = GetAllSelected();
+                    return GetAllSelected();
+                }
+
+                if (keyinfo.Key == ConsoleKey.Spacebar)
+                {
+                    GridOptions[GridIndex.Item1, GridIndex.Item2].InvertSelecttion();
+                    WriteGridMenu();
+                }
+
+                if (keyinfo.Key == ConsoleKey.Escape && CanBeEscaped && EscapeAction != null)
+                {
+                    Console.Clear();
+                    SelectedOptions = GetAllSelected();
+                    ReadLineUtil.EscapeKeyPressed(EscapeAction, EscapeActionWhenNotEscaping);
+                }
+
+                specialKey(keyinfo);
+                WaitTime();
+            }
+            while (keyinfo != null && keyinfo.Key != null);
+            ConsoleLocationEnd();
+            return new List<(int, int)>();
+        }
+
+        private List<(int, int)> GetAllSelected()
+        {
+            List<(int, int)> selectedIndexes = new List<(int, int)>();
+
+            for (int i = 0; i < GridOptions.GetLength(0); i++)
+            {
+                for (int j = 0; j < GridOptions.GetLength(1); j++)
+                {
+                    if (GridOptions[i, j] != null && GridOptions[i, j].IsSelected)
+                    {
+                        selectedIndexes.Add((i, j));
+                    }
+                }
+            }
+
+            return selectedIndexes;
+        }
+
+        private void WriteGridMenu(string textToShowEscapability = "*Klik op [Escape] om dit onderdeel te verlaten.*")
+        {
+            SetCursorPosition(textToShowEscapability);
+            int gridHeight = GridOptions.GetLength(0);
+            int gridWeight = GridOptions.GetLength(1);
+            if (TableFormat)
+            {
+                string stringtToPrint = "  ";
+                while (stringtToPrint.Length - 1 <= $"{gridHeight}".Length) stringtToPrint += " ";
+                for (int i = 0; i < GridOptions.GetLength(1); i++)
+                {
+                    string strToAdd = $"{i + 1}";
+                    while (strToAdd.Length <= GetMaxColWith(i, -1)) strToAdd += " ";
+                    if(GridSeperator != null) strToAdd += "  ";
+                    stringtToPrint += strToAdd;
+                }
+                ColorConsole.WriteColorLine(stringtToPrint, Console.ForegroundColor, ConsoleColor.DarkGray);
+            }
+            string GridString = "";
+            for (int i = 0; i < gridHeight; i++)
+            {
+                string stringtToPrint = "";
+                if (TableFormat)
+                {
+                    string strToAdd = $"{i + 1}";
+                    while (strToAdd.Length < $"{gridHeight}".Length) strToAdd += " ";
+                    stringtToPrint += $"[{Console.ForegroundColor}:{ConsoleColor.DarkGray}]{strToAdd}:[/] ";
+                }
+                for (int j = 0; j < gridWeight; j++)
+                {
+                    string strToAdd = "";
+                    string spaces = "";
+                    if (GridOptions[i, j] == null)
+                    {
+                        strToAdd = " ";
+                        while (spaces.Length <= (GetMaxColWith(j) - strToAdd.Length)) spaces += " ";
+                        stringtToPrint += $"{strToAdd}";
+                    }
+                    else
+                    {
+                        strToAdd = $"{GridOptions[i, j].Name}";
+                        while (spaces.Length <= (GetMaxColWith(j) - strToAdd.Length)) spaces += " ";
+
+                        if (i == GridIndex.Item1 && j == GridIndex.Item2)
+                        {
+                            if (GridOptions[i, j].IsSelected)
+                            {
+                                stringtToPrint += $"[{ConsoleColor.White}:{SelectedColor}]{strToAdd}[/]";
+                            }
+                            else
+                            {
+                                stringtToPrint += $"[{ConsoleColor.Black}:{ConsoleColor.White}]{strToAdd}[/]";
+                            }
+                        }
+                        else if (IsUnselectable(i, j))
+                        {
+                            stringtToPrint += $"[{UnselectableColor}]{strToAdd}[/]";
+                        }
+                        else if (GridOptions[i, j].IsSelected)
+                        {
+                            stringtToPrint += $"[{SelectedColor}]{strToAdd}[/]";
+                        }
+                        else
+                        {
+                            stringtToPrint += $"[{ConsoleColor.White}:{ConsoleColor.Black}]{strToAdd}[/]";
+                        }
+
+                        if (j != gridWeight - 1 && GridSeperator != null)
+                        {
+                            stringtToPrint += $"[{ConsoleColor.White}:{ConsoleColor.Black}]{GridSeperator} [/]";
+                        }
+                    }
+                    stringtToPrint += spaces;
+                }
+                if (Regex.Replace(stringtToPrint, @"\[.*?\]", string.Empty).Length > MaxSelectionMenu) MaxSelectionMenu = Regex.Replace(stringtToPrint, @"\[.*?\]", string.Empty).Length;
+                while (stringtToPrint.Length < MaxSelectionMenu) stringtToPrint += " ";
+                GridString += stringtToPrint + "\n";
+            }
+            ColorConsole.WriteColorLine(GridString);
+            GetKeys();
+        }
+
+        private void Move(int rowDelta, int colDelta)
+        {
+            if (rowDelta == 0 && colDelta == 0) return;
+            int oldRow = GridIndex.Item1;
+            int oldCol = GridIndex.Item2;
+            int newRow = oldRow;
+            int newCol = oldCol;
+
+            while (true)
+            {
+                newRow += rowDelta;
+                newCol += colDelta;
+
+                if (newRow >= GridOptions.GetLength(0))
+                {
+                    newRow = 0;
+                }
+                else if (newCol >= GridOptions.GetLength(1))
+                {
+                    newCol = 0;
+                }
+                else if (newCol < 0)
+                {
+                    newCol = GridOptions.GetLength(1) - 1;
+                }
+                else if (newRow < 0)
+                {
+                    newRow = GridOptions.GetLength(0) - 1;
+                }
+
+                if (newRow >= 0 && newRow < GridOptions.GetLength(0) &&
+                    newCol >= 0 && newCol < GridOptions.GetLength(1) &&
+                    IsOptionAvailable(newRow, newCol))
+                {
+                    GridIndex = (newRow, newCol);
+                    break;
+                }
+                if(newRow == oldRow && newCol == oldCol)
+                {
+                    GridIndex = (newRow, newCol);
+                    break;
+                }
+
+            }
+        }
+
+        private bool IsOptionAvailable(int Yas, int Xas)
+        {
+            if (Yas >= GridOptions.GetLength(0) || Xas >= GridOptions.GetLength(1)) return false;
+            if (GridOptions[Yas, Xas] == null) return false;
+            return !IsUnselectable(Yas, Xas);
+        }
+
+        private bool IsUnselectable(int Yas, int Xas)
+        {
+            if (UnSelectableOptions == null) return true;
+            foreach ((int, int) unSelectableOption in UnSelectableOptions)
+            {
+                if (unSelectableOption.Item1 == Yas && unSelectableOption.Item2 == Xas) return true;
+            }
+            return false;
+        }
+
+        private int GetMaxColWith(int col = -1, int row = -1) 
+        {
+            int max = 0;
+            if (GridOptions == null || col != -1 && row != -1 || row > GridOptions.GetLength(0) || col > GridOptions.GetLength(1)) return max;
+            for (int i = 0; i < GridOptions.GetLength(0); i++)
+            {
+                if (row != -1 && i == row)
+                {
+                    for (int j = 0; j < GridOptions.GetLength(1); j++)
+                    {
+                        if (GridOptions[i, j] == null) continue;
+                        if (col != -1 && j == col)
+                        {
+                            return GridOptions[i, j].Name.Length;
+                        }
+                        else
+                        {
+                            if (GridOptions[i, j].Name.Length > max) max = GridOptions[i, j].Name.Length;
+                        }
+                    }
+                }
+                else if(col != -1)
+                {
+                    if (GridOptions[i, col] == null) continue;
+                    if (GridOptions[i, col].Name.Length > max) max = GridOptions[i, col].Name.Length;
+                }
+            }
+            if ($"{GridOptions.GetLength(1)}".Length > max)
+            {
+                if($"{GridOptions.GetLength(1)}".Length - 1 == $"{GridOptions.GetLength(1) - 1}".Length)
+                {
+                    max = $"{GridOptions.GetLength(1)}".Length - 1;
+                }
+                else
+                {
+                    max = $"{GridOptions.GetLength(1)}".Length;
+                }
+            }
+            return max;
+        }
+
+        private void ConsoleLocationStart()
+        {
+            Console.CursorVisible = false;
+        }
+
+        private void ConsoleLocationEnd()
+        {
+            GetKeys();
+            Console.CursorVisible = true;
         }
 
         private void SetCursorPosition(string textToShowEscapability)
@@ -363,7 +759,7 @@
             int top = Top;
             if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText)
             {
-                ColorConsole.WriteLineInfo(textToShowEscapability + "\n");
+                ColorConsole.WriteLineInfoHighlight(textToShowEscapability, Globals.ColorInputcClarification);
                 EscapabilityVisible = true;
                 top += 2;
             }
@@ -373,8 +769,9 @@
             }
             if (IsMultiSelect && !MultiSelectFuncVisible)
             {
-                ColorConsole.WriteLineInfo("Klik op Spatie om een optie te selecteren.");
-                ColorConsole.WriteLineInfo("Klik op Enter deze opties uit te kiezen.\n");
+                if (CanBeEscaped && !EscapabilityVisible && ShowEscapeabilityText) Console.WriteLine();
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Spatie] om een optie te selecteren.*", Globals.ColorInputcClarification);
+                ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] deze opties uit te kiezen.*\n", Globals.ColorInputcClarification);
                 top += 3;
                 MultiSelectFuncVisible = true;
             }
@@ -385,7 +782,22 @@
             Console.SetCursorPosition(0, top);
         }
 
-        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*")
+        public void specialKey(ConsoleKeyInfo keyinfo)
+        {
+            foreach (KeyAction keyAction in KeyActions)
+            {
+                if (!KeysInUse.Contains(keyAction.Key))
+                {
+                    if (keyinfo.Key == keyAction.Key)
+                    {
+                        ConsoleLocationEnd();
+                        keyAction.Action();
+                    }
+                }
+            }
+        }
+
+        public void WriteMenu(List<Option<T>> Options, Option<T> selectedOption, string textToShowEscapability = "*Klik op [Escape] om dit onderdeel te verlaten.*")
         {
             int HowMuchOverrideForArrowUpAndDown = TextBeforeInputShown.Length
                     - (TextBeforeInputShownVisible ? 2 : 0)
@@ -483,7 +895,7 @@
                     // To override the text shown, there must be enough spaces to override the text.
                     while (strintToPrint.Length < MaxSelectionMenu + 3) strintToPrint += " ";
 
-                    ColorConsole.WriteColorLine($"{strintToPrint}", ConsoleColor.Blue);
+                    ColorConsole.WriteColorLine($"{strintToPrint}", SelectedColor);
                 }
                 else
                 {
@@ -496,7 +908,7 @@
                     // To override the text shown, there must be enough spaces to override the text.
                     while (strintToPrint.Length < MaxSelectionMenu + 6) strintToPrint += " ";
 
-                    Console.WriteLine($"{strintToPrint}");
+                    ColorConsole.WriteColorLine($"{strintToPrint}", option.Color);
                 }
             }
         }
@@ -515,11 +927,11 @@
                     // To override the text shown, there must be enough spaces to override the text.
                     while (strintToPrint.Length < TextBeforeInputShown.Length - (TextBeforeInputShownVisible ? 2 : 0)) strintToPrint += " ";
                 // When at the higlighted option, the |X| will be blue and the option name will be yellow.
-                if (option.IsSelected && option == selectedOption) strintToPrint += $"[{ConsoleColor.Blue}]|X|[/] [{ConsoleColor.Yellow}]>{option.Name}[/]";
+                if (option.IsSelected && option == selectedOption) strintToPrint += $"[{SelectedColor}]|X|[/] [{HighLightedColor}]>{option.Name}[/]";
                 // When the option is selected, the |X| will be blue.
-                else if (option.IsSelected) strintToPrint += $"[{ConsoleColor.Blue}]|X|  {option.Name}[/]";
+                else if (option.IsSelected) strintToPrint += $"[{SelectedColor}]|X|  {option.Name}[/]";
                 // When the option is higlighted, the option name will be yellow.
-                else if (option == selectedOption) strintToPrint += $"[{ConsoleColor.Yellow}]| | >{option.Name}[/]";
+                else if (option == selectedOption) strintToPrint += $"[{HighLightedColor}]| | >{option.Name}[/]";
                 // When the option is not selected or higlighted, the option will be printen normally.
                 else strintToPrint += $"| |  {option.Name}";
                 // To override the text shown, there must be enough spaces to override the text.
@@ -577,6 +989,13 @@
                         AmountOptionsAbove = AllOptions.Count - MaxVisibility;
                         OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
                         WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex - 1]);
+                    }
+                    else if(MaxVisibility == 1)
+                    {
+                        if (AmountOptionsAbove > 0) AmountOptionsAbove--;
+                        OptionsToShow = GetOptionsToShow(AllOptions, MaxVisibility, AmountOptionsAbove, true);
+                        VisibleIndex = 0;
+                        WriteMenu(OptionsToShow, OptionsToShow[VisibleIndex]);
                     }
                     // When the selected option is neither of the above, this will be executed.
                     else
@@ -640,7 +1059,12 @@
 
         public static void WaitTime()
         {
-            Thread.Sleep(50);
+            WaitUtil.WaitTime(50);
+            GetKeys();
+        }
+
+        public static void GetKeys()
+        {
             while (Console.KeyAvailable)
             {
                 Console.ReadKey(true);

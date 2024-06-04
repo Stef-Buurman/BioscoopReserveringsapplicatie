@@ -11,144 +11,174 @@ namespace BioscoopReserveringsapplicatie
         private static Intensity _newIntensity = Intensity.Undefined;
         private static Language _language = Language.Undefined;
 
-        private static string _returnToName = "Name";
-        private static string _returnToEmail = "Email";
-        private static string _returnToGenres = "Genres";
-        private static string _returnToAgeCategory = "Rating";
-        private static string _returnToIntensity = "Intensity";
-        private static string _returnToLanguage = "Language";
+        private static List<Option<Genre>> selectedGenresInMenu = new List<Option<Genre>>();
 
-        private static bool _GenresNotFilledIn = false;
-        private static bool _AgeCategoryNotFilledIn = false;
-        private static bool _IntensityNotFilledIn = false;
-        private static bool _LanguageNotFilledIn = false;
-
-        private static readonly string _NotFilledIn = "Niet aanpassen";
-
-        public static void Start(string returnTo = "")
+        public static void Start()
         {
             if (UserLogic.CurrentUser == null) return;
             if (_newName == "") _newName = UserLogic.CurrentUser.FullName;
             if (_newEmail == "") _newEmail = UserLogic.CurrentUser.EmailAddress;
-            if (_newGenres.Count == 0) _newGenres = UserLogic.CurrentUser.Genres;
-            if (_newAgeCategory == AgeCategory.Undefined) _newAgeCategory = UserLogic.CurrentUser.AgeCategory;
-            if (_newIntensity == Intensity.Undefined) _newIntensity = UserLogic.CurrentUser.Intensity;
-            if (_language == Language.Undefined) _language = UserLogic.CurrentUser.Language;
 
-            if (returnTo == "" || returnTo == _returnToName)
-            {
-                UserName();
-                returnTo = "";
-            }
-            if (returnTo == "" || returnTo == _returnToEmail)
-            {
-                UserEmail();
-                returnTo = "";
-            }
-            if ((returnTo == "" || returnTo == _returnToGenres) && !_GenresNotFilledIn)
-            {
-                SelectGenres();
-                returnTo = "";
-            }
-            if ((returnTo == "" || returnTo == _returnToAgeCategory) && !_AgeCategoryNotFilledIn)
-            {
-                SelectAgeCategory();
-                returnTo = "";
-            }
-            if ((returnTo == "" || returnTo == _returnToIntensity) && !_IntensityNotFilledIn)
-            {
-                SelectIntensity();
-                returnTo = "";
-            }
-            if ((returnTo == "" || returnTo == _returnToLanguage) && !_LanguageNotFilledIn)
-            {
-                SelectLanguage();
-                returnTo = "";
-            }
+            PrintEditedListAccountNameEmail();
+            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van uw profielgegevens?", Globals.TitleColor);
 
-            PrintEditedList();
+            List<Option<string>> editOptions = new List<Option<string>>()
+            {
+                new Option<string>("Naam", () => { UserName(); }),
+                new Option<string>("Email", () => { UserEmail(); }),
+                new Option<string>("Opslaan", () => { SaveAccountDetails(); }, Globals.SaveColor),
+                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+            };
+            new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
+        }
+
+        public static void SaveAccountDetails()
+        {
+            PrintEditedListAccountNameEmail();
             ColorConsole.WriteColorLine("Weet je zeker dat je deze wijzigingen wilt opslaan?\n", Globals.ColorInputcClarification);
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    NotFilledInToFalse();
-                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, _newGenres, _newIntensity, _newAgeCategory);
+                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, UserLogic.CurrentUser.Genres, UserLogic.CurrentUser.Intensity, UserLogic.CurrentUser.AgeCategory);
                     if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
-                        Thread.Sleep(2000);
-                        UserDetails.Start();
+                        WaitUtil.WaitTime(2000);
+                        GoBackToDetails();
                     }
                     else
                     {
                         ColorConsole.WriteColorLine(result.ErrorMessage, Globals.ErrorColor);
                         List<Option<string>> options = new List<Option<string>>
                         {
-                            new Option<string>("Terug", () => {UserDetails.Start();}),
+                            new Option<string>("Terug", () => GoBackToDetails()),
                         };
                         ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het bewerken van uw gebruikersgegevens. Probeer het opnieuw.\n", Globals.ErrorColor);
                         new SelectionMenuUtil<string>(options).Create();
                     }
                 }),
-                new Option<string>("Nee, pas mijn gegevens aan", 
+                new Option<string>("Nee, pas mijn gegevens aan",
                 ()=>{
-                    NotFilledInToFalse();
-                    Start(_returnToLanguage);
+                    Start();
                 }),
-                new Option<string>("Nee, terug naar mijn details", 
-                () => {
-                    NotFilledInToFalse();
-                    UserDetails.Start();
-                })
+                new Option<string>("Nee, terug naar mijn details",
+                () => GoBackToDetails())
             };
-            new SelectionMenuUtil<string>(options).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens aan")).Create();
         }
 
-        private static void NotFilledInToFalse()
+        public static void StartPrefrences()
         {
-            _GenresNotFilledIn = false;
-            _AgeCategoryNotFilledIn = false;
-            _IntensityNotFilledIn = false;
-            _LanguageNotFilledIn = false;
+            if (UserLogic.CurrentUser == null) return;
+            if (_newGenres.Count == 0) _newGenres = UserLogic.CurrentUser.Genres;
+            if (_newAgeCategory == AgeCategory.Undefined) _newAgeCategory = UserLogic.CurrentUser.AgeCategory;
+            if (_newIntensity == Intensity.Undefined) _newIntensity = UserLogic.CurrentUser.Intensity;
+            if (_language == Language.Undefined) _language = UserLogic.CurrentUser.Language;
+
+            PrintEditedListPrefrences();
+            ColorConsole.WriteColorLine("\nWat wilt u aanpassen van uw voorkeuren?", Globals.TitleColor);
+
+            List<Option<string>> editOptions = new List<Option<string>>()
+            {
+                new Option<string>("Genres", () => {
+                    selectedGenresInMenu = _newGenres.ConvertAll(x => new Option<Genre>(x, x.GetDisplayName()));
+                    SelectGenres();
+                }),
+                new Option<string>("Leeftijdscategorie", () => { SelectAgeCategory(); }),
+                new Option<string>("Intensiteit", () => { SelectIntensity(); }),
+                new Option<string>("Taal", () => { SelectLanguage(); }),
+                new Option<string>("Opslaan", () => { SavePreferences(); }, Globals.SaveColor),
+                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+            };
+
+            new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
+        }
+
+        private static void SavePreferences()
+        {
+            PrintEditedListPrefrences();
+            ColorConsole.WriteColorLine("Weet je zeker dat je deze wijzigingen wilt opslaan?\n", Globals.ColorInputcClarification);
+            List<Option<string>> options = new List<Option<string>>
+            {
+                new Option<string>("Ja", () => {
+                    Result<UserModel> result = _userLogic.Edit(UserLogic.CurrentUser.FullName, UserLogic.CurrentUser.EmailAddress, _newGenres, _newIntensity, _newAgeCategory);
+                    if(result.IsValid)
+                    {
+                        ColorConsole.WriteColorLine("\n Preferences zijn aangepast !", Globals.SuccessColor);
+                        WaitUtil.WaitTime(2000);
+                        GoBackToDetails();
+                    }
+                    else
+                    {
+                        ColorConsole.WriteColorLine(result.ErrorMessage, Globals.ErrorColor);
+                        List<Option<string>> options = new List<Option<string>>
+                        {
+                            new Option<string>("Terug", () => GoBackToDetails()),
+                        };
+                        ColorConsole.WriteColorLine("\nEr is een fout opgetreden tijdens het bewerken van uw Preferences, Probeer het opnieuw.\n", Globals.ErrorColor);
+                        new SelectionMenuUtil<string>(options).Create();
+                    }
+                }),
+                new Option<string>("Nee, pas mijn gegevens aan",
+                ()=>{
+                    StartPrefrences();
+                }),
+                new Option<string>("Nee, terug naar mijn details",
+                () => GoBackToDetails())
+            };
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
+        }
+
+        public static void GoBackToDetails()
+        {
+            _newName = "";
+            _newEmail = "";
+            _newGenres.Clear();
+            _newAgeCategory = AgeCategory.Undefined;
+            _newIntensity = Intensity.Undefined;
+            _language = Language.Undefined;
+            Console.Clear();
+            UserDetails.Start();
         }
 
         private static void UserName()
         {
-            PrintEditedList();
+            PrintEditedListAccountNameEmail();
             bool validName = false;
             while (!validName)
             {
-                _newName = ReadLineUtil.EditValue(_newName, "Voer uw [naam] in: ",
-                    () => { UserDetails.Start(); },
-                    "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n"
-                );
+                _newName = ReadLineUtil.EditValue(_newName, "Vul uw [volledige naam] in: ",
+                    () => { Start(); },
+                    "(druk op [Enter] om de huidige waarde te behouden en op Esc om terug te gaan)\n");
                 validName = _userLogic.ValidateName(_newName);
             }
+            Start();
         }
 
         private static void UserEmail()
         {
+            PrintEditedListAccountNameEmail();
             bool validEmail = false;
             while (!validEmail)
             {
-                _newEmail = ReadLineUtil.EditValue(_newEmail, "Voer uw [emailadres] in: ",
-                    () => Start(_returnToName),
-                    "(druk op Enter om de huidige waarde te behouden en op Esc om terug te gaan)\n",
-                false, false);
+                _newEmail = ReadLineUtil.EditValue(_newEmail, "Vul uw [e-mailadres] in: ",
+                    () => Start(),
+                    "(druk op [Enter] om de huidige waarde te behouden en op Esc om terug te gaan)\n");
                 validEmail = _userLogic.ValidateEmail(_newEmail);
             }
+            Start();
         }
 
         public static void SelectGenres()
         {
-            PrintEditedList();
+            PrintEditedListPrefrences();
             List<Genre> Genres = Globals.GetAllEnum<Genre>();
             List<Option<Genre>> availableGenres = new List<Option<Genre>>();
             List<Option<Genre>> selectedGenres = new List<Option<Genre>>();
 
             foreach (Genre option in Genres)
             {
-                if (_newGenres.Contains(option))
+                if (_newGenres.Contains(option) || selectedGenresInMenu.ConvertAll(x => x.Value).Contains(option))
                 {
                     selectedGenres.Add(new Option<Genre>(option, option.GetDisplayName()));
                 }
@@ -156,41 +186,28 @@ namespace BioscoopReserveringsapplicatie
             }
 
             _newGenres = new SelectionMenuUtil<Genre>(availableGenres, 9,
-                    () =>
-                    {
-                        _GenresNotFilledIn = false;
-                        Start(_returnToEmail);
-                    },
-                    () =>
-                    {
-                        _GenresNotFilledIn = false;
-                        Start(_returnToGenres);
-                    }, "Kies uw favoriete [genre]: ", selectedGenres).CreateMultiSelect();
+                    () => StartPrefrences(),
+                    () => SelectGenres(),
+                    "Kies een of meerdere [genre(s)]: ", selectedGenres).CreateMultiSelect(out selectedGenresInMenu);
+            StartPrefrences();
         }
 
         public static void SelectAgeCategory()
         {
-            PrintEditedList();
-            List<AgeCategory> AgeCatagories = Globals.GetAllEnumIncludeUndefined<AgeCategory>();
+            PrintEditedListPrefrences();
+            List<AgeCategory> AgeCatagories = Globals.GetAllEnum<AgeCategory>();
             List<Option<AgeCategory>> options = new List<Option<AgeCategory>>();
             foreach (AgeCategory option in AgeCatagories)
             {
-                if (option == AgeCategory.Undefined)
-                    options.Add(new Option<AgeCategory>(option, _NotFilledIn));
-                else
-                    options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
+                options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
-            ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil<AgeCategory> selectionMenu = new SelectionMenuUtil<AgeCategory>(options, () =>
-            {
-                _GenresNotFilledIn = false;
-                Start(_returnToGenres);
-            },
-            () =>
-            {
-                _AgeCategoryNotFilledIn = false;
-                Start(_returnToAgeCategory);
-            }, new Option<AgeCategory>(_newAgeCategory));
+            ColorConsole.WriteColorLine("Kies een [leeftijdscategorie]: \n", Globals.ColorInputcClarification);
+
+            SelectionMenuUtil<AgeCategory> selectionMenu = new SelectionMenuUtil<AgeCategory>(options,
+                () => StartPrefrences(),
+                () => SelectAgeCategory(),
+                new Option<AgeCategory>(_newAgeCategory));
+
             _newAgeCategory = selectionMenu.Create();
 
             while (!_userLogic.ValidateAgeCategory(_newAgeCategory))
@@ -200,34 +217,27 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_newAgeCategory == AgeCategory.Undefined)
             {
-                _AgeCategoryNotFilledIn = true;
                 _newAgeCategory = UserLogic.CurrentUser.AgeCategory;
             }
+            StartPrefrences();
         }
 
         public static void SelectIntensity()
         {
-            PrintEditedList();
-            List<Intensity> Intensities = Globals.GetAllEnumIncludeUndefined<Intensity>();
+            PrintEditedListPrefrences();
+            List<Intensity> Intensities = Globals.GetAllEnum<Intensity>();
             List<Option<Intensity>> options = new List<Option<Intensity>>();
             foreach (Intensity option in Intensities)
             {
-                if (option == Intensity.Undefined)
-                    options.Add(new Option<Intensity>(option, _NotFilledIn));
-                else
-                    options.Add(new Option<Intensity>(option, option.GetDisplayName()));
+                options.Add(new Option<Intensity>(option, option.GetDisplayName()));
             }
-            ColorConsole.WriteColorLine("Kies uw [intensiteit]: \n", Globals.ColorInputcClarification);
-            SelectionMenuUtil<Intensity> SelectionMenu = new SelectionMenuUtil<Intensity>(options, () =>
-            {
-                _AgeCategoryNotFilledIn = false;
-                Start(_returnToAgeCategory);
-            },
-            () =>
-            {
-                _IntensityNotFilledIn = false;
-                Start(_returnToIntensity);
-            }, new Option<Intensity>(_newIntensity));
+            ColorConsole.WriteColorLine("Kies een [intensiteit]: \n", Globals.ColorInputcClarification);
+
+            SelectionMenuUtil<Intensity> SelectionMenu = new SelectionMenuUtil<Intensity>(options,
+                () => StartPrefrences(),
+                () => SelectIntensity(),
+                new Option<Intensity>(_newIntensity));
+
             _newIntensity = SelectionMenu.Create();
             while (!_userLogic.ValidateIntensity(_newIntensity))
             {
@@ -236,34 +246,27 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_newIntensity == Intensity.Undefined)
             {
-                _IntensityNotFilledIn = true;
                 _newIntensity = UserLogic.CurrentUser.Intensity;
             }
+            StartPrefrences();
         }
 
-        public static Language SelectLanguage()
+        public static void SelectLanguage()
         {
-            PrintEditedList();
-            List<Language> Intensities = Globals.GetAllEnumIncludeUndefined<Language>();
+            PrintEditedListPrefrences();
+            List<Language> Intensities = Globals.GetAllEnum<Language>();
             List<Option<Language>> options = new List<Option<Language>>();
             foreach (Language option in Intensities)
             {
-                if (option == Language.Undefined)
-                    options.Add(new Option<Language>(option, _NotFilledIn));
-                else
-                    options.Add(new Option<Language>(option, option.GetDisplayName()));
+                options.Add(new Option<Language>(option, option.GetDisplayName()));
             }
-            SelectionMenuUtil<Language> selectionMenu = new SelectionMenuUtil<Language>(options, () =>
-            {
-                _IntensityNotFilledIn = false;
-                Start(_returnToIntensity);
-            },
-            () =>
-            {
-                _LanguageNotFilledIn = false;
-                Start(_returnToLanguage);
-            }, new Option<Language>(_language));
-            ColorConsole.WriteColorLine("Wat is uw [taal]? (What is your [language]?) \n", Globals.ColorInputcClarification);
+
+            SelectionMenuUtil<Language> selectionMenu = new SelectionMenuUtil<Language>(options,
+                () => StartPrefrences(),
+                () => SelectLanguage(),
+                new Option<Language>(_language));
+
+            ColorConsole.WriteColorLine("Kies een [taal] (Choose a [language]) \n", Globals.ColorInputcClarification);
             _language = selectionMenu.Create();
 
             while (!_userLogic.ValidateLanguage(_language))
@@ -273,22 +276,18 @@ namespace BioscoopReserveringsapplicatie
             }
             if (_language == Language.Undefined)
             {
-                _LanguageNotFilledIn = true;
                 _language = UserLogic.CurrentUser.Language;
             }
-            return _language;
+            StartPrefrences();
         }
 
-        private static void PrintEditedList()
+        private static void PrintEditedListAccountNameEmail()
         {
-            string notFilledIn = "Niet Ingevuld";
             Console.Clear();
-            bool AnyOfTheFieldsFilledIn = _newGenres.Count > 0 || _newAgeCategory != AgeCategory.Undefined
-                || _newIntensity != Intensity.Undefined || _language != Language.Undefined
-                || _newName != "" || _newEmail != "";
+            bool AnyOfTheFieldsFilledIn = _newName != "" || _newEmail != "";
             if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine("[Huidige Account Details]", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Huidige profielgegevens]", Globals.ExperienceColor);
             }
             if (_newName != "")
             {
@@ -298,37 +297,39 @@ namespace BioscoopReserveringsapplicatie
             {
                 ColorConsole.WriteColorLine($"[Email:] {_newEmail}", Globals.ExperienceColor);
             }
-            if (_newGenres.Count > 0)
+            if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine($"[Genres:] {string.Join(", ", _newGenres)}", Globals.ExperienceColor);
+                HorizontalLine.Print();
             }
-            else
+        }
+
+        private static void PrintEditedListPrefrences()
+        {
+            Console.Clear();
+            bool AnyOfTheFieldsFilledIn = _newGenres.Count != 0 || _newAgeCategory != AgeCategory.Undefined || _newIntensity != Intensity.Undefined || _language != Language.Undefined;
+            if (AnyOfTheFieldsFilledIn)
             {
-                ColorConsole.WriteColorLine($"[Genres:] {notFilledIn}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Huidige voorkeuren]", Globals.ExperienceColor);
+            }
+            if (_newGenres.Count != 0)
+            {
+                ColorConsole.WriteColorLine($"[Genre(s):] {(string.Join(", ", _newGenres.Select(x => x.GetDisplayName())))}", Globals.ExperienceColor);
+            }
+            else if (_newGenres.Count == 0)
+            {
+                ColorConsole.WriteColorLine($"[Genre(s):] Niet ingevuld", Globals.ExperienceColor);
             }
             if (_newAgeCategory != AgeCategory.Undefined)
             {
-                ColorConsole.WriteColorLine($"[leeftijdscatagorie:] {_newAgeCategory.GetDisplayName()}", Globals.ExperienceColor);
-            }
-            else
-            {
-                ColorConsole.WriteColorLine($"[leeftijdscatagorie:] {notFilledIn}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Leeftijdscategorie:] {_newAgeCategory.GetDisplayName()}", Globals.ExperienceColor);
             }
             if (_newIntensity != Intensity.Undefined)
             {
-                ColorConsole.WriteColorLine($"[intensiteit:] {_newIntensity.GetDisplayName()}", Globals.ExperienceColor);
-            }
-            else
-            {
-                ColorConsole.WriteColorLine($"[intensiteit:] {notFilledIn}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Intensiteit:] {_newIntensity.GetDisplayName()}", Globals.ExperienceColor);
             }
             if (_language != Language.Undefined)
             {
-                ColorConsole.WriteColorLine($"[Taal (Language):] {_language.GetDisplayName()}", Globals.ExperienceColor);
-            }
-            else
-            {
-                ColorConsole.WriteColorLine($"[Taal (Language):] {notFilledIn}", Globals.ExperienceColor);
+                ColorConsole.WriteColorLine($"[Taal:] {_language.GetDisplayName()}", Globals.ExperienceColor);
             }
             if (AnyOfTheFieldsFilledIn)
             {
@@ -388,7 +389,7 @@ namespace BioscoopReserveringsapplicatie
                 {
                     Console.Clear();
                     ColorConsole.WriteColorLine("Wachtwoord is gewijzigd!", Globals.SuccessColor);
-                    Thread.Sleep(3000);
+                    WaitUtil.WaitTime(3000);
                 }
             }
             UserDetails.Start();

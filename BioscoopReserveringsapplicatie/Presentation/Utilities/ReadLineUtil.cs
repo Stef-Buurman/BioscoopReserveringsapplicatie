@@ -3,11 +3,11 @@ namespace BioscoopReserveringsapplicatie
     public static class ReadLineUtil
     {
         public static int Top = 0;
-        public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n", bool mask = false, bool showEscapability = true)
+        public static string EditValue(string defaultValue, string whatToEnterText, Action escapeAction, string textToShowEscapability = "*Klik op [Escape] om terug te gaan*\n", bool mask = false, bool showEscapability = true)
         {
             bool isEscapable = escapeAction != null;
 
-            if (showEscapability) ColorConsole.WriteLineInfo(textToShowEscapability);
+            if (showEscapability) ColorConsole.WriteLineInfoHighlight(textToShowEscapability, Globals.ColorInputcClarification);
 
             int originalPosX = Console.CursorLeft;
             string input = defaultValue;
@@ -57,28 +57,33 @@ namespace BioscoopReserveringsapplicatie
                 {
                     input = input.Insert(cursorPosition, key.KeyChar.ToString());
                     cursorPosition++;
-                    ColorConsole.WriteColor(key.KeyChar + input.Substring(cursorPosition), Globals.ColorEditInput);
                 }
                 else if (!char.IsControl(key.KeyChar) && mask == true)
                 {
                     input = input.Insert(cursorPosition, key.KeyChar.ToString());
                     cursorPosition++;
-                    ColorConsole.WriteColor("*" + input.Substring(cursorPosition), Globals.ColorEditInput);
                 }
+
                 Console.CursorVisible = false;
-                Console.SetCursorPosition(originalPosX, Console.CursorTop);
+                Console.SetCursorPosition(originalPosX, Top);
+                Console.Write(new string(' ', Console.WindowWidth * (Console.WindowHeight - Top)));
+                Console.SetCursorPosition(originalPosX, Top);
                 ColorConsole.WriteColor(whatToEnterText, Globals.ColorInputcClarification);
+
                 if (mask)
-                    ColorConsole.WriteColor(new string('*', input.Length) + new string(' ', Console.WindowWidth - input.Length - originalPosX), Globals.ColorEditInput);
+                    ColorConsole.WriteColor(new string('*', input.Length), Globals.ColorEditInput);
                 else
-                    ColorConsole.WriteColor(input + new string(' ', Console.WindowWidth - input.Length - originalPosX), Globals.ColorEditInput);
+                    ColorConsole.WriteColor(input, Globals.ColorEditInput);
+
                 Console.CursorVisible = true;
-                Console.SetCursorPosition(originalPosX + cursorPosition + textLength, Top);
+                int currentLine = (originalPosX + cursorPosition + textLength) / Console.WindowWidth;
+                int currentColumn = (originalPosX + cursorPosition + textLength) % Console.WindowWidth;
+                Console.SetCursorPosition(currentColumn, Top + currentLine);
             }
             return input;
         }
 
-        public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op escape om dit onderdeel te verlaten*\n")
+        public static string EnterValue(string whatToEnterText, Action escapeAction, bool mask = false, bool showEscapability = true, string textToShowEscapability = "*Klik op [Escape] om terug te gaan*\n")
         {
             return EditValue("", whatToEnterText, escapeAction, textToShowEscapability, mask, showEscapability);
         }
@@ -87,13 +92,13 @@ namespace BioscoopReserveringsapplicatie
         {
             Console.SetCursorPosition(Console.CursorLeft, Top);
             bool WantToLeave = false;
-            string Line = "\n----------------------------------------------------------------";
+            string Line = "\n\n----------------------------------------------------------------";
             string Message = "Weet je zeker dat je terug wilt gaan?";
             List<Option<string>> options = new List<Option<string>>
                     {
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nTeruggaan...");
-                                Thread.Sleep(1000);
+                                WaitUtil.WaitTime(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }
@@ -124,7 +129,7 @@ namespace BioscoopReserveringsapplicatie
                     {
                         new Option<string>("Ja", () => {
                                 Console.WriteLine("\nTeruggaan...");
-                                Thread.Sleep(1000);
+                                WaitUtil.WaitTime(1000);
                                 if(escapeAction != null) escapeAction();
                                 WantToLeave = true;
                             }

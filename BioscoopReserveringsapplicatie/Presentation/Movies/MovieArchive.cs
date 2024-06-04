@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
             if (movie == null)
             {
                 ColorConsole.WriteColorLine("Er is geen film gevonden.", Globals.ErrorColor);
-                Thread.Sleep(2000);
+                WaitUtil.WaitTime(2000);
                 MovieOverview.Start();
                 return;
             }
@@ -20,19 +20,19 @@ namespace BioscoopReserveringsapplicatie
             if (movie.Status == Status.Active)
             {
                 List<Option<string>> options = new List<Option<string>>
-            {
-                new Option<string>("Ja", () => {
-                    MoviesLogic.Archive(movieId);
-                    Console.Clear();
-                    ColorConsole.WriteColorLine($"De Film: {movie.Title} is gearchiveerd!", Globals.SuccessColor);
-                    Thread.Sleep(4000);
-                    MovieOverview.Start();
-                }),
-                new Option<string>("Nee", () => {
-                    MovieDetails.Start(movieId);
-                }),
-            };
-                new SelectionMenuUtil<string>(options).Create();
+                {
+                    new Option<string>("Ja", () => {
+                        MoviesLogic.Archive(movieId);
+                        Console.Clear();
+                        ColorConsole.WriteColorLine($"De Film: {movie.Title} is gearchiveerd!", Globals.SuccessColor);
+                        WaitUtil.WaitTime(4000);
+                        MovieOverview.Start();
+                    }),
+                    new Option<string>("Nee", () => {
+                        MovieDetails.Start(movieId);
+                    }),
+                };
+                    new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
             {
@@ -42,14 +42,14 @@ namespace BioscoopReserveringsapplicatie
                         MoviesLogic.Unarchive(movieId);
                         Console.Clear();
                         ColorConsole.WriteColorLine($"De Film: {movie.Title} is gedearchiveerd!", Globals.SuccessColor);
-                        Thread.Sleep(4000);
+                        WaitUtil.WaitTime(4000);
                         MovieOverview.Start();
                     }),
                     new Option<string>("Nee", () => {
                         MovieDetails.Start(movieId);
                     }),
                 };
-                new SelectionMenuUtil<string>(options).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
         }
 
@@ -59,7 +59,7 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
-            ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film leeftijdscategorie ]{rating.GetDisplayName()}\n", Globals.MovieColor);
             if (status == Status.Active)
             {
                 ColorConsole.WriteColorLine($"Weet u zeker dat u de film {title} wilt [archiveren]?", Globals.ColorInputcClarification);

@@ -134,19 +134,19 @@ namespace BioscoopReserveringsapplicatie
         public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int locationId, DateTime? dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTime(UserLogic.CurrentUser.Id, s.ScheduledDateTimeStart) == false);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date == dateTime.Value.Date && s.ScheduledDateTimeStart > DateTime.Now && ReservationLogic.HasUserAlreadyReservedScheduledExperienceOnDateTimeForLocation(UserLogic.CurrentUser.Id, s.ScheduledDateTimeStart, locationId) == false);
         }
 
-        public ScheduleModel GetRoomForScheduledExperience(int id, int locationId, DateTime? dateTime)
+        public List<ScheduleModel> GetRoomForScheduledExperience(int id, int locationId, DateTime? dateTime)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.Find(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart == dateTime);
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart == dateTime);
         }
 
-        public bool HasScheduledExperience(int id)
+        public bool HasScheduledExperience(int id, DateTime date)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart > DateTime.Now && s.ScheduledDateTimeStart.Date < DateTime.Today.AddDays(8));
+            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart > date && s.ScheduledDateTimeStart.Date < date.AddDays(8));
         }
 
         public int GetRelatedScheduledExperience(int experienceId, int? location, DateTime? dateTime, int? room)

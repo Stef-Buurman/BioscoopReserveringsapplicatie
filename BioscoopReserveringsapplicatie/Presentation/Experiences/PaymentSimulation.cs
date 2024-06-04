@@ -2,8 +2,16 @@ namespace BioscoopReserveringsapplicatie
 {
     static class PaymentSimulation
     {
-        public static void Start()
+        public static void Start(int amountOfSeats)
         {
+            double price = Math.Round(Globals.pricePerSeat * amountOfSeats, 2);
+
+            Console.WriteLine();
+
+            HorizontalLine.Print();
+
+            ColorConsole.WriteColorLine($"\nTotale prijs: [€ {price}] ", ConsoleColor.Green);
+
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("iDEAL", Simulation),
@@ -35,7 +43,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 Console.SetCursorPosition(0, Console.CursorTop);
                 Console.Write($"{progress}% [{new string('=', progress / 10)}]");
-                Thread.Sleep(500);
+                WaitUtil.WaitTime(500);
                 progress += 10;
             }
 
@@ -45,7 +53,7 @@ namespace BioscoopReserveringsapplicatie
             HorizontalLine.Print();
             ColorConsole.WriteColorLine("Betaling geslaagd!", ConsoleColor.Green);
             HorizontalLine.Print();
-            Thread.Sleep(2000);
+            WaitUtil.WaitTime(2000);
         }
     }
 }

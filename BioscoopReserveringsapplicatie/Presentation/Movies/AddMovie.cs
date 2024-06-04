@@ -18,6 +18,7 @@ namespace BioscoopReserveringsapplicatie
         public static void Start(string returnTo = "")
         {
             Console.Clear();
+            ClearFields();
 
             if (returnTo == "" || returnTo == _returnToTitle)
             {
@@ -49,6 +50,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
                 {
+                    ClearFields();
                     MovieOverview.Start();
                 }
                 else
@@ -59,7 +61,7 @@ namespace BioscoopReserveringsapplicatie
                 }
             }),
                 new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToTitle); }),
-                new Option<string>("Verlaten zonder op te slaan", () => { MovieOverview.Start(); }),
+                new Option<string>("Verlaten zonder op te slaan", () => {ClearFields(); MovieOverview.Start(); }),
             };
 
             new SelectionMenuUtil<string>(options).Create();
@@ -107,13 +109,13 @@ namespace BioscoopReserveringsapplicatie
             genres = new SelectionMenuUtil<Genre>(availableGenres, 9,
                     () => { Start(_returnToDescription); },
                     () => { Start(_returnToGenres); },
-                    "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect();
+                    "Welke [genre(s)] hoort/horen bij deze film: ").CreateMultiSelect(out List<Option<Genre>> selectedGenres);
         }
 
         private static void SelectMovieRating()
         {
             PrintAddingMovie();
-            ColorConsole.WriteColorLine("Wat is uw [leeftijdscatagorie]: \n", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine("Wat is uw [leeftijdscategorie]: \n", Globals.ColorInputcClarification);
 
             List<AgeCategory> AgeCatagories = Globals.GetAllEnum<AgeCategory>();
             List<Option<AgeCategory>> options = new List<Option<AgeCategory>>();
@@ -158,9 +160,17 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film genre(s): ]{string.Join(", ", genres)}", Globals.MovieColor);
-            ColorConsole.WriteColorLine($"[Film kijkwijzer ]{rating.GetDisplayName()}\n", Globals.MovieColor);
+            ColorConsole.WriteColorLine($"[Film leeftijdscategorie ]{rating.GetDisplayName()}\n", Globals.MovieColor);
             HorizontalLine.Print();
             ColorConsole.WriteColorLine($"Wilt u deze [Film] toevoegen?", Globals.ColorInputcClarification);
+        }
+        
+        public static void ClearFields()
+        {
+            title = "";
+            description = "";
+            genres = new List<Genre>();
+            rating = AgeCategory.Undefined;
         }
     }
 }

@@ -13,15 +13,21 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("roomNumber")]
         public int RoomNumber { get; set; }
 
-        [JsonPropertyName("capacity")]
-        public int Capacity { get; set; }
+        [JsonConverter(typeof(EnumConverter<RoomType>))]
+        [JsonPropertyName("roomType")]
+        public RoomType RoomType { get; set; }
 
-        public RoomModel(int id, int locationId, int roomNumber, int capacity)
+        [JsonConverter(typeof(EnumConverter<Status>))]
+        [JsonPropertyName("status")]
+        public Status Status { get; set; }
+
+        public RoomModel(int id, int locationId, int roomNumber, RoomType roomType, Status status)
         {
             Id = id;
             RoomNumber = roomNumber;
             LocationId = locationId;
-            Capacity = capacity;
+            Status = status;
+            RoomType = roomType;
         }
     }
 }

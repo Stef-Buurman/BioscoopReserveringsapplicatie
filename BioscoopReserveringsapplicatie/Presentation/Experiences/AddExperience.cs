@@ -18,6 +18,7 @@
         public static void Start(string returnTo = "")
         {
             Console.Clear();
+            ClearFields();
             if (returnTo == "" || returnTo == _returnToName)
             {
                 AskForExperienceName();
@@ -51,6 +52,7 @@
             {
                 if (experiencesLogic.Add(newExperience))
                 {
+                    ClearFields();
                     ExperienceOverview.Start();
                 }
                 else
@@ -61,7 +63,7 @@
                 }
             }),
             new Option<string>("Verder gaan met aanpassen", () => { Start(_returnToLength); }),
-            new Option<string>("Verlaten zonder op te slaan", () => { ExperienceOverview.Start(); }),
+            new Option<string>("Verlaten zonder op te slaan", () => { ClearFields(); ExperienceOverview.Start();}),
             };
 
             new SelectionMenuUtil<string>(options).Create();
@@ -105,7 +107,7 @@
         private static void AskForExperienceIntensity()
         {
             PrintEditedList();
-            List<Intensity> intensityenum = Globals.GetAllEnum<Intensity>();
+            List<Intensity> intensityenum = new List<Intensity> { Intensity.Low, Intensity.Medium, Intensity.High };
             List<Option<Intensity>> intensityOption = new List<Option<Intensity>>();
             foreach (Intensity intensity in intensityenum)
             {
@@ -120,7 +122,8 @@
         {
             PrintEditedList();
             List<int> intList = Enumerable.Range(1, 100).ToList();
-            SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ");
+            intList.Reverse();
+            SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1, () => Start(_returnToMovie), () => Start(_returnToLength), false, "Wat is de [tijdsduur]? (in minuten): ", new Option<int>(1));
             _timeInInt = selection.Create();
             while (!experiencesLogic.ValidateExperienceTimeLength(_timeInInt))
             {
@@ -188,6 +191,14 @@
             {
                 HorizontalLine.Print();
             }
+        }
+        private static void ClearFields()
+        {
+            _newName = string.Empty;
+            _newDescription = string.Empty;
+            _selectedMovieId = 0;
+            _Intensity = Intensity.Undefined;
+            _timeInInt = 0;
         }
     }
 }

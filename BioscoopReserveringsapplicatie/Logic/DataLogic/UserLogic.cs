@@ -43,7 +43,7 @@
             return _accounts.Find(i => i.Id == id);
         }
 
-        public Result<UserModel> RegisterNewUser(string name, string email, string password)
+        public Result<UserModel> RegisterNewUser(string name, string email, string password, string confirmPassword)
         {
             bool validated = false;
             string errorMessage = "";
@@ -61,24 +61,33 @@
             if (_accounts.Exists(i => i.EmailAddress == email))
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAlreadyExists}\n";
-                email = "";
             }
             else if (!ValidateEmail(email))
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.EmailAdressIncomplete}\n";
-                email = "";
             }
 
             if (password.Length < 5)
             {
                 errorMessage += $"{RegisterNewUserErrorMessages.PasswordMinimumChars}\n";
-                password = "";
+            }
+
+            if (password != confirmPassword)
+            {
+                errorMessage += $"{RegisterNewUserErrorMessages.PasswordsNotMatching}\n";
             }
 
             if (errorMessage == "")
             {
                 validated = true;
             }
+
+            if (errorMessage.Contains(RegisterNewUserErrorMessages.NameEmpty)) name = "";
+            if (errorMessage.Contains(RegisterNewUserErrorMessages.EmailEmpty)) email = "";
+            if (errorMessage.Contains(RegisterNewUserErrorMessages.EmailAlreadyExists)) email = "";
+            if (errorMessage.Contains(RegisterNewUserErrorMessages.EmailAdressIncomplete)) email = "";
+            if (errorMessage.Contains(RegisterNewUserErrorMessages.PasswordMinimumChars)) password = "";
+            if (errorMessage.Contains(RegisterNewUserErrorMessages.PasswordsNotMatching)) password = "";
 
             UserModel newAccount = null;
 
@@ -161,14 +170,13 @@
             return false;
         }
 
-        public bool ValidateGenres(List<Genre> genres)
+        public Result<List<Genre>> ValidateGenres(List<Genre> genres)
         {
             List<Genre> CorrectGenre = Globals.GetAllEnum<Genre>();
 
             if (genres.Distinct().Count() != genres.Count)
             {
-                Console.WriteLine("U mag niet een genre meerdere keren selecteren.");
-                return false;
+                return new Result<List<Genre>>(false, "U mag niet een genre meerdere keren selecteren.");
             }
 
             foreach (Genre genre in genres)
@@ -176,11 +184,10 @@
             {
                 if (!CorrectGenre.Contains(genre))
                 {
-                    Console.WriteLine("Ongeldige input, Selecteer genres uit de lijst.");
-                    return false;
+                    return new Result<List<Genre>>(false, "Ongeldige input, Selecteer genres uit de lijst.");
                 }
             }
-            return true;
+            return new Result<List<Genre>>(true);
         }
         public bool ValidateAgeCategory(AgeCategory ageCategory)
         {
@@ -214,17 +221,18 @@
         {
             CurrentUser = null;
             ColorConsole.WriteColorLine("\nU bent uitgelogd.", Globals.SuccessColor);
-            Thread.Sleep(2000);
+            WaitUtil.WaitTime(2000);
         }
 
         public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
         {
             if (CurrentUser != null)
             {
-                if (!ValidateName(newName) || !ValidateEmail(newEmail) || !ValidateGenres(newGenres) ||
+                Result<List<Genre>> validateGenres = ValidateGenres(newGenres);
+                if (!ValidateName(newName) || !ValidateEmail(newEmail) || !validateGenres.IsValid ||
                     !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
                 {
-                    return new Result<UserModel>(false, "Niet alle velden zijn correct ingevuld.");
+                    return new Result<UserModel>(false, $"Niet alle velden zijn correct ingevuld.\n{validateGenres.ErrorMessage}");
                 }
                 else
                 {

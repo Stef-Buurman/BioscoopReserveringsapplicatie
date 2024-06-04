@@ -33,13 +33,13 @@ namespace BioscoopReserveringsapplicatie
             return _reservations.FindAll(s => s.UserId == userId);
         }
 
-        public bool Complete(int scheduleId, int userId)
+        public bool Complete(int scheduleId, int userId, List<(int, int)> seat)
         {
             GetAll();
 
             if (scheduleId != 0 && userId != 0)
             {
-                ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId);
+                ReservationModel reservation = new ReservationModel(IdGenerator.GetNextId(_reservations), scheduleId, userId, seat);
                 return Add(reservation);
             }
 
@@ -69,6 +69,13 @@ namespace BioscoopReserveringsapplicatie
 
             reservation.IsCanceled = true;
             UpdateList(reservation);
+            foreach(ReservationModel res in _reservations)
+            {
+                if (res.Id == reservation.Id)
+                {
+                    res.IsCanceled = true;
+                }
+            }
             return true;
         }
 
@@ -103,7 +110,7 @@ namespace BioscoopReserveringsapplicatie
             return reservations.Exists(r => r.ScheduleId == scheduleId && r.UserId == userId && r.IsCanceled == false);
         }
 
-        public bool HasUserAlreadyReservedScheduledExperienceOnDateTime(int userId, DateTime date)
+        public bool HasUserAlreadyReservedScheduledExperienceOnDateTimeForLocation(int userId, DateTime date, int locationId)
         {
             List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
 
@@ -111,7 +118,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
 
-                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false)
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false && schedule.LocationId == locationId)
                 {
                     return true;
                 }
@@ -134,5 +141,9 @@ namespace BioscoopReserveringsapplicatie
             }
             return true;
         }
+
+        public List<(int, int)> GetAllReservedSeatsOfSchedule(int scheduleId) => GetAllReservationsByScheduleId(scheduleId).SelectMany(reservation => reservation.IsCanceled ? null : reservation.Seat).ToList();
+        
+        public List<ReservationModel> GetAllReservationsByScheduleId(int scheduleId) => _reservations.FindAll(r => r.ScheduleId == scheduleId && !r.IsCanceled);
     }
 }

@@ -11,20 +11,46 @@
     "language": "Undefined",
     "promotionsSeen": null
   },
-  {
-    "id": 2,
-    "isAdmin": false,
-    "emailAddress": "user@mail.com",
-    "password": "user123",
-    "fullName": "User",
-    "genres": [
-      "Horror",
-      "Comedy",
-      "Action"
-    ],
-    "ageCategory": "AGE_18",
-    "intensity": "Medium",
-    "language": "Nederlands",
-    "promotionsSeen": {}
-  }
+    {
+        "id": 2,
+        "isAdmin": false,
+        "emailAddress": "user@mail.com",
+        "password": "user123",
+        "fullName": "User",
+        "genres": [
+            "Comedy"
+        ],
+        "ageCategory": "All",
+        "intensity": "Low",
+        "language": "Nederlands",
+        "promotionsSeen": {}
+    },
+    {
+        "id": 3,
+        "isAdmin": false,
+        "emailAddress": "user1@mail.com",
+        "password": "user123",
+        "fullName": "User",
+        "genres": [
+            "Comedy"
+        ],
+        "ageCategory": "All",
+        "intensity": "Low",
+        "language": "Nederlands",
+        "promotionsSeen": {}
+    },
+    {
+        "id": 4,
+        "isAdmin": false,
+        "emailAddress": "user2@mail.com",
+        "password": "user123",
+        "fullName": "User",
+        "genres": [
+            "Comedy"
+        ],
+        "ageCategory": "All",
+        "intensity": "Low",
+        "language": "Nederlands",
+        "promotionsSeen": {}
+    }
 ]

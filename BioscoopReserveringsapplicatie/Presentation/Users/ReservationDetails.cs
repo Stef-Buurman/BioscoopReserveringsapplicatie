@@ -40,15 +40,15 @@ namespace BioscoopReserveringsapplicatie
                                 reservationLogic.Cancel(reservation);
                                 Console.Clear();
                                 ColorConsole.WriteColorLine($"De reservering is geannuleerd!", Globals.SuccessColor);
-                                Thread.Sleep(2000);
-                                ReservationDetails.Start(reservationId);
+                                WaitUtil.WaitTime(2000);
+                                Start(reservationId);
                             }),
                             new Option<string>("Nee", () => {
                                 Start(reservationId);
                             }),
                         };
 
-                        new SelectionMenuUtil<string>(options2).Create();
+                        new SelectionMenuUtil<string>(options2, new Option<string>("Nee")).Create();
 
                     }),
                     new Option<string>("Terug", () => UserReservations.Start()),
@@ -77,7 +77,10 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine($"[Zaalnummer: ]{room.RoomNumber}", Globals.ReservationColor);
                 ColorConsole.WriteColorLine($"[Starttijd: ]{schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm")}", Globals.ReservationColor);
                 ColorConsole.WriteColorLine($"[Eindtijd: ]{schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm")}", Globals.ReservationColor);
-                ColorConsole.WriteColorLine($"[Status: ]{(reservation.IsCanceled ? "Geannuleerd" : "Actief")}\n", Globals.ReservationColor);
+                ColorConsole.WriteColorLine($"[Status: ]{(reservation.IsCanceled ? "Geannuleerd" : "Actief")}", Globals.ReservationColor);
+                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", reservation.Seat.Select(tuple => tuple.Item1)), Globals.ReservationColor);
+                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", reservation.Seat.Select(tuple => tuple.Item2)), Globals.ReservationColor);
+                ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * reservation.Seat.Count, 2)}\n", Globals.ReservationColor);
 
                 Console.WriteLine("Wat wil je doen?");
             }

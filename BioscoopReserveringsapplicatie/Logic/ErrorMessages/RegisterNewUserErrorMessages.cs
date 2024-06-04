@@ -7,5 +7,6 @@
         public static string EmailAlreadyExists = "Email is al in gebruik";
         public static string EmailAdressIncomplete = "Email is incompleet!";
         public static string PasswordMinimumChars = "Wachtwoord moet minimaal 5 karakters bevatten!";
+        public static string PasswordsNotMatching = "Wachtwoorden komen niet overeen!";
     }
 }

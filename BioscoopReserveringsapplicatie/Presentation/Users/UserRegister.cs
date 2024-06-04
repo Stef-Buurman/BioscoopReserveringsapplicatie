@@ -18,10 +18,11 @@ namespace BioscoopReserveringsapplicatie
             if (user != null && user.FullName != "")
             {
                 userName = user.FullName;
+                if (errorMessage != null) ColorConsole.WriteColorLine($"Vul uw [volledige naam] in: {userName}", Globals.ColorInputcClarification);
             }
             else
             {
-                userName = ReadLineUtil.EnterValue("Vul uw [naam] in: ", LandingPage.Start);
+                userName = ReadLineUtil.EnterValue("Vul uw [volledige naam] in: ", LandingPage.Start);
             }
 
             string userEmail = "";
@@ -29,23 +30,17 @@ namespace BioscoopReserveringsapplicatie
             if (user != null && user.EmailAddress != "")
             {
                 userEmail = user.EmailAddress;
+                if (errorMessage != null) ColorConsole.WriteColorLine($"Vul uw [e-mailadres] in: {userEmail}", Globals.ColorInputcClarification);
             }
             else
             {
-                if (errorMessage != null) ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
-                userEmail = ReadLineUtil.EnterValue("Vul uw [e-mail] in: ", LandingPage.Start, false, false);
-                errorMessage = null;
-            }
-
-            if (errorMessage != null)
-            {
-                ColorConsole.WriteColorLine($"Vul uw [naam] in: {userName}", Globals.ColorInputcClarification);
-                ColorConsole.WriteColorLine($"Vul uw [e-mail] in: {userEmail}", Globals.ColorInputcClarification);
+                userEmail = ReadLineUtil.EnterValue("Vul uw [e-mailadres] in: ", LandingPage.Start, false, false);
             }
 
             string userPassword = ReadLineUtil.EnterValue("Vul uw [wachtwoord] in: ", LandingPage.Start, true, false);
+            string confirmPassword = ReadLineUtil.EnterValue("Vul nogmaals uw [wachtwoord] in: ", LandingPage.Start, true, false);
 
-            Result<UserModel> registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword);
+            Result<UserModel> registrationResult = userLogic.RegisterNewUser(userName, userEmail, userPassword, confirmPassword);
 
             if (!registrationResult.IsValid)
             {
@@ -53,10 +48,11 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
+                ColorConsole.WriteColorLine("\nRegistratie succesvol, u wordt nu doorverwezen om uw accountvoorkeuren in te stellen.", Globals.SuccessColor);
+
+                WaitUtil.WaitTime(4000);
+
                 Preferences.Start(registrationResult.Item);
-                ColorConsole.WriteColorLine("\nU bent geregistreerd.", Globals.SuccessColor);
-                Thread.Sleep(2000);
-                UserLogin.Start();
             }
         }
     }

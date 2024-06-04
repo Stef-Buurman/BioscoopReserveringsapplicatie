@@ -10,9 +10,10 @@ namespace BioscoopReserveringsapplicatie
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Experienceoverzicht", () => PreferredExperiences.Start()),
+                    new Option<string>("Experiences", () => PreferredExperiences.Start()),
                     new Option<string>("Mijn account", () => UserDetails.Start()),
-                    new Option<string>("Uitloggen", () => LandingPage.Start()),
+                    new Option<string>("Mijn reserveringen",() => UserReservations.Start()),
+                    new Option<string>("Uitloggen", () => {UserLogic.Logout(); LandingPage.Start();}),
                 };
                 ColorConsole.WriteColorLine($"Welkom [{UserLogic.CurrentUser.FullName}]!\n", ConsoleColor.Green);
                 new SelectionMenuUtil<string>(options).Create();
