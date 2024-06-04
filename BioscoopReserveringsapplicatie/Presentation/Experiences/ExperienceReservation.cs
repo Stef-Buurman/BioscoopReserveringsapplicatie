@@ -253,6 +253,20 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
             }
         }
+
+        private static void BackFromSeats(int experienceId, int location, DateTime? dateTime)
+        {
+            List<ScheduleModel> scheduledExperience = ScheduleLogic.GetRoomForScheduledExperience(experienceId, location, dateTime);
+            if (scheduledExperience.Count > 1)
+            {
+                Start(experienceId, location, dateTime);
+            }
+            else
+            {
+                Start(experienceId, location, dateTime.Value.Date);
+            }
+        }
+
         private static void ChooseSeat(int experienceId, int location, DateTime? dateTime, int room, List<(int, int)> seat = default)
         {
             if (dateTime == null)
@@ -272,7 +286,7 @@ namespace BioscoopReserveringsapplicatie
                 List<(int, int)> selectedOptions = ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId);
 
                 List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true,
-                    () => Start(experienceId, location, dateTime),
+                    () => BackFromSeats(experienceId, location, dateTime),
                     () => Start(experienceId, location, dateTime, room), true, SelectedValues).CreateGridSelect(out SelectedValues);
 
                 Start(experienceId, location, dateTime, room, chosenSeats);
