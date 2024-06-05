@@ -36,10 +36,14 @@ namespace BioscoopReserveringsapplicatieTests
 
         [TestMethod]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public void Incorrect_Archive_Location()
 =======
         public void Incorrect_Archive_Location_Nonexistant_ID()
 >>>>>>> Made sure everything is TestMethod & fixed some names and added extra test
+=======
+        public void Incorrect_Archive_Location_Nonexistant_ID()
+>>>>>>> 7555db47d79e5ef48b6b22c9a800f24345888e24
         {
             try
             {
