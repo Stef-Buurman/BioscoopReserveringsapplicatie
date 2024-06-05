@@ -94,8 +94,14 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Room_Archive_Nonexistent_ID()
         {
             int nonexistentID = 999;
-            roomLogic.Archive(nonexistentID);
-            Assert.IsNull(roomLogic.GetById(nonexistentID));
+            try
+            {
+                roomLogic.Archive(nonexistentID);
+            }
+            catch 
+            {
+                Assert.Fail("Zaal bestaat niet, kan daarom ook niet gearchiveerd worden");
+            }
         }
 
         // Add ---------------------------------------------------------------------------------------------------------------------------
@@ -118,6 +124,28 @@ namespace BioscoopReserveringsapplicatieTests
         {
             RoomModel room = new RoomModel(3, 0, -4, RoomType.Round, Status.Active);
             Assert.IsFalse(roomLogic.Add(room));
+
+        // Unarchive ----------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Room_Unarchive_Succes()
+        {
+            roomLogic.Unarchive(1);
+            Assert.AreEqual(Status.Active, roomLogic.GetById(1).Status);
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Unarchive_Nonexistent_ID()
+        {
+            int nonexistentID = 999;
+            try
+            {
+                roomLogic.Unarchive(nonexistentID);
+            }
+            catch 
+            {
+                Assert.Fail("Zaal bestaat niet, kan daarom ook niet geactiveerd worden");
+            }
         }
     }
 }

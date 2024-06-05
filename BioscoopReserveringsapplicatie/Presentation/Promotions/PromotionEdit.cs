@@ -21,7 +21,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> editOptions = new List<Option<string>>()
             {
                 new Option<string>("Titel", () => { PromotionTitle(); }),
-                new Option<string>("Intensiteit", () => { PromotionDescription(promotionId); }),
+                new Option<string>("Beschrijving", () => { PromotionDescription(promotionId); }),
                 new Option<string>("Opslaan", () => { SavePromotion(); }, Globals.SaveColor),
                 new Option<string>("Terug", () => GoBackToDetails(), Globals.GoBackColor)
             };

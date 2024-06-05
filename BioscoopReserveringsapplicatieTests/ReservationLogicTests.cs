@@ -110,7 +110,6 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_User_Has_Available_Options_For_Location()
         {
-            //Complete_Reservation();
             ScheduleModel schedule = scheduleLogic.GetById(scheduleId);
             Assert.IsFalse(reservationLogic.HasUserReservedAvailableOptionsForLocation(schedule.ExperienceId, schedule.LocationId, userId));
         }
@@ -121,6 +120,22 @@ namespace BioscoopReserveringsapplicatieTests
             Complete_Reservation();
             ScheduleModel schedule = scheduleLogic.GetById(scheduleId);
             Assert.IsTrue(reservationLogic.HasUserReservedAvailableOptionsForLocation(schedule.ExperienceId, 2, userId));
+        }
+
+        // Cancel Reservation -------------------------------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Cancel_Reservation()
+        {
+            Complete_Reservation();
+            ReservationModel reservation = reservationLogic.GetById(scheduleId);
+            Assert.IsTrue(reservationLogic.Cancel(reservation));
+        }
+
+        [TestMethod]
+        public void Incorrect_Cancel_Reservation()
+        {
+            Assert.IsFalse(reservationLogic.Cancel(null));
         }
     }
 }
