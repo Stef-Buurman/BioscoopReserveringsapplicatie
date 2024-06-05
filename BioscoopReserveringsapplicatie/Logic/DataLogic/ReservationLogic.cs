@@ -2,13 +2,16 @@ namespace BioscoopReserveringsapplicatie
 {
     public class ReservationLogic : ILogic<ReservationModel>
     {
-        private static ScheduleLogic scheduleLogic = new ScheduleLogic();
+        private ScheduleLogic scheduleLogic;
         private List<ReservationModel> _reservations = new();
         public IDataAccess<ReservationModel> _DataAccess { get; }
-        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
+        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null, IDataAccess<ScheduleModel> schedulelogic = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<ReservationModel>();
+
+            if (schedulelogic != null) scheduleLogic = new ScheduleLogic(schedulelogic);
+            else scheduleLogic = new ScheduleLogic();
 
             _reservations = _DataAccess.LoadAll();
         }
