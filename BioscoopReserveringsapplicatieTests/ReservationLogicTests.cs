@@ -99,7 +99,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             Complete_Reservation();
             List<(int, int)> selectedSeats = reservationLogic.GetAllReservedSeatsOfSchedule(scheduleId);
-            foreach((int, int) selSeat in selectedSeats)
+            foreach ((int, int) selSeat in selectedSeats)
             {
                 Assert.IsTrue(seats.Contains(selSeat));
             }
@@ -136,6 +136,19 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Cancel_Reservation()
         {
             Assert.IsFalse(reservationLogic.Cancel(null));
+        }
+
+        // Get all reservations of user -------------------------------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Get_All_Reservations_Of_User()
+        {
+            Complete_Reservation();
+            List<ReservationModel> userReservations = reservationLogic.GetByUserId(userId);
+            foreach (ReservationModel res in userReservations)
+            {
+                Assert.AreEqual(res.UserId, userId);
+            }
         }
     }
 }
