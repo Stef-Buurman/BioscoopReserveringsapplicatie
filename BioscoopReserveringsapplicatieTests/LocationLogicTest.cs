@@ -12,7 +12,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var LocationRepositoryMock = Substitute.For<IDataAccess<LocationModel>>();
             List<LocationModel> Locations = new List<LocationModel>() {
-                new LocationModel(1,"Rotterdam-Zuid"),
+                new LocationModel(1,"Rotterdam-Zuid", Status.Active),
                 new LocationModel(2,"Rotterdam-Noord", Status.Archived),
                 new LocationModel(3,"Rotterdam-Centrum"),
                 new LocationModel(4,"Rotterdam-West"),
@@ -79,8 +79,8 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Location_AlreadyUnarchived_Still_Unarchived()
         {
-            locationLogic.Archive(0);
-            Assert.AreEqual(Status.Archived, locationLogic.GetById(1).Status);
+            locationLogic.UnArchive(0);
+            Assert.AreEqual(Status.Active, locationLogic.GetById(0).Status);
         }
 
     // Validate ------------------------------------------------------------------------------------------------------------------
