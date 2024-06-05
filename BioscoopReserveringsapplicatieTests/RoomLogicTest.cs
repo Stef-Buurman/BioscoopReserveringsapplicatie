@@ -98,5 +98,26 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsNull(roomLogic.GetById(nonexistentID));
         }
 
+        // Add ---------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Room_Add()
+        {
+            RoomModel room = new RoomModel(3, 0, 4, RoomType.Round, Status.Active);
+            Assert.IsTrue(roomLogic.Add(room));
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Add_Null()
+        {
+            Assert.IsFalse(roomLogic.Add(null));
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Add_Negative_Room_Number()
+        {
+            RoomModel room = new RoomModel(3, 0, -4, RoomType.Round, Status.Active);
+            Assert.IsFalse(roomLogic.Add(room));
+        }
     }
 }
