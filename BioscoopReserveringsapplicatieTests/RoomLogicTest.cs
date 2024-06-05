@@ -86,7 +86,6 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Room_AlreadyArchived_Still_Archived()
         {
             roomLogic.Archive(1);
-            roomLogic.Archive(1);
             Assert.AreEqual(Status.Archived, roomLogic.GetById(1).Status);
         }
 
@@ -146,6 +145,13 @@ namespace BioscoopReserveringsapplicatieTests
             {
                 Assert.Fail("Zaal bestaat niet, kan daarom ook niet geactiveerd worden");
             }
+        }
+
+        [TestMethod]
+        public void Correct_Room_AlreadyUnarchived_Still_Unarchived()
+        {
+            roomLogic.Unarchive(0);
+            Assert.AreEqual(Status.Active, roomLogic.GetById(0).Status);
         }
     }
 }

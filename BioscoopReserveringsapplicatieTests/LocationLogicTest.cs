@@ -13,7 +13,7 @@ namespace BioscoopReserveringsapplicatieTests
             var LocationRepositoryMock = Substitute.For<IDataAccess<LocationModel>>();
             List<LocationModel> Locations = new List<LocationModel>() {
                 new LocationModel(1,"Rotterdam-Zuid"),
-                new LocationModel(2,"Rotterdam-Noord"),
+                new LocationModel(2,"Rotterdam-Noord", Status.Archived),
                 new LocationModel(3,"Rotterdam-Centrum"),
                 new LocationModel(4,"Rotterdam-West"),
                 new LocationModel(5,"Rotterdam-Oost"),
@@ -47,7 +47,15 @@ namespace BioscoopReserveringsapplicatieTests
             }
         }
 
+        [TestMethod]
+        public void Correct_Location_AlreadyArchived_Still_Archived()
+        {
+            locationLogic.Archive(1);
+            Assert.AreEqual(Status.Archived, locationLogic.GetById(1).Status);
+        }
+
     // UnArchive ------------------------------------------------------------------------------------------------------------------
+
         [TestMethod]
         public void Correct_UnArchive_Location()
         {
@@ -68,7 +76,12 @@ namespace BioscoopReserveringsapplicatieTests
             }
         }
 
-
+        [TestMethod]
+        public void Correct_Location_AlreadyUnarchived_Still_Unarchived()
+        {
+            locationLogic.Archive(0);
+            Assert.AreEqual(Status.Archived, locationLogic.GetById(1).Status);
+        }
 
     // Validate ------------------------------------------------------------------------------------------------------------------
 
@@ -86,7 +99,8 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsFalse(result);
         }
     
-    //GetById------------------------------------------------------------------------------------------------------------------------------
+    //GetById ------------------------------------------------------------------------------------------------------------------------------
+
         [TestMethod]
         public void Correct_Get_By_Id()
         {
