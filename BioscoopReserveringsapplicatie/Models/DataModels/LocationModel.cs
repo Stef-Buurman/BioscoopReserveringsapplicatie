@@ -20,5 +20,12 @@ namespace BioscoopReserveringsapplicatie
             Name = name;
             Status = status;
         }
+
+        public LocationModel(int id, string name, Status status)
+        {
+            Id = id;
+            Name = name;
+            Status = status;
+        }
     }
 }
