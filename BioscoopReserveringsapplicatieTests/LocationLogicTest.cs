@@ -34,10 +34,17 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.AreEqual(locationLogic.GetById(3).Status, Status.Archived);
         }
 
+        [TestMethod]
         public void Incorrect_Archive_Location()
         {
-            locationLogic.Archive(999);
-            Assert.IsNull(locationLogic.GetById(999).Status = Status.Archived);
+            try
+            {
+                locationLogic.Archive(999);
+            }
+            catch 
+            {
+                Assert.Fail("Locatie bestaat niet, kan daarom ook niet gearchiveerd worden");
+            }
         }
 
     // UnArchive ------------------------------------------------------------------------------------------------------------------
@@ -48,10 +55,17 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.AreEqual(locationLogic.GetById(3).Status, Status.Active);
         }
 
+        [TestMethod]
         public void Incorrect_UnArchive_Location()
         {
-            locationLogic.UnArchive(999);
-            Assert.IsNull(locationLogic.GetById(999).Status = Status.Active);
+            try
+            {
+                locationLogic.UnArchive(999);
+            }
+            catch 
+            {
+                Assert.Fail("Locatie bestaat niet, kan daarom ook niet geactiveerd worden");
+            }
         }
 
 
