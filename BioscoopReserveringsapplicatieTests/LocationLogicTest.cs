@@ -86,9 +86,7 @@ namespace BioscoopReserveringsapplicatieTests
             LocationModel userName = locationLogic.GetById(999);
             Assert.IsNull(userName);
         }
-    }
-
-        
+    }    
 }
 
 
