@@ -98,5 +98,22 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsNull(roomLogic.GetById(nonexistentID));
         }
 
+        // Unarchive ----------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Room_Unarchive_Succes()
+        {
+            roomLogic.Unarchive(1);
+            Assert.AreEqual(Status.Active, roomLogic.GetById(1).Status);
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Unarchive_Nonexistent_ID()
+        {
+            int nonexistentID = 999;
+            roomLogic.Unarchive(nonexistentID);
+            Assert.IsNull(roomLogic.GetById(nonexistentID));
+        }
+
     }
 }
