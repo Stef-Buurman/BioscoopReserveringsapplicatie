@@ -125,7 +125,6 @@ namespace BioscoopReserveringsapplicatieTests
         // Cancel Reservation -------------------------------------------------------------------------------------------------------------------------------------------------
 
         [TestMethod]
-
         public void Correct_Cancel_Reservation()
         {
             Complete_Reservation();
@@ -134,7 +133,6 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-
         public void Incorrect_Cancel_Reservation()
         {
             Assert.IsFalse(reservationLogic.Cancel(null));
