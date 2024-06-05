@@ -35,7 +35,11 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
+<<<<<<< HEAD
         public void Incorrect_Archive_Location()
+=======
+        public void Incorrect_Archive_Location_Nonexistant_ID()
+>>>>>>> Made sure everything is TestMethod & fixed some names and added extra test
         {
             try
             {
@@ -68,11 +72,9 @@ namespace BioscoopReserveringsapplicatieTests
             }
         }
 
-
-
     // Validate ------------------------------------------------------------------------------------------------------------------
 
-        [DataTestMethod]
+        [TestMethod]
         public void Correct_Name_Location_Validation()
         {
             bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-TEST"));
@@ -80,9 +82,16 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Name_Location_Validation()
+        public void Incorrect_Name_Location_Validation_Empty_Name()
         {
             bool result = locationLogic.Validate(new LocationModel(10, ""));
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Incorrect_Name_Location_Validation_Location_Already_Exists()
+        {
+            bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-Zuid"));
             Assert.IsFalse(result);
         }
     
