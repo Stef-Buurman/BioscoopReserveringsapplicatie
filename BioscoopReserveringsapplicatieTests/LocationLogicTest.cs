@@ -34,7 +34,8 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.AreEqual(locationLogic.GetById(3).Status, Status.Archived);
         }
 
-        public void Incorrect_Archive_Location()
+        [TestMethod]
+        public void Incorrect_Archive_Location_Nonexistant_ID()
         {
             locationLogic.Archive(999);
             Assert.IsNull(locationLogic.GetById(999).Status = Status.Archived);
@@ -48,17 +49,16 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.AreEqual(locationLogic.GetById(3).Status, Status.Active);
         }
 
+        [TestMethod]
         public void Incorrect_UnArchive_Location()
         {
             locationLogic.UnArchive(999);
             Assert.IsNull(locationLogic.GetById(999).Status = Status.Active);
         }
 
-
-
     // Validate ------------------------------------------------------------------------------------------------------------------
 
-        [DataTestMethod]
+        [TestMethod]
         public void Correct_Name_Location_Validation()
         {
             bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-TEST"));
@@ -66,9 +66,16 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Name_Location_Validation()
+        public void Incorrect_Name_Location_Validation_Empty_Name()
         {
             bool result = locationLogic.Validate(new LocationModel(10, ""));
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Incorrect_Name_Location_Validation_Location_Already_Exists()
+        {
+            bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-Zuid"));
             Assert.IsFalse(result);
         }
     
