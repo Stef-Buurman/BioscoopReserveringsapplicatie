@@ -51,8 +51,8 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Location_AlreadyArchived_Still_Archived()
         {
-            locationLogic.Archive(1);
-            Assert.AreEqual(Status.Archived, locationLogic.GetById(1).Status);
+            locationLogic.Archive(2);
+            Assert.AreEqual(Status.Archived, locationLogic.GetById(2).Status);
         }
 
     // UnArchive ------------------------------------------------------------------------------------------------------------------
@@ -81,8 +81,8 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Location_AlreadyUnarchived_Still_Unarchived()
         {
-            locationLogic.UnArchive(0);
-            Assert.AreEqual(Status.Active, locationLogic.GetById(0).Status);
+            locationLogic.UnArchive(1);
+            Assert.AreEqual(Status.Active, locationLogic.GetById(1).Status);
         }
 
     // Validate ------------------------------------------------------------------------------------------------------------------
