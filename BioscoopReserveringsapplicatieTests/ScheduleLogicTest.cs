@@ -10,6 +10,8 @@ namespace BioscoopReserveringsapplicatieTests
         RoomLogic roomLogic;
         ExperienceLogic experiencesLogic;
         MovieLogic moviesLogic;
+        UserLogic userLogic;
+
         List<ScheduleModel> schedules;
 
         Action initializeScheduleLogic;
@@ -66,6 +68,13 @@ namespace BioscoopReserveringsapplicatieTests
             movieRepositoryMock.LoadAll().Returns(movies);
             movieRepositoryMock.WriteAll(Arg.Any<List<MovieModel>>());
 
+            var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
+            List<UserModel> users = new List<UserModel>() {
+                new UserModel(1, true, "admin@mail.com", "admin", "admin", null, default, default, default, null),
+            };
+            userRepositoryMock.LoadAll().Returns(users);
+            userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
+
             initializeScheduleLogic = () => scheduleLogic = new ScheduleLogic(scheduleRepositoryMock, LocationRepositoryMock, roomRepositoryMock, experienceRepositoryMock);
             scheduleLogic = new ScheduleLogic(scheduleRepositoryMock, LocationRepositoryMock, roomRepositoryMock, experienceRepositoryMock);
 
@@ -76,6 +85,8 @@ namespace BioscoopReserveringsapplicatieTests
             experiencesLogic = new ExperienceLogic(experienceRepositoryMock, movieRepositoryMock, scheduleRepositoryMock);
 
             moviesLogic = new MovieLogic(movieRepositoryMock);
+
+            userLogic = new UserLogic(userRepositoryMock);
         }
 
         // Schedule an experience ----------------------------------------------------------------------------------------------------------------------
@@ -83,6 +94,8 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Schedule_Experience()
         {
+            userLogic.Login("admin@mail.com", "admin");
+
             int experienceId = 1;
             int locationId = 1;
             int roomId = 1;

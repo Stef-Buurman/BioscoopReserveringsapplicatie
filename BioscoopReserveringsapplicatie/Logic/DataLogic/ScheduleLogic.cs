@@ -53,15 +53,15 @@ namespace BioscoopReserveringsapplicatie
 
         public ScheduleModel CreateSchedule(int experienceId, int roomId, int locationId, string scheduledDateTime)
         {
-            // if (UserLogic.IsAdmin()) // this needs to be fixed for the unit tests
-            // {
-            if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
+            if (UserLogic.IsAdmin())
             {
-                DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
-                ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTimeStart, dateTimeEnd);
-                return schedule;
+                if (DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTimeStart))
+                {
+                    DateTime dateTimeEnd = dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength);
+                    ScheduleModel schedule = new ScheduleModel(IdGenerator.GetNextId(_Schedules), experienceId, locationId, roomId, dateTimeStart, dateTimeEnd);
+                    return schedule;
+                }
             }
-            // }
             return null;
         }
 
