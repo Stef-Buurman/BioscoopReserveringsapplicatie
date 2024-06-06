@@ -56,7 +56,7 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Unarchive_Location()
+        public void Incorrect_Unarchive_Location_Nonexistant_ID()
         {
             try
             {
@@ -100,7 +100,7 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Get_By_Id()
+        public void Incorrect_Get_By_Id_Nonexistant_ID()
         {
             LocationModel userName = locationLogic.GetById(999);
             Assert.IsNull(userName);
