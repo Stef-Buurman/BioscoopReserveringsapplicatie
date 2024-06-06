@@ -35,15 +35,7 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-<<<<<<< HEAD
-<<<<<<< HEAD
-        public void Incorrect_Archive_Location()
-=======
         public void Incorrect_Archive_Location_Nonexistant_ID()
->>>>>>> Made sure everything is TestMethod & fixed some names and added extra test
-=======
-        public void Incorrect_Archive_Location_Nonexistant_ID()
->>>>>>> 7555db47d79e5ef48b6b22c9a800f24345888e24
         {
             try
             {
@@ -57,14 +49,14 @@ namespace BioscoopReserveringsapplicatieTests
 
     // UnArchive ------------------------------------------------------------------------------------------------------------------
         [TestMethod]
-        public void Correct_UnArchive_Location()
+        public void Correct_Unarchive_Location()
         {
             locationLogic.UnArchive(3);
             Assert.AreEqual(locationLogic.GetById(3).Status, Status.Active);
         }
 
         [TestMethod]
-        public void Incorrect_UnArchive_Location()
+        public void Incorrect_Unarchive_Location()
         {
             try
             {
