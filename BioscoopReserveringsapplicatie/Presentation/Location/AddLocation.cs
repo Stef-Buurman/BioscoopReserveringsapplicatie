@@ -16,7 +16,7 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
             Print(title);
-            LocationModel newLocation = new LocationModel(locationLogic.GetNextId(), title);
+            LocationModel newLocation = new LocationModel(locationLogic.GetNextId(), title, Status.Active);
             List<Option<string>> options = new List<Option<string>>
             {
             new Option<string>("Opslaan en verlaten", () => 
