@@ -35,11 +35,12 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Archive_Location()
+        public void Incorrect_Archive_Location_Nonexistant_ID()
         {
             try
             {
-                locationLogic.Archive(999);
+                bool result = locationLogic.Archive(999);
+                Assert.IsFalse(result);
             }
             catch 
             {
@@ -49,18 +50,19 @@ namespace BioscoopReserveringsapplicatieTests
 
     // UnArchive ------------------------------------------------------------------------------------------------------------------
         [TestMethod]
-        public void Correct_UnArchive_Location()
+        public void Correct_Unarchive_Location()
         {
             locationLogic.UnArchive(3);
             Assert.AreEqual(locationLogic.GetById(3).Status, Status.Active);
         }
 
         [TestMethod]
-        public void Incorrect_UnArchive_Location()
+        public void Incorrect_Unarchive_Location_Nonexistant_ID()
         {
             try
             {
-                locationLogic.UnArchive(999);
+                bool result = locationLogic.UnArchive(999);
+                Assert.IsFalse(result);
             }
             catch 
             {
@@ -68,11 +70,9 @@ namespace BioscoopReserveringsapplicatieTests
             }
         }
 
-
-
     // Validate ------------------------------------------------------------------------------------------------------------------
 
-        [DataTestMethod]
+        [TestMethod]
         public void Correct_Name_Location_Validation()
         {
             bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-TEST"));
@@ -80,9 +80,16 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Name_Location_Validation()
+        public void Incorrect_Name_Location_Validation_Empty_Name()
         {
             bool result = locationLogic.Validate(new LocationModel(10, ""));
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Incorrect_Name_Location_Validation_Location_Already_Exists()
+        {
+            bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-Zuid"));
             Assert.IsFalse(result);
         }
     
@@ -95,7 +102,7 @@ namespace BioscoopReserveringsapplicatieTests
         }
 
         [TestMethod]
-        public void Incorrect_Get_By_Id()
+        public void Incorrect_Get_By_Id_Nonexistant_ID()
         {
             LocationModel userName = locationLogic.GetById(999);
             Assert.IsNull(userName);
