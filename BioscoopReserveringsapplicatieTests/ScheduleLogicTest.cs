@@ -139,7 +139,7 @@ namespace BioscoopReserveringsapplicatieTests
             RoomModel room = roomLogic.GetById(roomId);
             ExperienceModel experience = experiencesLogic.GetById(experienceId);
             Assert.IsFalse(result);
-            Assert.AreEqual($"Er is al een experience ingepland op {scheduleDate} in {location.Name} Zaal: {room.RoomNumber} van {DateTime.Parse(scheduledDateTime)} T/M {DateTime.Parse(scheduledDateTime).AddMinutes(experience.TimeLength)}.", error);
+            Assert.AreEqual($"Er is al een experience ingepland op {scheduleDate} in {location.Name} Zaal: {room.RoomNumber} van {DateTime.Parse(scheduledDateTime).ToString("HH:mm:ss")} T/M {DateTime.Parse(scheduledDateTime).AddMinutes(experience.TimeLength).ToString("HH:mm:ss")}.", error);
         }
     }
 }
