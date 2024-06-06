@@ -18,7 +18,7 @@
             if (movieAccess != null) MoviesLogic = new MovieLogic(movieAccess);
             else MoviesLogic = new MovieLogic();
 
-            if (schedulelogicComplete != null && ScheduleLogic == null)
+            if (schedulelogicComplete != null)
             {
                 ScheduleLogic = schedulelogicComplete;
             }

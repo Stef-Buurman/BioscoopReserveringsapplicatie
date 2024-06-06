@@ -12,6 +12,8 @@ namespace BioscoopReserveringsapplicatieTests
         MovieLogic moviesLogic;
         List<ScheduleModel> schedules;
 
+        Action initializeScheduleLogic;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -48,9 +50,9 @@ namespace BioscoopReserveringsapplicatieTests
 
             var experienceRepositoryMock = Substitute.For<IDataAccess<ExperienceModel>>();
             List<ExperienceModel> experiences = new List<ExperienceModel>() {
-                new ExperienceModel(0, "", "", 0, Intensity.Low, 20, Status.Active),
-                new ExperienceModel(1, "", "", 0, Intensity.Medium, 20, Status.Archived),
-                new ExperienceModel(2, "", "", 0, Intensity.High, 20, Status.Active),
+                new ExperienceModel(1, "Dit Is Experience 1", "", 0, Intensity.Low, 20, Status.Active),
+                new ExperienceModel(2, "Dit Is Experience 2", "", 0, Intensity.Medium, 20, Status.Archived),
+                new ExperienceModel(3, "Dit Is Experience 3", "", 0, Intensity.High, 20, Status.Active),
             };
             experienceRepositoryMock.LoadAll().Returns(experiences);
             experienceRepositoryMock.WriteAll(Arg.Any<List<ExperienceModel>>());
@@ -64,6 +66,7 @@ namespace BioscoopReserveringsapplicatieTests
             movieRepositoryMock.LoadAll().Returns(movies);
             movieRepositoryMock.WriteAll(Arg.Any<List<MovieModel>>());
 
+            initializeScheduleLogic = () => scheduleLogic = new ScheduleLogic(scheduleRepositoryMock, LocationRepositoryMock, roomRepositoryMock, experienceRepositoryMock);
             scheduleLogic = new ScheduleLogic(scheduleRepositoryMock, LocationRepositoryMock, roomRepositoryMock, experienceRepositoryMock);
 
             locationLogic = new LocationLogic(LocationRepositoryMock, scheduleRepositoryMock);
@@ -129,11 +132,14 @@ namespace BioscoopReserveringsapplicatieTests
             string scheduleDate = currentDate.AddDays(1).ToString("dd-MM-yyyy");
             string scheduleTime = currentDate.AddDays(1).ToString("HH:mm");
             string scheduledDateTime = $"{scheduleDate} {scheduleTime}";
-
-            bool result = scheduleLogic.TimeSlotOpenOnRoom(experienceId, locationId, roomId, scheduledDateTime, out string error);
-
+            string error = "";
+            initializeScheduleLogic();
+            bool result = scheduleLogic.TimeSlotOpenOnRoom(experienceId, locationId, roomId, scheduledDateTime, out error);
+            LocationModel location = locationLogic.GetById(locationId);
+            RoomModel room = roomLogic.GetById(roomId);
+            ExperienceModel experience = experiencesLogic.GetById(experienceId);
             Assert.IsFalse(result);
-            Assert.AreEqual($"Er is al een experience ingepland op {scheduleDate} in {locationLogic.GetById(locationId).Name} Zaal: {roomLogic.GetById(roomId).RoomNumber} van {DateTime.Parse(scheduledDateTime)} T/M {DateTime.Parse(scheduledDateTime).AddMinutes(experiencesLogic.GetById(experienceId).TimeLength)}.", error);
+            Assert.AreEqual($"Er is al een experience ingepland op {scheduleDate} in {location.Name} Zaal: {room.RoomNumber} van {DateTime.Parse(scheduledDateTime)} T/M {DateTime.Parse(scheduledDateTime).AddMinutes(experience.TimeLength)}.", error);
         }
     }
 }
