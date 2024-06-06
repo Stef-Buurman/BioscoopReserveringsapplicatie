@@ -39,7 +39,8 @@ namespace BioscoopReserveringsapplicatieTests
         {
             try
             {
-                locationLogic.Archive(999);
+                bool result = locationLogic.Archive(999);
+                Assert.IsFalse(result);
             }
             catch 
             {
@@ -60,7 +61,8 @@ namespace BioscoopReserveringsapplicatieTests
         {
             try
             {
-                locationLogic.UnArchive(999);
+                bool result = locationLogic.UnArchive(999);
+                Assert.IsFalse(result);
             }
             catch 
             {
