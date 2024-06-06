@@ -2,16 +2,26 @@ namespace BioscoopReserveringsapplicatie
 {
     public class ReservationLogic : ILogic<ReservationModel>
     {
-        private ScheduleLogic scheduleLogic;
+        private static ScheduleLogic scheduleLogic;
+        private static bool isInitializedScheduleLogic = false;
         private List<ReservationModel> _reservations = new();
         public IDataAccess<ReservationModel> _DataAccess { get; }
-        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null, IDataAccess<ScheduleModel> schedulelogic = null)
+        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null, IDataAccess<ScheduleModel> schedulelogic = null, ScheduleLogic schedulelogicComplete = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<ReservationModel>();
 
-            if (schedulelogic != null) scheduleLogic = new ScheduleLogic(schedulelogic);
-            else scheduleLogic = new ScheduleLogic();
+            if(schedulelogicComplete != null)
+            {
+                scheduleLogic = schedulelogicComplete;
+            }
+            else if (!isInitializedScheduleLogic)
+            {
+                isInitializedScheduleLogic = true;
+                if (schedulelogic != null && dataAccess != null) scheduleLogic = new ScheduleLogic(schedulelogic, reservationAccess: dataAccess);
+                if (schedulelogic != null) scheduleLogic = new ScheduleLogic(schedulelogic);
+                else scheduleLogic = new ScheduleLogic();
+            }
 
             _reservations = _DataAccess.LoadAll();
         }
@@ -121,7 +131,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
 
-                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false && schedule.LocationId == locationId)
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay <= date.TimeOfDay && schedule.ScheduledDateTimeEnd.TimeOfDay >= date.TimeOfDay && reservation.IsCanceled == false && schedule.LocationId == locationId)
                 {
                     return true;
                 }
