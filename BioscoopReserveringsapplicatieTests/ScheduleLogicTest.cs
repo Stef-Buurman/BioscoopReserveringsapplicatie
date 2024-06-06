@@ -31,12 +31,12 @@ namespace BioscoopReserveringsapplicatieTests
 
             var LocationRepositoryMock = Substitute.For<IDataAccess<LocationModel>>();
             List<LocationModel> Locations = new List<LocationModel>() {
-                new LocationModel(1,"Rotterdam-Zuid"),
-                new LocationModel(2,"Rotterdam-Noord"),
-                new LocationModel(3,"Rotterdam-Centrum"),
-                new LocationModel(4,"Rotterdam-West"),
-                new LocationModel(5,"Rotterdam-Oost"),
-                new LocationModel(6,"Wijnhaven"),
+                new LocationModel(1,"Rotterdam-Zuid", Status.Active),
+                new LocationModel(2,"Rotterdam-Noord", Status.Active),
+                new LocationModel(3,"Rotterdam-Centrum", Status.Active),
+                new LocationModel(4,"Rotterdam-West", Status.Active),
+                new LocationModel(5,"Rotterdam-Oost", Status.Active),
+                new LocationModel(6,"Wijnhaven", Status.Active),
             };
             LocationRepositoryMock.LoadAll().Returns(Locations);
             LocationRepositoryMock.WriteAll(Arg.Any<List<LocationModel>>());

@@ -14,11 +14,11 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("status")]
         public Status Status { get; set; }
 
-        public LocationModel(int id, string name)
+        public LocationModel(int id, string name, Status status)
         {
             Id = id;
             Name = name;
-            Status = Status.Active;
+            Status = status;
         }
     }
 }
