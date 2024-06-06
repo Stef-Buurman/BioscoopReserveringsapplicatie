@@ -14,10 +14,10 @@ namespace BioscoopReserveringsapplicatieTests
             List<LocationModel> Locations = new List<LocationModel>() {
                 new LocationModel(1,"Rotterdam-Zuid", Status.Active),
                 new LocationModel(2,"Rotterdam-Noord", Status.Archived),
-                new LocationModel(3,"Rotterdam-Centrum"),
-                new LocationModel(4,"Rotterdam-West"),
-                new LocationModel(5,"Rotterdam-Oost"),
-                new LocationModel(6,"Wijnhaven"),
+                new LocationModel(3,"Rotterdam-Centrum", Status.Active),
+                new LocationModel(4,"Rotterdam-West", Status.Active),
+                new LocationModel(5,"Rotterdam-Oost", Status.Active),
+                new LocationModel(6,"Wijnhaven", Status.Active),
             };
             LocationRepositoryMock.LoadAll().Returns(Locations);
             LocationRepositoryMock.WriteAll(Arg.Any<List<LocationModel>>());
@@ -90,14 +90,14 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Name_Location_Validation()
         {
-            bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-TEST"));
+            bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-TEST", Status.Active));
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void Incorrect_Name_Location_Validation_Empty_Name()
         {
-            bool result = locationLogic.Validate(new LocationModel(10, ""));
+            bool result = locationLogic.Validate(new LocationModel(10, "", Status.Active));
             Assert.IsFalse(result);
         }
     
