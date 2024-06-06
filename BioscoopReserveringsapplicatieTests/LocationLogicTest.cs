@@ -100,6 +100,13 @@ namespace BioscoopReserveringsapplicatieTests
             bool result = locationLogic.Validate(new LocationModel(10, "", Status.Active));
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public void Incorrect_Name_Location_Validation_Location_Already_Exists()
+        {
+            bool result = locationLogic.Validate(new LocationModel(10, "Rotterdam-Zuid", Status.Active));
+            Assert.IsFalse(result);
+        }
     
     //GetById ------------------------------------------------------------------------------------------------------------------------------
 
