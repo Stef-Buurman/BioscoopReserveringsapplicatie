@@ -4,17 +4,37 @@ namespace BioscoopReserveringsapplicatie
 {
     public class ScheduleLogic : ILogic<ScheduleModel>
     {
-        private static ExperienceLogic experiencesLogic = new ExperienceLogic();
-        private static LocationLogic locationLogic = new LocationLogic();
-        private static RoomLogic roomLogic = new RoomLogic();
-        private static ReservationLogic ReservationLogic = new ReservationLogic();
+        private static ExperienceLogic experiencesLogic;
+        private static LocationLogic locationLogic;
+        private static RoomLogic roomLogic;
+        private static ReservationLogic ReservationLogic;
 
         private List<ScheduleModel> _Schedules;
         public IDataAccess<ScheduleModel> _DataAccess { get; }
-        public ScheduleLogic(IDataAccess<ScheduleModel> dataAccess = null)
+        public ScheduleLogic(IDataAccess<ScheduleModel> dataAccess = null,
+            IDataAccess<LocationModel> locationAccess = null,
+            IDataAccess<RoomModel> roomAccess = null,
+            IDataAccess<ExperienceModel> experienceAccess = null,
+            IDataAccess<ReservationModel> reservationAccess = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<ScheduleModel>();
+
+
+            if (locationAccess != null && dataAccess != null) locationLogic = new LocationLogic(locationAccess, schedulelogicComplete: this);
+            else if (locationAccess != null) locationLogic = new LocationLogic(locationAccess);
+            else locationLogic = new LocationLogic(schedulelogicComplete: this);
+
+            if (roomAccess != null) roomLogic = new RoomLogic(roomAccess);
+            else roomLogic = new RoomLogic();
+
+            if (experienceAccess != null && dataAccess != null) experiencesLogic = new ExperienceLogic(experienceAccess, schedulelogicComplete: this);
+            else if (experienceAccess != null) experiencesLogic = new ExperienceLogic(experienceAccess);
+            else experiencesLogic = new ExperienceLogic(schedulelogicComplete: this);
+
+            if (reservationAccess != null && dataAccess != null) ReservationLogic = new ReservationLogic(reservationAccess, schedulelogicComplete: this);
+            else if (reservationAccess != null) ReservationLogic = new ReservationLogic(reservationAccess);
+            else ReservationLogic = new ReservationLogic(schedulelogicComplete: this);
 
             _Schedules = _DataAccess.LoadAll();
         }
@@ -92,7 +112,7 @@ namespace BioscoopReserveringsapplicatie
                     if (bookedSlot.ScheduledDateTimeStart >= dateTimeStart && bookedSlot.ScheduledDateTimeStart <= dateTimeEnd ||
                         bookedSlot.ScheduledDateTimeEnd >= dateTimeStart && bookedSlot.ScheduledDateTimeEnd <= dateTimeEnd)
                     {
-                        error = $"Er is al een experience ingepland op {dateTimeStart.ToString("dd-MM-yyyy")} in {locationLogic.GetById(locationId).Name} Zaal: {roomLogic.GetById(roomId).RoomNumber} van {bookedSlot.ScheduledDateTimeStart.ToString("HH:mm")} T/M {bookedSlot.ScheduledDateTimeEnd.ToString("HH:mm")}";
+                        error = $"Er is al een experience ingepland op {dateTimeStart.ToString("dd-MM-yyyy")} in {locationLogic.GetById(locationId).Name} Zaal: {roomLogic.GetById(roomId).RoomNumber} van {dateTimeStart.ToString("HH:mm:ss")} T/M {dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength).ToString("HH:mm:ss")}.";
                         return false;
                     }
                 }
