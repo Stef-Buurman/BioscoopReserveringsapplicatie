@@ -123,6 +123,7 @@ namespace BioscoopReserveringsapplicatieTests
         {
             RoomModel room = new RoomModel(3, 0, -4, RoomType.Round, Status.Active);
             Assert.IsFalse(roomLogic.Add(room));
+        }
 
         // Unarchive ----------------------------------------------------------------------------------------------------------------------
 
