@@ -293,8 +293,8 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seat.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
-                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seat.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seat.Select(tuple => tuple.Item1 + 1)), Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seat.Select(tuple => tuple.Item2 + 1)), Globals.ExperienceColor);
             }
         }
     }
