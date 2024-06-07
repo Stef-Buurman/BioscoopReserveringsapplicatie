@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Reflection;
 using System.Text.Json;
 
 namespace BioscoopReserveringsapplicatie
@@ -24,7 +25,19 @@ namespace BioscoopReserveringsapplicatie
         }
         private string Path
         {
-            get => System.IO.Path.GetFullPath(System.IO.Path.Combine(Globals.currentDirectory, @"DataSources", Filename));
+            get => System.IO.Path.GetFullPath(System.IO.Path.Combine(getPath(), @"DataSources", Filename));
+        }
+
+        private static string CurrentDirectoryProduction = Environment.CurrentDirectory;
+        private static string getPath(string currentPath = null)
+        {
+            var directory = new DirectoryInfo(
+                currentPath ?? Directory.GetCurrentDirectory());
+            while (directory != null && !directory.GetFiles("*.sln").Any())
+            {
+                directory = directory.Parent;
+            }
+            return System.IO.Path.Combine(directory?.ToString() ?? "", Assembly.GetCallingAssembly().GetName().Name ?? "");
         }
         public List<T> LoadAll()
         {
