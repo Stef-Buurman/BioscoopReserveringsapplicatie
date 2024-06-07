@@ -12,14 +12,14 @@ namespace BioscoopReserveringsapplicatieTests
         {
             var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
             List<UserModel> users = new List<UserModel>() {
-                new UserModel(1, false, "Henk@henk.henk", "testtest", "henk", null, default, default, default, null),
-                new UserModel(2, false, "Gerda@Gerda.Gerda", "testtest", "Gerda", null, default, default, default, null),
-                new UserModel(3, true, "Petra@Petra.Petra", "testtest", "Petra",new List<Genre>() { Genre.Horror, Genre.Mystery, Genre.Family }, AgeCategory.AGE_9, Intensity.Low, Language.English, null),
-                new UserModel(4, false, "Nick@Nick.Nick", "NickPassword", "Nick", null, default, default, default, null),
-                new UserModel(5, true, "Pieter@Pieter.Pieter", "PieterPassword", "Pieter", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.High, Language.Nederlands, null),
-                new UserModel(6, false, "Tim@Tim.Tim", "TimPassword", "Tim", null, default, default, default, null),
-                new UserModel(1, false, "Stef@Stef.Stef", "StefPassword", "Stef", new List<Genre>() { Genre.Horror, Genre.Western, Genre.Romance }, AgeCategory.AGE_18, Intensity.Medium, Language.English, null),
-                new UserModel(1, false, "Menno@Menno.Menno", "MennoPassword", "Menno", null, default, default, default, null),
+                new UserModel(1, false, "Henk@henk.henk", PasswordHasher.HashPassword("testtest", out var salt), salt, "henk", null, default, default, default, null),
+                new UserModel(2, false, "Gerda@Gerda.Gerda", PasswordHasher.HashPassword("testtest", out salt), salt, "Gerda", null, default, default, default, null),
+                new UserModel(3, true, "Petra@Petra.Petra", PasswordHasher.HashPassword("testtest", out salt), salt, "Petra",new List<Genre>() { Genre.Horror, Genre.Mystery, Genre.Family }, AgeCategory.AGE_9, Intensity.Low, Language.English, null),
+                new UserModel(4, false, "Nick@Nick.Nick", PasswordHasher.HashPassword("NickPassword", out salt), salt, "Nick", null, default, default, default, null),
+                new UserModel(5, true, "Pieter@Pieter.Pieter", PasswordHasher.HashPassword("PieterPassword", out salt), salt, "Pieter", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.High, Language.Nederlands, null),
+                new UserModel(6, false, "Tim@Tim.Tim", PasswordHasher.HashPassword("TimPassword", out salt), salt, "Tim", null, default, default, default, null),
+                new UserModel(1, false, "Stef@Stef.Stef", PasswordHasher.HashPassword("StefPassword", out salt), salt, "Stef", new List<Genre>() { Genre.Horror, Genre.Western, Genre.Romance }, AgeCategory.AGE_18, Intensity.Medium, Language.English, null),
+                new UserModel(1, false, "Menno@Menno.Menno", PasswordHasher.HashPassword("MennoPassword", out salt), salt, "Menno", null, default, default, default, null),
             };
             userRepositoryMock.LoadAll().Returns(users);
             userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
@@ -506,6 +506,29 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.IsTrue(x);
             Assert.IsFalse(userLogic.Edit("Petra", "Petra", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, Intensity.High, (AgeCategory)999).IsValid);
             Assert.AreNotEqual((AgeCategory)999, userLogic.GetById(3).AgeCategory);
+        }
+
+        // Password hashing and verifying -------------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Password_Hashing()
+        {
+            string password = "test12345";
+
+            string hashedPassword = PasswordHasher.HashPassword(password, out byte[] salt);
+
+            Assert.IsTrue(PasswordHasher.VerifyPassword(password, hashedPassword, salt));
+
+        }
+
+        [TestMethod]
+        public void Incorrect_Password_Hashing()
+        {
+            string password = "test12345";
+
+            string hashedPassword = PasswordHasher.HashPassword(password, out byte[] salt);
+
+            Assert.IsFalse(PasswordHasher.VerifyPassword("test123456", hashedPassword, salt));
         }
     }
 }
