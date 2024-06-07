@@ -268,7 +268,8 @@
         {
             if (CurrentUser != null && ValidatePassword(newPassword))
             {
-                CurrentUser.Password = newPassword;
+                CurrentUser.Password = PasswordHasher.HashPassword(newPassword, out var salt);
+                CurrentUser.Salt = salt;
                 UpdateList(CurrentUser);
                 return true;
             }
@@ -279,7 +280,7 @@
         {
             if (CurrentUser != null)
             {
-                if (oldPassword == CurrentUser.Password)
+                if (PasswordHasher.VerifyPassword(oldPassword, CurrentUser.Password, CurrentUser.Salt))
                 {
                     return true;
                 }
