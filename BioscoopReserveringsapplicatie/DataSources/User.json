@@ -4,6 +4,7 @@
     "isAdmin": true,
     "emailAddress": "admin@mail.com",
     "password": "admin",
+    "salt": null,
     "fullName": "Admin",
     "genres": null,
     "ageCategory": "Undefined",
@@ -11,46 +12,66 @@
     "language": "Undefined",
     "promotionsSeen": null
   },
-    {
-        "id": 2,
-        "isAdmin": false,
-        "emailAddress": "user@mail.com",
-        "password": "user123",
-        "fullName": "User",
-        "genres": [
-            "Comedy"
-        ],
-        "ageCategory": "All",
-        "intensity": "Low",
-        "language": "Nederlands",
-        "promotionsSeen": {}
-    },
-    {
-        "id": 3,
-        "isAdmin": false,
-        "emailAddress": "user1@mail.com",
-        "password": "user123",
-        "fullName": "User",
-        "genres": [
-            "Comedy"
-        ],
-        "ageCategory": "All",
-        "intensity": "Low",
-        "language": "Nederlands",
-        "promotionsSeen": {}
-    },
-    {
-        "id": 4,
-        "isAdmin": false,
-        "emailAddress": "user2@mail.com",
-        "password": "user123",
-        "fullName": "User",
-        "genres": [
-            "Comedy"
-        ],
-        "ageCategory": "All",
-        "intensity": "Low",
-        "language": "Nederlands",
-        "promotionsSeen": {}
-    }
+  {
+    "id": 2,
+    "isAdmin": false,
+    "emailAddress": "user@mail.com",
+    "password": "user123",
+    "salt": null,
+    "fullName": "User",
+    "genres": [
+      "Comedy"
+    ],
+    "ageCategory": "All",
+    "intensity": "Low",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 3,
+    "isAdmin": false,
+    "emailAddress": "user1@mail.com",
+    "password": "user123",
+    "salt": null,
+    "fullName": "User",
+    "genres": [
+      "Comedy"
+    ],
+    "ageCategory": "All",
+    "intensity": "Low",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 4,
+    "isAdmin": false,
+    "emailAddress": "user2@mail.com",
+    "password": "user123",
+    "salt": null,
+    "fullName": "User",
+    "genres": [
+      "Comedy"
+    ],
+    "ageCategory": "All",
+    "intensity": "Low",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 5,
+    "isAdmin": false,
+    "emailAddress": "test@test.nl",
+    "password": "B915E1E59B012309900BF38CC249AB857C7D103832B591AC0DFDFBB4F2744346C3F23BC86C06114C0E6E8B7FA8FC16829A223BD6EB31B1AAD99E473C275DACCE",
+    "salt": "I3dAlS2qPyCi5VPQwINeK8PKTmgmsyhrhUafalws163X+pwuRxcgadd6lf8MmQh2zgmLfY7xI5AOaKeJVDUalw==",
+    "fullName": "test test",
+    "genres": [
+      "Horror",
+      "Comedy",
+      "Action"
+    ],
+    "ageCategory": "All",
+    "intensity": "All",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  }
 ]

@@ -93,14 +93,14 @@
 
             if (validated)
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, PasswordHasher.HashPassword(password, out var salt), salt, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
                 UpdateList(newAccount);
                 _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, default, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
             }
             return new Result<UserModel>(validated, errorMessage, newAccount);
         }
@@ -129,7 +129,7 @@
         public bool Login(string email, string password)
         {
             UserModel? account = _accounts.Find(i => i.EmailAddress == email);
-            if (account != null && account.Password == password)
+            if (account != null && PasswordHasher.VerifyPassword(password, account.Password, account.Salt))
             {
                 CurrentUser = account;
                 return true;
