@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     public static class Globals
     {
