@@ -6,20 +6,35 @@ namespace BioscoopReserveringsapplicatieTests
     public class UserLogicTest
     {
         UserLogic userLogic;
+        public static Dictionary<string, (string hashedPassword, byte[] salt)> passwordData;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+            passwordData = new Dictionary<string, (string hashedPassword, byte[] salt)>
+            {
+                { "testtest", (PasswordHasher.HashPassword("testtest", out byte[] salt2), salt2) },
+                { "NickPassword", (PasswordHasher.HashPassword("NickPassword", out byte[] salt3), salt3) },
+                { "PieterPassword", (PasswordHasher.HashPassword("PieterPassword", out byte[] salt4), salt4) },
+                { "TimPassword", (PasswordHasher.HashPassword("TimPassword", out byte[] salt5), salt5) },
+                { "StefPassword", (PasswordHasher.HashPassword("StefPassword", out byte[] salt6), salt6) },
+                { "MennoPassword", (PasswordHasher.HashPassword("MennoPassword", out byte[] salt7), salt7) }
+            };
+        }
 
         [TestInitialize]
         public void Initialize()
         {
             var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
             List<UserModel> users = new List<UserModel>() {
-                new UserModel(1, false, "Henk@henk.henk", PasswordHasher.HashPassword("testtest", out var salt), salt, "henk", null, default, default, default, null),
-                new UserModel(2, false, "Gerda@Gerda.Gerda", PasswordHasher.HashPassword("testtest", out salt), salt, "Gerda", null, default, default, default, null),
-                new UserModel(3, true, "Petra@Petra.Petra", PasswordHasher.HashPassword("testtest", out salt), salt, "Petra",new List<Genre>() { Genre.Horror, Genre.Mystery, Genre.Family }, AgeCategory.AGE_9, Intensity.Low, Language.English, null),
-                new UserModel(4, false, "Nick@Nick.Nick", PasswordHasher.HashPassword("NickPassword", out salt), salt, "Nick", null, default, default, default, null),
-                new UserModel(5, true, "Pieter@Pieter.Pieter", PasswordHasher.HashPassword("PieterPassword", out salt), salt, "Pieter", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.High, Language.Nederlands, null),
-                new UserModel(6, false, "Tim@Tim.Tim", PasswordHasher.HashPassword("TimPassword", out salt), salt, "Tim", null, default, default, default, null),
-                new UserModel(1, false, "Stef@Stef.Stef", PasswordHasher.HashPassword("StefPassword", out salt), salt, "Stef", new List<Genre>() { Genre.Horror, Genre.Western, Genre.Romance }, AgeCategory.AGE_18, Intensity.Medium, Language.English, null),
-                new UserModel(1, false, "Menno@Menno.Menno", PasswordHasher.HashPassword("MennoPassword", out salt), salt, "Menno", null, default, default, default, null),
+                new UserModel(1, false, "Henk@henk.henk", passwordData["testtest"].hashedPassword, passwordData["testtest"].salt, "henk", null, default, default, default, null),
+                new UserModel(2, false, "Gerda@Gerda.Gerda", passwordData["testtest"].hashedPassword, passwordData["testtest"].salt, "Gerda", null, default, default, default, null),
+                new UserModel(3, true, "Petra@Petra.Petra", passwordData["testtest"].hashedPassword, passwordData["testtest"].salt, "Petra", new List<Genre>() { Genre.Horror, Genre.Mystery, Genre.Family }, AgeCategory.AGE_9, Intensity.Low, Language.English, null),
+                new UserModel(4, false, "Nick@Nick.Nick", passwordData["NickPassword"].hashedPassword, passwordData["NickPassword"].salt, "Nick", null, default, default, default, null),
+                new UserModel(5, true, "Pieter@Pieter.Pieter", passwordData["PieterPassword"].hashedPassword, passwordData["PieterPassword"].salt, "Pieter", new List<Genre>() { Genre.Adventure, Genre.Drama, Genre.Mystery }, AgeCategory.AGE_6, Intensity.High, Language.Nederlands, null),
+                new UserModel(6, false, "Tim@Tim.Tim", passwordData["TimPassword"].hashedPassword, passwordData["TimPassword"].salt, "Tim", null, default, default, default, null),
+                new UserModel(1, false, "Stef@Stef.Stef", passwordData["StefPassword"].hashedPassword, passwordData["StefPassword"].salt, "Stef", new List<Genre>() { Genre.Horror, Genre.Western, Genre.Romance }, AgeCategory.AGE_18, Intensity.Medium, Language.English, null),
+                new UserModel(1, false, "Menno@Menno.Menno", passwordData["MennoPassword"].hashedPassword, passwordData["MennoPassword"].salt, "Menno", null, default, default, default, null),
             };
             userRepositoryMock.LoadAll().Returns(users);
             userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
