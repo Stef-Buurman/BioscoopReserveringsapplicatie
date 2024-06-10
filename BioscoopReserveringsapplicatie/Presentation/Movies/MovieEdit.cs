@@ -31,9 +31,9 @@ namespace BioscoopReserveringsapplicatie
                     selectedGenresInMenu = newGenres.ConvertAll(x => new Option<Genre>(x, x.GetDisplayName()));
                     SelectMovieGenres(); 
                 }),
-                new Option<string>("Intensiteit", () => { SelectMovieRating(); }),
+                new Option<string>("Leeftijdscatagorie", () => { SelectMovieRating(); }),
                 new Option<string>("Opslaan", () => { SaveMovie(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start(movieId)); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -167,7 +167,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if(newRating != AgeCategory.Undefined)
             {  
-                ColorConsole.WriteColorLine($"[Beschrijving Film:] {newRating.GetDisplayName()}", Globals.MovieColor);
+                ColorConsole.WriteColorLine($"[Leeftijdscatagorie Film:] {newRating.GetDisplayName()}", Globals.MovieColor);
             }
             if (newTitle != "" || newDescription != "" || newGenres.Count >= 1 || newRating != AgeCategory.Undefined)
             {

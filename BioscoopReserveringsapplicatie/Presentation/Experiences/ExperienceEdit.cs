@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Tijdsduur", () => { ExperienceLength(); }),
                 new Option<string>("Opslaan", () => { SaveExperience(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start(experienceId)); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
