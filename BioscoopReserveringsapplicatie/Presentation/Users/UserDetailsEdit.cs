@@ -27,7 +27,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Naam", () => { UserName(); }),
                 new Option<string>("Email", () => { UserEmail(); }),
                 new Option<string>("Opslaan", () => { SaveAccountDetails(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start()), Globals.GoBackColor)
             };
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
         }
@@ -88,7 +88,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Taal", () => { SelectLanguage(); }),
                 new Option<string>("Opslaan", () => { SavePreferences(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start()), Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();

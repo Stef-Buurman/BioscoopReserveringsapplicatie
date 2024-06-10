@@ -33,7 +33,7 @@ namespace BioscoopReserveringsapplicatie
                 }),
                 new Option<string>("Leeftijdscatagorie", () => { SelectMovieRating(); }),
                 new Option<string>("Opslaan", () => { SaveMovie(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start(movieId)); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();

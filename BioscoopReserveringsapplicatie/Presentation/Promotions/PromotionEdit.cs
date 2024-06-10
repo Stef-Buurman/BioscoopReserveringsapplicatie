@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
         private static string newTitle = "";
         private static string newDescription = "";
 
-        public static void Start(int promotionId, string returnTo = "")
+        public static void Start(int promotionId)
         {
             promotion = PromotionLogic.GetById(promotionId);
             if (promotion == null) return;
@@ -23,7 +23,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Titel", () => { PromotionTitle(); }),
                 new Option<string>("Beschrijving", () => { PromotionDescription(promotionId); }),
                 new Option<string>("Opslaan", () => { SavePromotion(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => GoBackToDetails(), Globals.GoBackColor)
+                new Option<string>("Terug", () => ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start(promotionId)), Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
