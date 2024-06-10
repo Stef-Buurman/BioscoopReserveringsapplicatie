@@ -17,6 +17,9 @@ namespace BioscoopReserveringsapplicatie
         [JsonPropertyName("password")]
         public string Password { get; set; }
 
+        [JsonPropertyName("salt")]
+        public byte[] Salt { get; set; }
+
         [JsonPropertyName("fullName")]
         public string FullName { get; set; }
 
@@ -35,16 +38,17 @@ namespace BioscoopReserveringsapplicatie
         [JsonConverter(typeof(EnumConverter<Language>))]
         [JsonPropertyName("language")]
         public Language Language { get; set; }
- 
+
         [JsonPropertyName("promotionsSeen")]
         public Dictionary<int, DateTime> PromotionsSeen { get; set; }
 
-        public UserModel(int id, bool isAdmin, string emailAddress, string password, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, Dictionary<int, DateTime> promotionsSeen)
+        public UserModel(int id, bool isAdmin, string emailAddress, string password, byte[] salt, string fullName, List<Genre> genres, AgeCategory ageCategory, Intensity intensity, Language language, Dictionary<int, DateTime> promotionsSeen)
         {
             Id = id;
             IsAdmin = isAdmin;
             EmailAddress = emailAddress;
             Password = password;
+            Salt = salt;
             FullName = fullName;
             Genres = genres;
             AgeCategory = ageCategory;

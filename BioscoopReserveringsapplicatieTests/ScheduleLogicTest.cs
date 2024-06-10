@@ -70,7 +70,7 @@ namespace BioscoopReserveringsapplicatieTests
 
             var userRepositoryMock = Substitute.For<IDataAccess<UserModel>>();
             List<UserModel> users = new List<UserModel>() {
-                new UserModel(1, true, "admin@mail.com", "admin", "admin", null, default, default, default, null),
+                new UserModel(1, true, "admin@mail.com", PasswordHasher.HashPassword("admin", out var salt), salt, "admin", null, default, default, default, null),
             };
             userRepositoryMock.LoadAll().Returns(users);
             userRepositoryMock.WriteAll(Arg.Any<List<UserModel>>());
