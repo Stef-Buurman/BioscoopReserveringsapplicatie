@@ -64,10 +64,6 @@ namespace BioscoopReserveringsapplicatie
             ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter
         };
 
-
-        private int _originalWidth;
-        private int _originalHeight;
-
         private SelectionMenuUtil(List<Option<T>> options = null, int maxVisibility = 9, bool canBeEscaped = false,
             Action escapeAction = null, Action escapeActionWhenNotEscaping = null,
             bool visibleSelectedArrows = true, string textBeforeInputShown = default,
