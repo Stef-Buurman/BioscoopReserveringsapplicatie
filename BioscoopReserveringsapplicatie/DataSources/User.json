@@ -3,75 +3,65 @@
     "id": 1,
     "isAdmin": true,
     "emailAddress": "admin@mail.com",
-    "password": "admin",
-    "salt": null,
+    "password": "731826DFF389A2EBD99C2C7AFFB299A20ACA56FB9C9D09DC5FEF9F5DA2BF6B75EF636F67B051AB157C81E4744C0045E0419228720621D14C820D555EFD13C7C2",
+    "salt": "hVoQPikZuQeK1r/Z+7XmUiu44vTZyD2qMfEZHKfDjFNUyxGMylfvx1uUcWPX4ItZXjgwSkztw8QXEJVEYxoC+Q==",
     "fullName": "Admin",
-    "genres": null,
+    "genres": [],
     "ageCategory": "Undefined",
     "intensity": "Undefined",
     "language": "Undefined",
-    "promotionsSeen": null
+    "promotionsSeen": {}
   },
   {
     "id": 2,
     "isAdmin": false,
     "emailAddress": "user@mail.com",
-    "password": "user123",
-    "salt": null,
+    "password": "25F83D06A249FEF6EBD0AA8A7377E9F4E8EDF906B19689D2C56D61FA474F51EF6FEBD909D8724F19C286A5B6F2FE53129A2072743E809569E9C6A0C677F53968",
+    "salt": "ceS8hQKqfinhWtPLw92MqBOf19py9wSdortbB3BYMkz42xPJzpGIfE/B/50SLK8cihvfrmgDUCp3a/DZXJGQFA==",
     "fullName": "User",
-    "genres": [
-      "Comedy"
-    ],
-    "ageCategory": "All",
-    "intensity": "Low",
-    "language": "Nederlands",
+    "genres": [],
+    "ageCategory": "Undefined",
+    "intensity": "Undefined",
+    "language": "Undefined",
     "promotionsSeen": {}
   },
   {
     "id": 3,
     "isAdmin": false,
     "emailAddress": "user1@mail.com",
-    "password": "user123",
-    "salt": null,
-    "fullName": "User",
-    "genres": [
-      "Comedy"
-    ],
-    "ageCategory": "All",
-    "intensity": "Low",
-    "language": "Nederlands",
+    "password": "615AAAE040A5C36212D4297693549EB68F1A854F268A6AE4AE146C867B579812799A519B663E3D26D34CC93FE30A75213A973E6078BF8AD0B55317FA1ADA990E",
+    "salt": "mXQwpeyuFStG51J1ieB3VZJkMLob9dtCEgrU2tk3HLjOP7OM+tpKgwQinh7PPN/OutAR056Na3ChBSr0rRjwxg==",
+    "fullName": "User1",
+    "genres": [],
+    "ageCategory": "Undefined",
+    "intensity": "Undefined",
+    "language": "Undefined",
     "promotionsSeen": {}
   },
   {
     "id": 4,
     "isAdmin": false,
     "emailAddress": "user2@mail.com",
-    "password": "user123",
-    "salt": null,
-    "fullName": "User",
-    "genres": [
-      "Comedy"
-    ],
-    "ageCategory": "All",
-    "intensity": "Low",
-    "language": "Nederlands",
+    "password": "345B07360AA7DFE026C7A9DAEC3B5C3EFE9D5844299F4052F22C671C7AC65C19BCE8107894EDFB844146D848BCB396F9DADC263114FD0BC47017595001A09893",
+    "salt": "sBzfXrlue+ciUUCHPAnJGaaOhyeE2qvASv1fqz2HWkGW2KYF1eGPNAUMAjgJItGXaQ4/W4eGesDlB96ezopsIg==",
+    "fullName": "User2",
+    "genres": [],
+    "ageCategory": "Undefined",
+    "intensity": "Undefined",
+    "language": "Undefined",
     "promotionsSeen": {}
   },
   {
     "id": 5,
     "isAdmin": false,
-    "emailAddress": "test@test.nl",
-    "password": "3773092BFF97550CE024B8A90216577E8D352B991399199A22DEEF016A16740FDCDCE22EC5840A178D7A12F71A52C4D0CC3056FE9BF686139E29797BB3F60598",
-    "salt": "CK/MmBl9t0V1DmAyaxON9VunuQaRMgrdgO3Aj1JfpdNZwuTneaO8yhamvbGmYzt31jhedez92Tw+YfjgCts8JA==",
-    "fullName": "test test",
-    "genres": [
-      "Horror",
-      "Comedy",
-      "Action"
-    ],
-    "ageCategory": "All",
-    "intensity": "All",
-    "language": "Nederlands",
+    "emailAddress": "user3@mail.com",
+    "password": "FDDABA38B439657BCB932012617B1FC0A55E329CFF7EE5CB107762536C9781F2671A47591FB15ECB70A79D143AE1B323B2F00A643502F766876F379FC6D569E8",
+    "salt": "qbpXtFKMqw/brVDgn8GU5+plu+EWxLYMing1G3fZpByZrcbHTIUmk7ygUL7/XAVz4r+jyDu73bqZk/uLrfWl8Q==",
+    "fullName": "User3",
+    "genres": [],
+    "ageCategory": "Undefined",
+    "intensity": "Undefined",
+    "language": "Undefined",
     "promotionsSeen": {}
   }
 ]
