@@ -25,7 +25,7 @@ namespace BioscoopReserveringsapplicatie
             RoomModel newRoom = new RoomModel(roomLogic.GetNextId(), locationId, Convert.ToInt32(roomNumber), roomType, Status.Active);
             List<Option<string>> options = new List<Option<string>>
             {
-            new Option<string>("Opslaan en verlaten", () => 
+            new Option<string>("Opslaan en terug naar overzicht", () => 
             {
                 if (roomLogic.Add(newRoom))
                 {

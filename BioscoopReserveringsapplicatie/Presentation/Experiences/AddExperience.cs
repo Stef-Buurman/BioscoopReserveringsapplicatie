@@ -48,7 +48,7 @@
             ExperienceModel newExperience = new ExperienceModel(_newName, _newDescription, _selectedMovieId, _Intensity, _timeInInt,  Status.Active);
             List<Option<string>> options = new List<Option<string>>
             {
-            new Option<string>("Opslaan en verlaten", () => 
+            new Option<string>("Opslaan en terug naar overzicht", () => 
             {
                 if (experiencesLogic.Add(newExperience))
                 {

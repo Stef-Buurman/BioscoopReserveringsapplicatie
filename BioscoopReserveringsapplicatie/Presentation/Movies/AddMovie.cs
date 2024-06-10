@@ -46,7 +46,7 @@ namespace BioscoopReserveringsapplicatie
             Print();
             List<Option<string>> options = new List<Option<string>>
             {
-            new Option<string>("Opslaan en verlaten", () => 
+            new Option<string>("Opslaan en terug naar overzicht", () => 
             {
                 if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
                 {
