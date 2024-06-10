@@ -166,7 +166,8 @@ namespace BioscoopReserveringsapplicatie
         public bool HasScheduledExperience(int id, DateTime date)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart > date && s.ScheduledDateTimeStart.Date < date.AddDays(8));
+            DateTime endDate = date.AddDays(7);
+            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart.Date >= date.Date && s.ScheduledDateTimeStart.Date <= endDate.Date);
         }
 
         public int GetRelatedScheduledExperience(int experienceId, int? location, DateTime? dateTime, int? room)

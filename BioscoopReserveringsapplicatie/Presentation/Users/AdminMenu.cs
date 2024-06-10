@@ -10,8 +10,9 @@ namespace BioscoopReserveringsapplicatie
             {
                 List<Option<string>> options = new List<Option<string>>
                 {
-                    new Option<string>("Films", () => MovieOverview.Start()),
+                    new Option<string>("Scheduled experiences", () => ScheduledExperiences.Start()),
                     new Option<string>("Experiences", () => ExperienceOverview.Start()),
+                    new Option<string>("Films", () => MovieOverview.Start()),
                     new Option<string>("Promoties", () => PromotionOverview.Start()),
                     new Option<string>("Locaties", () => LocationOverview.Start()),
                     new Option<string>("Zalen", () => RoomOverview.Start()),
