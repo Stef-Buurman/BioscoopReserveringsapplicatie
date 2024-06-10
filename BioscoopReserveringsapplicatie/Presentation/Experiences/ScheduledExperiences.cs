@@ -150,7 +150,7 @@ namespace BioscoopReserveringsapplicatie
                     }
                     else if (key.Key == ConsoleKey.Escape)
                     {
-                        ReadLineUtil.EscapeKeyPressed(() => { UserMenu.Start(); }, () => { ShowExperiences(date); });
+                        ReadLineUtil.EscapeKeyPressed(() => { AdminMenu.Start(); }, () => { ShowExperiences(date); });
                         break;
                     }
                 }

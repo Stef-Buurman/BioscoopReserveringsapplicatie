@@ -13,11 +13,11 @@ namespace BioscoopReserveringsapplicatie
             ShowSchedules(experienceId, date);
         }
 
-        private static void ShowScheduleDetails(int experienceId)
+        private static void ShowScheduleDetails(int experienceId, int scheduleId, DateTime date)
         {
             if (experienceId != 0)
             {
-                // ScheduledExperienceDetails.Start(experienceId);
+                ScheduledExperienceSlotDetails.Start(experienceId, scheduleId, date);
             }
         }
 
@@ -42,7 +42,7 @@ namespace BioscoopReserveringsapplicatie
             };
 
             List<ScheduleModel> schedules = ScheduleLogic.GetSchedulesById(experienceId, date);
-            
+
             if (schedules.Count > 0)
             {
                 int[] columnWidths = TableFormatUtil.CalculateColumnWidths(columnHeaders, schedules, scheduleDataExtractor);
@@ -80,7 +80,7 @@ namespace BioscoopReserveringsapplicatie
                         ShowSchedules(experienceId, date);
                     }, showEscapeabilityText: false).Create();
 
-                ShowScheduleDetails(experienceId);
+                ShowScheduleDetails(experienceId, scheduleId, date);
                 return experienceId;
             }
             return 0;
