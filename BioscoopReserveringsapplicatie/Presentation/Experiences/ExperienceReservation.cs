@@ -55,8 +55,8 @@ namespace BioscoopReserveringsapplicatie
                                         ColorConsole.WriteColorLine("[Datum:] " + dateTime.Value.ToString("dd-MM-yyyy"), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Tijd:] " + dateTime.Value.ToString("HH:mm"), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
-                                        ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seats.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
-                                        ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seats.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seats.Select(tuple => tuple.Item1 + 1)), Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seats.Select(tuple => tuple.Item2 + 1)), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
                                         HorizontalLine.Print();
                                         ColorConsole.WriteColorLine("\nReservering geslaagd", Globals.SuccessColor);
@@ -293,8 +293,8 @@ namespace BioscoopReserveringsapplicatie
             }
             else
             {
-                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seat.Select(tuple => tuple.Item1)), Globals.ExperienceColor);
-                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seat.Select(tuple => tuple.Item2)), Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seat.Select(tuple => tuple.Item1 + 1)), Globals.ExperienceColor);
+                ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seat.Select(tuple => tuple.Item2 + 1)), Globals.ExperienceColor);
             }
         }
     }

@@ -156,6 +156,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
+            Console.Clear();
             ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);

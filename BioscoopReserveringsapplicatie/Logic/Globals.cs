@@ -1,22 +1,7 @@
-﻿using System.Reflection;
-
-namespace BioscoopReserveringsapplicatie
+﻿namespace BioscoopReserveringsapplicatie
 {
     public static class Globals
     {
-        static string CurrentDirectoryProduction = Environment.CurrentDirectory;
-        public static string currentDirectory = getPath();
-        public static string getPath(string currentPath = null)
-        {
-            var directory = new DirectoryInfo(
-                currentPath ?? Directory.GetCurrentDirectory());
-            while (directory != null && !directory.GetFiles("*.sln").Any())
-            {
-                directory = directory.Parent;
-            }
-            return System.IO.Path.Combine(directory?.ToString() ?? "", Assembly.GetCallingAssembly().GetName().Name ?? "");
-        }
-
         public static readonly ConsoleColor TitleColor = ConsoleColor.Magenta;
         public static readonly ConsoleColor ColorInputcClarification = ConsoleColor.Blue;
         public static readonly ConsoleColor ColorEditInput = ConsoleColor.Yellow;
