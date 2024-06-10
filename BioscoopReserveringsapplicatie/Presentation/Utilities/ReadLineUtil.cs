@@ -118,7 +118,7 @@ namespace BioscoopReserveringsapplicatie
                     };
             ColorConsole.WriteColorLine(Line, Globals.ErrorColor);
             ColorConsole.WriteColorLine(Message, Globals.ErrorColor);
-            new SelectionMenuUtil<string>(options).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             return WantToLeave;
         }
 
@@ -143,7 +143,7 @@ namespace BioscoopReserveringsapplicatie
                     };
             ColorConsole.WriteColorLine("\n----------------------------------------------------------------", ConsoleColor.Red);
             ColorConsole.WriteColorLine(message, ConsoleColor.Red);
-            new SelectionMenuUtil<string>(options, false).Create();
+            new SelectionMenuUtil<string>(options, false, new Option<string>("Nee")).Create();
             return WantToLeave;
         }
     }

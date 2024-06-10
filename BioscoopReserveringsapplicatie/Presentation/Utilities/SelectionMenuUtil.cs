@@ -287,8 +287,8 @@ namespace BioscoopReserveringsapplicatie
         public SelectionMenuUtil(List<Option<T>> options, int maxVisibility, bool visibleSelectedArrows, string textBeforeInputShown)
             : this(options, maxVisibility, false, null, null, visibleSelectedArrows, textBeforeInputShown) { }
 
-        public SelectionMenuUtil(List<Option<T>> options, bool canBeEscaped = false)
-            : this(options, 9, canBeEscaped) { }
+        public SelectionMenuUtil(List<Option<T>> options, bool canBeEscaped = false, Option<T> selectedOption = default)
+            : this(options, 9, canBeEscaped, default, default, true, default, selectedOption) { }
 
         public SelectionMenuUtil(List<Option<T>> options, bool visibleSelectedArrows = true, string textBeforeInputShown = default)
             : this(options, 9, false, null, null, visibleSelectedArrows, textBeforeInputShown) { }
