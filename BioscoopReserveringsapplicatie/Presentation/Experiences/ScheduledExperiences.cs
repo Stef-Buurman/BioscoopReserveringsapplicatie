@@ -1,25 +1,23 @@
 using System.Globalization;
 
-
 namespace BioscoopReserveringsapplicatie
 {
     public static class ScheduledExperiences
     {
-        private static ReservationLogic ReservationLogic = new ReservationLogic();
         private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
         private static MovieLogic MoviesLogic = new MovieLogic();
         private static Func<ExperienceModel, string[]> experienceDataExtractor = ExtractExperienceData;
 
-        public static void Start()
+        public static void Start(DateTime? date = null)
         {
-            ShowExperiences();
+            ShowExperiences(date);
         }
 
-        private static void ShowExperienceDetails(int experienceId)
+        private static void ShowExperienceDetails(int experienceId, DateTime date)
         {
             if (experienceId != 0)
             {
-                // ExperienceDetails.Start(experienceId);
+                ScheduledExperienceDetails.Start(experienceId, date);
             }
         }
 
@@ -98,7 +96,7 @@ namespace BioscoopReserveringsapplicatie
                 int experienceId = new SelectionMenuUtil<int>(options,
                     () =>
                     {
-                        UserMenu.Start();
+                        AdminMenu.Start();
                     },
                     () =>
                     {
@@ -117,7 +115,7 @@ namespace BioscoopReserveringsapplicatie
                             }}),
                     }, showEscapeabilityText: false).Create();
 
-                ShowExperienceDetails(experienceId);
+                ShowExperienceDetails(experienceId, (DateTime)date);
                 return experienceId;
             }
             else
