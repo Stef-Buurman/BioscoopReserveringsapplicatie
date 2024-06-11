@@ -26,12 +26,6 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId, string returnTo = "")
         {
-            //locationId = 0;
-            //roomId = 0;
-            //scheduleDate = "";
-            //scheduleHour = "";
-            //scheduleTime = "";
-
             if(UserLogic.IsAdmin())
             {
                 Console.Clear();
