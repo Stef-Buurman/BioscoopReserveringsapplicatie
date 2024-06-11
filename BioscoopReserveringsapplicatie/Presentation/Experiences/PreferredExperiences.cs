@@ -40,6 +40,7 @@ namespace BioscoopReserveringsapplicatie
             DateTime firstDayOfWeek = ISOWeek.ToDateTime(currentYear, currentWeek, DayOfWeek.Monday);
             
             Globals.selectedDateTime = firstDayOfWeek;
+            date = firstDayOfWeek;
 
             DateTime lastDayOfWeek = firstDayOfWeek.AddDays(6);
 
