@@ -42,7 +42,7 @@
     {
         "id": 9,
         "name": "Rotterdam Zoo (Diergaarde Blijdorp)",
-        "status": "Active"
+        "status": "Archived"
     },
     {
         "id": 10,
@@ -62,7 +62,7 @@
     {
         "id": 13,
         "name": "Haarlemmerstraat (The Hague)",
-        "status": "Active"
+        "status": "Archived"
     },
     {
         "id": 14,
@@ -92,11 +92,36 @@
     {
         "id": 19,
         "name": "Dordts Patriciërshuis",
-        "status": "Active"
+        "status": "Archived"
     },
     {
         "id": 20,
         "name": "Hoge Brug (Dordrecht)",
+        "status": "Active"
+    },
+    {
+        "id": 21,
+        "name": "Vlaardingen Holy",
+        "status": "Active"
+    },
+    {
+        "id": 22,
+        "name": "Hoek van Holland Haven",
+        "status": "Active"
+    },
+    {
+        "id": 23,
+        "name": "Oostvoorne Strand",
+        "status": "Active"
+    },
+    {
+        "id": 24,
+        "name": "Strijen Haven",
+        "status": "Active"
+    },
+    {
+        "id": 25,
+        "name": "Zwijndrecht Centrum",
         "status": "Active"
     }
 ]
