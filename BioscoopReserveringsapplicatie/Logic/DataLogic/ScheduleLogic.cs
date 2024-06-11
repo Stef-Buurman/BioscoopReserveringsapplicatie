@@ -166,7 +166,8 @@ namespace BioscoopReserveringsapplicatie
         public bool HasScheduledExperience(int id, DateTime date)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart > date && s.ScheduledDateTimeStart.Date < date.AddDays(8));
+            DateTime endDate = date.AddDays(7);
+            return schedules.Exists(s => s.ExperienceId == id && s.ScheduledDateTimeStart.Date >= date.Date && s.ScheduledDateTimeStart.Date < endDate.Date);
         }
 
         public int GetRelatedScheduledExperience(int experienceId, int? location, DateTime? dateTime, int? room)
@@ -185,6 +186,13 @@ namespace BioscoopReserveringsapplicatie
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
             return schedules.FindAll(s => s.RoomId == roomId && s.ScheduledDateTimeStart.Date == dateTime.Date);
+        }
+
+        public List<ScheduleModel> GetSchedulesById(int experienceId, DateTime date)
+        {
+            List<ScheduleModel> schedules = _DataAccess.LoadAll();
+            DateTime endDate = date.AddDays(7);
+            return schedules.FindAll(s => s.ExperienceId == experienceId && s.ScheduledDateTimeStart.Date >= date.Date && s.ScheduledDateTimeStart.Date < endDate.Date);
         }
     }
 }

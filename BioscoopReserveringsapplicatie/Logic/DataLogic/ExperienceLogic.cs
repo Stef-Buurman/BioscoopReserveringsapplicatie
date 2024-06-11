@@ -22,7 +22,7 @@
             {
                 ScheduleLogic = schedulelogicComplete;
             }
-            else if(ScheduleLogic == null)
+            else if (ScheduleLogic == null)
             {
                 if (scheduleAccess != null) ScheduleLogic = new ScheduleLogic(scheduleAccess);
                 else ScheduleLogic = new ScheduleLogic();
@@ -97,6 +97,31 @@
                     experiences.Add(experience);
                 }
             }
+            return experiences;
+        }
+
+        public List<ExperienceModel> GetScheduledExperiences(DateTime date)
+        {
+            GetAll();
+
+            List<ExperienceModel> experiences = new List<ExperienceModel>();
+
+            foreach (ExperienceModel experience in _experiences)
+            {
+                if (experience.Status == Status.Archived) continue;
+
+                MovieModel movie = MoviesLogic.GetById(experience.FilmId);
+
+                if (movie == null) continue;
+
+                bool hasScheduldedExperience = ScheduleLogic.HasScheduledExperience(experience.Id, date);
+
+                if (hasScheduldedExperience)
+                {
+                    experiences.Add(experience);
+                }
+            }
+            
             return experiences;
         }
 
