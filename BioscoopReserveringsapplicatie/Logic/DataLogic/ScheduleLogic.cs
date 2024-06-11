@@ -148,7 +148,7 @@ namespace BioscoopReserveringsapplicatie
         public List<ScheduleModel> GetScheduledExperienceDatesForLocationById(int id, int locationId)
         {
             List<ScheduleModel> schedules = _DataAccess.LoadAll();
-            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date > DateTime.Today.AddDays(-1));
+            return schedules.FindAll(s => s.ExperienceId == id && s.LocationId == locationId && s.ScheduledDateTimeStart.Date > Globals.selectedDateTime.Value.AddDays(-1) && s.ScheduledDateTimeStart < Globals.selectedDateTime.Value.AddDays(7));
         }
 
         public List<ScheduleModel> GetScheduledExperienceTimeSlotsForLocationById(int id, int locationId, DateTime? dateTime)

@@ -8,9 +8,9 @@ namespace BioscoopReserveringsapplicatie
         private static MovieLogic MoviesLogic = new MovieLogic();
         private static Func<ExperienceModel, string[]> experienceDataExtractor = ExtractExperienceData;
 
-        public static void Start()
+        public static void Start(DateTime? dateTime = null)
         {
-            ShowExperiencesWithUserPreferences();
+            ShowExperiencesWithUserPreferences(dateTime);
         }
 
         private static void ShowExperienceDetails(int experienceId)
@@ -38,6 +38,8 @@ namespace BioscoopReserveringsapplicatie
             int currentYear = date.Value.Year;
 
             DateTime firstDayOfWeek = ISOWeek.ToDateTime(currentYear, currentWeek, DayOfWeek.Monday);
+            
+            Globals.selectedDateTime = firstDayOfWeek;
 
             DateTime lastDayOfWeek = firstDayOfWeek.AddDays(6);
 

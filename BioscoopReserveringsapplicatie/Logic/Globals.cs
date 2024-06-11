@@ -19,6 +19,7 @@
 
         public static readonly double pricePerSeat = 19.99;
 
+        public static DateTime? selectedDateTime = null;
 
         public static List<T> GetAllEnum<T>()
         {
