@@ -26,11 +26,11 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId, string returnTo = "")
         {
-            locationId = 0;
-            roomId = 0;
-            scheduleDate = "";
-            scheduleHour = "";
-            scheduleTime = "";
+            //locationId = 0;
+            //roomId = 0;
+            //scheduleDate = "";
+            //scheduleHour = "";
+            //scheduleTime = "";
 
             if(UserLogic.IsAdmin())
             {
@@ -38,30 +38,35 @@ namespace BioscoopReserveringsapplicatie
 
                 if(returnTo == "" || returnTo == _returnToLocation)
                 {
+                    locationId = 0;
                     locationId = SelectLocation(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToRoom)
                 {
+                    roomId = 0;
                     roomId = SelectRoom(locationId, experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToDate)
                 {
+                    scheduleDate = "";
                     scheduleDate = SelectDate(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToHour)
                 {
+                    scheduleHour = "";
                     scheduleHour = SelectHour(experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToTime)
                 {
+                    scheduleTime = "";
                     scheduleTime = SelectMinute(scheduleHour, experienceId);
                     if (returnTo != "") returnTo = "";
                 }
