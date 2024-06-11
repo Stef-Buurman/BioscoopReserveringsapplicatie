@@ -110,7 +110,7 @@ namespace BioscoopReserveringsapplicatie
                             ShowExperiences(date.Value.AddDays(-7));
                             }}),
                         new KeyAction(ConsoleKey.RightArrow, () => {
-                            if (lastDayOfWeek.AddDays(7).Year == currentYear) {
+                            if (lastDayOfWeek.AddDays(7).Year == currentYear && currentWeek <= ISOWeek.GetWeekOfYear(DateTime.Now) + 1){
                             ShowExperiences(date.Value.AddDays(7));
                             }}),
                     }, showEscapeabilityText: false).Create();
@@ -142,7 +142,7 @@ namespace BioscoopReserveringsapplicatie
                     }
                     else if (key.Key == ConsoleKey.RightArrow)
                     {
-                        if (lastDayOfWeek.AddDays(7).Year == currentYear)
+                        if (lastDayOfWeek.AddDays(7).Year == currentYear && currentWeek <= ISOWeek.GetWeekOfYear(DateTime.Now) + 1)
                         {
                             ShowExperiences(date.Value.AddDays(7));
                             break;
