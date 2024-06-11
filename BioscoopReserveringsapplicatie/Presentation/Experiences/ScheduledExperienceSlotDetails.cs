@@ -24,7 +24,14 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Zaal: ]" + chosenRoom.RoomNumber, Globals.ExperienceColor);
             ColorConsole.WriteColorLine("[Begintijd: ]" + schedule.ScheduledDateTimeStart.ToString("dd-MM-yyyy HH:mm"), Globals.ExperienceColor);
             ColorConsole.WriteColorLine("[Eindtijd: ]" + schedule.ScheduledDateTimeEnd.ToString("dd-MM-yyyy HH:mm"), Globals.ExperienceColor);
-            ColorConsole.WriteColorLine($"\nEr zijn nog [{100 - ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId).Count} stoelen] beschikbaar.", Globals.ExperienceColor);
+            if (chosenRoom.RoomType == RoomType.Square)
+            {
+                ColorConsole.WriteColorLine($"\nEr zijn nog [{100 - ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId).Count} stoelen] beschikbaar.", Globals.ExperienceColor);
+            }
+            else if (chosenRoom.RoomType == RoomType.Round)
+            {
+                ColorConsole.WriteColorLine($"\nEr zijn nog [{80 - ReservationLogic.GetAllReservedSeatsOfSchedule(scheduleId).Count} stoelen] beschikbaar.", Globals.ExperienceColor);
+            }
             ColorConsole.WriteColorLine("\n[Overzicht van de zaal: ]", Globals.ExperienceColor);
 
             ReservationLogic.GetAll();
