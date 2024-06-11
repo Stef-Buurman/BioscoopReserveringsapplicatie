@@ -3,11 +3,11 @@
     "id": 1,
     "title": "Tijdelijke actie",
     "description": "Bij alle reserveringen van Barbie en Oppenheimer nu een tijdelijke Barbenheimer deal!",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 2,
-    "title": "Gratis Popcorn \u0026 Frisdrank",
+    "title": "Gratis Popcorn & Frisdrank",
     "description": "Geen filmavond is compleet zonder popcorn en een verfrissend drankje! Ontvang een gratis portie popcorn en frisdrank bij aankoop van een bioscoopkaartje.",
     "status": "Inactive"
   },
@@ -15,31 +15,31 @@
     "id": 3,
     "title": "2 voor 1 Maandag",
     "description": "Elke maandag, twee kaartjes voor de prijs van één op geselecteerde films.",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 4,
     "title": "Studentenkorting",
     "description": "Studenten krijgen 20% korting op alle kaartjes bij vertoon van een geldige studentenpas.",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 5,
     "title": "Familie Weekend Deal",
     "description": "Krijg een familieticket (2 volwassenen, 2 kinderen) voor een gereduceerde prijs elk weekend.",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 6,
     "title": "Ochtendvoordeel",
     "description": "Morgenvoorstellingen zijn nu met 30% korting. Start je dag met een film!",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 7,
     "title": "Veteranendag Kortingen",
     "description": "Speciale kortingen voor veteranen op geselecteerde dagen. Bedankt voor uw dienst!",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 8,
@@ -51,7 +51,7 @@
     "id": 9,
     "title": "Halloween Horror Marathon",
     "description": "Vier Halloween met een marathon van klassieke horrorfilms, inclusief gratis snacks voor verklede bezoekers.",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 10,
@@ -63,31 +63,31 @@
     "id": 11,
     "title": "Zomerfilmfestival",
     "description": "Een maand lang speciale vertoningen van zomerse kaskrakers met 25% korting op tickets.",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 12,
     "title": "Black Friday Mega Deal",
     "description": "Koop tickets op Black Friday en krijg 50% korting op je volgende aankoop.",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 13,
     "title": "VIP Avond",
     "description": "Speciale VIP-avond met exclusieve kortingen en gratis hapjes voor VIP-leden.",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 14,
     "title": "Jubileum Week",
     "description": "Vier ons jubileum met speciale tarieven en gratis goodies bij elk ticket.",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 15,
     "title": "Ouderenmiddag",
     "description": "Iedere dinsdagmiddag, speciale tarieven voor senioren op alle vertoningen.",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 16,
@@ -99,13 +99,13 @@
     "id": 17,
     "title": "Nieuwjaarsviering",
     "description": "Begin het nieuwe jaar met gratis champagne en speciale ticketprijzen op oudejaarsavond.",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 18,
     "title": "Avondje Uit",
     "description": "Dubbeldate deal: koop drie tickets, krijg de vierde gratis, inclusief gratis snacks.",
-    "status": "Active"
+    "status": "Inactive"
   },
   {
     "id": 19,
@@ -117,6 +117,6 @@
     "id": 20,
     "title": "Première Avond",
     "description": "Bezoek een première met 10% korting op je ticket en gratis popcorn.",
-    "status": "Active"
+    "status": "Inactive"
   }
 ]
