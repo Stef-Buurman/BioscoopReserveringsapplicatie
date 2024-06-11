@@ -31,13 +31,11 @@ namespace BioscoopReserveringsapplicatie
         {
             int progress = 0;
 
-            Console.WriteLine();
+            Console.Clear();
 
             HorizontalLine.Print();
             ColorConsole.WriteColorLine("Betaling gestart", ConsoleColor.Green);
             HorizontalLine.Print();
-
-            Console.WriteLine();
 
             while (progress <= 100)
             {
