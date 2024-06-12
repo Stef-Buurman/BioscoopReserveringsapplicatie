@@ -126,7 +126,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Nee, terug naar mijn details",
                 () => GoBackToDetails())
             };
-            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens aan")).Create();
         }
 
         public static void GoBackToDetails()
@@ -380,6 +380,22 @@ namespace BioscoopReserveringsapplicatie
                 {
                     PrintTitle();
                     ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
+                    newPassword = "";
+                    validNewPassword = false;
+                    while (!validNewPassword)
+                    {
+                        newPassword = ReadLineUtil.EnterValue("Voer uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
+                        validNewPassword = _userLogic.ValidatePassword(newPassword);
+
+                        if (!validNewPassword)
+                        {
+                            if (newPassword.Length < 5)
+                            {
+                                PrintTitle();
+                                ColorConsole.WriteColorLine("Wachtwoord moet minimaal 5 tekens bevatten.", Globals.ErrorColor);
+                            }
+                        }
+                    }
                 }
             }
 

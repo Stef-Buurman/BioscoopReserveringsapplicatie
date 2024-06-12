@@ -1,22 +1,239 @@
 [
-  {
-    "id": 1,
-    "locationId": 1,
-    "roomNumber": 1,
-    "roomType": "Square",
-    "status": "Active"
-  },
+    {
+        "id": 1,
+        "locationId": 1,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
+    },
     {
         "id": 2,
         "locationId": 2,
         "roomNumber": 1,
-        "roomType": "Square",
+        "roomType": "Round",
         "status": "Active"
     },
     {
         "id": 3,
         "locationId": 2,
         "roomNumber": 2,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 4,
+        "locationId": 3,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 5,
+        "locationId": 3,
+        "roomNumber": 2,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 6,
+        "locationId": 4,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 7,
+        "locationId": 4,
+        "roomNumber": 2,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 8,
+        "locationId": 4,
+        "roomNumber": 3,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 9,
+        "locationId": 4,
+        "roomNumber": 4,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 10,
+        "locationId": 5,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 11,
+        "locationId": 6,
+        "roomNumber": 1,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 12,
+        "locationId": 6,
+        "roomNumber": 2,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 13,
+        "locationId": 7,
+        "roomNumber": 1,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 14,
+        "locationId": 7,
+        "roomNumber": 2,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 15,
+        "locationId": 7,
+        "roomNumber": 3,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 16,
+        "locationId": 8,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 17,
+        "locationId": 8,
+        "roomNumber": 2,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 18,
+        "locationId": 9,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 19,
+        "locationId": 9,
+        "roomNumber": 2,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 20,
+        "locationId": 9,
+        "roomNumber": 3,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 21,
+        "locationId": 10,
+        "roomNumber": 1,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 22,
+        "locationId": 10,
+        "roomNumber": 2,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 23,
+        "locationId": 11,
+        "roomNumber": 1,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 24,
+        "locationId": 11,
+        "roomNumber": 2,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 25,
+        "locationId": 11,
+        "roomNumber": 3,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 26,
+        "locationId": 11,
+        "roomNumber": 4,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 27,
+        "locationId": 12,
+        "roomNumber": 1,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 28,
+        "locationId": 12,
+        "roomNumber": 2,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 29,
+        "locationId": 12,
+        "roomNumber": 3,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 30,
+        "locationId": 21,
+        "roomNumber": 4,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 31,
+        "locationId": 22,
+        "roomNumber": 5,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 32,
+        "locationId": 23,
+        "roomNumber": 4,
+        "roomType": "Round",
+        "status": "Active"
+    },
+    {
+        "id": 33,
+        "locationId": 24,
+        "roomNumber": 4,
+        "roomType": "Square",
+        "status": "Active"
+    },
+    {
+        "id": 34,
+        "locationId": 25,
+        "roomNumber": 5,
         "roomType": "Round",
         "status": "Active"
     }

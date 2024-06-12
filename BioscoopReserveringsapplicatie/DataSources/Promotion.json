@@ -3,12 +3,120 @@
     "id": 1,
     "title": "Tijdelijke actie",
     "description": "Bij alle reserveringen van Barbie en Oppenheimer nu een tijdelijke Barbenheimer deal!",
-    "status": "Archived"
+    "status": "Inactive"
   },
   {
     "id": 2,
-    "title": "Gratis Popcorn \u0026 Frisdrank",
+    "title": "Gratis Popcorn & Frisdrank",
     "description": "Geen filmavond is compleet zonder popcorn en een verfrissend drankje! Ontvang een gratis portie popcorn en frisdrank bij aankoop van een bioscoopkaartje.",
+    "status": "Inactive"
+  },
+  {
+    "id": 3,
+    "title": "2 voor 1 Maandag",
+    "description": "Elke maandag, twee kaartjes voor de prijs van één op geselecteerde films.",
+    "status": "Inactive"
+  },
+  {
+    "id": 4,
+    "title": "Studentenkorting",
+    "description": "Studenten krijgen 20% korting op alle kaartjes bij vertoon van een geldige studentenpas.",
+    "status": "Inactive"
+  },
+  {
+    "id": 5,
+    "title": "Familie Weekend Deal",
+    "description": "Krijg een familieticket (2 volwassenen, 2 kinderen) voor een gereduceerde prijs elk weekend.",
+    "status": "Inactive"
+  },
+  {
+    "id": 6,
+    "title": "Ochtendvoordeel",
+    "description": "Morgenvoorstellingen zijn nu met 30% korting. Start je dag met een film!",
+    "status": "Inactive"
+  },
+  {
+    "id": 7,
+    "title": "Veteranendag Kortingen",
+    "description": "Speciale kortingen voor veteranen op geselecteerde dagen. Bedankt voor uw dienst!",
+    "status": "Inactive"
+  },
+  {
+    "id": 8,
+    "title": "Vroege Vogel Special",
+    "description": "Koop je kaartjes voor 10 uur 's ochtends en krijg 20% korting op je ticket.",
+    "status": "Inactive"
+  },
+  {
+    "id": 9,
+    "title": "Halloween Horror Marathon",
+    "description": "Vier Halloween met een marathon van klassieke horrorfilms, inclusief gratis snacks voor verklede bezoekers.",
+    "status": "Inactive"
+  },
+  {
+    "id": 10,
+    "title": "Kerstvakantie Special",
+    "description": "Tijdens de kerstvakantie zijn alle kinderfilms 50% korting.",
+    "status": "Inactive"
+  },
+  {
+    "id": 11,
+    "title": "Zomerfilmfestival",
+    "description": "Een maand lang speciale vertoningen van zomerse kaskrakers met 25% korting op tickets.",
+    "status": "Inactive"
+  },
+  {
+    "id": 12,
+    "title": "Black Friday Mega Deal",
+    "description": "Koop tickets op Black Friday en krijg 50% korting op je volgende aankoop.",
+    "status": "Inactive"
+  },
+  {
+    "id": 13,
+    "title": "VIP Avond",
+    "description": "Speciale VIP-avond met exclusieve kortingen en gratis hapjes voor VIP-leden.",
+    "status": "Inactive"
+  },
+  {
+    "id": 14,
+    "title": "Jubileum Week",
+    "description": "Vier ons jubileum met speciale tarieven en gratis goodies bij elk ticket.",
+    "status": "Inactive"
+  },
+  {
+    "id": 15,
+    "title": "Ouderenmiddag",
+    "description": "Iedere dinsdagmiddag, speciale tarieven voor senioren op alle vertoningen.",
+    "status": "Inactive"
+  },
+  {
+    "id": 16,
+    "title": "Gratis Kinderkaartje",
+    "description": "Bij aankoop van een volwassene ticket, krijg een gratis kaartje voor een kind.",
+    "status": "Inactive"
+  },
+  {
+    "id": 17,
+    "title": "Nieuwjaarsviering",
+    "description": "Begin het nieuwe jaar met gratis champagne en speciale ticketprijzen op oudejaarsavond.",
+    "status": "Inactive"
+  },
+  {
+    "id": 18,
+    "title": "Avondje Uit",
+    "description": "Dubbeldate deal: koop drie tickets, krijg de vierde gratis, inclusief gratis snacks.",
+    "status": "Inactive"
+  },
+  {
+    "id": 19,
+    "title": "Lente Bioscoopfeest",
+    "description": "Speciale lente korting van 15% op alle voorstellingen tijdens de lente.",
+    "status": "Inactive"
+  },
+  {
+    "id": 20,
+    "title": "Première Avond",
+    "description": "Bezoek een première met 10% korting op je ticket en gratis popcorn.",
     "status": "Inactive"
   }
 ]
