@@ -32,36 +32,36 @@ namespace BioscoopReserveringsapplicatie
 
                 if(returnTo == "" || returnTo == _returnToLocation)
                 {
-                    locationId = 0;
-                    locationId = SelectLocation(experienceId);
+                    _locationId = 0;
+                    _locationId = SelectLocation(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToRoom)
                 {
-                    roomId = 0;
-                    roomId = SelectRoom(locationId, experienceId);
+                    _roomId = 0;
+                    _roomId = SelectRoom(_locationId, experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToDate)
                 {
-                    scheduleDate = "";
-                    scheduleDate = SelectDate(experienceId);
+                    _scheduleDate = "";
+                    _scheduleDate = SelectDate(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToHour)
                 {
-                    scheduleHour = "";
-                    scheduleHour = SelectHour(experienceId);
+                    _scheduleHour = "";
+                    _scheduleHour = SelectHour(experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToTime)
                 {
-                    scheduleTime = "";
-                    scheduleTime = SelectMinute(scheduleHour, experienceId);
+                    _scheduleTime = "";
+                    _scheduleTime = SelectMinute(_scheduleHour, experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
