@@ -37,6 +37,8 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("Betaling gestart", ConsoleColor.Green);
             HorizontalLine.Print();
 
+            Console.WriteLine();
+
             while (progress <= 100)
             {
                 Console.SetCursorPosition(0, Console.CursorTop);
