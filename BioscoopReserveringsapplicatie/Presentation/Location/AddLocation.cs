@@ -24,6 +24,8 @@ namespace BioscoopReserveringsapplicatie
                 if (locationLogic.Add(newLocation))
                 {
                     ClearFields();
+                    ColorConsole.WriteColorLine("\nDe locatie is succesvol toegevoegd.", Globals.SuccessColor);
+                    Thread.Sleep(1750);
                     LocationOverview.Start();
                 }
                 else
