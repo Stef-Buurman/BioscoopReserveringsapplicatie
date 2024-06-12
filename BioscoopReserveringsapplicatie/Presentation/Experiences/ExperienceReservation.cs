@@ -1,3 +1,5 @@
+using System.Net.NetworkInformation;
+
 namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceReservation
@@ -11,6 +13,7 @@ namespace BioscoopReserveringsapplicatie
         private static bool _singleScheduled = false;
 
         private static List<(int, int)> SelectedValues = new List<(int, int)>();
+        private static string chosenSeatsError = "";
 
         public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0, List<(int, int)> seats = default)
         {
@@ -277,6 +280,11 @@ namespace BioscoopReserveringsapplicatie
             if (seat == null)
             {
                 HorizontalLine.Print();
+                if (chosenSeatsError != "")
+                {
+                    ColorConsole.WriteColorLine(chosenSeatsError, Globals.ErrorColor);
+                    chosenSeatsError = "";
+                }
                 ColorConsole.WriteColorLine("\nKies uw stoelen: ", Globals.ExperienceColor);
                 RoomModel chosenRoom = RoomLogic.GetById(room);
                 Option<string>[,] options = OptionGrid.GenerateOptionGrid(10, 10, chosenRoom.RoomType == RoomType.Round);
@@ -289,8 +297,10 @@ namespace BioscoopReserveringsapplicatie
                     () => BackFromSeats(experienceId, location, dateTime),
                     () => Start(experienceId, location, dateTime, room), true, SelectedValues).CreateGridSelect(out SelectedValues);
 
+                
                 if (chosenSeats.Count == 0)
                 {
+                    chosenSeatsError = "Er zijn geen stoelen geselecteerd";
                     Start(experienceId, location, dateTime, room);
                 }
 
