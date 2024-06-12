@@ -1,5 +1,3 @@
-using System.Net.NetworkInformation;
-
 namespace BioscoopReserveringsapplicatie
 {
     static class ExperienceReservation
