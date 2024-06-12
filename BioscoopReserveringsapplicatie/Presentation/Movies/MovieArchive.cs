@@ -32,7 +32,7 @@ namespace BioscoopReserveringsapplicatie
                         MovieDetails.Start(movieId);
                     }),
                 };
-                    new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
+                new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
             else
             {

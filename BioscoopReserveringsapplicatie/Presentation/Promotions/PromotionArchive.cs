@@ -14,6 +14,9 @@ namespace BioscoopReserveringsapplicatie
                         {
                             new Option<string>("Ja", () => {
                                 promotionLogic.Unarchive(promotionId);
+                                ColorConsole.WriteColorLine("\nPromotie is gedearchiveerd!\n", Globals.SuccessColor);
+
+                                Thread.Sleep(1500);
                                 PromotionDetails.Start(promotionId);
                             }),
                             new Option<string>("Nee", () => {
@@ -30,6 +33,9 @@ namespace BioscoopReserveringsapplicatie
                         {
                             new Option<string>("Ja", () => {
                                 promotionLogic.Archive(promotionId);
+                                ColorConsole.WriteColorLine("\nPromotie is gearchiveerd!\n", Globals.SuccessColor);
+
+                                Thread.Sleep(1500);
                                 PromotionDetails.Start(promotionId);
                             }),
                             new Option<string>("Nee", () => {

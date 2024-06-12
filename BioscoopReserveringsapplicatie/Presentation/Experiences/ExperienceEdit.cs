@@ -51,6 +51,9 @@ namespace BioscoopReserveringsapplicatie
                 {
                     if (ExperiencesLogic.Edit(_experienceId, _newName, _newDescription, _newIntensity, _timeInInt, _selectedMovieId))
                     {
+                        ColorConsole.WriteColorLine("\nExperience is aangepast!\n", Globals.SuccessColor);
+
+                        Thread.Sleep(1500);
                         GoBackToDetails();
                     }
                     else

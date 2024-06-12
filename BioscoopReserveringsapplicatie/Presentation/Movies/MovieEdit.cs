@@ -49,6 +49,9 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Ja", () => {
                     if (MoviesLogic.Edit(new MovieModel(movie.Id, newTitle, newDescription, newGenres, newRating)))
                         {
+                            ColorConsole.WriteColorLine("\nFilm is aangepast!\n", Globals.SuccessColor);
+
+                            Thread.Sleep(1500);
                             GoBackToDetails();
                         }
                         else
