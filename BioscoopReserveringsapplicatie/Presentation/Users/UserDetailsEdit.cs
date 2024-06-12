@@ -39,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, UserLogic.CurrentUser.Genres, UserLogic.CurrentUser.Intensity, UserLogic.CurrentUser.AgeCategory);
+                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, UserLogic.CurrentUser.Genres, UserLogic.CurrentUser.Intensity, UserLogic.CurrentUser.AgeCategory, UserLogic.CurrentUser.Language);
                     if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
@@ -101,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    Result<UserModel> result = _userLogic.Edit(UserLogic.CurrentUser.FullName, UserLogic.CurrentUser.EmailAddress, _newGenres, _newIntensity, _newAgeCategory);
+                    Result<UserModel> result = _userLogic.Edit(UserLogic.CurrentUser.FullName, UserLogic.CurrentUser.EmailAddress, _newGenres, _newIntensity, _newAgeCategory, _language);
                     if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\n Preferences zijn aangepast !", Globals.SuccessColor);
