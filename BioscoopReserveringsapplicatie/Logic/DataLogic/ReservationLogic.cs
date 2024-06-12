@@ -11,7 +11,7 @@ namespace BioscoopReserveringsapplicatie
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<ReservationModel>();
 
-            if(schedulelogicComplete != null)
+            if (schedulelogicComplete != null)
             {
                 scheduleLogic = schedulelogicComplete;
             }
@@ -82,7 +82,7 @@ namespace BioscoopReserveringsapplicatie
 
             reservation.IsCanceled = true;
             UpdateList(reservation);
-            foreach(ReservationModel res in _reservations)
+            foreach (ReservationModel res in _reservations)
             {
                 if (res.Id == reservation.Id)
                 {
@@ -145,18 +145,35 @@ namespace BioscoopReserveringsapplicatie
             List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
             List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
 
-            foreach (ScheduleModel schedule in schedules)
+            schedules = schedules.FindAll(s => s.ScheduledDateTimeStart > DateTime.Now);
+
+            foreach (var schedule in schedules.ToList())
             {
-                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && r.IsCanceled == false))
+                if (reservations.Exists(r =>
+                    scheduleLogic.GetById(r.ScheduleId).ExperienceId == schedule.ExperienceId &&
+                    scheduleLogic.GetById(r.ScheduleId).LocationId == schedule.LocationId &&
+                    scheduleLogic.GetById(r.ScheduleId).ScheduledDateTimeStart == schedule.ScheduledDateTimeStart &&
+                    scheduleLogic.GetById(r.ScheduleId).ScheduledDateTimeEnd == schedule.ScheduledDateTimeEnd &&
+                    !r.IsCanceled))
+                {
+                    schedules.Remove(schedule);
+                }
+            }
+
+            foreach (var schedule in schedules)
+            {
+                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && !r.IsCanceled))
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
+
         public List<(int, int)> GetAllReservedSeatsOfSchedule(int scheduleId) => GetAllReservationsByScheduleId(scheduleId).SelectMany(reservation => reservation.IsCanceled ? null : reservation.Seat).ToList();
-        
+
         public List<ReservationModel> GetAllReservationsByScheduleId(int scheduleId) => _reservations.FindAll(r => r.ScheduleId == scheduleId && !r.IsCanceled);
     }
 }
