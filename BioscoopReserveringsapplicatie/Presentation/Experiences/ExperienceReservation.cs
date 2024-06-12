@@ -137,7 +137,7 @@ namespace BioscoopReserveringsapplicatie
                         options.Add(new Option<int>(locationSelected.Id, locationSelected.Name, () => Start(experienceId, locationSelected.Id)));
                     }
                 }
-                options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId)));
+                options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId), false, Globals.GoBackColor));
 
                 new SelectionMenuUtil<int>(options).Create();
             }
@@ -170,7 +170,7 @@ namespace BioscoopReserveringsapplicatie
                         options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
                     }
                 }
-                options.Add(new Option<int>(0, "Terug", () => Start(experienceId)));
+                options.Add(new Option<int>(0, "Terug", () => Start(experienceId), false, Globals.GoBackColor));
 
                 new SelectionMenuUtil<int>(options).Create();
             }
@@ -203,7 +203,7 @@ namespace BioscoopReserveringsapplicatie
                         options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.ToString("HH:mm"), () => Start(experienceId, location, schedule.ScheduledDateTimeStart)));
                     }
                 }
-                options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location)));
+                options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location), false, Globals.GoBackColor));
 
                 new SelectionMenuUtil<int>(options).Create();
             }
@@ -238,7 +238,7 @@ namespace BioscoopReserveringsapplicatie
                             }));
 
                     }
-                    options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date)));
+                    options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date), false, Globals.GoBackColor));
 
                     new SelectionMenuUtil<int>(options).Create();
                 }
