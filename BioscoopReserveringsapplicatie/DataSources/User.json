@@ -143,5 +143,44 @@
     "intensity": "Medium",
     "language": "Nederlands",
     "promotionsSeen": {}
+  },
+  {
+    "id": 8,
+    "isAdmin": false,
+    "emailAddress": "jurn@mail.com",
+    "password": "BCA02CD514A2628725292A2BFC3AD9B8D0D460264D1BE30A7F69FD9BA01AAD44D1A4CA2C22C5D7D91BE7382F9DA3BF2DEADAE46736E398F1121E8D0651467A3D",
+    "salt": "H+/6zLTr9qT1kQa/Ak/LenWvYiE0P7h7NBC7UH+YEavZKo80OC949odmFjG9GKqgn+BT1Hc6Nrqc0xMyjavTeA==",
+    "fullName": "Jurn de Ruijter",
+    "genres": [
+      "Horror",
+      "Romance",
+      "Animation",
+      "Mystery",
+      "History",
+      "TVMovie"
+    ],
+    "ageCategory": "AGE_6",
+    "intensity": "Low",
+    "language": "English",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 9,
+    "isAdmin": false,
+    "emailAddress": "casper@mail.com",
+    "password": "FF5834F654C4AD6F031DCD471A4FCBA18CE71F4E42E707DEC06BB769BC4826E800F7B611830A567666642B5D602A94EA77E3258AD660368D592A6B10780E9462",
+    "salt": "JeeALKkdcKoaub1PuZieSwNtqus53Xr8fq52kSyVfFGP1faqq+2N/UPoYgiJj1f/23oXi/EidCtOik/LJvf5Pg==",
+    "fullName": "Casper Smits",
+    "genres": [
+      "Drama",
+      "Romance",
+      "Mystery",
+      "Family",
+      "TVMovie"
+    ],
+    "ageCategory": "All",
+    "intensity": "All",
+    "language": "Nederlands",
+    "promotionsSeen": {}
   }
 ]
