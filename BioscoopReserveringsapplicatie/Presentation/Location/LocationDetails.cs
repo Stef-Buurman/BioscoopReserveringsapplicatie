@@ -3,6 +3,7 @@ namespace BioscoopReserveringsapplicatie
     static class LocationDetails
     {
         private static LocationLogic LocationLogic = new LocationLogic();
+        private static RoomLogic RoomLogic = new RoomLogic();
         private static LocationModel? location;
 
         public static void Start(int locationId)
@@ -29,6 +30,7 @@ namespace BioscoopReserveringsapplicatie
                 };
             }
             Print();
+            Console.WriteLine();
             new SelectionMenuUtil<string>(options).Create();
         }
 
@@ -37,6 +39,13 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("[Locatie details]", Globals.LocationColor);
             ColorConsole.WriteColorLine($"[Naam locatie: ]{location.Name}", Globals.LocationColor);
             ColorConsole.WriteColorLine($"[Status: ]{location.Status}\n", Globals.LocationColor);
+            ColorConsole.WriteColorLine($"[Zalen: ]", Globals.LocationColor);
+            List<RoomModel> rooms = RoomLogic.GetByLocationId(location.Id);
+            foreach (RoomModel room in rooms)
+            {
+                ColorConsole.WriteColorLine($"[Zaalnummer: ]{room.RoomNumber} | [Type: ]{room.RoomType.GetDisplayName()}", Globals.RoomColor);
+            }
+            HorizontalLine.Print();
         }   
         
     }
