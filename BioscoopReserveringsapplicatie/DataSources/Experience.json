@@ -304,5 +304,239 @@
         "intensity": "Low",
         "timeLength": 40,
         "status": "Active"
+    },
+    {
+        "id": 35,
+        "name": "Schindler's List",
+        "description": "In German-occupied Poland during World War II, Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
+        "filmId": 5,
+        "intensity": "High",
+        "timeLength": 45,
+        "status": "Archived"
+    },
+    {
+        "id": 36,
+        "name": "Forrest Gump",
+        "description": "The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
+        "filmId": 8,
+        "intensity": "Medium",
+        "timeLength": 30,
+        "status": "Active"
+    },
+    {
+        "id": 37,
+        "name": "The Matrix",
+        "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+        "filmId": 9,
+        "intensity": "High",
+        "timeLength": 25,
+        "status": "Active"
+    },
+    {
+        "id": 38,
+        "name": "The Lord of the Rings: The Return of the King",
+        "description": "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
+        "filmId": 11,
+        "intensity": "High",
+        "timeLength": 40,
+        "status": "Active"
+    },
+    {
+        "id": 39,
+        "name": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+        "filmId": 12,
+        "intensity": "Medium",
+        "timeLength": 40,
+        "status": "Active"
+    },
+    {
+        "id": 40,
+        "name": "The Lord of the Rings: The Two Towers",
+        "description": "While Frodo and Sam edge closer to Mordor with the help of the shifty Gollum, the divided fellowship makes a stand against Sauron's new ally, Saruman, and his hordes of Isengard.",
+        "filmId": 42,
+        "intensity": "Medium",
+        "timeLength": 45,
+        "status": "Active"
+    },
+    {
+        "id": 41,
+        "name": "The Green Mile",
+        "description": "The lives of guards on Death Row are affected by one of their charges: a black man accused of child murder and rape, yet who has a mysterious gift.",
+        "filmId": 16,
+        "intensity": "Medium",
+        "timeLength": 35,
+        "status": "Active"
+    },
+    {
+        "id": 42,
+        "name": "Interstellar",
+        "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+        "filmId": 17,
+        "intensity": "Medium",
+        "timeLength": 30,
+        "status": "Active"
+    },
+    {
+        "id": 43,
+        "name": "WALL·E",
+        "description": "In the distant future, a small waste-collecting robot inadvertently embarks on a space journey that will ultimately decide the fate of mankind.",
+        "filmId": 30,
+        "intensity": "Low",
+        "timeLength": 20,
+        "status": "Active"
+    },
+    {
+        "id": 44,
+        "name": "The Lion King",
+        "description": "Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.",
+        "filmId": 19,
+        "intensity": "Low",
+        "timeLength": 25,
+        "status": "Active"
+    },
+    {
+        "id": 45,
+        "name": "Shrek",
+        "description": "A mean lord exiles fairytale creatures to the swamp of a grumpy ogre, who must go on a quest and rescue a princess for the lord in order to get his land back.",
+        "filmId": 44,
+        "intensity": "Low",
+        "timeLength": 20,
+        "status": "Active"
+    },
+    {
+        "id": 46,
+        "name": "Finding Nemo",
+        "description": "After his son is captured in the Great Barrier Reef and taken to Sydney, a timid clownfish sets out on a journey to bring him home.",
+        "filmId": 43,
+        "intensity": "Low",
+        "timeLength": 22,
+        "status": "Active"
+    },
+    {
+        "id": 47,
+        "name": "Toy Story",
+        "description": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
+        "filmId": 40,
+        "intensity": "Low",
+        "timeLength": 20,
+        "status": "Active"
+    },
+    {
+        "id": 48,
+        "name": "1917",
+        "description": "Two young British soldiers during the First World War are given an impossible mission: deliver a message deep in enemy territory that will stop 1,600 men, and one of the soldiers' brothers, from walking straight into a deadly trap.",
+        "filmId": 38,
+        "intensity": "High",
+        "timeLength": 35,
+        "status": "Active"
+    },
+    {
+        "id": 49,
+        "name": "Alien",
+        "description": "After a space merchant vessel receives an unknown transmission as a distress call, one of the crew is attacked by a mysterious life form, and they soon realize that its life cycle has merely begun.",
+        "filmId": 35,
+        "intensity": "High",
+        "timeLength": 30,
+        "status": "Active"
+    },
+    {
+        "id": 50,
+        "name": "The Prestige",
+        "description": "After a tragic accident, two stage magicians engage in a battle to create the ultimate illusion while sacrificing everything they have to outwit each other.",
+        "filmId": 23,
+        "intensity": "Medium",
+        "timeLength": 35,
+        "status": "Active"
+    },
+    {
+        "id": 51,
+        "name": "Coco",
+        "description": "Aspiring musician Miguel, confronted with his family's ancestral ban on music, enters the Land of the Dead to find his great-great-grandfather, a legendary singer.",
+        "filmId": 28,
+        "intensity": "Low",
+        "timeLength": 20,
+        "status": "Active"
+    },
+    {
+        "id": 52,
+        "name": "Spider-Man: Into the Spider-Verse",
+        "description": "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.",
+        "filmId": 31,
+        "intensity": "Medium",
+        "timeLength": 25,
+        "status": "Active"
+    },
+    {
+        "id": 53,
+        "name": "The Departed",
+        "description": "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.",
+        "filmId": 22,
+        "intensity": "High",
+        "timeLength": 30,
+        "status": "Active"
+    },
+    {
+        "id": 54,
+        "name": "Braveheart",
+        "description": "Scottish warrior William Wallace leads his countrymen in a rebellion to free his homeland from the tyranny of King Edward I of England.",
+        "filmId": 37,
+        "intensity": "High",
+        "timeLength": 45,
+        "status": "Active"
+    },
+    {
+        "id": 55,
+        "name": "The Intouchables",
+        "description": "After he becomes a quadriplegic from a paragliding accident, an aristocrat hires a young man from the projects to be his caregiver.",
+        "filmId": 26,
+        "intensity": "Medium",
+        "timeLength": 25,
+        "status": "Active"
+    },
+    {
+        "id": 56,
+        "name": "The Pianist",
+        "description": "A Polish Jewish musician struggles to survive the destruction of the Warsaw ghetto of World War II.",
+        "filmId": 36,
+        "intensity": "High",
+        "timeLength": 40,
+        "status": "Active"
+    },
+    {
+        "id": 57,
+        "name": "Avengers: Endgame",
+        "description": "After the devastating events of Avengers: Infinity War, the universe is in ruins. The Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+        "filmId": 29,
+        "intensity": "Medium",
+        "timeLength": 30,
+        "status": "Active"
+    },
+    {
+        "id": 58,
+        "name": "Jurassic Park",
+        "description": "During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok.",
+        "filmId": 44,
+        "intensity": "Medium",
+        "timeLength": 30,
+        "status": "Active"
+    },
+    {
+        "id": 59,
+        "name": "The Lion King",
+        "description": "Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.",
+        "filmId": 19,
+        "intensity": "Low",
+        "timeLength": 25,
+        "status": "Active"
+    },
+    {
+        "id": 60,
+        "name": "Star Wars: Episode IV - A New Hope",
+        "description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee, and two droids to save the galaxy from the Empire's world-destroying battle station while also attempting to rescue Princess Leia from the mysterious Darth Vader.",
+        "filmId": 45,
+        "intensity": "Medium",
+        "timeLength": 35,
+        "status": "Active"
     }
 ]
