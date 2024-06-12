@@ -145,6 +145,8 @@ namespace BioscoopReserveringsapplicatie
             List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
             List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
 
+            schedules = schedules.FindAll(s => s.ScheduledDateTimeStart > DateTime.Now);
+
             foreach (var schedule in schedules.ToList())
             {
                 if (reservations.Exists(r =>

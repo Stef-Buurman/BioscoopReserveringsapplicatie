@@ -54,7 +54,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                    new Option<string>("Terug", () => PreferredExperiences.Start(Globals.selectedDateTime)),
                 };
             }
 
