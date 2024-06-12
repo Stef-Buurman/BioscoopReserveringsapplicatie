@@ -36,6 +36,7 @@
             }
             _DataAccess.WriteAll(_accounts);
             _accounts = _DataAccess.LoadAll();
+            CurrentUser = GetById(CurrentUser.Id);
         }
 
         public UserModel? GetById(int id)
@@ -224,7 +225,7 @@
             WaitUtil.WaitTime(2000);
         }
 
-        public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory, Language newLanguage = Language.Nederlands)
         {
             if (CurrentUser != null)
             {
@@ -242,9 +243,9 @@
                     CurrentUser.Genres = newGenres;
                     CurrentUser.Intensity = newIntensity;
                     CurrentUser.AgeCategory = newAgeCategory;
+                    CurrentUser.Language = newLanguage;
 
                     UpdateList(CurrentUser);
-                    CurrentUser = CurrentUser;
                     return new Result<UserModel>(true);
                 }
             }

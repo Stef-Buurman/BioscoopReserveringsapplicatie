@@ -10,6 +10,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static bool _singleScheduled = false;
         private static List<(int, int)> SelectedValues = new List<(int, int)>();
+        private static string chosenSeatsError = "";
 
         public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0, List<(int, int)> seats = default)
         {
@@ -134,7 +135,7 @@ namespace BioscoopReserveringsapplicatie
                         options.Add(new Option<int>(locationSelected.Id, locationSelected.Name, () => Start(experienceId, locationSelected.Id)));
                     }
                 }
-                options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId)));
+                options.Add(new Option<int>(0, "Terug", () => ExperienceDetails.Start(experienceId), false, Globals.GoBackColor));
 
                 new SelectionMenuUtil<int>(options).Create();
             }
@@ -167,7 +168,7 @@ namespace BioscoopReserveringsapplicatie
                         options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.Date.ToString("dd-MM-yyyy"), () => Start(experienceId, location, schedule.ScheduledDateTimeStart.Date)));
                     }
                 }
-                options.Add(new Option<int>(0, "Terug", () => Start(experienceId)));
+                options.Add(new Option<int>(0, "Terug", () => Start(experienceId), false, Globals.GoBackColor));
 
                 new SelectionMenuUtil<int>(options).Create();
             }
@@ -200,7 +201,7 @@ namespace BioscoopReserveringsapplicatie
                         options.Add(new Option<int>(schedule.Id, schedule.ScheduledDateTimeStart.ToString("HH:mm"), () => Start(experienceId, location, schedule.ScheduledDateTimeStart)));
                     }
                 }
-                options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location)));
+                options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location), false, Globals.GoBackColor));
 
                 new SelectionMenuUtil<int>(options).Create();
             }
@@ -235,7 +236,7 @@ namespace BioscoopReserveringsapplicatie
                             }));
 
                     }
-                    options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date)));
+                    options.Add(new Option<int>(0, "Terug", () => Start(experienceId, location, dateTime.Value.Date), false, Globals.GoBackColor));
 
                     new SelectionMenuUtil<int>(options).Create();
                 }
@@ -278,6 +279,11 @@ namespace BioscoopReserveringsapplicatie
             if (seat == null)
             {
                 HorizontalLine.Print();
+                if (chosenSeatsError != "")
+                {
+                    ColorConsole.WriteColorLine(chosenSeatsError, Globals.ErrorColor);
+                    chosenSeatsError = "";
+                }
                 ColorConsole.WriteColorLine("\nKies uw stoelen: ", Globals.ExperienceColor);
                 RoomModel chosenRoom = RoomLogic.GetById(room);
                 Option<string>[,] options = OptionGrid.GenerateOptionGrid(10, 10, chosenRoom.RoomType == RoomType.Round);
@@ -289,6 +295,13 @@ namespace BioscoopReserveringsapplicatie
                 List<(int, int)> chosenSeats = new SelectionMenuUtil<string>(options, selectedOptions, true,
                     () => BackFromSeats(experienceId, location, dateTime),
                     () => Start(experienceId, location, dateTime, room), true, SelectedValues).CreateGridSelect(out SelectedValues);
+
+                
+                if (chosenSeats.Count == 0)
+                {
+                    chosenSeatsError = "Er zijn geen stoelen geselecteerd";
+                    Start(experienceId, location, dateTime, room);
+                }
 
                 Start(experienceId, location, dateTime, room, chosenSeats);
             }

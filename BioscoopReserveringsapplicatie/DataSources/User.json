@@ -63,7 +63,7 @@
       "Music"
     ],
     "ageCategory": "AGE_12",
-    "intensity": "Medium",
+    "intensity": "All",
     "language": "Nederlands",
     "promotionsSeen": {}
   },
@@ -81,7 +81,7 @@
       "Family",
       "Western"
     ],
-    "ageCategory": "AGE_18",
+    "ageCategory": "AGE_16",
     "intensity": "All",
     "language": "English",
     "promotionsSeen": {}
@@ -100,7 +100,7 @@
       "Mystery",
       "Documentary"
     ],
-    "ageCategory": "AGE_6",
+    "ageCategory": "All",
     "intensity": "High",
     "language": "English",
     "promotionsSeen": {}
@@ -139,8 +139,8 @@
       "Crime",
       "War"
     ],
-    "ageCategory": "AGE_16",
-    "intensity": "Medium",
+    "ageCategory": "AGE_18",
+    "intensity": "High",
     "language": "Nederlands",
     "promotionsSeen": {}
   },
