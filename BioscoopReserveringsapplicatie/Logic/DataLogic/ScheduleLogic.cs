@@ -112,7 +112,7 @@ namespace BioscoopReserveringsapplicatie
                     if (bookedSlot.ScheduledDateTimeStart >= dateTimeStart && bookedSlot.ScheduledDateTimeStart <= dateTimeEnd ||
                         bookedSlot.ScheduledDateTimeEnd >= dateTimeStart && bookedSlot.ScheduledDateTimeEnd <= dateTimeEnd)
                     {
-                        error = $"Er is al een experience ingepland op {dateTimeStart.ToString("dd-MM-yyyy")} in {locationLogic.GetById(locationId).Name} Zaal: {roomLogic.GetById(roomId).RoomNumber} van {dateTimeStart.ToString("HH:mm:ss")} T/M {dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength).ToString("HH:mm:ss")}.";
+                        error = $"Er is al een experience ingepland op {dateTimeStart.ToString("dd-MM-yyyy")} in {locationLogic.GetById(locationId).Name} Zaal: {roomLogic.GetById(roomId).RoomNumber} van {dateTimeStart.ToString("HH:mm")} T/M {dateTimeStart.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength).ToString("HH:mm")}.";
                         return false;
                     }
                 }
