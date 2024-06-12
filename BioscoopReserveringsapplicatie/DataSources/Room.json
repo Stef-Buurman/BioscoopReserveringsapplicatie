@@ -236,5 +236,26 @@
     "roomNumber": 5,
     "roomType": "Round",
     "status": "Active"
+  },
+  {
+    "id": 35,
+    "locationId": 5,
+    "roomNumber": 20,
+    "roomType": "Square",
+    "status": "Active"
+  },
+  {
+    "id": 36,
+    "locationId": 2,
+    "roomNumber": 14,
+    "roomType": "Round",
+    "status": "Active"
+  },
+  {
+    "id": 37,
+    "locationId": 2,
+    "roomNumber": 10,
+    "roomType": "Round",
+    "status": "Active"
   }
 ]

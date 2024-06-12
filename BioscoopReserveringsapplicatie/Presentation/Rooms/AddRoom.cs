@@ -18,7 +18,7 @@ namespace BioscoopReserveringsapplicatie
             }
             if (returnTo == "" || returnTo == "RoomType")
             {
-                AskForRoomType();
+                AskForRoomType(locationId);
                 returnTo = "";
             }
             Print(roomNumber, roomType.GetDisplayName(), locationId);
@@ -29,6 +29,8 @@ namespace BioscoopReserveringsapplicatie
             {
                 if (roomLogic.Add(newRoom))
                 {
+                    ColorConsole.WriteColorLine("\nDe zaal is toegevoegd aan de locatie.", Globals.SuccessColor);
+                    Thread.Sleep(1750);
                     LocationOverview.Start();
                 }
                 else
@@ -54,25 +56,28 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("Zaal toevoegen\n", Globals.TitleColor);
             while (true)
             {
-                string enteredRoomNumber = ReadLineUtil.EnterValue("Vul het [Zaalnummer] van de zaal in: ", RoomOverview.Start);
-                if (roomLogic.IsDuplicateRoomNumber(locationId, Convert.ToInt32(enteredRoomNumber)))
-                {
-                    Console.Clear();
-                    ColorConsole.WriteColorLine("Dit zaalnummer bestaat al op deze locatie, kies een zaalnummer die nog niet bestaat op deze locatie.", Globals.ErrorColor);
-                }
-                else return enteredRoomNumber;
+                List<int> intList = Enumerable.Range(1, 100).ToList();
+                intList = intList.FindAll(x => !roomLogic.IsDuplicateRoomNumber(locationId, x));
+                SelectionMenuUtil<int> selection = new SelectionMenuUtil<int>(intList, 1, () => LocationDetails.Start(locationId), () => AskForRoomNumber(locationId), false, "Vul het [Zaalnummer] van de zaal in: ", new Option<int>(1));
+                return selection.Create().ToString();
             }
         }
 
-        private static void AskForRoomType()
+        private static void AskForRoomType(int locationId)
         {
+            Console.Clear();
+            ColorConsole.WriteColorLine("Zaal toevoegen\n", Globals.TitleColor);
+            LocationModel? location = locationLogic.GetById(locationId);
+            ColorConsole.WriteColorLine($"[Locatie: ]{location?.Name}", Globals.RoomColor);
+            if (roomNumber != "") ColorConsole.WriteColorLine($"[Zaalnummer: ]{roomNumber}", Globals.RoomColor);
+            HorizontalLine.Print();
             List<RoomType> roomTypeEnum = Globals.GetAllEnum<RoomType>();
             List<Option<RoomType>> roomTypeOption = new List<Option<RoomType>>();
             foreach (RoomType roomType in roomTypeEnum)
             {
                 roomTypeOption.Add(new Option<RoomType>(roomType, roomType.GetDisplayName()));
             }
-            ColorConsole.WriteColorLine("Selecteer het [Zaaltype] van de zaal: ", Globals.ColorInputcClarification);
+            ColorConsole.WriteColorLine("\nSelecteer het [Zaaltype] van de zaal: ", Globals.ColorInputcClarification);
             roomType = new SelectionMenuUtil<RoomType>(roomTypeOption, 15, WhatToDoWhenGoBack, () => Start(0, "RoomType")).Create();
         }
 
