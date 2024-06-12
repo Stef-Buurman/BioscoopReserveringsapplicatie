@@ -115,7 +115,6 @@ namespace BioscoopReserveringsapplicatieTests
             Assert.AreEqual(roomId, scheduleResult.RoomId);
             Assert.AreEqual(locationId, scheduleResult.LocationId);
             Assert.AreEqual(DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")), scheduleResult.ScheduledDateTimeStart);
-            Console.WriteLine(DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")).AddMinutes(experiencesLogic.GetById(experienceId).TimeLength));
             Assert.AreEqual(DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")).AddMinutes(experiencesLogic.GetById(experienceId).TimeLength), scheduleResult.ScheduledDateTimeEnd);
         }
 
