@@ -1,3 +1,4 @@
+using System.Globalization;
 using NSubstitute;
 
 namespace BioscoopReserveringsapplicatieTests
@@ -94,6 +95,8 @@ namespace BioscoopReserveringsapplicatieTests
         [TestMethod]
         public void Correct_Schedule_Experience()
         {
+
+
             userLogic.Login("admin@mail.com", "admin");
 
             int experienceId = 1;
@@ -104,13 +107,16 @@ namespace BioscoopReserveringsapplicatieTests
             string scheduleTime = DateTime.Now.ToString("HH:mm");
             string scheduledDateTime = $"{scheduleDate} {scheduleTime}";
 
+            initializeScheduleLogic();
+
             ScheduleModel scheduleResult = scheduleLogic.CreateSchedule(experienceId, roomId, locationId, scheduledDateTime);
 
             Assert.AreEqual(experienceId, scheduleResult.ExperienceId);
             Assert.AreEqual(roomId, scheduleResult.RoomId);
             Assert.AreEqual(locationId, scheduleResult.LocationId);
-            Assert.AreEqual(DateTime.Parse(scheduledDateTime), scheduleResult.ScheduledDateTimeStart);
-            Assert.AreEqual(DateTime.Parse(scheduledDateTime).AddMinutes(experiencesLogic.GetById(experienceId).TimeLength), scheduleResult.ScheduledDateTimeEnd);
+            Assert.AreEqual(DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")), scheduleResult.ScheduledDateTimeStart);
+            Console.WriteLine(DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")).AddMinutes(experiencesLogic.GetById(experienceId).TimeLength));
+            Assert.AreEqual(DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")).AddMinutes(experiencesLogic.GetById(experienceId).TimeLength), scheduleResult.ScheduledDateTimeEnd);
         }
 
         // Check if timeslot is open ----------------------------------------------------------------------------------------------------------------------
@@ -152,7 +158,7 @@ namespace BioscoopReserveringsapplicatieTests
             RoomModel room = roomLogic.GetById(roomId);
             ExperienceModel experience = experiencesLogic.GetById(experienceId);
             Assert.IsFalse(result);
-            Assert.AreEqual($"Er is al een experience ingepland op {scheduleDate} in {location.Name} Zaal: {room.RoomNumber} van {DateTime.Parse(scheduledDateTime).ToString("HH:mm:ss")} T/M {DateTime.Parse(scheduledDateTime).AddMinutes(experience.TimeLength).ToString("HH:mm:ss")}.", error);
+            Assert.AreEqual($"Er is al een experience ingepland op {scheduleDate} in {location.Name} Zaal: {room.RoomNumber} van {DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")).ToString("HH:mm:ss")} T/M {DateTime.ParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL")).AddMinutes(experience.TimeLength).ToString("HH:mm:ss")}.", error);
         }
     }
 }
