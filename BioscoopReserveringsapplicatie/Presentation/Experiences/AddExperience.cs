@@ -53,6 +53,11 @@
                 if (experiencesLogic.Add(newExperience))
                 {
                     ClearFields();
+
+                    ColorConsole.WriteColorLine("\nExperience is toegevoegd!\n", Globals.SuccessColor);
+
+                    Thread.Sleep(1500);
+
                     ExperienceOverview.Start();
                 }
                 else

@@ -46,6 +46,11 @@ namespace BioscoopReserveringsapplicatie
                 if (promotionLogic.Add(newPromotion))
                 {
                     ClearFields();
+
+                    ColorConsole.WriteColorLine("\nPromotie is toegevoegd!\n", Globals.SuccessColor);
+
+                    Thread.Sleep(1500);
+
                     PromotionOverview.Start();
                 }
                 else

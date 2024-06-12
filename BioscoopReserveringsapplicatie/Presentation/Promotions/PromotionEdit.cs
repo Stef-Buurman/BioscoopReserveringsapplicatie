@@ -39,6 +39,10 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Ja", () => {
                     if (PromotionLogic.Edit(new PromotionModel(promotion.Id, newTitle, newDescription, promotion.Status)))
                         {
+                            ColorConsole.WriteColorLine("\nPromotie is aangepast!\n", Globals.SuccessColor);
+
+                            Thread.Sleep(1500);
+                            
                             GoBackToDetails();
                         }
                         else
