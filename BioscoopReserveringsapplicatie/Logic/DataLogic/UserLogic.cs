@@ -148,7 +148,7 @@
 
         public bool EmailAlreadyExists(string email)
         {
-            return _accounts.Exists(i => i.EmailAddress == email);
+            return _accounts.Exists(i => i.EmailAddress == email && i.EmailAddress != CurrentUser?.EmailAddress);
         }
 
         public bool ValidateName(string name)
