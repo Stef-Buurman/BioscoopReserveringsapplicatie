@@ -173,7 +173,15 @@ namespace BioscoopReserveringsapplicatie
             schedules = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(_roomId, DateTime.ParseExact(_scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
             schedules = schedules.OrderBy(schedule => schedule.ScheduledDateTimeStart).ToList();
             
-            Console.WriteLine("\nIngeplande experiences op deze datum:\n");
+            if(schedules.Count == 0)
+            {
+                ColorConsole.WriteColorLine("Geen ingeplande experiences op deze datum.", ConsoleColor.Green);
+            }
+            else
+            {
+                ColorConsole.WriteColorLine("Ingeplande experiences op deze datum:", ConsoleColor.Green);
+            }
+
             foreach(var schedule in schedules)
             {
                 string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
@@ -215,7 +223,15 @@ namespace BioscoopReserveringsapplicatie
             Header();
             CurrentSchedule(experienceId);
             
-            Console.WriteLine("\nIngeplande experiences op deze datum:\n");
+            if(schedules.Count == 0)
+            {
+                ColorConsole.WriteColorLine("Geen ingeplande experiences op deze datum.", ConsoleColor.Green);
+            }
+            else
+            {
+                ColorConsole.WriteColorLine("Ingeplande experiences op deze datum:", ConsoleColor.Green);
+            }
+
             foreach(var schedule in schedules)
             {
                 string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
