@@ -100,7 +100,8 @@ namespace BioscoopReserveringsapplicatie
                             new SelectionMenuUtil<string>(options).Create();
                         }
                     }),
-                    new Option<string>("Nee", () => ExperienceDetails.Start(experienceId))
+                    new Option<string>("Nee, verder met aanpassen", () => Start(experienceId, _returnToTime)),
+                    new Option<string>("Nee, niet opslaan", () => ExperienceDetails.Start(experienceId))
                 };
 
                 Console.Clear();
