@@ -7,11 +7,11 @@
     "status": "Active"
   },
     {
-      "id": 2,
-      "locationId": 2,
-      "roomNumber": 1,
-      "roomType": "Square",
-      "status": "Active"
+        "id": 2,
+        "locationId": 2,
+        "roomNumber": 1,
+        "roomType": "Square",
+        "status": "Active"
     },
     {
         "id": 3,
