@@ -26,42 +26,41 @@ namespace BioscoopReserveringsapplicatie
 
         public static void Start(int experienceId, string returnTo = "")
         {
-            locationId = 0;
-            roomId = 0;
-            scheduleDate = "";
-            scheduleHour = "";
-            scheduleTime = "";
-
             if(UserLogic.IsAdmin())
             {
                 Console.Clear();
 
                 if(returnTo == "" || returnTo == _returnToLocation)
                 {
+                    locationId = 0;
                     locationId = SelectLocation(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToRoom)
                 {
+                    roomId = 0;
                     roomId = SelectRoom(locationId, experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToDate)
                 {
+                    scheduleDate = "";
                     scheduleDate = SelectDate(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToHour)
                 {
+                    scheduleHour = "";
                     scheduleHour = SelectHour(experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToTime)
                 {
+                    scheduleTime = "";
                     scheduleTime = SelectMinute(scheduleHour, experienceId);
                     if (returnTo != "") returnTo = "";
                 }
@@ -101,7 +100,8 @@ namespace BioscoopReserveringsapplicatie
                             new SelectionMenuUtil<string>(options).Create();
                         }
                     }),
-                    new Option<string>("Nee", () => ExperienceDetails.Start(experienceId))
+                    new Option<string>("Nee, verder met aanpassen", () => Start(experienceId, _returnToTime)),
+                    new Option<string>("Nee, niet opslaan", () => ExperienceDetails.Start(experienceId))
                 };
 
                 Console.Clear();
