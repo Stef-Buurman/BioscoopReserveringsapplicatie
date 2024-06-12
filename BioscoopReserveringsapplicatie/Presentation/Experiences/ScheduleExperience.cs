@@ -9,11 +9,11 @@ namespace BioscoopReserveringsapplicatie
         private static RoomLogic roomLogic = new RoomLogic();
         private static ScheduleLogic scheduleLogic = new ScheduleLogic();
 
-        private static int locationId = 0;
-        private static int roomId = 0;
-        private static string scheduleDate = "";
-        private static string scheduleHour = "";
-        private static string scheduleTime = "";
+        private static int _locationId = 0;
+        private static int _roomId = 0;
+        private static string _scheduleDate = "";
+        private static string _scheduleHour = "";
+        private static string _scheduleTime = "";
 
         private static string _returnToLocation = "Location";
         private static string _returnToRoom = "Room";
@@ -32,42 +32,43 @@ namespace BioscoopReserveringsapplicatie
 
                 if(returnTo == "" || returnTo == _returnToLocation)
                 {
-                    locationId = 0;
-                    locationId = SelectLocation(experienceId);
+                    _locationId = 0;
+                    _locationId = SelectLocation(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToRoom)
                 {
-                    roomId = 0;
-                    roomId = SelectRoom(locationId, experienceId);
+                    _roomId = 0;
+                    _roomId = SelectRoom(_locationId, experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if(returnTo == "" || returnTo == _returnToDate)
                 {
-                    scheduleDate = "";
-                    scheduleDate = SelectDate(experienceId);
+                    _scheduleDate = "";
+                    _scheduleDate = SelectDate(experienceId);
                     if(returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToHour)
                 {
-                    scheduleHour = "";
-                    scheduleHour = SelectHour(experienceId);
+                    _scheduleHour = "";
+                    _scheduleHour = SelectHour(experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
                 if (returnTo == "" || returnTo == _returnToTime)
                 {
-                    scheduleTime = "";
-                    scheduleTime = SelectMinute(scheduleHour, experienceId);
+                    _scheduleTime = "";
+                    _scheduleTime = SelectMinute(_scheduleHour, experienceId);
                     if (returnTo != "") returnTo = "";
                 }
 
-                string scheduledDateTime = $"{scheduleDate} {scheduleTime}";
+                string scheduledDateTime = $"{_scheduleDate} {_scheduleTime}";
+                
 
-                if(!scheduleLogic.TimeSlotOpenOnRoom(experienceId, locationId, roomId, scheduledDateTime, out string error))
+                if(!scheduleLogic.TimeSlotOpenOnRoom(experienceId, _locationId, _roomId, scheduledDateTime, out string error))
                 {
                     DateTime.TryParseExact(scheduledDateTime, "dd-MM-yyyy HH:mm", CultureInfo.GetCultureInfo("nl-NL"), DateTimeStyles.None, out DateTime dateTime);
                     string formattedTime = dateTime.AddMinutes(experiencesLogic.GetById(experienceId).TimeLength).ToString("HH:mm");
@@ -75,15 +76,17 @@ namespace BioscoopReserveringsapplicatie
                     Start(experienceId, _returnToHour);
                 }
 
+                
+
                 List<Option<string>> options = new List<Option<string>>
                 {
                     
                     new Option<string>("Ja", () => {
-                        if(scheduleLogic.Add(scheduleLogic.CreateSchedule(experienceId, roomId, locationId, scheduledDateTime)))
+                        if(scheduleLogic.Add(scheduleLogic.CreateSchedule(experienceId, _roomId, _locationId, scheduledDateTime)))
                         {
                             Console.Clear();
                             ColorConsole.WriteColorLine("Experience is ingepland!", Globals.SuccessColor);
-                            _slotNotOpenError = "";
+                            ClearFields();
                             WaitUtil.WaitTime(2000);
                             AdminMenu.Start();
                         }
@@ -96,16 +99,18 @@ namespace BioscoopReserveringsapplicatie
 
                             Console.Clear();
                             ColorConsole.WriteColorLine("Er is een fout opgetreden tijdens het inplannen. Probeer het opnieuw.\n", Globals.ErrorColor);
+                            ClearFields();
                             _slotNotOpenError = "";
                             new SelectionMenuUtil<string>(options).Create();
                         }
                     }),
-                    new Option<string>("Nee, verder met aanpassen", () => Start(experienceId, _returnToTime)),
-                    new Option<string>("Nee, niet opslaan", () => ExperienceDetails.Start(experienceId))
+
+                    new Option<string>("Nee, verder met aanpassen", () => {ClearFields(); Start(experienceId, _returnToTime);}),
+                    new Option<string>("Nee, niet opslaan", () => {ClearFields(); ExperienceDetails.Start(experienceId);})
                 };
 
                 Console.Clear();
-                PendingSchedule(experienceId, roomId, locationId, scheduledDateTime);
+                PendingSchedule(experienceId, _roomId, _locationId, scheduledDateTime);
                 _slotNotOpenError = "";
                 new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             }
@@ -172,10 +177,18 @@ namespace BioscoopReserveringsapplicatie
             Header();
             CurrentSchedule(experienceId);
 
-            schedules = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(roomId, DateTime.ParseExact(scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
+            schedules = scheduleLogic.GetScheduledExperiencesByDateAndRoomId(_roomId, DateTime.ParseExact(_scheduleDate, "dd-MM-yyyy", CultureInfo.GetCultureInfo("nl-NL")).Date);
             schedules = schedules.OrderBy(schedule => schedule.ScheduledDateTimeStart).ToList();
             
-            Console.WriteLine("\nIngeplande experiences op deze datum:\n");
+            if(schedules.Count == 0)
+            {
+                ColorConsole.WriteColorLine("Geen ingeplande experiences op deze datum.", ConsoleColor.Green);
+            }
+            else
+            {
+                ColorConsole.WriteColorLine("Ingeplande experiences op deze datum:", ConsoleColor.Green);
+            }
+
             foreach(var schedule in schedules)
             {
                 string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
@@ -217,7 +230,15 @@ namespace BioscoopReserveringsapplicatie
             Header();
             CurrentSchedule(experienceId);
             
-            Console.WriteLine("\nIngeplande experiences op deze datum:\n");
+            if(schedules.Count == 0)
+            {
+                ColorConsole.WriteColorLine("Geen ingeplande experiences op deze datum.", ConsoleColor.Green);
+            }
+            else
+            {
+                ColorConsole.WriteColorLine("Ingeplande experiences op deze datum:", ConsoleColor.Green);
+            }
+
             foreach(var schedule in schedules)
             {
                 string experienceName = experiencesLogic.GetById(schedule.ExperienceId).Name;
@@ -249,8 +270,8 @@ namespace BioscoopReserveringsapplicatie
             }
             
             string experienceMinutes = new SelectionMenuUtil<string>(timeOptions, 1, () => Start(experienceId, _returnToHour), () => Start(experienceId, _returnToTime), new Option<string>("00"), false, $"{scheduleHour}:").Create();
-            scheduleTime = $"{scheduleHour}:{experienceMinutes}";
-            return scheduleTime;
+            _scheduleTime = $"{scheduleHour}:{experienceMinutes}";
+            return _scheduleTime;
         }
 
          private static void Header()
@@ -263,18 +284,18 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine("Huidige inplanning experience", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Experience duur: ]{experiencesLogic.GetById(experienceId).TimeLength} Minuten", ConsoleColor.Green);
-
-            if(locationId != 0)
+            
+            if(_locationId != 0)
             {
-                ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(_locationId).Name}", ConsoleColor.Green);
             }
-            if(roomId != 0)
+            if(_roomId != 0)
             {
-                ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(_roomId).RoomNumber}", ConsoleColor.Green);
             }
-            if(scheduleDate != "")
+            if(_scheduleDate != "")
             {
-                ColorConsole.WriteColorLine($"[Datum: ]{scheduleDate}\n", ConsoleColor.Green);
+                ColorConsole.WriteColorLine($"[Datum: ]{_scheduleDate}\n", ConsoleColor.Green);
             }
         }
 
@@ -288,9 +309,19 @@ namespace BioscoopReserveringsapplicatie
             ColorConsole.WriteColorLine($"[Experience: ]{experiencesLogic.GetById(experienceId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Locatie: ]{locationLogic.GetById(locationId).Name}", ConsoleColor.Green);
             ColorConsole.WriteColorLine($"[Zaal: ]{roomLogic.GetById(roomId).RoomNumber}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Datum: ]{scheduleDate}", ConsoleColor.Green);
-            ColorConsole.WriteColorLine($"[Tijd: ]{scheduleTime} T/M {formattedTime}\n", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Datum: ]{_scheduleDate}", ConsoleColor.Green);
+            ColorConsole.WriteColorLine($"[Tijd: ]{_scheduleTime} T/M {formattedTime}\n", ConsoleColor.Green);
             ColorConsole.WriteColorLine("Weet je zeker dat je de experience wilt inplannen ?", ConsoleColor.Red);
+        }
+
+        private static void ClearFields()
+        {
+            _slotNotOpenError = "";
+            _locationId = 0;
+            _roomId = 0;
+            _scheduleDate = "";
+            _scheduleHour = "";
+            _scheduleTime = "";
         }
     }
 }
