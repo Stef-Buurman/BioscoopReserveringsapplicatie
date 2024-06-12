@@ -143,7 +143,12 @@
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@") && email.Contains(".") && email.Length > 6 && email.Trim() != "";
+            return email.Contains('@') && email.Contains('.') && email.Length > 6 && email.Trim() != "";
+        }
+
+        public bool EmailAlreadyExists(string email)
+        {
+            return _accounts.Exists(i => i.EmailAddress == email && i.EmailAddress != CurrentUser?.EmailAddress);
         }
 
         public bool ValidateName(string name)
@@ -231,7 +236,7 @@
             {
                 Result<List<Genre>> validateGenres = ValidateGenres(newGenres);
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !validateGenres.IsValid ||
-                    !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
+                    !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory) || EmailAlreadyExists(newEmail))
                 {
                     return new Result<UserModel>(false, $"Niet alle velden zijn correct ingevuld.\n{validateGenres.ErrorMessage}");
                 }
