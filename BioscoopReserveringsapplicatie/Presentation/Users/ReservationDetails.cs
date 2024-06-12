@@ -32,6 +32,8 @@ namespace BioscoopReserveringsapplicatie
 
                         Console.Clear();
 
+                        Print(reservation, schedule, experience, location, room);
+
                         ColorConsole.WriteColorLine($"Weet u zeker dat u de reservering wilt [annuleren]?", Globals.ColorInputcClarification);
 
                         List<Option<string>> options2 = new List<Option<string>>
@@ -64,6 +66,8 @@ namespace BioscoopReserveringsapplicatie
 
             Print(reservation, schedule, experience, location, room);
 
+            Console.WriteLine("Wat wil je doen?");
+
             new SelectionMenuUtil<string>(options).Create();
         }
 
@@ -82,7 +86,7 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", reservation.Seat.Select(tuple => tuple.Item2 + 1)), Globals.ReservationColor);
                 ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * reservation.Seat.Count, 2)}\n", Globals.ReservationColor);
 
-                Console.WriteLine("Wat wil je doen?");
+                
             }
         }
     }
