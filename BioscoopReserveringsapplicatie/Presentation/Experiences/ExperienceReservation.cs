@@ -9,7 +9,6 @@ namespace BioscoopReserveringsapplicatie
         private static RoomLogic RoomLogic = new RoomLogic();
 
         private static bool _singleScheduled = false;
-
         private static List<(int, int)> SelectedValues = new List<(int, int)>();
 
         public static void Start(int experienceId, int location = 0, DateTime? dateTime = null, int room = 0, List<(int, int)> seats = default)
@@ -227,7 +226,6 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in scheduledExperience)
                     {
-
                         options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}",
                             () =>
                             {
@@ -244,13 +242,15 @@ namespace BioscoopReserveringsapplicatie
                 {
                     _singleScheduled = true;
                     room = scheduledExperience[0].RoomId;
-                    ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                    RoomModel roomModel = RoomLogic.GetById(room);
+                    ColorConsole.WriteColorLine("[Zaal:] " + roomModel.RoomNumber, Globals.ExperienceColor);
                     Start(experienceId, location, dateTime, room);
                 }
             }
             else
             {
-                ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                RoomModel roomModel = RoomLogic.GetById(room);
+                ColorConsole.WriteColorLine("[Zaal:] " + roomModel.RoomNumber, Globals.ExperienceColor);
             }
         }
 
