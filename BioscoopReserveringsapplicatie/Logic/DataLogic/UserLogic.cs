@@ -143,7 +143,7 @@
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@") && email.Contains(".") && email.Length > 6 && email.Trim() != "";
+            return email.Contains('@') && email.Contains('.') && email.Length > 6 && email.Trim() != "" && _accounts.Exists(acc => acc.EmailAddress == email);
         }
 
         public bool ValidateName(string name)
