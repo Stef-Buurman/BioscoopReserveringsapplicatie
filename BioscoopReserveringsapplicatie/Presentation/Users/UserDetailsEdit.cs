@@ -126,7 +126,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Nee, terug naar mijn details",
                 () => GoBackToDetails())
             };
-            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens aan")).Create();
         }
 
         public static void GoBackToDetails()
