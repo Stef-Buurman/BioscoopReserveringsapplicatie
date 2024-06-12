@@ -81,9 +81,9 @@ namespace BioscoopReserveringsapplicatie
                     string genres = string.Join(",", movie.Genres);
                     if (genres.Length > 25)
                     {
-                        genres = genres.Substring(0, 25) + "...";
+                        genres = genres.Substring(0, 23) + "...";
                     }
-                    string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 1) + "} {1,-" + (columnWidths[1] + 1) + "} {2,-" + (columnWidths[2] + 1) + "} {3,-" + (columnWidths[3] + 1) + "} {4,-" + (columnWidths[4] + 1) + "} {5,-" + (columnWidths[5] + 1) + "}",
+                    string experienceInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + (columnWidths[3] + 2) + "} {4,-" + (columnWidths[4] + 2) + "} {5,-" + (columnWidths[5] + 2) + "}",
                     experienceName, movie.Title, genres, movie.AgeCategory.GetDisplayName(), experience.TimeLength + " minuten", experience.Intensity.GetDisplayName());
                     options.Add(new Option<int>(experience.Id, experienceInfo));
                 }
@@ -182,7 +182,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
             {
-                Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 2));
+                Console.Write(columnHeaders[i].PadRight(columnWidths[i] + 3));
             }
             Console.WriteLine();
 
@@ -190,8 +190,7 @@ namespace BioscoopReserveringsapplicatie
             Console.Write("".PadRight(3));
             for (int i = 0; i < columnHeaders.Count; i++)
             {
-                Console.Write(new string('-', columnWidths[i]));
-                if (i < columnHeaders.Count - 1) Console.Write("  ");
+                Console.Write("".PadRight(columnWidths[i], '-').PadRight(columnWidths[i] + 3));
             }
             Console.WriteLine();
         }
