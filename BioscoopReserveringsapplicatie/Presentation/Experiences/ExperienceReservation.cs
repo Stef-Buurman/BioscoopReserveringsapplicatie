@@ -290,6 +290,11 @@ namespace BioscoopReserveringsapplicatie
                     () => BackFromSeats(experienceId, location, dateTime),
                     () => Start(experienceId, location, dateTime, room), true, SelectedValues).CreateGridSelect(out SelectedValues);
 
+                if (chosenSeats.Count == 0)
+                {
+                    Start(experienceId, location, dateTime, room);
+                }
+
                 Start(experienceId, location, dateTime, room, chosenSeats);
             }
             else
