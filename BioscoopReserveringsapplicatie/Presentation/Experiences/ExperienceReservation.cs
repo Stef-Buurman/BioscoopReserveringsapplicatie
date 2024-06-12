@@ -53,7 +53,7 @@ namespace BioscoopReserveringsapplicatie
                                         ColorConsole.WriteColorLine("[Locatie:] " + LocationLogic.GetById((int)location).Name, Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Datum:] " + dateTime.Value.ToString("dd-MM-yyyy"), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Tijd:] " + dateTime.Value.ToString("HH:mm"), Globals.ExperienceColor);
-                                        ColorConsole.WriteColorLine("[Zaal:] " + room, Globals.ExperienceColor);
+                                        ColorConsole.WriteColorLine("[Zaal:] " + RoomLogic.GetById(room).RoomNumber, Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Rij:]   " + string.Join(" | ", seats.Select(tuple => tuple.Item1 + 1)), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine("[Stoel:] " + string.Join(" | ", seats.Select(tuple => tuple.Item2 + 1)), Globals.ExperienceColor);
                                         ColorConsole.WriteColorLine($"[Prijs:] € {Math.Round(Globals.pricePerSeat * seats.Count, 2)}", Globals.ExperienceColor);
@@ -226,7 +226,8 @@ namespace BioscoopReserveringsapplicatie
 
                     foreach (ScheduleModel schedule in scheduledExperience)
                     {
-                        options.Add(new Option<int>(schedule.Id, $"Zaal {RoomLogic.GetById(schedule.RoomId).RoomNumber}",
+                        RoomModel roomModel = RoomLogic.GetById(schedule.RoomId);
+                        options.Add(new Option<int>(schedule.Id, $"Zaal {roomModel.RoomNumber}",
                             () =>
                             {
                                 SelectedValues.Clear();
