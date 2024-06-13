@@ -41,7 +41,7 @@ namespace BioscoopReserveringsapplicatie
                 }
 
                 string roomInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) + "} {3,-" + (columnWidths[3] + 2) + "}", 
-                location.Name, room.RoomNumber, room.RoomType.GetDisplayName(), room.Status.GetDisplayName());
+                locationName, room.RoomNumber, room.RoomType.GetDisplayName(), room.Status.GetDisplayName());
                 options.Add(new Option<int>(room.Id, roomInfo));
             }
             ColorConsole.WriteLineInfoHighlight("*Klik op [Enter] om de details van een zaal te bekijken*", Globals.ColorInputcClarification);

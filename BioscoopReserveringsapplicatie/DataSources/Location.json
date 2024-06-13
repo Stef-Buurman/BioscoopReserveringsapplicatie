@@ -1,10 +1,127 @@
 [
   {
     "id": 1,
-    "name": "Rotterdam"
+    "name": "Rotterdam",
+    "status": "Active"
   },
   {
     "id": 2,
-    "name": "Rotterdam Zuid"
+    "name": "Rotterdam Zuid",
+    "status": "Active"
+  },
+  {
+    "id": 3,
+    "name": "Delft Centrum",
+    "status": "Active"
+  },
+  {
+    "id": 4,
+    "name": "Scheveningen Beach",
+    "status": "Active"
+  },
+  {
+    "id": 5,
+    "name": "Delftse Hout",
+    "status": "Active"
+  },
+  {
+    "id": 6,
+    "name": "Kralingse Bos",
+    "status": "Active"
+  },
+  {
+    "id": 7,
+    "name": "Euromast Park",
+    "status": "Active"
+  },
+  {
+    "id": 8,
+    "name": "Biesbosch National Park",
+    "status": "Active"
+  },
+  {
+    "id": 9,
+    "name": "Rotterdam Zoo (Diergaarde Blijdorp)",
+    "status": "Archived"
+  },
+  {
+    "id": 10,
+    "name": "Markthal Rotterdam",
+    "status": "Active"
+  },
+  {
+    "id": 11,
+    "name": "Museumpark Rotterdam",
+    "status": "Active"
+  },
+  {
+    "id": 12,
+    "name": "Het Park Rotterdam",
+    "status": "Active"
+  },
+  {
+    "id": 13,
+    "name": "Haarlemmerstraat (The Hague)",
+    "status": "Archived"
+  },
+  {
+    "id": 14,
+    "name": "Binnenhof (The Hague)",
+    "status": "Active"
+  },
+  {
+    "id": 15,
+    "name": "Madurodam (The Hague)",
+    "status": "Active"
+  },
+  {
+    "id": 16,
+    "name": "Delft University of Technology",
+    "status": "Active"
+  },
+  {
+    "id": 17,
+    "name": "Delft Botanic Garden",
+    "status": "Active"
+  },
+  {
+    "id": 18,
+    "name": "Grote Kerk (Dordrecht)",
+    "status": "Active"
+  },
+  {
+    "id": 19,
+    "name": "Dordts Patrici\u00EBrshuis",
+    "status": "Archived"
+  },
+  {
+    "id": 20,
+    "name": "Hoge Brug (Dordrecht)",
+    "status": "Active"
+  },
+  {
+    "id": 21,
+    "name": "Vlaardingen Holy",
+    "status": "Active"
+  },
+  {
+    "id": 22,
+    "name": "Hoek van Holland Haven",
+    "status": "Active"
+  },
+  {
+    "id": 23,
+    "name": "Oostvoorne Strand",
+    "status": "Active"
+  },
+  {
+    "id": 24,
+    "name": "Strijen Haven",
+    "status": "Active"
+  },
+  {
+    "id": 25,
+    "name": "Zwijndrecht Centrum",
+    "status": "Active"
   }
 ]

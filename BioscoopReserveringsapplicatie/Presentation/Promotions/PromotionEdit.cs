@@ -8,7 +8,7 @@ namespace BioscoopReserveringsapplicatie
         private static string newTitle = "";
         private static string newDescription = "";
 
-        public static void Start(int promotionId, string returnTo = "")
+        public static void Start(int promotionId)
         {
             promotion = PromotionLogic.GetById(promotionId);
             if (promotion == null) return;
@@ -21,9 +21,9 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> editOptions = new List<Option<string>>()
             {
                 new Option<string>("Titel", () => { PromotionTitle(); }),
-                new Option<string>("Intensiteit", () => { PromotionDescription(promotionId); }),
+                new Option<string>("Beschrijving", () => { PromotionDescription(promotionId); }),
                 new Option<string>("Opslaan", () => { SavePromotion(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => GoBackToDetails(), Globals.GoBackColor)
+                new Option<string>("Terug", () => ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start(promotionId)), Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -39,6 +39,10 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Ja", () => {
                     if (PromotionLogic.Edit(new PromotionModel(promotion.Id, newTitle, newDescription, promotion.Status)))
                         {
+                            ColorConsole.WriteColorLine("\nPromotie is aangepast!\n", Globals.SuccessColor);
+
+                            Thread.Sleep(1500);
+                            
                             GoBackToDetails();
                         }
                         else

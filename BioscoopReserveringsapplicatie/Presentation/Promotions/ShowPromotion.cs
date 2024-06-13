@@ -4,10 +4,14 @@ namespace BioscoopReserveringsapplicatie
     {
         private static UserLogic userLogic = new UserLogic();
         private static PromotionLogic promotionLogic = new PromotionLogic();
-        private static PromotionModel? activePromotion = promotionLogic.GetActivePromotion();
         public static void Start()
         {
             Console.Clear();
+
+            promotionLogic.GetAll();
+
+            PromotionModel? activePromotion = promotionLogic.GetActivePromotion();
+
             if (activePromotion != null)
             {
                 bool shownRecently = promotionLogic.IsPromotionShownRecently(activePromotion.Id);

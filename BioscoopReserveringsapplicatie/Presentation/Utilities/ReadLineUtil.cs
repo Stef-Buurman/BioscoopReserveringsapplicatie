@@ -118,11 +118,11 @@ namespace BioscoopReserveringsapplicatie
                     };
             ColorConsole.WriteColorLine(Line, Globals.ErrorColor);
             ColorConsole.WriteColorLine(Message, Globals.ErrorColor);
-            new SelectionMenuUtil<string>(options).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee")).Create();
             return WantToLeave;
         }
 
-        public static bool EscapeKeyPressed(Action escapeAction, Action whenNoPressed)
+        public static bool EscapeKeyPressed(Action escapeAction, Action whenNoPressed, string message = "Weet je zeker dat je terug wilt gaan?")
         {
             bool WantToLeave = false;
             List<Option<string>> options = new List<Option<string>>
@@ -142,8 +142,8 @@ namespace BioscoopReserveringsapplicatie
                         ),
                     };
             ColorConsole.WriteColorLine("\n----------------------------------------------------------------", ConsoleColor.Red);
-            ColorConsole.WriteColorLine("Weet je zeker dat je terug wilt gaan?", ConsoleColor.Red);
-            new SelectionMenuUtil<string>(options, false).Create();
+            ColorConsole.WriteColorLine(message, ConsoleColor.Red);
+            new SelectionMenuUtil<string>(options, false, new Option<string>("Nee")).Create();
             return WantToLeave;
         }
     }

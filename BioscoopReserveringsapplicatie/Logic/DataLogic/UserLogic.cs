@@ -36,6 +36,7 @@
             }
             _DataAccess.WriteAll(_accounts);
             _accounts = _DataAccess.LoadAll();
+            CurrentUser = GetById(CurrentUser.Id);
         }
 
         public UserModel? GetById(int id)
@@ -93,14 +94,14 @@
 
             if (validated)
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, PasswordHasher.HashPassword(password, out var salt), salt, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
                 UpdateList(newAccount);
                 _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
             }
             else
             {
-                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
+                newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, password, default, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
             }
             return new Result<UserModel>(validated, errorMessage, newAccount);
         }
@@ -129,7 +130,7 @@
         public bool Login(string email, string password)
         {
             UserModel? account = _accounts.Find(i => i.EmailAddress == email);
-            if (account != null && account.Password == password)
+            if (account != null && PasswordHasher.VerifyPassword(password, account.Password, account.Salt))
             {
                 CurrentUser = account;
                 return true;
@@ -142,7 +143,12 @@
 
         public bool ValidateEmail(string email)
         {
-            return email.Contains("@") && email.Contains(".") && email.Length > 6 && email.Trim() != "";
+            return email.Contains('@') && email.Contains('.') && email.Length > 6 && email.Trim() != "";
+        }
+
+        public bool EmailAlreadyExists(string email)
+        {
+            return _accounts.Exists(i => i.EmailAddress == email && i.EmailAddress != CurrentUser?.EmailAddress);
         }
 
         public bool ValidateName(string name)
@@ -224,13 +230,13 @@
             WaitUtil.WaitTime(2000);
         }
 
-        public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory)
+        public Result<UserModel> Edit(string newName, string newEmail, List<Genre> newGenres, Intensity newIntensity, AgeCategory newAgeCategory, Language newLanguage = Language.Nederlands)
         {
             if (CurrentUser != null)
             {
                 Result<List<Genre>> validateGenres = ValidateGenres(newGenres);
                 if (!ValidateName(newName) || !ValidateEmail(newEmail) || !validateGenres.IsValid ||
-                    !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory))
+                    !ValidateIntensity(newIntensity) || !ValidateAgeCategory(newAgeCategory) || EmailAlreadyExists(newEmail))
                 {
                     return new Result<UserModel>(false, $"Niet alle velden zijn correct ingevuld.\n{validateGenres.ErrorMessage}");
                 }
@@ -242,9 +248,9 @@
                     CurrentUser.Genres = newGenres;
                     CurrentUser.Intensity = newIntensity;
                     CurrentUser.AgeCategory = newAgeCategory;
+                    CurrentUser.Language = newLanguage;
 
                     UpdateList(CurrentUser);
-                    CurrentUser = CurrentUser;
                     return new Result<UserModel>(true);
                 }
             }
@@ -268,7 +274,8 @@
         {
             if (CurrentUser != null && ValidatePassword(newPassword))
             {
-                CurrentUser.Password = newPassword;
+                CurrentUser.Password = PasswordHasher.HashPassword(newPassword, out var salt);
+                CurrentUser.Salt = salt;
                 UpdateList(CurrentUser);
                 return true;
             }
@@ -279,7 +286,7 @@
         {
             if (CurrentUser != null)
             {
-                if (oldPassword == CurrentUser.Password)
+                if (PasswordHasher.VerifyPassword(oldPassword, CurrentUser.Password, CurrentUser.Salt))
                 {
                     return true;
                 }

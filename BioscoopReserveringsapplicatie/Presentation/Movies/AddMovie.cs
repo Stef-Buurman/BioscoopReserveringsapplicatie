@@ -46,11 +46,16 @@ namespace BioscoopReserveringsapplicatie
             Print();
             List<Option<string>> options = new List<Option<string>>
             {
-            new Option<string>("Opslaan en verlaten", () => 
+            new Option<string>("Opslaan en terug naar overzicht", () => 
             {
                 if (MoviesLogic.Add(new MovieModel(MoviesLogic.GetNextId(), title, description, genres, rating, Status.Active)))
                 {
                     ClearFields();
+                    
+                    ColorConsole.WriteColorLine("\nFilm is toegevoegd!\n", Globals.SuccessColor);
+
+                    Thread.Sleep(1500);
+
                     MovieOverview.Start();
                 }
                 else
@@ -124,7 +129,10 @@ namespace BioscoopReserveringsapplicatie
                 options.Add(new Option<AgeCategory>(option, option.GetDisplayName()));
             }
 
-            rating = new SelectionMenuUtil<AgeCategory>(AgeCatagories, () => { genres = new List<Genre>(); Start(_returnToGenres); }, () => Start(_returnToRating)).Create();
+            rating = new SelectionMenuUtil<AgeCategory>(options, 
+                () => { genres = new List<Genre>(); Start(_returnToGenres); }, 
+                () => Start(_returnToRating), 
+                new Option<AgeCategory>(rating)).Create();
         }
 
         private static void PrintAddingMovie()
@@ -156,6 +164,7 @@ namespace BioscoopReserveringsapplicatie
 
         private static void Print()
         {
+            Console.Clear();
             ColorConsole.WriteColorLine("[Film details]", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film titel: ]{title}", Globals.MovieColor);
             ColorConsole.WriteColorLine($"[Film beschrijving: ]{description}", Globals.MovieColor);

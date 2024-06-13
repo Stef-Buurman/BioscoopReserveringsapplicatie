@@ -27,7 +27,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Naam", () => { UserName(); }),
                 new Option<string>("Email", () => { UserEmail(); }),
                 new Option<string>("Opslaan", () => { SaveAccountDetails(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start()), Globals.GoBackColor)
             };
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
         }
@@ -39,7 +39,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, UserLogic.CurrentUser.Genres, UserLogic.CurrentUser.Intensity, UserLogic.CurrentUser.AgeCategory);
+                    Result<UserModel> result = _userLogic.Edit(_newName, _newEmail, UserLogic.CurrentUser.Genres, UserLogic.CurrentUser.Intensity, UserLogic.CurrentUser.AgeCategory, UserLogic.CurrentUser.Language);
                     if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\nGebruikersgegevens zijn gewijzigd!", Globals.SuccessColor);
@@ -88,7 +88,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Taal", () => { SelectLanguage(); }),
                 new Option<string>("Opslaan", () => { SavePreferences(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start()), Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -101,7 +101,7 @@ namespace BioscoopReserveringsapplicatie
             List<Option<string>> options = new List<Option<string>>
             {
                 new Option<string>("Ja", () => {
-                    Result<UserModel> result = _userLogic.Edit(UserLogic.CurrentUser.FullName, UserLogic.CurrentUser.EmailAddress, _newGenres, _newIntensity, _newAgeCategory);
+                    Result<UserModel> result = _userLogic.Edit(UserLogic.CurrentUser.FullName, UserLogic.CurrentUser.EmailAddress, _newGenres, _newIntensity, _newAgeCategory, _language);
                     if(result.IsValid)
                     {
                         ColorConsole.WriteColorLine("\n Preferences zijn aangepast !", Globals.SuccessColor);
@@ -126,7 +126,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Nee, terug naar mijn details",
                 () => GoBackToDetails())
             };
-            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens")).Create();
+            new SelectionMenuUtil<string>(options, new Option<string>("Nee, pas mijn gegevens aan")).Create();
         }
 
         public static void GoBackToDetails()
@@ -380,6 +380,22 @@ namespace BioscoopReserveringsapplicatie
                 {
                     PrintTitle();
                     ColorConsole.WriteColorLine("Het wachtwoord komt niet overeen, probeer het opnieuw", Globals.ErrorColor);
+                    newPassword = "";
+                    validNewPassword = false;
+                    while (!validNewPassword)
+                    {
+                        newPassword = ReadLineUtil.EnterValue("Voer uw [nieuwe wachtwoord] in: ", UserDetails.Start, true);
+                        validNewPassword = _userLogic.ValidatePassword(newPassword);
+
+                        if (!validNewPassword)
+                        {
+                            if (newPassword.Length < 5)
+                            {
+                                PrintTitle();
+                                ColorConsole.WriteColorLine("Wachtwoord moet minimaal 5 tekens bevatten.", Globals.ErrorColor);
+                            }
+                        }
+                    }
                 }
             }
 

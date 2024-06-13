@@ -55,7 +55,7 @@ namespace BioscoopReserveringsapplicatie
                 string genres = string.Join(",", movie.Genres);
                 if (genres.Length > 25)
                 {
-                    genres = genres.Substring(0, 25) + "...";
+                    genres = genres.Substring(0, 23) + "...";
                 }
                 string movieInfo = string.Format("{0,-" + (columnWidths[0] + 2) + "} {1,-" + (columnWidths[1] + 2) + "} {2,-" + (columnWidths[2] + 2) +"} {3,-" + columnWidths[3] +"}",
                 movieTitle, genres, movie.AgeCategory.GetDisplayName(), movie.Status.GetDisplayName());

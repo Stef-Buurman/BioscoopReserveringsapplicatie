@@ -47,14 +47,14 @@ namespace BioscoopReserveringsapplicatie
                 options = new List<Option<string>>
                 {
                     new Option<string>("Reserveer experience", () => ExperienceReservation.Start(experienceId)),
-                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                    new Option<string>("Terug", () => PreferredExperiences.Start(Globals.selectedDateTime)),
                 };
             }
             else
             {
                 options = new List<Option<string>>
                 {
-                    new Option<string>("Terug", () => PreferredExperiences.Start()),
+                    new Option<string>("Terug", () => PreferredExperiences.Start(Globals.selectedDateTime)),
                 };
             }
 

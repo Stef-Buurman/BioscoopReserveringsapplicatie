@@ -2,26 +2,26 @@ using System.Globalization;
 
 namespace BioscoopReserveringsapplicatie
 {
-    static class PreferredExperiences
+    public static class ScheduledExperiences
     {
         private static ExperienceLogic ExperienceLogic = new ExperienceLogic();
         private static MovieLogic MoviesLogic = new MovieLogic();
         private static Func<ExperienceModel, string[]> experienceDataExtractor = ExtractExperienceData;
 
-        public static void Start(DateTime? dateTime = null)
+        public static void Start(DateTime? date = null)
         {
-            ShowExperiencesWithUserPreferences(dateTime);
+            ShowExperiences(date);
         }
 
-        private static void ShowExperienceDetails(int experienceId)
+        private static void ShowExperienceDetails(int experienceId, DateTime date)
         {
             if (experienceId != 0)
             {
-                ExperienceDetails.Start(experienceId);
+                ScheduledExperienceDetails.Start(experienceId, date);
             }
         }
 
-        private static int ShowExperiencesWithUserPreferences(DateTime? date = null)
+        private static int ShowExperiences(DateTime? date = null)
         {
             if (UserLogic.CurrentUser == null)
             {
@@ -38,8 +38,7 @@ namespace BioscoopReserveringsapplicatie
             int currentYear = date.Value.Year;
 
             DateTime firstDayOfWeek = ISOWeek.ToDateTime(currentYear, currentWeek, DayOfWeek.Monday);
-            
-            Globals.selectedDateTime = firstDayOfWeek;
+
             date = firstDayOfWeek;
 
             DateTime lastDayOfWeek = firstDayOfWeek.AddDays(6);
@@ -58,7 +57,7 @@ namespace BioscoopReserveringsapplicatie
                 "Intensiteit",
             };
 
-            List<ExperienceModel> experiences = ExperienceLogic.GetExperiencesByUserPreferences(UserLogic.CurrentUser, (DateTime)date);
+            List<ExperienceModel> experiences = ExperienceLogic.GetScheduledExperiences((DateTime)date);
 
             if (experiences.Count > 0)
             {
@@ -93,43 +92,43 @@ namespace BioscoopReserveringsapplicatie
                 ColorConsole.WriteLineInfoHighlight("*Klik op het [linkerpijltje] en [rechterpijltje] om door de weken te scrollen*\n", Globals.ColorInputcClarification);
 
                 ColorConsole.WriteColorLine($"Week {currentWeek} - {firstDayOfWeek.ToString("dd-MM-yyyy")} - {lastDayOfWeek.ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
-                ColorConsole.WriteColorLine("Dit zijn uw aanbevolen experiences op basis van uw voorkeuren in deze week:\n", Globals.TitleColor);
+                ColorConsole.WriteColorLine("Dit zijn de ingeplande experiences in deze week:\n", Globals.TitleColor);
 
                 Print((DateTime)date);
                 int experienceId = new SelectionMenuUtil<int>(options,
                     () =>
                     {
-                        UserMenu.Start();
+                        AdminMenu.Start();
                     },
                     () =>
                     {
-                        ShowExperiencesWithUserPreferences(date);
+                        ShowExperiences(date);
                     },
                     new List<KeyAction>()
                     {
                         new KeyAction(ConsoleKey.LeftArrow, () => {
                             if (firstDayOfWeek.AddDays(-7) >= DateTime.Now.AddDays(-7))
                             {
-                            ShowExperiencesWithUserPreferences(date.Value.AddDays(-7));
+                            ShowExperiences(date.Value.AddDays(-7));
                             }}),
                         new KeyAction(ConsoleKey.RightArrow, () => {
-                            if (lastDayOfWeek.AddDays(7).Year == currentYear && currentWeek <= ISOWeek.GetWeekOfYear(DateTime.Now) + 1) {
-                            ShowExperiencesWithUserPreferences(date.Value.AddDays(7));
+                            if (lastDayOfWeek.AddDays(7).Year == currentYear && currentWeek <= ISOWeek.GetWeekOfYear(DateTime.Now) + 1){
+                            ShowExperiences(date.Value.AddDays(7));
                             }}),
                     }, showEscapeabilityText: false).Create();
 
-                ShowExperienceDetails(experienceId);
+                ShowExperienceDetails(experienceId, (DateTime)date);
                 return experienceId;
             }
             else
             {
                 ColorConsole.WriteLineInfoHighlight("*Klik op [Escape] om terug te gaan*", Globals.ColorInputcClarification);
 
-                ColorConsole.WriteLineInfoHighlight("*Klik op het [linkerpijltje] en [rechterpijltje] om door de weken te scrollen*\n", Globals.ColorInputcClarification);;
+                ColorConsole.WriteLineInfoHighlight("*Klik op het [linkerpijltje] en [rechterpijltje] om door de weken te scrollen*\n", Globals.ColorInputcClarification); ;
 
                 ColorConsole.WriteColorLine($"Week {currentWeek} - {firstDayOfWeek.ToString("dd-MM-yyyy")} - {lastDayOfWeek.ToString("dd-MM-yyyy")}\n", Globals.ColorInputcClarification);
 
-                ColorConsole.WriteColorLine("Er zijn geen experiences gevonden op basis van uw voorkeuren in deze week.", Globals.ErrorColor);
+                ColorConsole.WriteColorLine("Er zijn geen ingeplande experiences gevonden in deze week.", Globals.ErrorColor);
 
                 while (true)
                 {
@@ -139,7 +138,7 @@ namespace BioscoopReserveringsapplicatie
                     {
                         if (firstDayOfWeek.AddDays(-7) >= DateTime.Now.AddDays(-7))
                         {
-                            ShowExperiencesWithUserPreferences(date.Value.AddDays(-7));
+                            ShowExperiences(date.Value.AddDays(-7));
                             break;
                         }
                     }
@@ -147,13 +146,13 @@ namespace BioscoopReserveringsapplicatie
                     {
                         if (lastDayOfWeek.AddDays(7).Year == currentYear && currentWeek <= ISOWeek.GetWeekOfYear(DateTime.Now) + 1)
                         {
-                            ShowExperiencesWithUserPreferences(date.Value.AddDays(7));
+                            ShowExperiences(date.Value.AddDays(7));
                             break;
                         }
                     }
                     else if (key.Key == ConsoleKey.Escape)
                     {
-                        ReadLineUtil.EscapeKeyPressed(() => { UserMenu.Start(); }, () => { ShowExperiencesWithUserPreferences(date); });
+                        ReadLineUtil.EscapeKeyPressed(() => { AdminMenu.Start(); }, () => { ShowExperiences(date); });
                         break;
                     }
                 }

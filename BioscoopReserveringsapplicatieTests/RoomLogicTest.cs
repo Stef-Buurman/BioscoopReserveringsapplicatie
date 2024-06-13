@@ -86,7 +86,6 @@ namespace BioscoopReserveringsapplicatieTests
         public void Correct_Room_AlreadyArchived_Still_Archived()
         {
             roomLogic.Archive(1);
-            roomLogic.Archive(1);
             Assert.AreEqual(Status.Archived, roomLogic.GetById(1).Status);
         }
 
@@ -94,9 +93,66 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Room_Archive_Nonexistent_ID()
         {
             int nonexistentID = 999;
-            roomLogic.Archive(nonexistentID);
-            Assert.IsNull(roomLogic.GetById(nonexistentID));
+            try
+            {
+                roomLogic.Archive(nonexistentID);
+            }
+            catch 
+            {
+                Assert.Fail("Zaal bestaat niet, kan daarom ook niet gearchiveerd worden");
+            }
         }
 
+        // Add ---------------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Room_Add()
+        {
+            RoomModel room = new RoomModel(3, 0, 4, RoomType.Round, Status.Active);
+            Assert.IsTrue(roomLogic.Add(room));
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Add_Null()
+        {
+            Assert.IsFalse(roomLogic.Add(null));
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Add_Negative_Room_Number()
+        {
+            RoomModel room = new RoomModel(3, 0, -4, RoomType.Round, Status.Active);
+            Assert.IsFalse(roomLogic.Add(room));
+        }
+
+        // Unarchive ----------------------------------------------------------------------------------------------------------------------
+
+        [TestMethod]
+        public void Correct_Room_Unarchive_Succes()
+        {
+            roomLogic.Unarchive(1);
+            Assert.AreEqual(Status.Active, roomLogic.GetById(1).Status);
+        }
+
+        [TestMethod]
+        public void Incorrect_Room_Unarchive_Nonexistent_ID()
+        {
+            int nonexistentID = 999;
+            try
+            {
+                roomLogic.Unarchive(nonexistentID);
+            }
+            catch 
+            {
+                Assert.Fail("Zaal bestaat niet, kan daarom ook niet geactiveerd worden");
+            }
+        }
+
+        [TestMethod]
+        public void Correct_Room_AlreadyUnarchived_Still_Unarchived()
+        {
+            roomLogic.Unarchive(0);
+            Assert.AreEqual(Status.Active, roomLogic.GetById(0).Status);
+        }
     }
 }

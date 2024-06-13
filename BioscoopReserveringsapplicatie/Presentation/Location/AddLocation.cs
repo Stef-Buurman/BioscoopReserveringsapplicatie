@@ -16,14 +16,16 @@ namespace BioscoopReserveringsapplicatie
                 returnTo = "";
             }
             Print(title);
-            LocationModel newLocation = new LocationModel(locationLogic.GetNextId(), title);
+            LocationModel newLocation = new LocationModel(locationLogic.GetNextId(), title, Status.Active);
             List<Option<string>> options = new List<Option<string>>
             {
-            new Option<string>("Opslaan en verlaten", () => 
+            new Option<string>("Opslaan en terug naar overzicht", () => 
             {
                 if (locationLogic.Add(newLocation))
                 {
                     ClearFields();
+                    ColorConsole.WriteColorLine("\nDe locatie is succesvol toegevoegd.", Globals.SuccessColor);
+                    Thread.Sleep(1750);
                     LocationOverview.Start();
                 }
                 else

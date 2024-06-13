@@ -35,7 +35,7 @@ namespace BioscoopReserveringsapplicatie
                 new Option<string>("Intensiteit", () => { SelectIntensity(); }),
                 new Option<string>("Tijdsduur", () => { ExperienceLength(); }),
                 new Option<string>("Opslaan", () => { SaveExperience(); }, Globals.SaveColor),
-                new Option<string>("Terug", () => { GoBackToDetails(); }, Globals.GoBackColor)
+                new Option<string>("Terug", () => { ReadLineUtil.EscapeKeyPressed(GoBackToDetails, () => Start(experienceId)); }, Globals.GoBackColor)
             };
 
             new SelectionMenuUtil<string>(editOptions, new Option<string>("Naam")).Create();
@@ -51,6 +51,9 @@ namespace BioscoopReserveringsapplicatie
                 {
                     if (ExperiencesLogic.Edit(_experienceId, _newName, _newDescription, _newIntensity, _timeInInt, _selectedMovieId))
                     {
+                        ColorConsole.WriteColorLine("\nExperience is aangepast!\n", Globals.SuccessColor);
+
+                        Thread.Sleep(1500);
                         GoBackToDetails();
                     }
                     else

@@ -9,7 +9,8 @@
 
         public ExperienceLogic(IDataAccess<ExperienceModel> experienceAccess = null,
             IDataAccess<MovieModel> movieAccess = null,
-            IDataAccess<ScheduleModel> scheduleAccess = null)
+            IDataAccess<ScheduleModel> scheduleAccess = null,
+            ScheduleLogic schedulelogicComplete = null)
         {
             if (experienceAccess != null) _DataAccess = experienceAccess;
             else _DataAccess = new DataAccess<ExperienceModel>();
@@ -17,8 +18,15 @@
             if (movieAccess != null) MoviesLogic = new MovieLogic(movieAccess);
             else MoviesLogic = new MovieLogic();
 
-            if (scheduleAccess != null) ScheduleLogic = new ScheduleLogic(scheduleAccess);
-            else ScheduleLogic = new ScheduleLogic();
+            if (schedulelogicComplete != null)
+            {
+                ScheduleLogic = schedulelogicComplete;
+            }
+            else if (ScheduleLogic == null)
+            {
+                if (scheduleAccess != null) ScheduleLogic = new ScheduleLogic(scheduleAccess);
+                else ScheduleLogic = new ScheduleLogic();
+            }
 
             _experiences = _DataAccess.LoadAll();
         }
@@ -89,6 +97,31 @@
                     experiences.Add(experience);
                 }
             }
+            return experiences;
+        }
+
+        public List<ExperienceModel> GetScheduledExperiences(DateTime date)
+        {
+            GetAll();
+
+            List<ExperienceModel> experiences = new List<ExperienceModel>();
+
+            foreach (ExperienceModel experience in _experiences)
+            {
+                if (experience.Status == Status.Archived) continue;
+
+                MovieModel movie = MoviesLogic.GetById(experience.FilmId);
+
+                if (movie == null) continue;
+
+                bool hasScheduldedExperience = ScheduleLogic.HasScheduledExperience(experience.Id, date);
+
+                if (hasScheduldedExperience)
+                {
+                    experiences.Add(experience);
+                }
+            }
+            
             return experiences;
         }
 

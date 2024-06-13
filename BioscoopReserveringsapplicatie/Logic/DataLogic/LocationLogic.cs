@@ -5,13 +5,17 @@ namespace BioscoopReserveringsapplicatie
         private List<LocationModel> _Locations;
         public IDataAccess<LocationModel> _DataAccess { get; }
         private ScheduleLogic SheduleLogic;
-        public LocationLogic(IDataAccess<LocationModel> dataAccess = null, IDataAccess<ScheduleModel> sheduleAccess = null)
+        public LocationLogic(IDataAccess<LocationModel> dataAccess = null, IDataAccess<ScheduleModel> sheduleAccess = null, ScheduleLogic schedulelogicComplete = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<LocationModel>();
 
-            if (sheduleAccess != null) SheduleLogic = new ScheduleLogic(sheduleAccess);
-            else SheduleLogic = new ScheduleLogic();
+            if (schedulelogicComplete != null) SheduleLogic = schedulelogicComplete;
+            else
+            {
+                if (sheduleAccess != null) SheduleLogic = new ScheduleLogic(sheduleAccess);
+                else SheduleLogic = new ScheduleLogic();
+            }
 
             _Locations = _DataAccess.LoadAll();
         }

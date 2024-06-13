@@ -2,13 +2,26 @@ namespace BioscoopReserveringsapplicatie
 {
     public class ReservationLogic : ILogic<ReservationModel>
     {
-        private static ScheduleLogic scheduleLogic = new ScheduleLogic();
+        private static ScheduleLogic scheduleLogic;
+        private static bool isInitializedScheduleLogic = false;
         private List<ReservationModel> _reservations = new();
         public IDataAccess<ReservationModel> _DataAccess { get; }
-        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null)
+        public ReservationLogic(IDataAccess<ReservationModel> dataAccess = null, IDataAccess<ScheduleModel> schedulelogic = null, ScheduleLogic schedulelogicComplete = null)
         {
             if (dataAccess != null) _DataAccess = dataAccess;
             else _DataAccess = new DataAccess<ReservationModel>();
+
+            if (schedulelogicComplete != null)
+            {
+                scheduleLogic = schedulelogicComplete;
+            }
+            else if (!isInitializedScheduleLogic)
+            {
+                isInitializedScheduleLogic = true;
+                if (schedulelogic != null && dataAccess != null) scheduleLogic = new ScheduleLogic(schedulelogic, reservationAccess: dataAccess);
+                if (schedulelogic != null) scheduleLogic = new ScheduleLogic(schedulelogic);
+                else scheduleLogic = new ScheduleLogic();
+            }
 
             _reservations = _DataAccess.LoadAll();
         }
@@ -69,7 +82,7 @@ namespace BioscoopReserveringsapplicatie
 
             reservation.IsCanceled = true;
             UpdateList(reservation);
-            foreach(ReservationModel res in _reservations)
+            foreach (ReservationModel res in _reservations)
             {
                 if (res.Id == reservation.Id)
                 {
@@ -118,7 +131,7 @@ namespace BioscoopReserveringsapplicatie
             {
                 ScheduleModel schedule = scheduleLogic.GetById(reservation.ScheduleId);
 
-                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay == date.TimeOfDay && reservation.IsCanceled == false && schedule.LocationId == locationId)
+                if (schedule.ScheduledDateTimeStart.Date == date.Date && schedule.ScheduledDateTimeStart.TimeOfDay <= date.TimeOfDay && schedule.ScheduledDateTimeEnd.TimeOfDay >= date.TimeOfDay && reservation.IsCanceled == false && schedule.LocationId == locationId)
                 {
                     return true;
                 }
@@ -132,18 +145,35 @@ namespace BioscoopReserveringsapplicatie
             List<ReservationModel> reservations = _DataAccess.LoadAll().FindAll(r => r.UserId == userId);
             List<ScheduleModel> schedules = scheduleLogic.GetScheduledExperiencesByLocationId(experienceId, locationId);
 
-            foreach (ScheduleModel schedule in schedules)
+            schedules = schedules.FindAll(s => s.ScheduledDateTimeStart > DateTime.Now);
+
+            foreach (var schedule in schedules.ToList())
             {
-                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && r.IsCanceled == false))
+                if (reservations.Exists(r =>
+                    scheduleLogic.GetById(r.ScheduleId).ExperienceId == schedule.ExperienceId &&
+                    scheduleLogic.GetById(r.ScheduleId).LocationId == schedule.LocationId &&
+                    scheduleLogic.GetById(r.ScheduleId).ScheduledDateTimeStart == schedule.ScheduledDateTimeStart &&
+                    scheduleLogic.GetById(r.ScheduleId).ScheduledDateTimeEnd == schedule.ScheduledDateTimeEnd &&
+                    !r.IsCanceled))
+                {
+                    schedules.Remove(schedule);
+                }
+            }
+
+            foreach (var schedule in schedules)
+            {
+                if (!reservations.Exists(r => r.ScheduleId == schedule.Id && !r.IsCanceled))
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
+
         public List<(int, int)> GetAllReservedSeatsOfSchedule(int scheduleId) => GetAllReservationsByScheduleId(scheduleId).SelectMany(reservation => reservation.IsCanceled ? null : reservation.Seat).ToList();
-        
+
         public List<ReservationModel> GetAllReservationsByScheduleId(int scheduleId) => _reservations.FindAll(r => r.ScheduleId == scheduleId && !r.IsCanceled);
     }
 }

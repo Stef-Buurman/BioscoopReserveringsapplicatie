@@ -41,11 +41,16 @@ namespace BioscoopReserveringsapplicatie
             PromotionModel newPromotion = new PromotionModel(promotionLogic.GetNextId(), title, description, Status.Inactive);
             List<Option<string>> options = new List<Option<string>>
             {
-            new Option<string>("Opslaan en verlaten", () =>
+            new Option<string>("Opslaan en terug naar overzicht", () =>
             {
                 if (promotionLogic.Add(newPromotion))
                 {
                     ClearFields();
+
+                    ColorConsole.WriteColorLine("\nPromotie is toegevoegd!\n", Globals.SuccessColor);
+
+                    Thread.Sleep(1500);
+
                     PromotionOverview.Start();
                 }
                 else

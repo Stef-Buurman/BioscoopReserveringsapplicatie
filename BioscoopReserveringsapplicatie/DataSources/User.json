@@ -3,54 +3,184 @@
     "id": 1,
     "isAdmin": true,
     "emailAddress": "admin@mail.com",
-    "password": "admin",
+    "password": "731826DFF389A2EBD99C2C7AFFB299A20ACA56FB9C9D09DC5FEF9F5DA2BF6B75EF636F67B051AB157C81E4744C0045E0419228720621D14C820D555EFD13C7C2",
+    "salt": "hVoQPikZuQeK1r/Z+7XmUiu44vTZyD2qMfEZHKfDjFNUyxGMylfvx1uUcWPX4ItZXjgwSkztw8QXEJVEYxoC+Q==",
     "fullName": "Admin",
-    "genres": null,
+    "genres": [],
     "ageCategory": "Undefined",
     "intensity": "Undefined",
     "language": "Undefined",
-    "promotionsSeen": null
+    "promotionsSeen": {}
   },
-    {
-        "id": 2,
-        "isAdmin": false,
-        "emailAddress": "user@mail.com",
-        "password": "user123",
-        "fullName": "User",
-        "genres": [
-            "Comedy"
-        ],
-        "ageCategory": "All",
-        "intensity": "Low",
-        "language": "Nederlands",
-        "promotionsSeen": {}
-    },
-    {
-        "id": 3,
-        "isAdmin": false,
-        "emailAddress": "user1@mail.com",
-        "password": "user123",
-        "fullName": "User",
-        "genres": [
-            "Comedy"
-        ],
-        "ageCategory": "All",
-        "intensity": "Low",
-        "language": "Nederlands",
-        "promotionsSeen": {}
-    },
-    {
-        "id": 4,
-        "isAdmin": false,
-        "emailAddress": "user2@mail.com",
-        "password": "user123",
-        "fullName": "User",
-        "genres": [
-            "Comedy"
-        ],
-        "ageCategory": "All",
-        "intensity": "Low",
-        "language": "Nederlands",
-        "promotionsSeen": {}
-    }
+  {
+    "id": 2,
+    "isAdmin": false,
+    "emailAddress": "user@mail.com",
+    "password": "25F83D06A249FEF6EBD0AA8A7377E9F4E8EDF906B19689D2C56D61FA474F51EF6FEBD909D8724F19C286A5B6F2FE53129A2072743E809569E9C6A0C677F53968",
+    "salt": "ceS8hQKqfinhWtPLw92MqBOf19py9wSdortbB3BYMkz42xPJzpGIfE/B/50SLK8cihvfrmgDUCp3a/DZXJGQFA==",
+    "fullName": "User",
+    "genres": [
+      "Horror",
+      "Comedy",
+      "Action",
+      "Drama",
+      "Thriller",
+      "Romance",
+      "ScienceFiction",
+      "Fantasy",
+      "Adventure",
+      "Animation",
+      "Crime",
+      "Mystery",
+      "Family",
+      "War",
+      "History",
+      "Music",
+      "Documentary",
+      "Western",
+      "TVMovie"
+    ],
+    "ageCategory": "All",
+    "intensity": "All",
+    "language": "Undefined",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 3,
+    "isAdmin": false,
+    "emailAddress": "pieter@mail.com",
+    "password": "AFEDB026E9237B4CAFB7A4CFB406E4E0B0F9BD2E34506F1252B6E34EF51913EA6EFE68ABE8DB57D8B6868174D3D71BD977064BBE80E570B8EB1C67981FB333B9",
+    "salt": "Trdz7QwD2OVGCyqr8eIkxO0UrQmGXiPX//RUX5FhSE4mzLYSKvRD7TrtjuoaipEg23S4cVeuIGMzolqx0ZZdWw==",
+    "fullName": "Pieter Smit",
+    "genres": [
+      "Action",
+      "Drama",
+      "Crime",
+      "Mystery",
+      "Family",
+      "War",
+      "History",
+      "Music"
+    ],
+    "ageCategory": "AGE_12",
+    "intensity": "All",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 4,
+    "isAdmin": false,
+    "emailAddress": "tim@mail.com",
+    "password": "00EEF0153FE4EF76023EEF85851F323F40908A7FBBB740323B78EEE5D83C92933F47AF28936E6E6A0E65259D8590F081C4AB674568C7CAF52FB13153BA5FDFBF",
+    "salt": "9VhPlta9OMDpVUSz+BE5zmshmOyiMQ1lRc/FLflgHSo6B+zqJcave1pyqR/V8Uq0YHwre/eskxrxKnnxZShrhQ==",
+    "fullName": "Tim van Eert",
+    "genres": [
+      "Horror",
+      "Romance",
+      "Animation",
+      "Family",
+      "Western"
+    ],
+    "ageCategory": "AGE_16",
+    "intensity": "All",
+    "language": "English",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 5,
+    "isAdmin": false,
+    "emailAddress": "nick@mail.com",
+    "password": "B15DEDC7C999813D9E4F58A54363AAA7572B15B279D45B29FC879921EDB6BE1109B78FCFE43C8AF8B9E64417FEBF9D5016277BE31832968FF7BB4DEC28ED4885",
+    "salt": "s+k8WBTXZa3y/A7RNv1wi2E/EEKvM05dskj7f/HbEn8JJR6sdFqu15gUb00Z5YAKLlf8nn7MO5RDB3UZk1GG7g==",
+    "fullName": "Nick Wijmans",
+    "genres": [
+      "Comedy",
+      "Thriller",
+      "Fantasy",
+      "Mystery",
+      "Documentary"
+    ],
+    "ageCategory": "All",
+    "intensity": "High",
+    "language": "English",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 6,
+    "isAdmin": false,
+    "emailAddress": "menno@mail.com",
+    "password": "752B272A7E500DDC5C66C0F1B878FD8A11E3EA570D73DDBD939F45DAC21A0CB9FB8B6FCBF88A98076C1F3C6CCF0DD74E5DB257EB48BF8F9D4D7AE56A1DE132D7",
+    "salt": "R68dhIcxboCAnHKJH3ktSqOuPlV2pGpIXviCV8mVXUb1VzKNyHPp5TLLEFaoCAFC+F/MehvTBbozMZJE2TTWnQ==",
+    "fullName": "Menno van den Berg",
+    "genres": [
+      "Horror",
+      "Comedy",
+      "Adventure",
+      "Crime"
+    ],
+    "ageCategory": "AGE_6",
+    "intensity": "Low",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 7,
+    "isAdmin": false,
+    "emailAddress": "stef@mail.com",
+    "password": "6F64B348D14BD784A6FE426DA592EE1D86B1F4E325BECB5665C97C7A9708FABD7D2EDEFDBB01B61A632E171BE638A7DC20F2EEF788540B91B9423B8F658D5B9E",
+    "salt": "zWTRheSrol+I5Q8zPrZIyLB/UaYArH7MWSFAgThTqPMMgEmhfTPJlwoKXNaD+9tPAMK7xbIRz4OsCqVJjN7tdw==",
+    "fullName": "Stef Buurman",
+    "genres": [
+      "Comedy",
+      "Action",
+      "ScienceFiction",
+      "Fantasy",
+      "Animation",
+      "Crime",
+      "War"
+    ],
+    "ageCategory": "AGE_18",
+    "intensity": "High",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 8,
+    "isAdmin": false,
+    "emailAddress": "jurn@mail.com",
+    "password": "BCA02CD514A2628725292A2BFC3AD9B8D0D460264D1BE30A7F69FD9BA01AAD44D1A4CA2C22C5D7D91BE7382F9DA3BF2DEADAE46736E398F1121E8D0651467A3D",
+    "salt": "H+/6zLTr9qT1kQa/Ak/LenWvYiE0P7h7NBC7UH+YEavZKo80OC949odmFjG9GKqgn+BT1Hc6Nrqc0xMyjavTeA==",
+    "fullName": "Jurn de Ruijter",
+    "genres": [
+      "Horror",
+      "Romance",
+      "Animation",
+      "Mystery",
+      "History",
+      "TVMovie"
+    ],
+    "ageCategory": "AGE_6",
+    "intensity": "Low",
+    "language": "English",
+    "promotionsSeen": {}
+  },
+  {
+    "id": 9,
+    "isAdmin": false,
+    "emailAddress": "casper@mail.com",
+    "password": "FF5834F654C4AD6F031DCD471A4FCBA18CE71F4E42E707DEC06BB769BC4826E800F7B611830A567666642B5D602A94EA77E3258AD660368D592A6B10780E9462",
+    "salt": "JeeALKkdcKoaub1PuZieSwNtqus53Xr8fq52kSyVfFGP1faqq+2N/UPoYgiJj1f/23oXi/EidCtOik/LJvf5Pg==",
+    "fullName": "Casper Smits",
+    "genres": [
+      "Drama",
+      "Romance",
+      "Mystery",
+      "Family",
+      "TVMovie"
+    ],
+    "ageCategory": "All",
+    "intensity": "All",
+    "language": "Nederlands",
+    "promotionsSeen": {}
+  }
 ]

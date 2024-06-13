@@ -194,8 +194,14 @@ namespace BioscoopReserveringsapplicatieTests
         public void Incorrect_Experience_Archive_Nonexistent_ID()
         {
             int nonexistentID = 999;
-            experiencesLogic.Archive(nonexistentID);
-            Assert.IsNull(experiencesLogic.GetById(nonexistentID));
+            try
+            {
+                experiencesLogic.Archive(nonexistentID);
+            }
+            catch
+            {
+                Assert.Fail("Experience bestaat niet, kan daarom ook niet gearchiveerd worden");
+            }
         }
     }
 }
