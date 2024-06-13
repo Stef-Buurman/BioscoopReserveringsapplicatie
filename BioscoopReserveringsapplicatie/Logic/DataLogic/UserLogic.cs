@@ -95,6 +95,7 @@
             if (validated)
             {
                 newAccount = new UserModel(IdGenerator.GetNextId(_accounts), false, email, PasswordHasher.HashPassword(password, out var salt), salt, name, new List<Genre>(), 0, default, default, new Dictionary<int, DateTime>());
+                CurrentUser = newAccount;
                 UpdateList(newAccount);
                 _accounts = _DataAccess.LoadAll();
                 CheckLogin(email, password);
